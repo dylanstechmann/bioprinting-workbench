@@ -1,0 +1,44 @@
+[
+  {
+    "kind": "DOI",
+    "ident": "10.1073/pnas.1521342113",
+    "status": "OK",
+    "title": "Three-dimensional bioprinting of thick vascularized tissues",
+    "authors": "Kolesky D, Homan K, Skylar-Scott M et al.",
+    "venue": "Proceedings of the National Academy of Sciences",
+    "date": "2016-03-07",
+    "doi": "10.1073/pnas.1521342113",
+    "url": "https://doi.org/10.1073/pnas.1521342113",
+    "detail": {
+      "type": "journal-article",
+      "publisher": "National Academy of Sciences"
+    },
+    "flags": [],
+    "expect_title": "",
+    "title_match": "",
+    "title_score": null,
+    "where": [],
+    "retrieved": "2026-11-01"
+  },
+  {
+    "kind": "DOI",
+    "ident": "10.1126/science.aav9750",
+    "status": "OK",
+    "title": "Multivascular networks and functional intravascular topologies within biocompatible hydrogels",
+    "authors": "Grigoryan B, Paulsen S, Corbett D et al.",
+    "venue": "Science",
+    "date": "2019-05-03",
+    "doi": "10.1126/science.aav9750",
+    "url": "https://doi.org/10.1126/science.aav9750",
+    "detail": {
+      "type": "journal-article",
+      "publisher": "American Association for the Advancement of Science (AAAS)"
+    },
+    "flags": [],
+    "expect_title": "",
+    "title_match": "",
+    "title_score": null,
+    "where": [],
+    "retrieved": "2026-11-01"
+  }
+]

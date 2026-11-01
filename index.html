@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="An interactive, educational 3D tissue engineering lab. Synthetic models, visible assumptions, no clinical predictions.">
+  <title>Bioprinting Workbench · Virtual tissue engineering</title>
+  <link rel="stylesheet" href="./src/styles.css">
+  <script type="importmap">{"imports":{"three":"./vendor/three/three.module.js","three/addons/":"./vendor/three/"}}</script>
+</head>
+<body>
+<header><a class="brand" href="./"><span class="mark">◈</span><span>BIOPRINTING <b>WORKBENCH</b><small>VIRTUAL TISSUE ENGINEERING / 01</small></span></a><nav><a href="#evidence">Evidence & assumptions</a><a href="https://github.com/dylanstechmann/bioprinting-workbench">GitHub ↗</a><span class="badge">IN SILICO ONLY</span></nav></header>
+<main>
+  <section class="intro"><div><p class="eyebrow">FROM CELLS TO CONSTRUCT / AN INTERACTIVE LEARNING LAB</p><h1>Build tissue. Explore the barriers.</h1><p>From a culture dish to a vascularized scaffold—and the unanswered questions beyond.</p></div><button id="export">Export scenario ↗</button></section>
+  <div class="notice"><span>ⓘ</span><span><strong>A virtual experiment, not a biological prediction.</strong> All growth, organization and integration are synthetic illustrations. No wet-lab protocol or transplant guidance.</span></div>
+  <div id="stages" class="stages" aria-label="Simulation stages"></div>
+  <div class="workspace">
+    <section class="viewer-card" aria-label="Interactive 3D laboratory">
+      <div class="viewer-heading"><span><i class="dot"></i> LIVE 3D WORKSPACE</span><span id="view-label">LAB OVERVIEW</span></div>
+      <div id="viewport"><canvas id="scene" tabindex="0" aria-label="Orbitable laboratory scene. Use camera buttons for keyboard-accessible views."></canvas><div id="webgl-error" class="fallback" role="status" hidden></div><div class="scene-overlay"><span class="badge">SYNTHETIC MODEL</span><h2 id="scene-title">Cell expansion</h2><p id="equipment"></p></div><div class="camera-controls"><button data-camera="lab">Lab view</button><button data-camera="construct">Construct</button><button data-camera="top">Top view</button></div></div>
+      <div class="view-tools"><span>Drag to orbit · Scroll to zoom · Right-drag to pan</span><label><input id="cutaway" type="checkbox"> Reveal scaffold</label></div>
+      <div class="playback"><button id="play" class="primary">Play sequence</button><button id="reset" aria-label="Reset sequence">↺</button><input id="timeline" aria-label="Sequence timeline" type="range" min="0" max="4.999" step="0.001" value="0"><output id="phase">01 / 05</output></div>
+      <div class="legend"><span><i style="background:#e9c5a2"></i>Scaffold</span><span><i style="background:#ae729b"></i>Cells / matrix</span><span><i style="background:#cb605c"></i>Designed channels</span><span><i style="background:#63ada8"></i>Perfusate tracer</span><span>Not to biological scale</span></div>
+    </section>
+    <aside>
+      <section class="panel"><div class="panel-heading"><span class="eyebrow">SCENARIO CONTROLS</span><span class="quiet">Dimensionless</span></div><h2>Construct design</h2><p class="muted">Explore geometry and illustrative behavior. These are not physical printer settings.</p>
+      <label class="control" for="spacing">Filament spacing <output id="spacing-value"></output></label><input id="spacing" type="range" min="0.24" max="0.6" step="0.02" value="0.36">
+      <label class="control" for="layers">Scaffold layers <output id="layers-value"></output></label><input id="layers" type="range" min="3" max="9" step="1" value="6">
+      <label class="control" for="population">Relative cell population <output id="population-value"></output></label><input id="population" type="range" min="0.1" max="1" step="0.05" value="0.6">
+      <label class="control" for="perfusion">Illustrative flow <output id="perfusion-value"></output></label><input id="perfusion" type="range" min="0" max="1" step="0.05" value="0.6">
+      <label class="toggle"><input id="channels" type="checkbox" checked> Include designed channels</label>
+      <label class="control" for="recipient">Recipient context</label><select id="recipient"><option value="animal">Animal research concept</option><option value="human">Human translation concept</option></select><p class="micro">Context labels do not change the model or imply suitability for either recipient.</p></section>
+      <section class="panel stage-panel"><span class="eyebrow">WHAT YOU’RE SEEING</span><h2 id="stage-title"></h2><p id="description"></p><div class="metrics"><div><strong id="filaments">0</strong><span>visible filaments</span></div><div><strong id="occupancy">0%</strong><span>scripted occupancy</span></div></div><p id="warning" class="warning"></p></section>
+    </aside>
+  </div>
+  <section id="evidence" class="evidence"><div><p class="eyebrow">THE MODEL IS NOT THE TISSUE</p><h2>Real research. Explicit boundaries.</h2><p>This scaffold-first storyboard brings together concepts from distinct research workflows. It is not a reproduction of either paper and does not model a complete organ.</p></div><article><span class="reference">01 / PRINTED TISSUES</span><h3>Cells, matrix & perfusable channels</h3><p>Kolesky et al. (2016) demonstrated multimaterial printing of thick vascularized tissues. Our geometry is original and our animation does not reproduce their experiments.</p><a href="https://doi.org/10.1073/pnas.1521342113" target="_blank" rel="noreferrer">Read the primary paper ↗</a></article><article><span class="reference">02 / VASCULAR ARCHITECTURE</span><h3>More than a red tube</h3><p>Grigoryan et al. (2019) explored multivascular hydrogel networks using a different printing approach. A tracer moving through a channel does not establish living vessel function.</p><a href="https://doi.org/10.1126/science.aav9750" target="_blank" rel="noreferrer">Read the primary paper ↗</a></article></section>
+  <details><summary>Model, assets & missing biology</summary><p>All geometry is original procedural artwork, inspired by generic enclosed printers, culture equipment and perfusion setups. Three.js 0.187.0 (MIT) is bundled locally. No patient data, network APIs, analytics or vendor models are used. Missing: oxygen transport, fluid dynamics, cell mechanics, endothelial function, immune response, contamination, scaffold degradation, host anastomosis and healing. The culture, construct and recipient views use different illustrative scales. See <a href="./docs/METHODS.md">methods</a>, <a href="./docs/SOURCES.md">source ledger</a> and <a href="./docs/ASSETS.md">asset/import guidance</a>.</p></details>
+</main><footer><span>Personal hobby & learning project · AI-assisted development · Agent-built, not independently scientifically reviewed.</span><span>Bioprinting Workbench / v0.1</span></footer>
+<noscript><p>This interactive scene needs JavaScript. Evidence and limitations remain readable above.</p></noscript>
+<script type="module" src="./src/app.js"></script>
+</body></html>

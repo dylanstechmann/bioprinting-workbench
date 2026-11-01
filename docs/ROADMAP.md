@@ -1,0 +1,15 @@
+# Bounded next milestones
+
+The first release is a usable geometric/storyboard prototype, not a biological simulator.
+
+- Improve equipment fidelity with original Blender assets and measured reference dimensions;
+  add a separate magnified construct viewport and explanatory vascular cross-sections.
+- Introduce a separately specified oxygen diffusion/consumption teaching model, units,
+  convergence tests and explicit synthetic-vs-measured parameter provenance.
+- Add a network-flow solver with conservation checks before displaying physical flow values.
+- Model scaffold-first seeding and cell-laden printing as separate selectable workflows.
+- Teach endothelial lining and host-vessel connection as evidence gaps, not automatic transitions.
+- Add importable versioned scenarios, keyboard camera controls and performance presets.
+- Obtain independent domain review before making stronger scientific teaching claims.
+
+No milestone implies experimental execution, clinical use or animal-use readiness.
