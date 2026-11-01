@@ -1,5 +1,22 @@
 # Agent-run verification — 2026-11-01
 
+## Oxygen reference and visual upgrade (subsequent local changes)
+
+On Node v24.18.1, `npm test` passed **16 tests, 0 failed, 0 skipped**;
+`npm run check` passed. The five added oxygen tests check the analytical model's
+boundaries, symmetry, zero-demand limit, center, finite-difference curvature,
+flux balance, validation and provenance. This is mathematical verification, not
+calibration against measurements. The claims scanner reported no findings.
+
+In headless Chromium with WebGL, agent-run browser checks exercised the oxygen
+slider and graph, export of the reference model, 3D stage selection, and a
+390-pixel mobile viewport. A forced WebGL failure displayed the fallback while
+the oxygen controls remained usable. A screenshot was inspected in temporary
+storage; the older checked-in preview represents the previous version. The
+procedural geometry has more equipment details, but remains non-photorealistic.
+The Kolesky DOI was rechecked against its title on 2026-11-01: 1 match, 0 errors.
+No experimental dataset was used, and no new research source was introduced.
+
 These checks concern software behavior, not scientific or biological validation.
 
 ## Automated checks

@@ -31,6 +31,10 @@ file server, not a simulation backend. The app can also be hosted at a subdirect
 Orbit/pan/zoom, switch camera presets, scrub or play the sequence, reveal the scaffold,
 change design variables, disable channels, and export a reproducible JSON scenario.
 Human/animal context labels do not change the biology or make species-specific predictions.
+The separate [oxygen-slab teaching model](docs/OXYGEN.md) offers an interactive,
+analytically verified diffusion/consumption reference case with dimensionless synthetic
+inputs. It is not connected to the 3D construct or calibrated to a tissue. A research
+review panel lists missing evidence instead of offering an unsupported safety score.
 
 **This is not biologically calibrated, a wet-lab protocol, a transplant-readiness tool,
 or guidance for treating a person or animal.** Cells, channels and tissue are intentionally

@@ -1,9 +1,19 @@
 import { DEFAULTS, STAGES, sample, snapshot } from './model.js';
 import { createLab } from './scene.js';
+import { oxygenProfile } from './oxygen.js';
 
 const $ = id => document.getElementById(id);
 let parameters = { ...DEFAULTS }, time = 0, playing = false, last = 0, lab = null;
 let exportUrl;
+function drawOxygen() {
+  const result = oxygenProfile(Number($('demand').value));
+  $('demand-value').textContent = result.demand.toFixed(2);
+  $('oxygen-center').textContent = result.center.toFixed(2);
+  $('oxygen-line').setAttribute('points', result.profile.map(p => `${20 + 360 * (p.x + 1) / 2},${110 - 90 * p.concentration}`).join(' '));
+  $('oxygen-graph').setAttribute('aria-label', `Illustrative oxygen profile. Dimensionless center concentration ${result.center.toFixed(2)}, boundary concentration 1.`);
+}
+$('demand').addEventListener('input', drawOxygen);
+drawOxygen();
 const stageButtons = STAGES.map((stage, index) => {
   const b = document.createElement('button'); b.innerHTML = `<span class="stage-number">0${index + 1}</span>${stage.short}`;
   b.setAttribute('aria-label', stage.title); b.addEventListener('click', () => { time = index + .001; pause(); render(); });
@@ -25,7 +35,8 @@ $('cutaway').addEventListener('change', render);
 document.querySelectorAll('[data-camera]').forEach(b => b.addEventListener('click', () => { lab?.view(b.dataset.camera); $('view-label').textContent = `${b.textContent.toUpperCase()} VIEW`; }));
 $('export').addEventListener('click', () => {
   if (exportUrl) URL.revokeObjectURL(exportUrl);
-  exportUrl = URL.createObjectURL(new Blob([JSON.stringify(snapshot(time, parameters), null, 2)], { type: 'application/json' }));
+  const exported = { ...snapshot(time, parameters), oxygenTeachingModel: oxygenProfile(Number($('demand').value)) };
+  exportUrl = URL.createObjectURL(new Blob([JSON.stringify(exported, null, 2)], { type: 'application/json' }));
   const a = document.createElement('a'); a.href = exportUrl; a.download = 'bioprinting-scenario.json'; a.click();
 });
 function render(clock = 0) {

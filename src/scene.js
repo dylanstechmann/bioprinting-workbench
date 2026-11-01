@@ -55,6 +55,16 @@ export function createLab(canvas) {
   box([16, 4, .15], [0, 1.7, -3.6], mat('#d8e2d8'));
   box([16, .08, .7], [0, 3.3, -3.35], white);
   for (let x = -7; x <= 7; x += 2) box([1.6, .02, .1], [x, 3.24, -3], mat('#faffea'));
+  // Generic service panel, splashback and cabinet faces add material scale cues.
+  box([15.9, .08, .12], [0, .1, -3.35], metal);
+  for (let x = -6.4; x <= 6.4; x += 3.2) {
+    box([2.85, 1.3, .06], [x, -1.18, 2.75], white);
+    box([.8, .035, .07], [x, -.78, 2.8], metal);
+  }
+  for (const x of [-7, -3, 1, 5]) {
+    box([.55, .42, .05], [x, .65, -3.48], white);
+    for (const dx of [-.14, .14]) box([.08, .12, .02], [x + dx, .65, -3.44], dark);
+  }
   // Incubator.
   const incubator = new THREE.Group(); incubator.position.set(-6, 0, -1.8); scene.add(incubator);
   box([2.25, 3.4, 1.9], [0, 1.6, 0], white, incubator);
@@ -80,12 +90,18 @@ export function createLab(canvas) {
   const arm = rod([-3.8, 1.3, -2], [-3.8, 1.85, -1.4], .23, white);
   arm.name = 'microscope-arm';
   for (const x of [-4.02, -3.6]) rod([x, 1.7, -1.5], [x, 2, -.95], .12, dark);
+  for (const x of [-4.04, -3.56]) {
+    const knob = cyl(.15, .08, [x, .64, -1.98], dark); knob.rotation.z = Math.PI / 2;
+  }
+  for (let i = 0; i < 3; i++) cyl(.07, .24, [-4 + i * .19, .63, -1.35], metal);
   cyl(.2, .1, [-3.8, .9, -1.4], glass); label('INVERTED MICROSCOPE', [-3.8, .15, -.32], 1.9);
   // Printer, transparent doors, rails, cartridge and build platform.
   const printer = new THREE.Group(); printer.position.set(.1, 0, -.6); scene.add(printer);
   box([3.7, .27, 3.4], [0, .07, 0], white, printer);
   box([3.7, .38, 3.4], [0, 3.25, 0], white, printer);
   box([3.6, 2.9, .14], [0, 1.7, -1.65], white, printer);
+  box([3.3, .09, .06], [0, 2.95, 1.64], dark, printer);
+  for (let x = -1.1; x <= 1.1; x += .22) box([.12, .018, .02], [x, 3.03, 1.68], metal, printer);
   for (const x of [-1.72, 1.72]) for (const z of [-1.55, 1.55]) box([.13, 3, .13], [x, 1.65, z], white, printer);
   const enclosure = new THREE.Group(); printer.add(enclosure);
   for (const x of [-1.78, 1.78]) box([.02, 2.85, 3], [x, 1.7, 0], glass, enclosure);
@@ -93,13 +109,16 @@ export function createLab(canvas) {
   box([.06, .5, .07], [1.5, 1.6, 1.64], metal, enclosure);
   for (const z of [-.8, .9]) rod([-1.5, 2.7, z], [1.5, 2.7, z], .045, metal, printer);
   box([2.9, .12, 2.9], [0, .25, 0], metal, printer);
+  for (const x of [-1.35, 1.35]) for (const z of [-1.35, 1.35]) cyl(.055, .025, [x, .325, z], dark, printer);
   label('EXTRUSION / VIRTUAL', [0, 3.25, 1.74], 2.45, printer);
   box([.8, .25, .03], [0, .08, 1.73], dark, printer);
+  box([.55, .12, .035], [0, .09, 1.75], teal, printer);
   const head = new THREE.Group(); printer.add(head);
   box([.5, .35, .5], [0, 2.7, 0], dark, head);
   cyl(.15, .65, [0, 2.2, 0], glass, head);
   cyl(.1, .45, [0, 2.14, 0], pink, head);
   cyl(.15, .08, [0, 2.55, 0], teal, head);
+  for (let y = 1.98; y <= 2.4; y += .1) box([.12, .012, .015], [.08, y, .13], dark, head);
   cyl(.1, .3, [0, 1.73, 0], metal, head, .025);
   label('ENCLOSED BIOPRINTER', [.1, .03, 2.05], 2.6);
   // Perfusion circuit: closed geometric tubing loop, not a fluid solver.

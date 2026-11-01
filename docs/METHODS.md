@@ -4,7 +4,9 @@
 
 An AI-assisted, agent-run software demonstration for a personal hobby and learning project.
 No biological experiment was performed. No paper was reproduced and no experimental data
-were fitted. All numerical constants below are synthetic presentation choices.
+were fitted. All numerical constants below are synthetic presentation choices. The separate
+analytical oxygen reference case is described in [OXYGEN.md](OXYGEN.md); it is not coupled
+to the storyboard and does not establish tissue oxygen or safety.
 
 Time is a dimensionless storyboard coordinate clamped to `[0, 4.999]`. Its integer part
 selects one of five stages; its fractional part is stage progress. Playback lasts roughly
