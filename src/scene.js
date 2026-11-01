@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/RoomEnvironment.js';
 import { RoundedBoxGeometry } from 'three/addons/RoundedBoxGeometry.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { random, scaffold } from './model.js';
 
 export function createLab(canvas) {
@@ -151,6 +152,23 @@ export function createLab(canvas) {
   for (let y = 1.98; y <= 2.4; y += .1) box([.12, .012, .015], [.08, y, .13], dark, head);
   cyl(.1, .3, [0, 1.73, 0], metal, head, .025);
   label('ENCLOSED BIOPRINTER', [.1, .03, 2.05], 2.6);
+  // Blender-authored static printer body (assets/author_bioprinter.py). The
+  // procedural housing stays as the fallback and while loading; the animated
+  // printhead always remains procedural so deposition still moves it.
+  let assetStatus = 'procedural';
+  const staticPrinterParts = printer.children.filter(o => o !== head);
+  const glbGlass = [];
+  new GLTFLoader().load('./assets/bioprinter.glb', gltf => {
+    gltf.scene.traverse(o => {
+      if (!o.isMesh) return;
+      o.receiveShadow = true;
+      o.castShadow = true;
+      if (o.name.includes('Glass')) { o.castShadow = false; glbGlass.push(o); }
+    });
+    staticPrinterParts.forEach(o => { o.visible = false; });
+    printer.add(gltf.scene);
+    assetStatus = 'glb-loaded';
+  }, undefined, () => { assetStatus = 'procedural-fallback'; });
   // Perfusion circuit: closed geometric tubing loop, not a fluid solver.
   box([1.45, .65, 1.3], [4.8, .3, -.9], white, scene, .06);
   const rotor = cyl(.43, .12, [4.8, .7, -.9], dark);
@@ -231,7 +249,8 @@ export function createLab(canvas) {
     matrix.visible = s.stage >= 2 && !reveal; matrix.scale.y = Math.max(.02, s.occupancy);
     vessels.visible = s.stage >= 3 && p.channels;
     tracers.forEach(t => { t.object.visible = s.flow > 0; t.object.position.copy(t.curve.getPoint((t.phase + clock * s.flow * .2) % 1)); });
-    enclosure.visible = !reveal;
+    enclosure.visible = !reveal && assetStatus !== 'glb-loaded';
+    glbGlass.forEach(o => { o.visible = !reveal; });
     const line = lineData[Math.min(visibleCount, lineData.length - 1)];
     if (line && s.stage === 1) { head.position.set(line.a[0] + (line.b[0] - line.a[0]) * ((s.progress * lineData.length) % 1), line.a[1] - 1.2, line.a[2] + (line.b[2] - line.a[2]) * ((s.progress * lineData.length) % 1)); }
     else head.position.set(1.25, .1, -1.1);
@@ -244,5 +263,5 @@ export function createLab(canvas) {
     controls.update(); renderer.render(scene, camera);
   }
   view('lab');
-  return { update, draw, view, diagnostics: () => ({ webgl: true, stage: currentStage, filamentCount: lineData.length, geometries: renderer.info.memory.geometries, calls: renderer.info.render.calls, environment: 'room-pmrem', textures: renderer.info.memory.textures }) };
+  return { update, draw, view, diagnostics: () => ({ webgl: true, stage: currentStage, filamentCount: lineData.length, geometries: renderer.info.memory.geometries, calls: renderer.info.render.calls, environment: 'room-pmrem', textures: renderer.info.memory.textures, printerAsset: assetStatus }) };
 }

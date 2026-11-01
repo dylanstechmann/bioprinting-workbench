@@ -70,6 +70,10 @@ See [methods](docs/METHODS.md), [sources](docs/SOURCES.md),
 [assets and Blender/CAD extension path](docs/ASSETS.md) and [roadmap](docs/ROADMAP.md).
 This first release prioritizes coherent interactive equipment and inspectable geometry;
 it is a real-time illustrative 3D scene, not a photorealistic or physically validated digital twin.
+The bioprinter body is an original **Blender-authored GLB** (`assets/bioprinter.glb`,
+regenerate with `assets/author_bioprinter.py`) loaded with a procedural fallback; the
+animated printhead and the rest of the bench remain procedural. See
+[asset provenance and regeneration](docs/ASSETS.md).
 
 ## Research and software credits
 

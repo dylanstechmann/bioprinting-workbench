@@ -1,5 +1,29 @@
 # Agent-run verification — 2026-11-01
 
+## v0.3 — Blender-authored bioprinter asset (resumption)
+
+Authored `assets/bioprinter.glb` in the owner's Blender 5.1.2 through the Blender MCP
+connection: 39 `Printer_*` meshes, 6 PBR materials, 235,084 bytes, embedded buffers,
+authored in a separate scene with the user's scene restored afterwards (verified in the
+export log). An initial export wrongly contained the user's active scene (robot field
+content); this was caught from the log and corrected by activating only the asset scene
+for the export — the corrected GLB was parsed on the Linux side and contains no foreign
+nodes. `assets/author_bioprinter.py` is the reproducible source; no `.blend` was saved.
+
+On Node v24.18.1, `npm test` passed **33 tests, 0 failed, 0 skipped** (30 prior plus 3
+GLB structure/provenance tests: glTF 2.0 header/length, embedded buffers, only `Printer_*`
+nodes, no printhead in the static asset, vendored loader dependencies present);
+`npm run check` passed. Browser checks (headless Chromium, real WebGL): GLB loads
+(`printerAsset = glb-loaded`), gating and stage seeks still work, the reveal toggle hides
+GLB glass, perfusion renders, a deliberately blocked GLB request falls back to the
+procedural printer, and there were **0 console errors**. The full-page preview was
+refreshed from the real render. The claims scanner's one HIGH remains the documented
+false positive on the footer version-label line (v0.2 → v0.3); the AI-assistance
+disclosure is unchanged.
+
+Not tested: visual/photorealistic quality assessment by the owner, Safari/Firefox,
+physical devices, or biological behavior of any kind.
+
 ## v0.2 — gated procedure walkthrough, measurement import, fidelity pass (owner-requested)
 
 On Node v24.18.1, `npm test` passed **30 tests, 0 failed, 0 skipped** (16 prior plus 9

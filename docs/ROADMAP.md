@@ -6,9 +6,12 @@ Delivered in v0.2 (2026-11-01): the gated, cited virtual procedure walkthrough; 
 measurement import for the oxygen slab (nothing calibrated by default); PMREM environment
 lighting, procedural canvas textures, physical materials and rounded equipment geometry.
 
-- Replace procedural equipment with original Blender-authored GLB assets and measured
-  reference dimensions; add a separate magnified construct viewport and explanatory
-  vascular cross-sections.
+Delivered in v0.3 (2026-11-01): the Blender-authored bioprinter body
+(`assets/bioprinter.glb` + reproducible `assets/author_bioprinter.py`) with GLB loading,
+procedural fallback and an animated procedural printhead.
+
+- Extend the Blender asset set to the incubator, microscope and perfusion chamber;
+  add a separate magnified construct viewport and explanatory vascular cross-sections.
 - Fit the slab (and later a 3D oxygen model) to owner-supplied measurements with units,
   convergence tests and explicit synthetic-vs-measured parameter provenance.
 - Add a network-flow solver with conservation checks before displaying physical flow values.
