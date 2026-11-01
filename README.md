@@ -36,6 +36,15 @@ analytically verified diffusion/consumption reference case with dimensionless sy
 inputs. It is not connected to the 3D construct or calibrated to a tissue. A research
 review panel lists missing evidence instead of offering an unsupported safety score.
 
+The **virtual procedure walkthrough** (see [the guide](docs/PROCEDURE.md)) is gated by
+default: completing each stage's in-simulation QC checkpoints unlocks the next stage,
+with a free-exploration toggle. Every step summarizes published, open-access workflows
+with citations and lists what remains unknown; it is a cited educational summary, not a
+lab protocol, and directs nothing at any person or animal. The optional
+[measurement import](docs/CALIBRATION.md) fits the slab model to a local JSON file of
+owner-supplied pairs with a source citation. Nothing is calibrated by default, and any
+fit remains bound to the slab assumptions rather than being tissue validation.
+
 **This is not biologically calibrated, a wet-lab protocol, a transplant-readiness tool,
 or guidance for treating a person or animal.** Cells, channels and tissue are intentionally
 magnified; there is no physical unit conversion or biological timescale. Cell expansion,

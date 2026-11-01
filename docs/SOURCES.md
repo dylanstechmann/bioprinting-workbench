@@ -21,3 +21,9 @@ Local read-only references: `regen-workbench/RESEARCH_DESK.md` and
 `RESEARCH_PHILOSOPHY.md`; `uniStemCourseSimulators/frontend/src/components/PipetteBench3D.tsx`;
 `ieee/ieee/mule-dynamics-studio/{README.md,app.js,core.js}`; `machine-cad-agent/web/index.html`.
 These informed separation of evidence, model and renderer. No sibling code or data copied.
+
+The procedure walkthrough added on 2026-11-01 (`docs/PROCEDURE.md` and the in-app panel)
+cites only the three sources above; no new source was introduced. The Kolesky and
+Grigoryan attributions were checked against the open-access full text and abstract
+respectively during development, including the Grigoryan rodent-model deployment stated
+in the paper's abstract. Registry title matches alone do not establish claim support.

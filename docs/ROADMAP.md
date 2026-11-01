@@ -2,9 +2,14 @@
 
 The first release is a usable geometric/storyboard prototype, not a biological simulator.
 
-- Improve equipment fidelity with original Blender assets and measured reference dimensions;
-  add a separate magnified construct viewport and explanatory vascular cross-sections.
-- Introduce a separately specified oxygen diffusion/consumption teaching model, units,
+Delivered in v0.2 (2026-11-01): the gated, cited virtual procedure walkthrough; the local
+measurement import for the oxygen slab (nothing calibrated by default); PMREM environment
+lighting, procedural canvas textures, physical materials and rounded equipment geometry.
+
+- Replace procedural equipment with original Blender-authored GLB assets and measured
+  reference dimensions; add a separate magnified construct viewport and explanatory
+  vascular cross-sections.
+- Fit the slab (and later a 3D oxygen model) to owner-supplied measurements with units,
   convergence tests and explicit synthetic-vs-measured parameter provenance.
 - Add a network-flow solver with conservation checks before displaying physical flow values.
 - Model scaffold-first seeding and cell-laden printing as separate selectable workflows.

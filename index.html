@@ -6,6 +6,7 @@
   <title>Bioprinting Workbench · Virtual tissue engineering</title>
   <link rel="stylesheet" href="./src/styles.css">
   <link rel="stylesheet" href="./src/analysis.css">
+  <link rel="stylesheet" href="./src/procedure.css">
   <script type="importmap">{"imports":{"three":"./vendor/three/three.module.js","three/addons/":"./vendor/three/"}}</script>
 </head>
 <body>
@@ -13,6 +14,7 @@
 <main>
   <section class="intro"><div><p class="eyebrow">FROM CELLS TO CONSTRUCT / AN INTERACTIVE LEARNING LAB</p><h1>Build tissue. Explore the barriers.</h1><p>From a culture dish to a vascularized scaffold—and the unanswered questions beyond.</p></div><button id="export">Export scenario ↗</button></section>
   <div class="notice"><span>ⓘ</span><span><strong>A virtual experiment, not a biological prediction.</strong> All growth, organization and integration are synthetic illustrations. No wet-lab protocol or transplant guidance.</span></div>
+  <div id="gate-strip" class="gate-strip" aria-live="polite"></div>
   <div id="stages" class="stages" aria-label="Simulation stages"></div>
   <div class="workspace">
     <section class="viewer-card" aria-label="Interactive 3D laboratory">
@@ -33,13 +35,31 @@
       <section class="panel stage-panel"><span class="eyebrow">WHAT YOU’RE SEEING</span><h2 id="stage-title"></h2><p id="description"></p><div class="metrics"><div><strong id="filaments">0</strong><span>visible filaments</span></div><div><strong id="occupancy">0%</strong><span>scripted occupancy</span></div></div><p id="warning" class="warning"></p></section>
     </aside>
   </div>
+  <section class="procedure-grid" aria-label="Virtual procedure walkthrough and measurement import">
+    <article class="panel procedure-panel">
+      <div class="panel-heading"><span class="eyebrow">VIRTUAL PROCEDURE WALKTHROUGH</span><span class="quiet" id="procedure-progress"></span></div>
+      <h2>From culture dish to open question</h2>
+      <p class="muted">A gated walkthrough of how published, open-access workflows describe scaffold-based tissue engineering. Completing each stage's checkpoints unlocks the next stage. It is a cited educational summary, not a lab protocol, and it directs nothing at any person or animal. <a href="./docs/PROCEDURE.md">Read the full guide ↗</a></p>
+      <ol id="procedure-steps" class="procedure-steps"></ol>
+    </article>
+    <article class="panel import-panel">
+      <p class="eyebrow">MEASUREMENT IMPORT · OPTIONAL</p>
+      <h2>Fit the slab model to data</h2>
+      <p class="muted">Load a local JSON file of center/boundary concentration ratios with a source citation. The fit is bound to the 1D slab assumptions; it is not tissue validation. No dataset ships with this project.</p>
+      <label class="control" for="calibration-file">Measurement file</label>
+      <input type="file" id="calibration-file" accept=".json,application/json">
+      <div class="import-actions"><button id="load-example" type="button">Load synthetic example</button><button id="clear-calibration" type="button">Clear</button></div>
+      <div id="calibration-result" class="calibration-result" role="status"></div>
+      <p class="micro">Schema, formula and example: <a href="./docs/CALIBRATION.md">calibration guide</a>.</p>
+    </article>
+  </section>
   <section class="analysis-grid" aria-label="Model analysis and evidence gaps">
     <article class="panel"><p class="eyebrow">MECHANISTIC REFERENCE CASE / NOT CALIBRATED</p><h2>Oxygen diffusion: a simplified slab</h2><p class="muted">An independent steady 1D teaching model: oxygen enters equally from both faces and is consumed uniformly. It is not coupled to the 3D scaffold, channels, cell population or perfusion controls.</p><label class="control" for="demand">Dimensionless demand <output id="demand-value">1.00</output></label><input type="range" id="demand" min="0" max="2" step="0.05" value="1"><svg id="oxygen-graph" viewBox="0 0 400 140" role="img"><path d="M20 20V110H380" fill="none" stroke="#a8b9ae"/><path d="M20 65H380" fill="none" stroke="#d7e2da" stroke-dasharray="4"/><polyline id="oxygen-line" fill="none" stroke="#267b72" stroke-width="3"/><text x="20" y="133">face −1</text><text x="175" y="133">center</text><text x="330" y="133">face +1</text><text x="3" y="22">1</text><text x="3" y="112">0</text></svg><p class="model-result">Center concentration <strong id="oxygen-center">0.50</strong> <span>relative to boundary = 1</span></p><p class="micro">A numerical reference case with synthetic dimensionless inputs—not measured oxygen, tissue viability, or a safety threshold. See <a href="./docs/OXYGEN.md">equations and verification</a>.</p></article>
     <article class="panel"><p class="eyebrow">VIRTUAL RESEARCH REVIEW</p><h2>What remains unknown?</h2><p class="muted">A meaningful assessment requires evidence beyond this storyboard. No safety probability or go/no-go conclusion is computed.</p><ul class="review-list"><li><strong>Identity &amp; quality</strong><span>Cell identity, stability and contamination: not measured</span></li><li><strong>Construct performance</strong><span>Mechanical properties and function: not measured</span></li><li><strong>Vascular function</strong><span>Endothelial barrier and host connection: not modeled</span></li><li><strong>Recipient response</strong><span>Immune response, adverse effects and long-term outcomes: unknown</span></li></ul><p class="micro">These are research questions, not a validated checklist or a substitute for specialist review.</p></article>
   </section>
   <section id="evidence" class="evidence"><div><p class="eyebrow">THE MODEL IS NOT THE TISSUE</p><h2>Real research. Explicit boundaries.</h2><p>This scaffold-first storyboard brings together concepts from distinct research workflows. It is not a reproduction of either paper and does not model a complete organ.</p></div><article><span class="reference">01 / PRINTED TISSUES</span><h3>Cells, matrix & perfusable channels</h3><p>Kolesky et al. (2016) demonstrated multimaterial printing of thick vascularized tissues. Our geometry is original and our animation does not reproduce their experiments.</p><a href="https://doi.org/10.1073/pnas.1521342113" target="_blank" rel="noreferrer">Read the primary paper ↗</a></article><article><span class="reference">02 / VASCULAR ARCHITECTURE</span><h3>More than a red tube</h3><p>Grigoryan et al. (2019) explored multivascular hydrogel networks using a different printing approach. A tracer moving through a channel does not establish living vessel function.</p><a href="https://doi.org/10.1126/science.aav9750" target="_blank" rel="noreferrer">Read the primary paper ↗</a></article></section>
   <details><summary>Model, assets & missing biology</summary><p>All geometry is original procedural artwork, inspired by generic enclosed printers, culture equipment and perfusion setups. Three.js 0.187.0 (MIT) is bundled locally. No patient data, network APIs, analytics or vendor models are used. The oxygen slab is a separate analytical teaching model, not coupled to the construct. Missing: 3D oxygen transport, fluid dynamics, cell mechanics, endothelial function, immune response, contamination, scaffold degradation, host anastomosis and healing. The culture, construct and recipient views use different illustrative scales. See <a href="./docs/METHODS.md">methods</a>, <a href="./docs/SOURCES.md">source ledger</a> and <a href="./docs/ASSETS.md">asset/import guidance</a>.</p></details>
-</main><footer><span>Personal hobby & learning project · AI-assisted development · Agent-built, not independently scientifically reviewed.</span><span>Bioprinting Workbench / v0.1</span></footer>
+</main><footer><span>Personal hobby & learning project · AI-assisted development · Agent-built, not independently scientifically reviewed.</span><span>Bioprinting Workbench / v0.2</span></footer>
 <noscript><p>This interactive scene needs JavaScript. Evidence and limitations remain readable above.</p></noscript>
 <script type="module" src="./src/app.js"></script>
 </body></html>

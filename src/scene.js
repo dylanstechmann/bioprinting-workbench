@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/RoomEnvironment.js';
+import { RoundedBoxGeometry } from 'three/addons/RoundedBoxGeometry.js';
 import { random, scaffold } from './model.js';
 
 export function createLab(canvas) {
@@ -12,23 +14,50 @@ export function createLab(canvas) {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color('#e0e8e3');
   scene.fog = new THREE.Fog('#e0e8e3', 22, 55);
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  scene.environment = pmrem.fromScene(new RoomEnvironment(), .04).texture;
+  pmrem.dispose();
+  scene.environmentIntensity = .45;
   const camera = new THREE.PerspectiveCamera(38, 1, .05, 100);
   const controls = new OrbitControls(camera, canvas);
   controls.enableDamping = true;
   controls.minDistance = 2.5;
   controls.maxDistance = 29;
   controls.maxPolarAngle = Math.PI * .49;
-  scene.add(new THREE.HemisphereLight('#ffffff', '#8a9686', 2.6));
-  const sun = new THREE.DirectionalLight('#fff7e9', 4);
+  scene.add(new THREE.HemisphereLight('#ffffff', '#8a9686', 1.9));
+  const sun = new THREE.DirectionalLight('#fff7e9', 3.6);
   sun.position.set(-4, 12, 7); sun.castShadow = true;
   sun.shadow.mapSize.set(2048, 2048);
   Object.assign(sun.shadow.camera, { left: -12, right: 12, top: 10, bottom: -10 });
   sun.shadow.bias = -.0005; scene.add(sun);
-  const fill = new THREE.DirectionalLight('#d8eff1', 2); fill.position.set(6, 5, -5); scene.add(fill);
+  const fill = new THREE.DirectionalLight('#d8eff1', 1.5); fill.position.set(6, 5, -5); scene.add(fill);
+  function proceduralTexture(kind) {
+    const c = document.createElement('canvas'); c.width = c.height = 256;
+    const ctx = c.getContext('2d');
+    if (kind === 'speckle') {
+      ctx.fillStyle = '#f0f2ea'; ctx.fillRect(0, 0, 256, 256);
+      for (let i = 0; i < 1100; i++) { ctx.fillStyle = `rgba(${130 + Math.random() * 50 | 0},${145 + Math.random() * 35 | 0},${130 + Math.random() * 35 | 0},${.04 + Math.random() * .09})`; ctx.beginPath(); ctx.arc(Math.random() * 256, Math.random() * 256, .4 + Math.random() * 1.7, 0, 7); ctx.fill(); }
+    } else if (kind === 'brushed') {
+      ctx.fillStyle = '#c3ccc7'; ctx.fillRect(0, 0, 256, 256);
+      for (let i = 0; i < 260; i++) { const y = Math.random() * 256; ctx.strokeStyle = `rgba(255,255,255,${Math.random() * .08})`; ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(256, y); ctx.stroke(); ctx.strokeStyle = `rgba(55,66,60,${Math.random() * .06})`; ctx.beginPath(); ctx.moveTo(0, y + .7); ctx.lineTo(256, y + .7); ctx.stroke(); }
+    } else {
+      ctx.fillStyle = '#dce4dc'; ctx.fillRect(0, 0, 256, 256);
+      ctx.strokeStyle = 'rgba(116,132,120,.4)'; ctx.lineWidth = 1.5;
+      for (let i = 0; i <= 256; i += 64) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, 256); ctx.stroke(); ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(256, i); ctx.stroke(); }
+    }
+    const tex = new THREE.CanvasTexture(c); tex.wrapS = tex.wrapT = THREE.RepeatWrapping; tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4; return tex;
+  }
+  const speckleTex = proceduralTexture('speckle'); speckleTex.repeat.set(5, 2.5);
+  const brushedTex = proceduralTexture('brushed');
+  const floorTex = proceduralTexture('floor-grid'); floorTex.repeat.set(24, 24);
   const mat = (color, metalness = 0, roughness = .45, opacity = 1) => new THREE.MeshStandardMaterial({ color, metalness, roughness, transparent: opacity < 1, opacity, depthWrite: opacity === 1 });
-  const white = mat('#eef0e9', .1), metal = mat('#a3b2ac', .78, .28), dark = mat('#344b49', .35), teal = mat('#397d77', .15), glass = mat('#b2d6cf', .1, .12, .13), pink = mat('#e7a5b5', 0, .26, .62);
+  const physical = (color, opts = {}) => new THREE.MeshPhysicalMaterial({ color, metalness: opts.metalness ?? 0, roughness: opts.roughness ?? .45, transparent: (opts.opacity ?? 1) < 1, opacity: opts.opacity ?? 1, depthWrite: (opts.opacity ?? 1) === 1, clearcoat: opts.clearcoat ?? 0, clearcoatRoughness: opts.clearcoatRoughness ?? .3, transmission: opts.transmission ?? 0, thickness: opts.thickness ?? 0, ior: opts.ior ?? 1.45, map: opts.map ?? null });
+  const white = physical('#eef0e9', { metalness: .08, clearcoat: .4, clearcoatRoughness: .3 });
+  const metal = physical('#b6c1bb', { metalness: .8, roughness: .3, map: brushedTex });
+  const dark = mat('#344b49', .35), teal = mat('#397d77', .15), glass = mat('#b2d6cf', .1, .12, .13), pink = mat('#e7a5b5', 0, .26, .62);
+  const enclosureGlass = physical('#dcefe9', { transmission: .92, roughness: .05, metalness: 0, thickness: .06, ior: 1.45 });
   const mesh = (g, m, pos, parent = scene) => { const o = new THREE.Mesh(g, m); o.position.set(...pos); o.castShadow = m.opacity === 1; o.receiveShadow = true; parent.add(o); return o; };
-  const box = (size, pos, m, parent) => mesh(new THREE.BoxGeometry(...size), m, pos, parent);
+  const box = (size, pos, m, parent, radius = 0) => mesh(radius > 0 ? new RoundedBoxGeometry(size[0], size[1], size[2], 2, Math.min(radius, Math.min(size[0], size[1], size[2]) / 2 - 1e-3)) : new THREE.BoxGeometry(...size), m, pos, parent);
   const cyl = (r, h, pos, m, parent, r2 = r) => mesh(new THREE.CylinderGeometry(r, r2, h, 40), m, pos, parent);
   const tube = (points, r, m, parent = scene) => {
     const curve = new THREE.CatmullRomCurve3(points.map(p => new THREE.Vector3(...p)));
@@ -48,9 +77,9 @@ export function createLab(canvas) {
     const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex })); sprite.position.set(...pos); sprite.scale.set(width, width * 96 / 512, 1); parent.add(sprite); return sprite;
   }
   // Architectural context and original generic lab furniture.
-  box([60, .15, 60], [0, -2.1, 0], mat('#d1dcd3'));
-  box([16, .25, 7], [0, -.3, 0], mat('#c0c9c2', .6, .35));
-  box([16.1, .08, 7.1], [0, -.13, 0], mat('#f1f3eb', .3, .3));
+  box([60, .15, 60], [0, -2.1, 0], physical('#eef2ec', { map: floorTex, roughness: .85, metalness: .02 }));
+  box([16, .25, 7], [0, -.3, 0], physical('#c8d0ca', { roughness: .6, metalness: .15, clearcoat: .2 }));
+  box([16.1, .08, 7.1], [0, -.13, 0], physical('#f4f6ef', { map: speckleTex, roughness: .5, metalness: .05, clearcoat: .18 }));
   for (const x of [-7, 0, 7]) for (const z of [-2.7, 2.7]) box([.16, 1.65, .16], [x, -1.2, z], metal);
   box([16, 4, .15], [0, 1.7, -3.6], mat('#d8e2d8'));
   box([16, .08, .7], [0, 3.3, -3.35], white);
@@ -67,7 +96,7 @@ export function createLab(canvas) {
   }
   // Incubator.
   const incubator = new THREE.Group(); incubator.position.set(-6, 0, -1.8); scene.add(incubator);
-  box([2.25, 3.4, 1.9], [0, 1.6, 0], white, incubator);
+  box([2.25, 3.4, 1.9], [0, 1.6, 0], white, incubator, .07);
   box([1.95, 2.65, .12], [0, 1.48, 1], metal, incubator);
   box([1.65, 2.3, .03], [0, 1.5, 1.08], mat('#3e6760', .4, .25), incubator);
   for (const y of [.6, 1.2, 1.8, 2.4]) box([1.6, .03, .04], [0, y, 1.12], metal, incubator);
@@ -97,15 +126,16 @@ export function createLab(canvas) {
   cyl(.2, .1, [-3.8, .9, -1.4], glass); label('INVERTED MICROSCOPE', [-3.8, .15, -.32], 1.9);
   // Printer, transparent doors, rails, cartridge and build platform.
   const printer = new THREE.Group(); printer.position.set(.1, 0, -.6); scene.add(printer);
-  box([3.7, .27, 3.4], [0, .07, 0], white, printer);
-  box([3.7, .38, 3.4], [0, 3.25, 0], white, printer);
+  box([3.7, .27, 3.4], [0, .07, 0], white, printer, .05);
+  box([3.7, .38, 3.4], [0, 3.25, 0], white, printer, .05);
   box([3.6, 2.9, .14], [0, 1.7, -1.65], white, printer);
   box([3.3, .09, .06], [0, 2.95, 1.64], dark, printer);
   for (let x = -1.1; x <= 1.1; x += .22) box([.12, .018, .02], [x, 3.03, 1.68], metal, printer);
   for (const x of [-1.72, 1.72]) for (const z of [-1.55, 1.55]) box([.13, 3, .13], [x, 1.65, z], white, printer);
   const enclosure = new THREE.Group(); printer.add(enclosure);
-  for (const x of [-1.78, 1.78]) box([.02, 2.85, 3], [x, 1.7, 0], glass, enclosure);
-  box([3.4, 2.85, .02], [0, 1.7, 1.57], glass, enclosure);
+  for (const x of [-1.78, 1.78]) box([.02, 2.85, 3], [x, 1.7, 0], enclosureGlass, enclosure);
+  box([3.4, 2.85, .02], [0, 1.7, 1.57], enclosureGlass, enclosure);
+  enclosure.children.forEach(o => { o.castShadow = false; });
   box([.06, .5, .07], [1.5, 1.6, 1.64], metal, enclosure);
   for (const z of [-.8, .9]) rod([-1.5, 2.7, z], [1.5, 2.7, z], .045, metal, printer);
   box([2.9, .12, 2.9], [0, .25, 0], metal, printer);
@@ -122,7 +152,7 @@ export function createLab(canvas) {
   cyl(.1, .3, [0, 1.73, 0], metal, head, .025);
   label('ENCLOSED BIOPRINTER', [.1, .03, 2.05], 2.6);
   // Perfusion circuit: closed geometric tubing loop, not a fluid solver.
-  box([1.45, .65, 1.3], [4.8, .3, -.9], white);
+  box([1.45, .65, 1.3], [4.8, .3, -.9], white, scene, .06);
   const rotor = cyl(.43, .12, [4.8, .7, -.9], dark);
   for (let i = 0; i < 3; i++) { const a = i * Math.PI * 2 / 3; cyl(.09, .07, [4.8 + Math.cos(a) * .28, .79, -.9 + Math.sin(a) * .28], metal); }
   label('PERISTALTIC PUMP', [4.8, .22, .0], 1.75);
@@ -214,5 +244,5 @@ export function createLab(canvas) {
     controls.update(); renderer.render(scene, camera);
   }
   view('lab');
-  return { update, draw, view, diagnostics: () => ({ webgl: true, stage: currentStage, filamentCount: lineData.length, geometries: renderer.info.memory.geometries, calls: renderer.info.render.calls }) };
+  return { update, draw, view, diagnostics: () => ({ webgl: true, stage: currentStage, filamentCount: lineData.length, geometries: renderer.info.memory.geometries, calls: renderer.info.render.calls, environment: 'room-pmrem', textures: renderer.info.memory.textures }) };
 }

@@ -1,0 +1,37 @@
+.gate-strip{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:14px 0 0;padding:12px 14px;background:#fff;border:1px solid #dce4df;border-radius:8px;font-size:11px}
+.gate-chip{padding:6px 10px;border-radius:14px;background:#eef3ee;color:#5b6f66;white-space:nowrap}
+.gate-chip.unlocked{background:#267b72;color:#fff}
+.gate-chip.locked{background:#eef0ea;color:#98a39a;border:1px dashed #c4cdc5}
+.gate-message{flex:1;min-width:220px;color:#4d6058}
+.gate-controls{display:flex;align-items:center;gap:12px}
+.gate-toggle{display:flex;align-items:center;gap:6px;color:#5b6f66;cursor:pointer}
+#restart-walkthrough{font-size:10px;padding:7px 10px}
+.stages button.locked{opacity:.45}
+.procedure-grid{display:grid;grid-template-columns:1.9fr 1fr;gap:20px;margin-top:22px}
+.procedure-panel,.import-panel{padding:22px}
+.procedure-steps{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:14px}
+.procedure-step{border:1px solid #dce4df;border-radius:9px;padding:16px;background:#fafcf9}
+.procedure-step.step-complete{border-color:#9dc3b4;background:#f4faf5}
+.procedure-step.step-locked .step-view{opacity:.4}
+.step-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.step-head strong{font-size:14px;font-weight:500;flex:1}
+.step-stage{font-size:9px;letter-spacing:1.3px;color:#7d8f85;background:#eaf0e9;padding:4px 8px;border-radius:4px;white-space:nowrap}
+.step-view{font-size:10px;padding:6px 10px;white-space:nowrap}
+.step-purpose{font-size:11px;color:#76857c;margin:10px 0 8px}
+.step-basis{font-size:10px;color:#4d6058;margin:0 0 10px}
+.step-basis a{margin-right:2px}
+.step-note{color:#8a978d}
+.step-checks{display:grid;gap:6px}
+.step-check{font-size:11px;display:flex;gap:8px;align-items:flex-start;color:#55695f;cursor:pointer}
+.step-check input{margin-top:3px;accent-color:#267b72;flex:none}
+.step-unknowns{font-size:9px;color:#947442;background:#f7f1e4;border-radius:5px;padding:8px 10px;margin:12px 0 0}
+.import-actions{display:flex;gap:8px;margin-top:12px}
+.import-actions button{font-size:10px;padding:7px 10px}
+input[type=file]{width:100%;font-size:10px;padding:8px;background:#f8faf7;border:1px solid #dce4df;border-radius:6px;color:#556b5d;margin-top:6px}
+.calibration-result{margin-top:14px;font-size:11px;color:#7d8980}
+.calibration-result p{margin:4px 0}
+.calibration-result strong{color:#267b72;font-size:18px;font-weight:500;margin-right:8px}
+.calibration-result span{display:block;font-size:9px;color:#8a978d}
+.calibration-result.error{color:#aa4435}
+.calibration-warning{color:#aa4435;font-size:10px}
+@media(max-width:900px){.procedure-grid{grid-template-columns:1fr}.gate-message{min-width:160px}}

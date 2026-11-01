@@ -54,5 +54,5 @@ test('runtime is locally bundled with license and no CDN dependency', () => {
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
   assert.match(html, /AI-assisted/); assert.match(html, /No wet-lab protocol/);
   assert.ok(!html.includes('https://cdn'));
-  for (const file of ['three.module.js', 'three.core.js', 'OrbitControls.js', 'LICENSE']) assert.ok(existsSync(new URL(`../vendor/three/${file}`, import.meta.url)));
+  for (const file of ['three.module.js', 'three.core.js', 'OrbitControls.js', 'RoomEnvironment.js', 'RoundedBoxGeometry.js', 'LICENSE']) assert.ok(existsSync(new URL(`../vendor/three/${file}`, import.meta.url)));
 });
