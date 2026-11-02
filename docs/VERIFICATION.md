@@ -453,4 +453,14 @@ Actual verification results:
   abstract verbatim in the shipped audit (tested), species separation is enforced by the
   catalog validator and UI labels, all theory prose is labeled hypothetical/simulation, and
   adverse/limiting evidence ships beside benefit framing in every approach card.
-- **Not performed:** laboratory execution, independent scientific review.
+- **Live Pages verification (after commit `8d9a565` was pushed):** fetching
+  https://dylanstechmann.github.io/bioprinting-workbench/ returned the updated page with
+  footer "Bioprinting Workbench / v0.11.0-dev", the HYPOTHETICAL APPLICATIONS LEDGER and
+  HYPOTHETICAL BREAST SOFT-TISSUE COMPARISON panels with all five inputs, and a "Version 6
+  restores ... applications comparison" restore note; `/src/applications.js` (16,403 bytes,
+  six ledger entries, five approaches including the excluded unregulated-injectables lever),
+  `/docs/APPLICATIONS.md` and `/docs/FABRICATION_ANALOGY.md` are all served. Deployment
+  propagated within minutes of the push.
+- **Not performed:** laboratory execution, independent scientific review. Commit `8d9a565`
+  was pushed to `main` under the owner's 2026-11-02 "implement/act after planning"
+  authorization; Pages published it automatically. No tag or release object was created.
