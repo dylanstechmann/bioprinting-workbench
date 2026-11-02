@@ -3,7 +3,7 @@
 Personal hobby and learning project, AI-assisted. Agent-run software/source checks are
 not biological validation or independent scientific review.
 
-## 0.19.0-dev - local, uncommitted and unpublished
+## 0.19.0-dev - committed and pushed to main on 2026-11-02
 
 - The genome-backup-and-restore idea became an interactive module: the owner's wish (record the
   original genome to disk, bank original cells, fetch the stored DNA periodically to rewrite
@@ -21,7 +21,7 @@ not biological validation or independent scientific review.
   146 -> 150.
 - Companion doc docs/GENOME_RESTORE.md; ATLAS.md ideas desk now points to the module.
 
-## 0.19.0-dev - local, uncommitted and unpublished
+## 0.19.0-dev - committed and pushed to main on 2026-11-02
 
 - The genome-backup-and-restore idea became an interactive module: the owner's wish (record the
   original genome to disk, bank original cells, fetch the stored DNA periodically to rewrite

@@ -879,3 +879,33 @@ Actual verification results:
 - **Not performed:** any fetch of the non-open-access Blaeser/Liu studies; any claim that genome
   restoration will ever work, for any species, cell type or person; any coupling of the module
   to the storyboard, oxygen, flow or nozzle-shear models.
+- **Live Pages verification (after commit b532540 was pushed):** fetching
+  https://dylanstechmann.github.io/bioprinting-workbench/ returned the updated page with footer
+  "v0.19.0-dev"; /docs/genome-restore-audit.json served live at HTTP 200 (8,351 bytes);
+  /src/genome-restore.js served live at HTTP 200 (20,223 bytes); /docs/GENOME_RESTORE.md served
+  live with the no-single-original-genome finding. The connected-browser check (local static
+  server) rendered the panel with four step checkboxes and two context quotes, computed the
+  "periodic write-back - verdict: theory only" card on live selection, exported the selection in
+  the scenario JSON, and reported 0 console errors.
+- **3D fast-follow, honestly scoped:** the owner's live Blender 5.1.2 session was verified
+  reachable via MCP for this milestone (their open 79-object IEEE scene, C:/.../field-v3.blend,
+  untouched and not saved), but the full live asset workflow (author script -> push -> fetch to
+  staging -> author in a fresh blend -> export -> transfer -> manifest re-pin -> asset tests) was
+  not run this session and is the planned v0.20 fast-follow for the peristaltic perfusion-pump
+  circuit. The shipped bioprinter, incubator, microscope and perfusion-chamber GLBs remain
+  pinned by the 2026-11-02 live-run evidence; nothing about them changed here.
+- **Live Pages verification (after commit b532540 was pushed):** fetching
+  https://dylanstechmann.github.io/bioprinting-workbench/ returned the updated page with footer
+  "v0.19.0-dev"; /docs/genome-restore-audit.json served live at HTTP 200 (8,351 bytes);
+  /src/genome-restore.js served live at HTTP 200 (20,223 bytes); /docs/GENOME_RESTORE.md served
+  live with the no-single-original-genome finding. The connected-browser check (local static
+  server) rendered the panel with four step checkboxes and two context quotes, computed the
+  "periodic write-back - verdict: theory only" card on live selection, exported the selection in
+  the scenario JSON, and reported 0 console errors.
+- **3D fast-follow, honestly scoped:** the owner's live Blender 5.1.2 session was verified
+  reachable via MCP for this milestone (their open 79-object IEEE scene, C:/.../field-v3.blend,
+  untouched and not saved), but the full live asset workflow (author script -> push -> fetch to
+  staging -> author in a fresh blend -> export -> transfer -> manifest re-pin -> asset tests) was
+  not run this session and is the planned v0.20 fast-follow for the peristaltic perfusion-pump
+  circuit. The shipped bioprinter, incubator, microscope and perfusion-chamber GLBs remain
+  pinned by the 2026-11-02 live-run evidence; nothing about them changed here.
