@@ -695,3 +695,10 @@ Actual verification results:
   human-outcome inference anywhere.
 - **Not performed:** laboratory execution, independent scientific review, and commits to the two
   sibling repos carrying uncommitted prior work.
+- **Live Pages verification (after commit 3633235 was pushed):** fetching
+  https://dylanstechmann.github.io/bioprinting-workbench/ returned the updated page with footer
+  "v0.15.0-dev"; /src/scaffold-methods.js, /docs/SCAFFOLD_METHODS.md and
+  /docs/base-editing-snapshot.json are all served (HTTP 200), and the refreshed incubator GLB is
+  served (HTTP 200) with the manifest hashes verified in the release contract. The regen-workbench
+  companion cross-reference was committed separately as e650b99 and pushed to its own main
+  (8cca45b..e650b99); its untracked data directory was left untouched.
