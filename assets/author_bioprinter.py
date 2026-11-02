@@ -59,6 +59,17 @@ def build_asset(output_path=None):
     box('Printer_DisplayScreen', (0.55, 0.035, 0.12), (0, -1.75, 0.09), SCREEN, 0.005)
 
 
+    # Syringe-extruder toolhead (docked at the left gantry; matches the 0.13 reference parts list).
+    BIOINK = material('Bioink_Glass', (0.85, 0.72, 0.42), roughness=0.12, transmission=0.85)
+    box('Printer_ToolheadCrossBeam', (0.26, 2.0, 0.16), (-1.2, -0.05, 2.55), ALU, 0.015)
+    box('Printer_ToolheadCarriage', (0.36, 0.32, 0.52), (-1.2, -0.05, 2.28), DARK, 0.02)
+    box('Printer_SyringeMount', (0.2, 0.2, 0.26), (-1.2, -0.05, 1.98), ALU, 0.01)
+    cyl('Printer_SyringeBarrel', 0.13, 1.1, (-1.2, -0.05, 1.35), BIOINK)
+    cyl('Printer_SyringePlunger', 0.055, 0.92, (-1.2, -0.05, 1.86), WHITE)
+    cyl('Printer_SyringePlungerCap', 0.14, 0.1, (-1.2, -0.05, 2.3), DARK)
+    cyl('Printer_SyringeNeedleCollar', 0.05, 0.1, (-1.2, -0.05, 0.75), ALU)
+    cyl('Printer_SyringeNeedleTip', 0.022, 0.2, (-1.2, -0.05, 0.62), ALU)
+
     export_owned_scene(scene, output_path or Path(__file__).with_name('bioprinter.glb'))
     return scene
 

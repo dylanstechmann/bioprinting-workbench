@@ -11,13 +11,14 @@
         "Printer_Base",
         "Printer_TopCap",
         "Printer_BuildPlate",
-        "Printer_Glass_Door"
+        "Printer_Glass_Door",
+        "Printer_SyringeBarrel"
       ],
-      "bytes": 141264,
-      "sha256": "df6642f71740af621644dc87dadc4e4e4ce32cb80ea1db4eb6cb87a62c12acc5",
-      "meshes": 39,
+      "bytes": 167412,
+      "sha256": "148701cbeaec2fbb63fd5d095dc2376f1e12a98be950b257ebc322362afbabae",
+      "meshes": 47,
       "materials": 6,
-      "triangles": 2868,
+      "triangles": 3524,
       "blenderBounds": [
         [
           -1.850000023841858,
@@ -104,7 +105,7 @@
         [
           -1.2719999551773071,
           -1.149999976158142,
-          0.0
+          0
         ],
         [
           1.2719999551773071,

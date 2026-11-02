@@ -133,3 +133,26 @@ and none are present today. Full list and disclaimers in `docs/HARDWARE_COSTS.md
 | Sterile culture (optional) | Pressure sterilizer, laminar hood, used CO2 incubator, microscope | Authored estimate bands | Any current price; sterilization or contamination control guarantee |
 | Measurement/QC | Milligram scale, pH meter, USB temp logger | Authored estimate bands | Any current price; measurement certification |
 | Consumables (recurring) | Syringes/needles, dishes/flasks, 0.22 µm filters, gloves/disinfectant | Authored estimate bands | Any current price; sterility guarantee |
+
+## 0.14.0-dev tissue-evidence ledger (agent-run, November 2, 2026)
+
+Twelve abstracts fetched from the Europe PMC REST API on 2026-11-02; verbatim quotes and
+locators in `docs/tissue-evidence-audit.json`. The dental entries additionally cite the
+regen-workbench dental track (read-only companion) for trial-level honesty; the
+genome-restore idea cites the base-editing-evidence repo (read-only companion) for
+editing-rate and coverage limits. Neither companion repo was modified.
+
+| Source | Identifier | Supported scope | Not inferred |
+| --- | --- | --- | --- |
+| 3D bioprinting and scaffold technology for lung diseases (2026) | 10.1016/j.bioadv.2026.215240; PMID 42887177 | Lung disease-modeling and regenerative-scaffold review | Any printed gas-exchanging lung or human result |
+| Gingival mechanotransduction bioconstructs (2025) | 10.7150/thno.114503; PMID 40521200 | Human gingival fibroblasts in collagen/omega-3 bioink, in vitro | Grafted, vascularized or host-integrated gingiva |
+| Redefining gingival substitutes (2026) | 10.1016/j.bioadv.2026.215082; PMID 42531828 | Prevascularized CollMA/HAMA bioinks, 14-day in-vitro networks | Host anastomosis, epithelial seal, durability |
+| Bioprinting PDLSC-laden collagen scaffolds (2024) | 10.1021/acsami.4c13830; PMID 39467547 | PDLSC bioink characterization; mouse subcutaneous biocompatibility | Oriented, load-bearing PDL insertion in humans |
+| Alveolar bone-PDL-cementum nanocomposite scaffolds (2026) | 10.3390/biomimetics11060425; PMID 42345714 | Preclinical periodontal-complex scaffold review | Human periodontal regeneration |
+| Dental pulp regeneration scoping review (2026) | 10.1177/19373368261485519; PMID 42712105 | 13 preclinical bioprinting studies, 2018-2026 | Any human bioprinted dental pulp result |
+| Silk-derived 3D-bioprinted neural scaffolds review (2026) | 10.3390/life16060892; PMID 42355420 | Neural-repair scaffold materials and design review | Restored human nerve function |
+| One-step coaxial aligned vascularized muscle (2026) | 10.1088/1758-5090/ae9597; PMID 42556410 | Aligned, vascularized in-vitro muscle constructs | Implanted, innervated or force-producing human grafts |
+| Myonuclei morphology analysis pipeline (2026) | 10.1016/j.isci.2026.116961; PMID 42571222 | Validated human myonuclear quantification (position, shape, 3D orientation) | Any method to produce or print that architecture |
+| Bioprinting vascularized skin analogs: a stepwise approach (2025) | 10.1093/burnst/tkaf018; PMID 40718701 | Modalities, inks and cell sourcing for vascularized skin | Clinically transplanted vascularized printed skin |
+| The epigenetic rejuvenation promise (2026) | 10.1016/j.arr.2026.103009; PMID 41490578 | Lineage-preserving partial-reprogramming map and translational checklist | Any established human partial-reprogramming therapy |
+| circRNA platform for safe partial reprogramming (2026) | 10.1186/s13287-026-05193-0; PMID 42907856 | Transient, non-integrating OSK expression rejuvenating senescent MSCs in vitro | Human dosing, schedules or in-vivo rejuvenation |

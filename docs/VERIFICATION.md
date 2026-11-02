@@ -581,3 +581,63 @@ Actual verification results:
   No tag or release object was created.
 - **Not performed:** laboratory execution, independent scientific review, or any
   purchase.
+
+## 0.14.0-dev local follow-on (agent-run, November 2, 2026)
+
+Owner authorization: "Update our 3d versions of the physical setups? Update ourselves on
+the latest in bioprinting... dna editing (restore cell's dna back to original... by
+recording the original dna on a computer... and fetching it periodically...), yamanaka
+factors... bioprinting of lung alveoli, gums (in mouth), teeth, facial and other bodily
+deep collagen..., nerves, muscle (and perhaps the myonuclei and organization unique to
+elite bodybuilders/powerlifters...). I want you to plan/outline/theorize
+immensely/heavily/extensively, then act upon it." (2026-11-02) — delivered as the
+frontier-target tissue atlas, the genome-backup ideas desk, and the bioprinter GLB
+syringe-toolhead refresh. Twelve abstracts fetched from the Europe PMC REST API on
+2026-11-02 are verbatim-quoted in docs/tissue-evidence-audit.json (tested against the
+runtime catalog). The regen-workbench dental track and the base-editing-evidence repo
+are cited read-only companions; neither was modified. The elite-athlete architecture is
+an aspiration entry rendered and never selectable (validator-rejected on import); no
+clinical readiness claim or human-outcome inference is made anywhere.
+
+GLB provenance honesty: the connected Blender 5.1.2 instance runs on a separate Windows
+host that cannot see this Linux workspace, so the syringe-toolhead update was performed
+as a Node GLB-binary surgery on the Blender-authored asset (8 new Printer_-prefixed
+nodes, 656 triangles, indexed primitives, existing materials reused including the glass
+barrel); assets/author_bioprinter.py is updated to match so a future Blender session can
+regenerate equivalently, and the manifest is re-pinned (167,412 bytes, sha256
+148701cbeaec2fbb..., 47 meshes, 3,524 triangles, Printer_SyringeBarrel required). Plan
+deviation noted: release-contract enforcement for the new catalogs lives in the
+verify-release check battery (tissue-evidence contract, tissue-atlas contract — both
+PASS), matching where every prior contract check lives; tests/release.test.js keeps its
+established narrower design (inventory, version consistency, authored catalogs).
+
+Actual verification results:
+
+- **Unit tests:** `node --test tests/*.test.js` — **125 passed, 0 failed** (up from 117;
+  +2 tissue evidence, +3 atlas, +2 atlas UI, +1 v8-migration; all prior contracts
+  unchanged).
+- **Syntax:** `npm run check` — 84 project modules syntax-checked; `git diff --check`
+  clean.
+- **Release contract:** `npm run verify:release` — all PASS including the new
+  tissue-evidence and tissue-atlas contract checks; asset hashes PASS against the
+  re-pinned bioprinter GLB; allowlisted inventory 94 files.
+- **Browser (connected Playwright at 127.0.0.1:8096, node static server):** footer reads
+  v0.14.0-dev; the FRONTIER-TARGET ATLAS panel renders 10 cards (9 targets + ideas desk);
+  the aspiration checkbox is disabled and cannot enter the result; the ideas desk shows
+  both real-today and theory verdicts; selecting lung-alveoli + gingiva produced the
+  live atlas view ("Atlas view of 2 selected target(s): Lung alveoli (the gas-exchange
+  wish) [review-stage] — barriers: Thin gas-exchange membrane..."); "Version 9 restores
+  ... tissue-atlas selection" restore note present; 0 console errors — the updated
+  bioprinter GLB loads through the browser's GLTFLoader without warnings.
+- **GLB structural checks (machine-verified in tests/assets.test.js):** valid self-
+  contained glTF 2.0; all 47 nodes Printer_-prefixed; required nodes including
+  Printer_SyringeBarrel present; no printhead/nozzle/cartridge names (the animated
+  printhead stays procedural); accessor bounds and manifest budgets verified.
+- **Export purity:** covered by unit tests — the serialized /9 state carries the
+  tissueAtlas selection and no derived outputs (no barriers in exports).
+- **Claims scanner: still not-run** (container Python stdlib incomplete; see the 0.8
+  section). Compensating mechanical checks: every tissue claim quotes the fetched
+  abstract verbatim in the shipped audit (tested), species separation is enforced by the
+  catalog validator (tested), the aspiration entry is non-selectable by validator and
+  UI (tested), and in-vitro/preclinical targets carry adverse anchors (tested).
+- **Not performed:** laboratory execution, independent scientific review.

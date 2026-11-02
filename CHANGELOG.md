@@ -3,7 +3,27 @@
 Personal hobby and learning project, AI-assisted. Agent-run software/source checks are
 not biological validation or independent scientific review.
 
-## 0.13.0-dev — local, uncommitted and unpublished
+## 0.14.0-dev — local, uncommitted and unpublished
+
+- Add the frontier-target tissue atlas: nine targets (lung alveoli, gingiva, periodontal
+  complex, tooth pulp-dentin, facial deep collagen, peripheral nerve, skeletal muscle, the
+  elite-athlete architecture aspiration entry rendered and never selectable, and the
+  breast cross-reference), each with an honest status tier, barriers, open question and
+  anchors across all five evidence catalogs; twelve freshly fetched 2024-2026 sources
+  are verbatim-quoted in docs/tissue-evidence-audit.json.
+- Add the ideas-desk genome-backup-and-restore assessment: digital backup and organic
+  reserves are real today; periodic whole-genome write-back and edit-directed
+  differentiation are theory with named unsolved steps, citing the base-editing-evidence
+  repo (read-only) and two 2026 partial-reprogramming sources.
+- Update the bioprinter GLB with the syringe-extruder toolhead from the 0.13 parts list
+  (Node GLB-binary surgery; the authoring script is updated to match and the manifest is
+  re-pinned with Printer_SyringeBarrel as a required node).
+- Extend the scenario to /9 with the tissueAtlas learning record; /8, /7, /6, /5, /4 and
+  /3 migrations default it with truthful warnings, and the aspiration entry rejects
+  selection on import.
+- Add docs/ATLAS.md and docs/tissue-evidence-audit.json.
+
+## 0.13.0-dev — committed and pushed to main on 2026-11-02
 
 - Add the reference hardware cost ledger with browser visualizations: a 22-part parts list
   across six categories (motion platform, extrusion toolhead, bioink materials,

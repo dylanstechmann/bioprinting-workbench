@@ -2,6 +2,132 @@
 
 [Overview]
 
+Add v0.14.0-dev: a **tissue-target atlas module** covering the owner's requested frontier targets — lung alveoli, gingiva, periodontal ligament complex, tooth/dental pulp, facial and deep dermal collagen, peripheral nerve, skeletal muscle, and the elite-athlete myonuclei/connective-architecture question — each entry anchored to freshly fetched 2024–2026 literature with an honest status tier, barriers and open question; an **ideas-desk section** giving the owner's genome-backup-and-restore concept the same honest per-step assessment (digital backup: real today; organic reserve: real today; periodic whole-genome write-back: theory with named unsolved steps, citing the sibling base-editing-evidence repo read-only for editing-rate and coverage limits and two new 2026 partial-reprogramming sources for the delivery realism); and a **3D refresh** of the bioprinter GLB adding the syringe-extruder toolhead the 0.13 parts list describes, regenerated through the connected Blender 5.1.2 and re-pinned in the manifest. Then publish: commit, push, live Pages verification, doc-only record.
+
+Owner authorization (2026-11-02): "How can we further improve this project/repo? Update our 3d versions of the physical setups? Update ourselves on the latest in bioprinting… dna editing (restore cell's dna back to original… recording the original dna on a computer… some dna editing possibly being useful for differentiation too), yamanaka factors, various established/experimental/theoretical methods… scaffolding and other related stuff such as vascularization… bioprinting of lung alveoli, gums (in mouth), teeth, facial and other bodily deep collagen…, nerves, muscle (and perhaps the myonuclei and organization unique to elite bodybuilders/powerlifters…)… I want you to plan/outline/theorize immensely/heavily/extensively, then act upon it." The applications ledger already covers ear/skin/breast/hair/constructs/drug-testing — the atlas complements it, cross-links it, and never duplicates. Mouse/in-vitro findings never become human outcomes; the elite-athlete architecture is rendered as an aspiration entry, shown honestly, never selectable as achieved.
+
+[Types]
+
+**New evidence claims** (`TISSUE_EVIDENCE_SCHEMA = 'bioprinting-workbench/tissue-evidence/1'`, 12 sources / 12 claims, species-separated, all fetched 2026-11-02, verbatim quotes in `docs/tissue-evidence-audit.json`):
+
+1. `lung-bioprinting-review-2026` / `lung-models-not-organs` (other, review) — PMID 42887177, 10.1016/j.bioadv.2026.215240 — 3D bioprinting/scaffold review for lung diseases: disease modeling, tissue regeneration, organ replacement and drug testing; lung-specific structural and mechanical requirements; no printed functional lung.
+2. `gingiva-mechano-2025` / `gingival-fibroblast-bioconstructs` (other, human gingival fibroblasts in vitro) — PMID 40521200, 10.7150/thno.114503 — collagen + omega-3 (EPA/DHA) bioink, shear-induced printing to activate mechanosensitive pathways; promising gene-expression results; vascularization and remodeling still required.
+3. `gingiva-substitutes-2026` / `prevascularized-gingival-hydrogels` (other, in-vitro endothelial pre-networks) — PMID 42531828, 10.1016/j.bioadv.2026.215082 — CollMA/HAMA bioinks with SVV/QK peptides forming interconnected endothelial networks over 14 days in vitro; host anastomosis not shown.
+4. `pdl-scaffolds-2024` / `pdlsc-laden-collagen` (other, in-vitro + mouse subcutaneous implant) — PMID 39467547, 10.1021/acsami.4c13830 — PDLSC-laden collagen bioinks tested for PDL organization; mouse subcutaneous biocompatibility only.
+5. `periodontal-nanocomposite-2026` / `alveolar-pdl-cementum-scaffolds` (other, review of preclinical scaffolds) — PMID 42345714, 10.3390/biomimetics11060425 — printed nanocomposite scaffolds for alveolar bone–PDL–root cementum regeneration; preclinical promise, no human result.
+6. `dental-pulp-review-2026` / `dental-pulp-printing-preclinical` (other, scoping review) — PMID 42712105, 10.1177/19373368261485519 — 13 studies 2018–2026, all preclinical; extrusion dominant, GelMA predominant; pulp-dentin complex support only in models.
+7. `silk-neural-review-2026` / `silk-nerve-scaffolds` (other, review) — PMID 42355420, 10.3390/life16060892 — silk-fibroin bioprinted scaffolds with collagen/conductive polymers for neural repair; functional recovery evidence still limited.
+8. `muscle-coaxial-2026` / `aligned-vascularized-muscle` (other, in-vitro constructs) — PMID 42556410, 10.1088/1758-5090/ae9597 — one-step coaxial printing of aligned, vascularized skeletal-muscle constructs; shear-induced myoblast alignment; volumetric-loss therapy not established.
+9. `myonuclei-pipeline-2026` / `myonuclei-are-measurable` (human, imaging-analysis pipeline) — PMID 42571222, 10.1016/j.isci.2026.116961 — validated quantification of myonuclear number, position, shape and 3D orientation along single fibers; a measurement tool, not a production method.
+10. `skin-vascularized-review-2025` / `vascularized-skin-analogs` (other, review) — PMID 40718701, 10.1093/burnst/tkaf018 — stepwise review of printing modalities, inks and cell sourcing for vascularized skin constructs; perfused skin substitutes still a barrier.
+11. `reprogramming-review-2026` / `lineage-preserving-reprogramming-checklist` (other, review) — PMID 41490578, 10.1016/j.arr.2026.103009 — links lineage-preserving partial reprogramming to quantifiable rejuvenation endpoints; mesenchymal drift; strategies beyond OSKM; translational checklist of schedule, delivery and safety pharmacology.
+12. `circrna-osk-2026` / `transient-nonintegrating-reprogramming` (other, in-vitro MSC study) — PMID 42907856, 10.1186/s13287-026-05193-0 — LNP-delivered circRNA co-expressing OCT4/SOX2/KLF4 transiently rejuvenated senescent late-passage MSCs without genomic modification; ddPCR ESRG check showed no pluripotent conversion.
+
+**Atlas target record** (`TISSUE_TARGETS`, 9 entries): `{ id, label, region: 'dental'|'pulmonary'|'dermal'|'neural'|'muscular', status: 'review-stage'|'in-vitro'|'preclinical'|'aspiration', anchorClaimIds, adverseClaimIds, barriers: string[], openQuestion, aspirationNote (aspiration entry only, non-selectable), relatedIds: { applications?, programNode? } }`. Targets:
+
+1. `lung-alveoli` (pulmonary, review-stage) — anchors [lung-models-not-organs]; barriers: gas-exchange membrane thinness, vascular-airway co-patterning; openQ: can any printed construct exchange gas like alveoli in vivo? None reviewed.
+2. `gingiva` (dental, in-vitro) — anchors [gingival-fibroblast-bioconstructs, prevascularized-gingival-hydrogels]; adverse [gingival-fibroblast-bioconstructs]; barriers: epithelial seal, vascularization, host anastomosis; cross-links the regen-workbench dental track (read-only citation) for trial-level honesty.
+3. `periodontal-complex` (dental, preclinical) — anchors [pdlsc-laden-collagen, alveolar-pdl-cementum-scaffolds]; barriers: oriented PDL insertion under load, multi-tissue interfaces.
+4. `tooth-pulp-dentin` (dental, review-stage) — anchors [dental-pulp-printing-preclinical]; barriers: pulp-dentin complex regeneration in humans, whole-tooth crown/root form.
+5. `facial-deep-collagen` (dermal, review-stage) — anchors [vascularized-skin-analogs, skin-bioprinting-status (applications catalog)]; adverse [skin-bioprinting-status]; barriers: deep-dermis vascularization, fat-fascia layers, durability.
+6. `peripheral-nerve` (neural, review-stage) — anchors [silk-nerve-scaffolds]; barriers: axon guidance over long gaps, Schwann-cell function, functional recovery endpoints.
+7. `skeletal-muscle` (muscular, in-vitro) — anchors [aligned-vascularized-muscle]; barriers: innervation, vascular integration, force transmission at scale.
+8. `elite-muscle-architecture` (muscular, aspiration) — anchors [myonuclei-are-measurable]; aspirationNote rendered, never selectable: myonuclear number/orientation/fascicle pennation are measurable in humans, and printed bipennate architecture exists in vitro, but no reviewed method produces elite-athlete myonuclei or woven connective architecture; this entry is the honest ceiling of the wish.
+9. `breast-soft-tissue-bridge` — NOT a new target; the atlas panel cross-references the applications ledger entry (no duplication; `relatedIds.applications = 'breast-soft-tissue'`).
+
+**Ideas-desk record** (in-module, non-interactive, no scenario key): `GENOME_RESTORE_IDEA = { id: 'genome-backup-restore', steps: [{ id, label, verdict: 'real-today'|'theory', anchorClaimIds, note }] }` — digital genome backup (real: sequencing + storage is ordinary computing; note: no write-path back into chromatin), organic cell reserve (real: cell banking exists; note: aging accrues in the reserve too), periodic genome write-back (theory: base/prime editing is locus-by-locus with measured conditional rates and intended-only coverage far below 100% — citing base-editing-evidence repo read-only — plus somatic mosaicism means "the original" is per-cell, not one string; delivery to most cells of a living tissue unsolved), differentiation-directed editing (theory: editing is not a differentiation program; Yamanaka-class reprogramming resets epigenetic age in mouse/in-vitro systems — anchors [lineage-preserving-reprogramming-checklist, transient-nonintegrating-reprogramming, reprogramming-in-vivo-mouse, reprogramming-in-vitro-age]). Notices: simulation-only idea desk, no procedure, no dosing, nothing performed.
+
+**`learning.tissueAtlas`** (new `/9` key): `{ selectedTargetIds: string[] }` — unique, subset, empty allowed; the aspiration entry is rejected on import (it is rendered but not selectable, like the excluded levers).
+
+[Files]
+
+New:
+
+- `src/tissue-evidence.js` — 12 sources + 12 species-separated claims; validator mirrors the other catalogs plus collision checks against all four existing claim-id sets; audit equality tested.
+- `src/tissue-atlas.js` — `TISSUE_TARGETS` (8 selectable + 1 aspiration), `GENOME_RESTORE_IDEA`, notices, `defaultTissueAtlas`, `validateTissueAtlas`, `getTissueTargets`, `getGenomeRestoreIdea`, `validateTissueTargets` (anchor resolution across all five catalogs; aspiration non-selectable rule; barriers required), `evaluateTissueAtlas` (selected targets with tiers, barriers, open questions, cross-links, honesty summary).
+- `src/tissue-atlas-ui.js` — `createTissueAtlasUI` (region-grouped target cards, aspiration card rendered with a never-checkable control, ideas-desk genome-restore card with per-step verdicts, result summary, dispose).
+- `docs/tissue-evidence-audit.json` — verbatim abstract quotes + locators for all 12 claims.
+- `docs/ATLAS.md` — the atlas write-up: every target's tier, barriers and open question; the genome-backup idea assessed step-by-step; read-only citations of the regen-workbench dental track and base-editing-evidence repo; the honest closest-vs-furthest ranking.
+- `tests/tissue-evidence.test.js`, `tests/tissue-atlas.test.js`, `tests/tissue-atlas-ui.test.js`.
+- `tests/fixtures/scenario-v9.json` — native `/9` fixture with a populated tissueAtlas selection.
+
+Modified:
+
+- `src/cell-division.js` — import + `defaultLearningState()` adds `tissueAtlas`; `validateLearningState` accepts it.
+- `src/cell-learning-ui.js` — instantiate/render/dispose `createTissueAtlasUI`.
+- `src/scenario.js` — `SCENARIO_SCHEMA` → `/9`; new `migrateScenarioV8`; `/7`–`/3` migration patches add the tissueAtlas default; `parseScenario` dispatches `/8`.
+- `index.html` — tissue-atlas panel (after the hardware-cost panel); Version 9 restore note; footer `v0.14.0-dev`.
+- `package.json` — `0.14.0-dev`.
+- `scripts/verify-release.mjs` — new checks `tissue-evidence contract` and `tissue-atlas contract`.
+- `tests/release.test.js` — both new contract validations asserted.
+- `tests/cell-division.test.js` — tissueAtlas default asserts + rejection patches.
+- `tests/scenario.test.js` — v8→v9 renames; new v8-migration test; fixture loop gains `scenario-v9.json` (native) and `scenario-v8.json` (migrates from /8); invalid-schema case becomes `bioprinting-workbench/10`; tissueAtlas fields in round-trip/rejection tests; export purity; aspiration selection rejected.
+- `assets/author_bioprinter.py` — add the syringe-extruder toolhead (docked on the gantry): `Printer_SyringeCarriage`, `Printer_SyringeBarrel`, `Printer_SyringePlunger`, `Printer_SyringeNozzle`, `Printer_SyringeMount`, reusing WHITE/ALU/DARK materials plus one new translucent `Bioink_Glass`; sized to match the 0.13 parts-list description.
+- `assets/bioprinter.glb` — regenerated through connected Blender 5.1.2 (extended author script, same `export_owned_scene` path).
+- `assets/manifest.json` — bioprinter entry re-pinned: bytes, sha256, meshes, triangles, blenderBounds recomputed from the new GLB; `maxBytes` 358400 unchanged and verified.
+- `tests/assets.test.js` — bioprinter pins updated (bytes/sha/triangles/meshes, requiredNodes gains `Printer_SyringeBarrel`); node-prefix checks unchanged (`Printer_`).
+- `docs/SOURCES.md` — 0.14 tissue-evidence ledger (12 sources).
+- `docs/SCENARIOS.md` — Version 9 header/list + Version 8 migration section.
+- `CHANGELOG.md`, `docs/ROADMAP.md`, `README.md` — 0.14 sections; 0.13 relabeled as pushed.
+- `docs/VERIFICATION.md` — 0.14 section with executed checks; live-check paragraph after push (doc-only commit).
+- `implementation_plan.md` — this plan; the 0.13 plan preserved verbatim below the archive divider.
+
+[Functions]
+
+New:
+
+- `src/tissue-evidence.js`: `getTissueEvidenceCatalog()`, `validateTissueEvidenceCatalog(raw)`.
+- `src/tissue-atlas.js`: `getTissueTargets()`, `validateTissueTargets(targets)`, `getGenomeRestoreIdea()`, `defaultTissueAtlas()`, `validateTissueAtlas(raw)`, `evaluateTissueAtlas(settings)`.
+- `src/tissue-atlas-ui.js`: `createTissueAtlasUI({ elements, onStateChange })` → `{ render, dispose }`.
+
+Modified:
+
+- `defaultLearningState()` / `validateLearningState()` (src/cell-division.js) — add the tissueAtlas key.
+- `migrateScenarioV3`…`migrateScenarioV7` (src/scenario.js) — add `tissueAtlas: defaultTissueAtlas()` to the defaulted learning patches (warning texts extended truthfully).
+- `parseScenario` (src/scenario.js) — `/8` branch → `migrateScenarioV8`.
+- `verifyRelease` (scripts/verify-release.mjs) — two new contract rows.
+- `build_asset()` (assets/author_bioprinter.py) — add the syringe-extruder block before export; no signature change.
+
+[Classes]
+
+None — module-level factories and frozen catalogs per house convention. The aspiration non-selectability mirrors the excluded-lever precedent from the applications module.
+
+[Dependencies]
+
+None new: browser-native ES modules, `node:test`, hand-rolled DOM/SVG UI. The GLB update uses the already-connected Blender 5.1.2 via the MCP addon (the version that authored the original manifest) — no packages, no credentials. All 12 bibliographic records are static strings fetched from the Europe PMC REST API on 2026-11-02 and verbatim-quoted in the audit JSON. base-editing-evidence and the regen-workbench dental track are cited read-only; neither repo is modified.
+
+[Testing]
+
+- `tests/tissue-evidence.test.js`: catalog validates; species separation; audit equality (ids, locators, DOIs, quotes > 60 chars); mutations reject (dangling source, species, upgraded status, id collisions with all four existing catalogs, empty limitations).
+- `tests/tissue-atlas.test.js`: target contract — 8 selectable + 1 aspiration; regions/status enums; anchors resolve across all five catalogs; adverse anchors required for in-vitro/preclinical targets; barriers and open questions ≥ 1 each; aspiration flagged non-selectable and rejected by `validateTissueAtlas` when selected; evaluator — empty → 'unconfigured', selection returns tiers/barriers/open questions/cross-links, honesty summary never claims a human result; genome-restore idea carries all four steps with verdict enums and anchor resolution; validation rejections (unknown id, duplicates, non-array).
+- `tests/tissue-atlas-ui.test.js`: harness mirror — 8 target cards + aspiration card + ideas card render; selecting targets proposes a patch accepted by `validateLearningState`; the aspiration checkbox is disabled and fires no patch; result summary lists tiers and barriers; no derived keys in accepted state; dispose; missing callback throws.
+- `tests/assets.test.js`: updated bioprinter pins pass (new bytes/sha256/meshes/triangles, `Printer_SyringeBarrel` required, all nodes still `Printer_`-prefixed).
+- Existing suites updated as listed; expected total ≈ 124 (117 + 7).
+- Release verification: full suite, `npm run check`, `npm run verify:release` (two new checks PASS), `git diff --check`, connected-browser check (footer v0.14.0-dev, 8 target cards + aspiration + ideas card, live selection summary, 0 console errors) and a Blender-side screenshot of the regenerated printer before export. Claims scanner remains not-run (documented); compensating checks continue.
+
+[Implementation Order]
+
+1. Write `src/tissue-evidence.js` + `docs/tissue-evidence-audit.json` + `tests/tissue-evidence.test.js`; run.
+2. Write `src/tissue-atlas.js` + `tests/tissue-atlas.test.js`; run.
+3. Write `src/tissue-atlas-ui.js` + `tests/tissue-atlas-ui.test.js`; extend `src/cell-division.js` + `tests/cell-division.test.js`; run.
+4. GLB update: extend `assets/author_bioprinter.py`; run `build_asset()` in the connected Blender exporting to the repo path; screenshot-check; recompute the manifest entry (bytes/sha256/meshes/triangles/bounds); update `tests/assets.test.js`; run asset + release suites.
+5. Add the index.html panel + Version-9 note + footer bump; wire `src/cell-learning-ui.js`.
+6. Bump `src/scenario.js` to `/9` with `migrateScenarioV8` and chain updates; update `tests/scenario.test.js`; generate `tests/fixtures/scenario-v9.json`; run.
+7. Update `scripts/verify-release.mjs` + `tests/release.test.js` + `package.json` (0.14.0-dev).
+8. Docs: ATLAS.md, SOURCES.md, CHANGELOG, ROADMAP, SCENARIOS, README; full suite + verify:release.
+9. Connected-browser verification; record in `docs/VERIFICATION.md`.
+10. Commit, push `main`, verify live Pages serves v0.14.0-dev (footer, panel, served modules, ATLAS.md, updated bioprinter GLB served), append live-check paragraph, doc-only commit, push again.
+
+---
+
+# Archived plans
+
+## Archived 0.13.0-dev plan — implemented and pushed as commits 7b13247 + 9d68a10 on 2026-11-02; preserved verbatim below
+
+# Implementation Plan
+
+[Overview]
+
 Add v0.13.0-dev: a **reference hardware cost ledger with browser visualizations** for a hobby benchtop bioprinting setup — a 22-part reference parts list across six categories (motion platform, extrusion toolhead, bioink materials, sterile-culture infrastructure, measurement/QC, recurring consumables), each with an indicative reference price, provenance basis, honesty note and recurring/optional flags; an evaluator computing per-category subtotals, one-time total and recurring monthly total; and a hand-rolled SVG visualization (house precedent: the flow-network SVG and canvas heatmap in `src/analysis-ui.js`) rendering a category-stacked cost bar that updates live as parts are included/excluded. This is the "figuring stuff out on the computer prior to in the physical" milestone: the workbench stays the $0 in-silico entry point, and the parts list shows honestly where the money goes when the physical rig — where more is at stake — begins. The visualization makes the cost dominance explicit (sterile-culture infrastructure dwarfs the printer itself), and the module teaches the acellular-practice rig (~$800) versus cell-culture-capable bench (~$5.6K + ~$525/month) split. Published as a simulation-labeled reference panel; prices are reference estimates, not quotes, not current, and no purchase is recommended anywhere.
 
 Owner authorization (2026-11-02): "Push the bounds? Go through the parts list for the bioprinting and the cost for each and make visualizations that will display in a browser? The parts list and prices are for reference. Getting eternal youth / lack of any bodily damage (ie. from aging)... figuring stuff out on the computer prior to in the physical in which more is at stake -- okay" + "plan out what to do and then act on it." Interpretation recorded in the plan and commit: no parts list with prices exists anywhere in the workspace (open-perfusion-rig holds math/firmware/SCAD only), so the reference list is **authored here**; open-perfusion-rig's parametric syringe carriage is cited as the physical-companion project for the extruder's printed part. Public vendor pages (Adafruit, Creality) were attempted for price anchoring on 2026-11-02 and timed out from this environment, so every price carries `priceBasis: 'authored-estimate'` with the attempt documented — the validator keeps a `fetched-list-price` path for future fetched anchors and requires sourceUrl+fetchDate for it. "Eternal youth / lack of any bodily damage" remains the aspiration framing only: the module states plainly that no parts total buys any outcome, that the research-program module's evidence floor still applies, and that cells, sterility and money are the physical stakes the in-silico workbench exists to respect.

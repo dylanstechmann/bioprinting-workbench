@@ -1,10 +1,10 @@
 # Local scenario import/export
 
-Version 8 exports **inputs**, not trusted model outcomes. Files stay in memory;
+Version 9 exports **inputs**, not trusted model outcomes. Files stay in memory;
 nothing is uploaded, persisted or fetched from source citations. Personal learning
 project with AI assistance; restored progress is self-reported, not scientific QC.
 
-`bioprinting-workbench/8` includes:
+`bioprinting-workbench/9` includes:
 - fixed storyboard model and seed 42;
 - validated parameters/time;
 - procedure mode and unique known completed check IDs;
@@ -20,11 +20,13 @@ project with AI assistance; restored progress is self-reported, not scientific Q
   resorption fraction, regraft and implant cadences, horizon, approach selection) and
   the research-program selection (chosen program nodes; empty until selected) and
   the hardware-budget selection (reference parts included in the cost view; defaults to
-  the full 22-part list); all nullable; null fields remain unknown, not zero;
+  the full 22-part list) and the tissue-atlas selection (chosen frontier targets; the
+  aspiration entry is rendered and never selectable); all nullable; null fields remain
+  unknown, not zero;
 - application-authored limitations.
 
-See `tests/fixtures/scenario-v8.json` for a complete synthetic fixture. The v2, v3, v4,
-v5, v6 and v7 fixtures remain as migration evidence. Evidence prose, source-review status, recipe
+See `tests/fixtures/scenario-v9.json` for a complete synthetic fixture. The v2, v3, v4,
+v5, v6, v7 and v8 fixtures remain as migration evidence. Evidence prose, source-review status, recipe
 cards, arithmetic outcomes, cancer scores and organ-completion estimates are not
 export fields. Fields are validated explicitly; unknown structural keys, unsupported
 versions, nonfinite/out-of-range values, contradictory flow controls, unknown checks,
@@ -59,8 +61,8 @@ Strictly validate the /3 contract (three-key learning record, two-key view), the
 defaults for the newer inputs: the species-separated cell system is set to the default
 human system for the saved cell category, the method comparison is cleared, the
 hypothetical comparison, the longevity-perspective, applications-comparison and
-research-program and hardware-budget records start empty (hardware-budget defaults to
-the full 22-part list) and the environment theme defaults to `lab`. The
+research-program, hardware-budget and tissue-atlas records start empty (hardware-budget
+defaults to the full 22-part list) and the environment theme defaults to `lab`. The
 migration warns truthfully; imports pause playback and recompute rather than trust
 saved results.
 
@@ -95,3 +97,11 @@ new /8 inputs: the hardware-budget selection defaults to the full 22-part refere
 list. The migration warns truthfully; imports pause playback and recompute rather than
 trust saved results. A /7 file carrying a hardwareBudget key is rejected, not guessed
 or silently accepted.
+
+## Version 8 migration
+
+Strictly validate the /8 contract (eleven-key learning record), then add defaults for the
+new /9 inputs: the tissue-atlas selection starts empty — no targets chosen. The migration
+warns truthfully; imports pause playback and recompute rather than trust saved results.
+A /8 file carrying a tissueAtlas key is rejected, not guessed or silently accepted, and
+the aspiration target rejects selection on import just as it refuses the checkbox.

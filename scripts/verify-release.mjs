@@ -14,6 +14,8 @@ import { getApplicationsLedger, getApproachCatalog, validateApplicationsCatalog 
 import { getGeroscienceEvidenceCatalog, validateGeroscienceEvidenceCatalog } from '../src/geroscience-evidence.js';
 import { getProgramNodes, validateProgramNodes } from '../src/research-program.js';
 import { getHardwareCatalog, validateHardwareCatalog } from '../src/hardware-costs.js';
+import { getTissueEvidenceCatalog, validateTissueEvidenceCatalog } from '../src/tissue-evidence.js';
+import { getTissueTargets, validateTissueTargets } from '../src/tissue-atlas.js';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 /** An allowlisted candidate inventory, NOT an instruction to publish the repo root. */
@@ -47,6 +49,8 @@ export function verifyRelease(directory = root, { targetVersion = JSON.parse(rea
   check('geroscience-evidence contract', 'validateGeroscienceEvidenceCatalog', () => validateGeroscienceEvidenceCatalog(getGeroscienceEvidenceCatalog()));
   check('research-program contract', 'validateProgramNodes', () => validateProgramNodes(getProgramNodes()));
   check('hardware-cost contract', 'validateHardwareCatalog', () => validateHardwareCatalog(getHardwareCatalog()));
+  check('tissue-evidence contract', 'validateTissueEvidenceCatalog', () => validateTissueEvidenceCatalog(getTissueEvidenceCatalog()));
+  check('tissue-atlas contract', 'validateTissueTargets', () => validateTissueTargets(getTissueTargets().map(t => ({ ...t, relatedIds: {} }))));
   check('asset hashes', 'verify-release asset hash check', () => {
     for (const asset of JSON.parse(readFileSync(resolve(directory,'assets/manifest.json'),'utf8')).assets) {
       if (!/^assets\/[a-z_]+\.glb$/.test(asset.file)) throw Error('Invalid manifest path');

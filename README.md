@@ -90,6 +90,11 @@ equipment, patient records or experimental measurements are connected.
   rig — 22 parts, authored-estimate prices with provenance, one-time and recurring kept
   separate, and a live SVG cost chart (see
   [parts write-up](docs/HARDWARE_COSTS.md)).
+- `src/tissue-atlas.js`: frontier-target atlas — lung alveoli, gingiva, periodontal
+  complex, tooth pulp, facial deep collagen, nerve, skeletal muscle, plus the
+  elite-athlete architecture aspiration (rendered, never selectable) and the
+  genome-backup ideas desk, anchored to twelve 2024–2026 sources (see
+  [atlas write-up](docs/ATLAS.md)).
 - `tests/model.test.js`: Node's built-in test runner; no package installation required.
 - `vendor/three/`: pinned Three.js 0.187.0 runtime and OrbitControls, MIT license retained.
 

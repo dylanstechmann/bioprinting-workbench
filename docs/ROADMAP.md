@@ -92,7 +92,7 @@ desk is cited read-only as companion method. No funded program, protocol, timeli
 score or treatment claim is made; mouse/review-tier anchors never become human outcomes. See
 docs/RESEARCH_PROGRAM.md and docs/geroscience-evidence-audit.json.
 
-## Local 0.13.0-dev follow-on — owner-authorized speculative teaching content
+## Local 0.13.0-dev follow-on — pushed to main on 2026-11-02 (no tagged version)
 
 Owner instruction (2026-11-02): "Push the bounds? Go through the parts list for the
 bioprinting and the cost for each and make visualizations that will display in a browser?
@@ -104,3 +104,16 @@ strict provenance validation, an evaluator that never sums one-time and recurrin
 ($5,615 + $525/mo cell-capable; $725 + $185/mo acellular), and a live hand-rolled SVG
 stacked-bar chart in the panel. No purchase is recommended; no parts total buys any
 biological outcome. See docs/HARDWARE_COSTS.md.
+
+## Local 0.14.0-dev follow-on — owner-authorized speculative teaching content
+
+Owner instruction (2026-11-02): "Update our 3d versions of the physical setups? Update
+ourselves on the latest in bioprinting... dna editing (restore cell's dna back to
+original...), yamanaka factors... bioprinting of lung alveoli, gums, teeth, facial and
+other bodily deep collagen, nerves, muscle (and perhaps the myonuclei and organization
+unique to elite bodybuilders/powerlifters...)." Delivered as the tissue atlas (nine
+targets with honest tiers, barriers and open questions; the elite-athlete wish rendered as
+an unselectable aspiration entry), the genome-backup ideas desk (two real steps, two
+theory steps, companion repos cited read-only), and the bioprinter GLB syringe-toolhead
+refresh. No clinical readiness claim, no human-outcome inference, no procedure; see
+docs/ATLAS.md.
