@@ -149,3 +149,21 @@ shear reference model: idealized laminar-capillary wall shear with a cited Celli
 a pinned ~20% idealization-vs-CFD gap, verbatim-quoted open-access evidence with secondhand
 restatements labeled, scenario schema /10, and the README publication-status prose brought back
 in line with reality.
+
+## Local 0.19.0-dev follow-on - the write path
+
+Owner instruction (2026-11-02): update ourselves on the latest in bioprinting and what may be
+helpful, including DNA editing (restore a cell's DNA to the original by recording it on a
+computer and fetching it back), differentiation and the 3D physical setups. The frontier tissues
+were already tiered in the 0.14 atlas, so this milestone delivered the genome-backup-and-restore
+module: four selectable steps, computed verdicts from four fetched open-access sources, the
+mosaicism no-single-original finding, scenario /11, and the v4-warning honesty fix.
+
+## Local 0.19.0-dev follow-on - the write path
+
+Owner instruction (2026-11-02): update ourselves on the latest in bioprinting and what may be
+helpful, including DNA editing (restore a cell's DNA to the original by recording it on a
+computer and fetching it back), differentiation and the 3D physical setups. The frontier tissues
+were already tiered in the 0.14 atlas, so this milestone delivered the genome-backup-and-restore
+module: four selectable steps, computed verdicts from four fetched open-access sources, the
+mosaicism no-single-original finding, scenario /11, and the v4-warning honesty fix.

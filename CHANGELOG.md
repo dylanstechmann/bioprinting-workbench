@@ -3,6 +3,42 @@
 Personal hobby and learning project, AI-assisted. Agent-run software/source checks are
 not biological validation or independent scientific review.
 
+## 0.19.0-dev - local, uncommitted and unpublished
+
+- The genome-backup-and-restore idea became an interactive module: the owner's wish (record the
+  original genome to disk, bank original cells, fetch the stored DNA periodically to rewrite
+  fast-dividing cells, edit toward differentiation) decomposed into four selectable steps, each
+  with a computed verdict from four freshly fetched open-access sources. Two steps are
+  established practice (digital backup; cell banking via the cord-blood/iPSC literature), two
+  are theory-only (periodic whole-genome write-back; edit-directed differentiation) - anchored
+  to CRISPR-recording reality (bits of cell history into barcodes, not genomes back into
+  chromatin), locus-by-locus editing limits, and the mosaicism fact that there is no single
+  original genome. 14 verbatim quotes with locators and source ids, mirrored in
+  docs/genome-restore-audit.json and tested for equality; zebrafish-source claims carry
+  validator-enforced research-context limitations.
+- Scenario schema /11: learning.genomeRestoreIdea; migrateScenarioV10 with truthful warning; the
+  v3-v9 migrations gained the same defaulting; new fixture scenario-v11.json. Unit tests
+  146 -> 150.
+- Companion doc docs/GENOME_RESTORE.md; ATLAS.md ideas desk now points to the module.
+
+## 0.19.0-dev - local, uncommitted and unpublished
+
+- The genome-backup-and-restore idea became an interactive module: the owner's wish (record the
+  original genome to disk, bank original cells, fetch the stored DNA periodically to rewrite
+  fast-dividing cells, edit toward differentiation) decomposed into four selectable steps, each
+  with a computed verdict from four freshly fetched open-access sources. Two steps are
+  established practice (digital backup; cell banking via the cord-blood/iPSC literature), two
+  are theory-only (periodic whole-genome write-back; edit-directed differentiation) - anchored
+  to CRISPR-recording reality (bits of cell history into barcodes, not genomes back into
+  chromatin), locus-by-locus editing limits, and the mosaicism fact that there is no single
+  original genome. 14 verbatim quotes with locators and source ids, mirrored in
+  docs/genome-restore-audit.json and tested for equality; zebrafish-source claims carry
+  validator-enforced research-context limitations.
+- Scenario schema /11: learning.genomeRestoreIdea; migrateScenarioV10 with truthful warning; the
+  v3-v9 migrations gained the same defaulting; new fixture scenario-v11.json. Unit tests
+  146 -> 150.
+- Companion doc docs/GENOME_RESTORE.md; ATLAS.md ideas desk now points to the module.
+
 ## 0.18.0-dev — committed and pushed to main on 2026-11-02
 
 - The shear tradeoff module: the workbench's first physics-anchored teaching model of the core

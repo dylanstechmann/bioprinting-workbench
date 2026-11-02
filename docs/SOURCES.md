@@ -200,3 +200,31 @@ restatements inside that paper (Blaeser et al., Liu et al., Müller et al.) are 
 | Source | Identifier | Supported scope | Not inferred |
 | --- | --- | --- | --- |
 | Gómez-Blanco et al., Int J Bioprint 2023 | 10.18063/ijb.730; PMC10261129, fetched 2026-11-02 | CFD wall-shear values for a 22G conical tip and 0.4 mm nozzle with a fitted Cellink rheology (K = 87.906, n = 0.208) and its restated in-vitro viability context | Any viability prediction, cell-type or species specificity, print settings, or agreement of the idealized capillary model with their geometry |
+
+## 0.19.0-dev genome-restore evidence (agent-run, November 2, 2026)
+
+Four open-access sources fetched once and quoted verbatim (14 quotes with locators and source ids,
+mirrored in docs/genome-restore-audit.json and tested for equality with the runtime catalog). The
+module computes step verdicts from this catalog and upgrades nothing; zebrafish-source claims carry
+validator-enforced research-context limitations.
+
+| Source | Identifier | Supported scope | Not inferred |
+| --- | --- | --- | --- |
+| Takasugi et al., Genetics 2022 | 10.1093/genetics/iyab196; PMC8733422, fetched 2026-11-02 | CRISPR recording in zebrafish embryos: direction (cell history into barcodes), density limits | Any human result, any genome-restore capability |
+| Waldvogel et al., Nat Rev Genet 2024 | 10.1038/s41576-024-00715-z; PMC11408116, fetched 2026-11-02 | Somatic mosaicism: no single original genome; clone expansion with age | Any restore or editing feasibility claim |
+| Zhang et al., GPB 2025 | 10.1093/gpbjnl/qzaf034; PMC12449060, fetched 2026-11-02 | Editing landscape: locus-by-locus systems, off-target limits, preclinical status | Any whole-genome write path or safety claim |
+| Alvarez-Palomo et al., Stem Cell Res Ther 2022 | 10.1186/s13287-022-02961-6; PMC9372949, fetched 2026-11-02 | Cord-blood banking as real screened starting material; iPSC trials context | Any product efficacy or personal therapy claim |
+
+## 0.19.0-dev genome-restore evidence (agent-run, November 2, 2026)
+
+Four open-access sources fetched once and quoted verbatim (14 quotes with locators and source ids,
+mirrored in docs/genome-restore-audit.json and tested for equality with the runtime catalog). The
+module computes step verdicts from this catalog and upgrades nothing; zebrafish-source claims carry
+validator-enforced research-context limitations.
+
+| Source | Identifier | Supported scope | Not inferred |
+| --- | --- | --- | --- |
+| Takasugi et al., Genetics 2022 | 10.1093/genetics/iyab196; PMC8733422, fetched 2026-11-02 | CRISPR recording in zebrafish embryos: direction (cell history into barcodes), density limits | Any human result, any genome-restore capability |
+| Waldvogel et al., Nat Rev Genet 2024 | 10.1038/s41576-024-00715-z; PMC11408116, fetched 2026-11-02 | Somatic mosaicism: no single original genome; clone expansion with age | Any restore or editing feasibility claim |
+| Zhang et al., GPB 2025 | 10.1093/gpbjnl/qzaf034; PMC12449060, fetched 2026-11-02 | Editing landscape: locus-by-locus systems, off-target limits, preclinical status | Any whole-genome write path or safety claim |
+| Alvarez-Palomo et al., Stem Cell Res Ther 2022 | 10.1186/s13287-022-02961-6; PMC9372949, fetched 2026-11-02 | Cord-blood banking as real screened starting material; iPSC trials context | Any product efficacy or personal therapy claim |

@@ -105,3 +105,15 @@ printing or editing elite human architecture stays theory. The methods toolbox b
 target is surveyed separately in [SCAFFOLD_METHODS.md](SCAFFOLD_METHODS.md), and the
 base-editing-evidence companion catalog is now mirrored as a provenance-pinned snapshot
 (`base-editing-snapshot.json`) that tests machine-check instead of prose citation.
+
+## 0.19 pointer
+
+The ideas desk above is now an interactive module with fetched evidence behind every verdict:
+see [GENOME_RESTORE.md](GENOME_RESTORE.md) and the genome-restore panel in the app. The prose
+verdicts here are unchanged and still true: two steps real, two theory, the write-path open.
+
+## 0.19 pointer
+
+The ideas desk above is now an interactive module with fetched evidence behind every verdict:
+see [GENOME_RESTORE.md](GENOME_RESTORE.md) and the genome-restore panel in the app. The prose
+verdicts here are unchanged and still true: two steps real, two theory, the write-path open.

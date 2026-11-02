@@ -1,10 +1,10 @@
 # Local scenario import/export
 
-Version 10 exports **inputs**, not trusted model outcomes. Files stay in memory;
+Version 11 exports **inputs**, not trusted model outcomes. Files stay in memory;
 nothing is uploaded, persisted or fetched from source citations. Personal learning
 project with AI assistance; restored progress is self-reported, not scientific QC.
 
-`bioprinting-workbench/10` includes:
+`bioprinting-workbench/11` includes:
 - fixed storyboard model and seed 42;
 - validated parameters/time;
 - procedure mode and unique known completed check IDs;
@@ -21,13 +21,13 @@ project with AI assistance; restored progress is self-reported, not scientific Q
   the research-program selection (chosen program nodes; empty until selected) and
   the hardware-budget selection (reference parts included in the cost view; defaults to
   the full 22-part list) and the tissue-atlas selection (chosen frontier targets; the
-  aspiration entry is rendered and never selectable); all nullable; null fields remain
+  aspiration entry is rendered and never selectable); and the genome-restore idea selection (which steps of the backup-and-restore wish are being explored); all nullable; null fields remain
   unknown, not zero;
 - application-authored limitations.
 
-See `tests/fixtures/scenario-v10.json` for a complete synthetic fixture. The v2, v3, v4,
-v5, v6, v7, v8 and v9 fixtures remain as migration evidence; v9 and older files restore
-with nozzle-shear design inputs initialized to defaults and a warning that says so. Evidence prose, source-review status, recipe
+See `tests/fixtures/scenario-v11.json` for a complete synthetic fixture. The v2, v3, v4,
+v5, v6, v7, v8, v9 and v10 fixtures remain as migration evidence; v10 and older files restore
+with the genome-restore idea selection initialized to defaults and a warning that says so. Evidence prose, source-review status, recipe
 cards, arithmetic outcomes, cancer scores and organ-completion estimates are not
 export fields. Fields are validated explicitly; unknown structural keys, unsupported
 versions, nonfinite/out-of-range values, contradictory flow controls, unknown checks,

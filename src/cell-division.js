@@ -1,4 +1,5 @@
 import { assertAllowedKeys, finite } from './validation.js';
+import { defaultGenomeRestoreIdea, validateGenomeRestoreSelection } from './genome-restore.js';
 import { CELL_TYPE_IDS } from './cell-evidence.js';
 import { defaultCellSystemId, validateCellSystemSelection, validateMethodSelection } from './repair-research.js';
 import { defaultPlanningComparison, validatePlanningComparison } from './planning-comparison.js';
@@ -11,7 +12,7 @@ import { defaultTissueAtlas, validateTissueAtlas } from './tissue-atlas.js';
 
 /** Independent arithmetic inputs, never a culture schedule or storyboard clock. */
 export function defaultLearningState() {
-  return { selectedCellType: 'msc', selectedCellSystemId: defaultCellSystemId('msc'), selectedMethodId: null, division: { model: 'idealized-relative-doubling', doublings: 0, hypotheticalDoublingHours: null }, researchHorizonYears: null, planningComparison: defaultPlanningComparison(), expansionTheory: defaultExpansionTheory(), longevityPerspective: defaultLongevityPerspective(), applicationsPerspective: defaultApplicationsPerspective(), researchProgram: defaultResearchProgram(), hardwareBudget: defaultHardwareBudget(), tissueAtlas: defaultTissueAtlas() };
+  return { selectedCellType: 'msc', selectedCellSystemId: defaultCellSystemId('msc'), selectedMethodId: null, division: { model: 'idealized-relative-doubling', doublings: 0, hypotheticalDoublingHours: null }, researchHorizonYears: null, planningComparison: defaultPlanningComparison(), expansionTheory: defaultExpansionTheory(), longevityPerspective: defaultLongevityPerspective(), applicationsPerspective: defaultApplicationsPerspective(), researchProgram: defaultResearchProgram(), hardwareBudget: defaultHardwareBudget(), tissueAtlas: defaultTissueAtlas(), genomeRestoreIdea: defaultGenomeRestoreIdea() };
 }
 export function validateDivisionSettings(raw) {
   assertAllowedKeys(raw, ['model', 'doublings', 'hypotheticalDoublingHours'], 'division');
@@ -19,11 +20,11 @@ export function validateDivisionSettings(raw) {
   return { model: raw.model, doublings: finite(raw.doublings, 0, 40, 'doublings'), hypotheticalDoublingHours: raw.hypotheticalDoublingHours === null ? null : finite(raw.hypotheticalDoublingHours, 1, 1000, 'hypotheticalDoublingHours') };
 }
 export function validateLearningState(raw) {
-  assertAllowedKeys(raw, ['selectedCellType', 'selectedCellSystemId', 'selectedMethodId', 'division', 'researchHorizonYears', 'planningComparison', 'expansionTheory', 'longevityPerspective', 'applicationsPerspective', 'researchProgram', 'hardwareBudget', 'tissueAtlas'], 'learning');
+  assertAllowedKeys(raw, ['selectedCellType', 'selectedCellSystemId', 'selectedMethodId', 'division', 'researchHorizonYears', 'planningComparison', 'expansionTheory', 'longevityPerspective', 'applicationsPerspective', 'researchProgram', 'hardwareBudget', 'tissueAtlas', 'genomeRestoreIdea'], 'learning');
   if (!CELL_TYPE_IDS.includes(raw.selectedCellType)) throw new RangeError('Unknown cell type');
   validateCellSystemSelection(raw.selectedCellType, raw.selectedCellSystemId);
   validateMethodSelection(raw.selectedCellSystemId, raw.selectedMethodId);
-  return { selectedCellType: raw.selectedCellType, selectedCellSystemId: raw.selectedCellSystemId, selectedMethodId: raw.selectedMethodId, division: validateDivisionSettings(raw.division), researchHorizonYears: raw.researchHorizonYears === null ? null : finite(raw.researchHorizonYears, 0, 20, 'researchHorizonYears'), planningComparison: validatePlanningComparison(raw.planningComparison), expansionTheory: validateExpansionTheory(raw.expansionTheory), longevityPerspective: validateLongevityPerspective(raw.longevityPerspective), applicationsPerspective: validateApplicationsPerspective(raw.applicationsPerspective), researchProgram: validateResearchProgram(raw.researchProgram), hardwareBudget: validateHardwareBudget(raw.hardwareBudget), tissueAtlas: validateTissueAtlas(raw.tissueAtlas) };
+  return { selectedCellType: raw.selectedCellType, selectedCellSystemId: raw.selectedCellSystemId, selectedMethodId: raw.selectedMethodId, division: validateDivisionSettings(raw.division), researchHorizonYears: raw.researchHorizonYears === null ? null : finite(raw.researchHorizonYears, 0, 20, 'researchHorizonYears'), planningComparison: validatePlanningComparison(raw.planningComparison), expansionTheory: validateExpansionTheory(raw.expansionTheory), longevityPerspective: validateLongevityPerspective(raw.longevityPerspective), applicationsPerspective: validateApplicationsPerspective(raw.applicationsPerspective), researchProgram: validateResearchProgram(raw.researchProgram), hardwareBudget: validateHardwareBudget(raw.hardwareBudget), tissueAtlas: validateTissueAtlas(raw.tissueAtlas), genomeRestoreIdea: validateGenomeRestoreSelection(raw.genomeRestoreIdea) };
 }
 export function evaluateRelativeDivision(raw) {
   const settings = validateDivisionSettings(raw);

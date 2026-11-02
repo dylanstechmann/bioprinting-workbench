@@ -2,6 +2,66 @@
 
 [Overview]
 
+Deliver **v0.19.0-dev "The write path"**: the owner's genome-backup-and-restore idea (sequencing the original genome to disk, keeping organic reserves, periodically writing it back into fast-dividing cells, editing for differentiation) gets promoted from the atlas prose desk to a full interactive evidence module with fresh verbatim-quoted open-access sources on what is real (digital backup, cell banking, CRISPR event recording) and what is theory (whole-genome write-back, edit-directed differentiation, and the mosaicism fact that there is no single "original" genome to restore) — plus a genuine live-Blender 3D update: a new peristaltic perfusion-pump asset authored in the owner's Blender 5.1.2 via MCP, exported as a real GLB, manifest-pinned with dated isolation evidence, and wired into the scene with a procedural fallback.
+
+[Context]
+
+The requested "latest" tissue targets (lung alveoli, gingiva, teeth, facial deep collagen, nerves, muscle/myonuclei, elite-lifter fascia) were all fetched and tiered hours ago in the v0.14 atlas (13 targets, 13 verbatim-quoted abstracts, docs/ATLAS.md); re-fetching them adds nothing. What does NOT yet exist: (1) an evidence module for the genome-restore idea — the atlas carries only a four-verdict prose desk; (2) any Blender-authored perfusion pump: the four shipped GLBs are bioprinter, incubator, microscope and perfusion_chamber, while stage 4's equipment line names "perfusion chamber · reservoir · peristaltic pump · tubing" and the reference bench lists a pump — the pump and reservoir are the missing physical setup; (3) a GitHub release for v0.18.0-dev (v0.17.0-dev has one). Fresh open-access anchors confirmed available: Takasugi et al. 2022 Genetics (PMC8733422, CRISPR recording demonstrated in zebrafish embryos), Waldvogel/Posey/Goodell 2024 Nat Rev Genet author manuscript (PMC11408116, mammals as genetically distinct clone mosaics), Zhang/Ma/Liu 2025 GPB review (PMC12449060, CRISPR application landscape). Existing pinned evidence is reused, not refetched: the base-editing snapshot (23 sha-pinned cards), the aging/geroscience partial-reprogramming claims, and the tissue-evidence catalog.
+
+[Types]
+
+New data structures (src/genome-restore.js):
+- GENOME_RESTORE_SCHEMA = 'bioprinting-workbench/genome-restore-evidence/1'.
+- Steps enum: ['digital-backup', 'organic-reserve', 'periodic-write-back', 'edit-directed-differentiation'] — the four steps of the owner's own proposal.
+- Verdict enum: 'established-practice' | 'real-adjacent-research' | 'theory-only'.
+- Catalog: sources[] (id, doi, journalYear, fullTextUrl, license, citation) and claims[] (id prefix 'genome-restore-', statement, verbatimQuote, locator, supportStatus 'reviewed', basis 'primary-text'|'secondhand-restatement', step (steps enum or 'context'), verdict (verdict enum), limitations[]).
+- Selection: { selectedStepIds: string[] } — selectable steps only; context claims never selectable.
+- Evaluated result: { status, selected: [{step, verdict, statement, anchors, blockers}], summary, notices } — the net verdict "two of four steps are real today, and the two that matter for the wish are open research questions" is computed, never upgraded.
+- Learning-state key: genomeRestoreIdea { selectedStepIds: [] } (default empty), scenario schema 'bioprinting-workbench/11'.
+- Asset manifest gains a fifth entry: id 'perfusion_pump', file 'assets/perfusion_pump.glb', nodePrefix 'Pump_', requiredNodes ['Pump_Base','Pump_Head','Pump_Reservoir'], with bytes/sha256/meshes/materials/triangles/blenderBounds recorded from the live Blender export.
+
+[Files]
+
+New: src/genome-restore.js (catalog + validator + evaluator); src/genome-restore-ui.js (learning-section sub-controller); tests/genome-restore.test.js; tests/fixtures/scenario-v11.json; docs/GENOME_RESTORE.md; docs/genome-restore-audit.json (verbatim quotes, locators, fetchDate); assets/author_perfusion_pump.py (Blender authoring script in the authoring_common.py house style); assets/perfusion_pump.glb (genuine live-Blender export); docs/blender-isolation-run-2026-11-02-pump.json (dated isolation evidence: host, version, owner-scene fingerprint untouched, staging cleanup).
+Modified: src/cell-division.js (defaultLearningState + validateLearningState gain genomeRestoreIdea, allowlist 12→13 keys); src/cell-learning-ui.js (compose createGenomeRestoreUI); src/scenario.js (SCENARIO_SCHEMA /11, migrateScenarioV10 defaults genomeRestoreIdea with truthful warning, v2–v9 migration allowlists extended where they pin the learning keys, parseScenario dispatch); src/equipment.js (loader list gains the pump row with requiredNodes); src/scene.js (pump placement on the bench with a procedural fallback in the established incubator-fallback pattern); tests/scenario.test.js (/11 assertions, v10 migration test, fixture list + scenario-v11.json, forge cases); tests/assets.test.js (5th asset expectations); tests/blender-evidence.test.js (new dated evidence JSON pinned; manifest↔evidence consistency for the pump); index.html (learning-section panel + scenario-status prose Version 11 + footer 0.19.0-dev); package.json (0.19.0-dev); assets/manifest.json (regenerated from the live run); docs/SCENARIOS.md, docs/SOURCES.md, docs/ATLAS.md (ideas-desk section now points to the module), docs/HARDWARE_COSTS.md (pump line links the 3D counterpart), CHANGELOG.md, docs/VERIFICATION.md, docs/ROADMAP.md, README.md (module paragraph); implementation_plan.md (this plan; 0.18 archived below).
+
+[Functions]
+
+New: validateGenomeRestoreCatalog(raw), getGenomeRestoreCatalog(), validateGenomeRestoreSelection(raw), evaluateGenomeRestoreIdea(selection), getGenomeRestoreSteps(), defaultGenomeRestoreIdea() — all in src/genome-restore.js; createGenomeRestoreUI({ elements, onStateChange }) in src/genome-restore-ui.js (render/propose/setState/dispose mirroring hardware-costs-ui.js).
+Modified: defaultLearningState() and validateLearningState() in src/cell-division.js (new key, validated through validateGenomeRestoreSelection); normalize(raw) and defaultAnalyses unchanged except schema string; migrateScenarioV3–V9 learning-key allowlists in src/scenario.js each gain 'genomeRestoreIdea' (their fixtures predate the module); migrateScenarioV10 added; parseScenario(value) dispatches v10.
+
+[Classes]
+
+None (module-function style per repo convention).
+
+[Dependencies]
+
+None. No new packages; no runtime network; MCP for Blender (already live, addon 1.8, Blender 5.1.2) is used for authoring and export; `gh` CLI creates the v0.18.0-dev GitHub release.
+
+[Testing]
+
+- tests/genome-restore.test.js: catalog integrity (steps/verdicts/basis enums, secondhand-restatement discipline, no selectable context claims, unique prefixed ids, verbatim quotes ≥60 chars, every step covered by ≥1 claim); evaluator verdicts (digital-backup + organic-reserve → established-practice; periodic-write-back + edit-directed-differentiation → theory-only; selection of theory steps yields the no-write-path blockers; empty selection → unconfigured status; summary never says "possible"/"safe"/"will"); forge rejections (unknown step id, duplicated ids, bad basis, missing not-fetched limitation, context claim made selectable); audit-verbatim equality with docs/genome-restore-audit.json (same contract as tissue-evidence).
+- tests/scenario.test.js: /11 round-trip, v10 migration defaults genomeRestoreIdea with truthful warning, older fixtures still migrate (extended allowlists), new scenario-v11.json, reject cases (missing key, unknown step, /12 unknown schema).
+- tests/assets.test.js + tests/blender-evidence.test.js: the pump GLB hashes and required nodes verified against the manifest; the new dated isolation evidence JSON pinned (ranAt, AUTHORING_CHECKS_PASSED equivalent, owner-scene fingerprint, cleanup) and manifest↔evidence consistency enforced for the new asset.
+- Full battery: node --test tests/*.test.js (expect 146+7-ish, zero failures), npm run check, git diff --check, verify:release detached (claims-language scan must pass over the new authored text), connected-browser check (new panel renders, footer 0.19.0-dev, 0 console errors), commit/push, live Pages verification, doc-only VERIFICATION record.
+
+[Implementation Order]
+
+1. Evidence fetch + extraction: pull Takasugi 2022 (PMC8733422), Waldvogel 2024 (PMC11408116), Zhang 2025 (PMC12449060); extract verbatim sentences with the established anchor-slice-clean-verify extractor pattern; store /tmp quotes.
+2. Author src/genome-restore.js with quotes injected via the token patcher (verbatim fidelity guaranteed), generate docs/genome-restore-audit.json from the runtime catalog, write tests/genome-restore.test.js, run green.
+3. Scenario /11: cell-division.js learning key, scenario.js schema bump + migrateScenarioV10 + extended older-migration allowlists, tests/scenario.test.js updates, fixtures/scenario-v11.json; run the scenario suite.
+4. UI: src/genome-restore-ui.js, wire into cell-learning-ui.js, index.html learning-section panel + Version 11 prose + footer 0.19.0-dev; package.json bump; local server browser check.
+5. Docs: GENOME_RESTORE.md, SOURCES.md, SCENARIOS.md, ATLAS.md pointer, VERIFICATION/ROADMAP/CHANGELOG/README sections.
+6. Blender asset: write assets/author_perfusion_pump.py (mirroring author_incubator.py conventions: pure procedural bpy construction, Pump_ node prefix, named materials, no scene-file mutation); commit and push the author script so raw.githubusercontent serves it; in the owner's live Blender via MCP: fetch to tempfile staging with sha verification, purge sys.modules of authoring modules, assert the owner's scene fingerprint untouched, run the author script in a fresh blend file, export GLB, transfer out via the working LAN-listener pattern, delete staging; regenerate assets/manifest.json from the exported file (Node side), LF-normalize, run assets tests; second commit with the GLB + evidence JSON + scene wiring + equipment loader row.
+7. Full battery, push, live Pages verification, doc-only record commit, gh release create for v0.18.0-dev with honest notes.
+8. Report: the two-of-four verdicts, the mosaicism point (no single original), the new asset's live-run provenance, what remains theory and untouched.
+
+---
+
+# Implementation Plan
+
+[Overview]
+
 Deliver **v0.18.0-dev "The shear tradeoff"**: the workbench's first physics-anchored teaching model of the core extrusion-bioprinting tradeoff — nozzle wall shear stress versus reported cell-viability evidence — closing the single biggest honest gap the repo itself declares (the Print stage and README state that material rheology, printability windows and cell-damage fluid mechanics are not modeled). The model is an idealized steady laminar capillary reference with two viscosity modes (hypothetical constant; the cited Cellink power-law fit from an open-access CC-BY paper), an explicit Reynolds-assumption check, Rabinowitsch-corrected wall shear rate for the shear-thinning mode, and a cited evidence layer that positions the computed stress against verbatim-quoted open-access values and viability bands. A secondary workstream fixes the README's stale publication-status prose (it still claims the live site is at v0.3).
 
 [Context]

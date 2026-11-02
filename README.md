@@ -45,6 +45,22 @@ lab protocol, and directs nothing at any person or animal. The optional
 owner-supplied pairs with a source citation. Nothing is calibrated by default, and any
 fit remains bound to the slab assumptions rather than being tissue validation.
 
+**Genome backup and restore, assessed** ([guide](docs/GENOME_RESTORE.md)): the wish to
+record an original genome to disk, bank original cells and periodically write the stored DNA
+back into fast-dividing cells, decomposed into four selectable steps with computed verdicts
+from four fetched open-access sources. Digital backup and cell banking are established
+practice; the periodic whole-genome write-back and edit-steered differentiation are theory -
+CRISPR recording writes bits of cell history into barcodes, not genomes back into chromatin,
+and somatic mosaicism means there is no single original genome to restore.
+
+**Genome backup and restore, assessed** ([guide](docs/GENOME_RESTORE.md)): the wish to
+record an original genome to disk, bank original cells and periodically write the stored DNA
+back into fast-dividing cells, decomposed into four selectable steps with computed verdicts
+from four fetched open-access sources. Digital backup and cell banking are established
+practice; the periodic whole-genome write-back and edit-steered differentiation are theory -
+CRISPR recording writes bits of cell history into barcodes, not genomes back into chromatin,
+and somatic mosaicism means there is no single original genome to restore.
+
 **Nozzle shear reference** ([guide](docs/NOZZLE_SHEAR.md)): an idealized laminar-capillary
 wall-shear calculation with a Reynolds self-check, positioned against verbatim-quoted open-access
 CFD values and restated in-vitro viability context bands. The ~20% gap between the idealized

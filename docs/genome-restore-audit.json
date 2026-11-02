@@ -1,0 +1,153 @@
+{
+  "schema": "bioprinting-workbench/genome-restore-audit/1",
+  "fetchDate": "2026-11-02",
+  "transcriptionNote": "Quotes transcribed from the PMC reading views of the four open-access sources on 2026-11-02; citation markers are transcribed in linear form as they appear in the text layer.",
+  "sources": [
+    {
+      "id": "takasugi-2022",
+      "doi": "10.1093/genetics/iyab196",
+      "journalYear": "Genetics 2022",
+      "fullTextUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8733422/",
+      "license": "CC-BY 4.0",
+      "citation": "Takasugi PR, Wang S, Truong KT, Drage EP, Kanishka SN, Higbee MA, Bamidele N, Ojelabi O, Sontheimer EJ, Gagnon JA. Orthogonal CRISPR-Cas tools for genome editing, inhibition, and CRISPR recording in zebrafish embryos. Genetics. 2022;220(1):iyab196. doi:10.1093/genetics/iyab196"
+    },
+    {
+      "id": "waldvogel-2024",
+      "doi": "10.1038/s41576-024-00715-z",
+      "journalYear": "Nat Rev Genet 2024",
+      "fullTextUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11408116/",
+      "license": "author manuscript (PMC open access)",
+      "citation": "Waldvogel SM, Posey JE, Goodell MA. Human embryonic genetic mosaicism and its effects on development and disease. Nat Rev Genet. 2024;25(10):698-714. doi:10.1038/s41576-024-00715-z"
+    },
+    {
+      "id": "zhang-2025",
+      "doi": "10.1093/gpbjnl/qzaf034",
+      "journalYear": "Genomics Proteomics Bioinformatics 2025",
+      "fullTextUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12449060/",
+      "license": "CC-BY 4.0",
+      "citation": "Zhang X, Ma D, Liu F. CRISPR Technology and Its Emerging Applications. Genomics Proteomics Bioinformatics. 2025;23(3):qzaf034. doi:10.1093/gpbjnl/qzaf034"
+    },
+    {
+      "id": "alvarez-palomo-2022",
+      "doi": "10.1186/s13287-022-02961-6",
+      "journalYear": "Stem Cell Res Ther 2022",
+      "fullTextUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9372949/",
+      "license": "CC-BY 4.0",
+      "citation": "Alvarez-Palomo B, Veiga A, Raya A, Codinach M, Torrents S, Ponce Verdugo L, Rodriguez-Aierbe C, Cuellar L, Alenda R, Arbona C, Hernandez-Maraver D, Fuste C, Querol S. Public Cord Blood Banks as a source of starting material for clinical grade HLA-homozygous induced pluripotent stem cells. Stem Cell Res Ther. 2022;13(1):408. doi:10.1186/s13287-022-02961-6"
+    }
+  ],
+  "claims": [
+    {
+      "id": "genome-restore-sequencing-is-routine",
+      "sourceId": "waldvogel-2024",
+      "step": "digital-backup",
+      "verdict": "established-practice",
+      "verbatimQuote": "Recent high-throughput sequencing studies have revealed that mosaicism is common, clone sizes often increase with age and specific variants can affect tissue function and disease development.",
+      "locator": "Introduction, mosaicism across tissues"
+    },
+    {
+      "id": "genome-restore-backup-is-consensus",
+      "sourceId": "waldvogel-2024",
+      "step": "digital-backup",
+      "verdict": "established-practice",
+      "verbatimQuote": "Nevertheless, most cell divisions are accompanied by the permanent acquisition of at least one single-nucleotide substitution or small insertion or deletion (indel)1–6, which can be propagated to cellular progeny, generating a clone of related variant cells.",
+      "locator": "Introduction, post-zygotic mutation accumulation"
+    },
+    {
+      "id": "genome-restore-banking-is-established",
+      "sourceId": "alvarez-palomo-2022",
+      "step": "organic-reserve",
+      "verdict": "established-practice",
+      "verbatimQuote": "Cord blood banks are an ideal source of young, HLA-typed and virus screened starting material to produce HLA-homozygous iPSC lines for wide immune-compatibility allogenic cell therapy approaches.",
+      "locator": "Abstract, background"
+    },
+    {
+      "id": "genome-restore-clinical-grade-demand",
+      "sourceId": "alvarez-palomo-2022",
+      "step": "organic-reserve",
+      "verdict": "established-practice",
+      "verbatimQuote": "The increasing number of clinical trials for induced pluripotent stem cell (iPSC)-derived cell therapy products makes the production on clinical grade iPSC more and more relevant and necessary.",
+      "locator": "Abstract, background"
+    },
+    {
+      "id": "genome-restore-ipsc-differentiation",
+      "sourceId": "alvarez-palomo-2022",
+      "step": "organic-reserve",
+      "verdict": "established-practice",
+      "verbatimQuote": "IPSC can be expanded unlimitedly and they can be differentiated into any cell type in the body; moreover, the genetic background of the donor can be chosen.",
+      "locator": "Background"
+    },
+    {
+      "id": "genome-restore-editing-is-locus-by-locus",
+      "sourceId": "zhang-2025",
+      "step": "periodic-write-back",
+      "verdict": "theory-only",
+      "verbatimQuote": "However, the traditional DSB-based CRISPR-Cas9 system is limited by off-target effects and unpredictable editing outcomes (e.g., large deletions, chromosomal rearrangements, and chromosome loss) [2], which have driven the rapid development of novel CRISPR systems with enhanced accuracy, precision, and versatility.",
+      "locator": "CRISPR application landscape, editing limitations"
+    },
+    {
+      "id": "genome-restore-recording-is-bits",
+      "sourceId": "takasugi-2022",
+      "step": "periodic-write-back",
+      "verdict": "theory-only",
+      "verbatimQuote": "Current CRISPR recording methods rely on SpyCas9, and only record a few bits of information.",
+      "locator": "Results, CRISPR recording"
+    },
+    {
+      "id": "genome-restore-no-single-original",
+      "sourceId": "waldvogel-2024",
+      "step": "periodic-write-back",
+      "verdict": "theory-only",
+      "verbatimQuote": "As a result, mammals are complex mosaics of clones that are genetically distinct from one another.",
+      "locator": "Introduction, clonal mosaicism"
+    },
+    {
+      "id": "genome-restore-write-path-open",
+      "sourceId": "takasugi-2022",
+      "step": "periodic-write-back",
+      "verdict": "theory-only",
+      "verbatimQuote": "In these applications, expression of CRISPR components generates permanent “edits” to a barcode, recording lineage relationships or cell signaling pathway activation.",
+      "locator": "Introduction, biological recording"
+    },
+    {
+      "id": "genome-restore-bes-preclinical",
+      "sourceId": "zhang-2025",
+      "step": "periodic-write-back",
+      "verdict": "theory-only",
+      "verbatimQuote": "In addition to VERVE-101, there have also been several BEs in preclinical research phase [76].",
+      "locator": "Base editors, clinical status"
+    },
+    {
+      "id": "genome-restore-mosaicism-definition",
+      "sourceId": "waldvogel-2024",
+      "step": "context",
+      "verdict": "real-adjacent-research",
+      "verbatimQuote": "In other words, mosaicism refers to any mutation that is acquired in the nuclear genome after the zygote stage of embryogenesis, meaning that the resulting genetic variant is present in some, but not all, cells of the organism.",
+      "locator": "Introduction, definition"
+    },
+    {
+      "id": "genome-restore-lineage-recording",
+      "sourceId": "takasugi-2022",
+      "step": "context",
+      "verdict": "real-adjacent-research",
+      "verbatimQuote": "We implemented multichannel CRISPR recording using three CRISPR systems and show that LbaCas12a may provide superior information density compared with previous methods.",
+      "locator": "Results, CRISPR recording"
+    },
+    {
+      "id": "genome-restore-differentiation-needs-programs",
+      "sourceId": "takasugi-2022",
+      "step": "edit-directed-differentiation",
+      "verdict": "theory-only",
+      "verbatimQuote": "CRISPR can be adapted for recording information inside living cells and organisms.",
+      "locator": "Introduction, biological recording"
+    },
+    {
+      "id": "genome-restore-differentiation-from-banked",
+      "sourceId": "alvarez-palomo-2022",
+      "step": "edit-directed-differentiation",
+      "verdict": "theory-only",
+      "verbatimQuote": "IPSC-derived cells are being tested at the moment in clinical trials for regenerative medicine to treat diseases such as age-related macular degeneration [3] or Parkinson’s disease [4], and for immunotherapies for conditions such as cancer [5] or graft-versus-host disease [6].",
+      "locator": "Background"
+    }
+  ]
+}

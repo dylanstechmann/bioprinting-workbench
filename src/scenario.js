@@ -15,8 +15,9 @@ import { defaultApplicationsPerspective } from './applications.js';
 import { defaultResearchProgram } from './research-program.js';
 import { defaultHardwareBudget } from './hardware-costs.js';
 import { defaultTissueAtlas } from './tissue-atlas.js';
+import { defaultGenomeRestoreIdea } from './genome-restore.js';
 import { validateEnvironmentId } from './environment.js';
-export const SCENARIO_SCHEMA = 'bioprinting-workbench/10';
+export const SCENARIO_SCHEMA = 'bioprinting-workbench/11';
 const MODEL = 'synthetic-dimensionless-storyboard';
 const LIMITATIONS = 'Synthetic dimensionless teaching models; user provenance unverified. No biological validation, viability, clinical, animal-use or transplant-safety inference. Published-method recipe cards are cited research descriptions, not treatment instructions or validated protocols.';
 function defaultNozzleShear() { return { settings: { ...NOZZLE_SHEAR_DEFAULTS }, parameterOrigin: 'cited-fit-application' }; }
@@ -57,51 +58,59 @@ export function migrateScenarioV3(raw) {
   if (raw.schema !== 'bioprinting-workbench/3') throw new RangeError('Expected version 3');
   assertAllowedKeys(raw.learning, ['selectedCellType','division','researchHorizonYears'], 'learning');
   assertAllowedKeys(raw.view, ['camera','reveal'], 'view');
-  const scenario = normalize({ ...raw, schema: SCENARIO_SCHEMA, analyses: { ...raw.analyses, nozzleShear: defaultNozzleShear() }, learning: { selectedCellType: raw.learning.selectedCellType, selectedCellSystemId: defaultCellSystemId(raw.learning.selectedCellType), selectedMethodId: null, division: raw.learning.division, researchHorizonYears: raw.learning.researchHorizonYears, planningComparison: defaultPlanningComparison(), expansionTheory: defaultExpansionTheory(), longevityPerspective: defaultLongevityPerspective(), applicationsPerspective: defaultApplicationsPerspective(), researchProgram: defaultResearchProgram(), hardwareBudget: defaultHardwareBudget(), tissueAtlas: defaultTissueAtlas() }, view: { ...raw.view, environment: 'lab' } });
-  return { scenario, warnings: ['Version 3 inputs restored; species-separated cell-system, method, hypothetical-comparison, longevity-perspective, applications, research-program, hardware-budget and tissue-atlas inputs and nozzle-shear design inputs initialized to defaults; environment set to laboratory. Derived results are recomputed, not restored.'], migratedFrom: raw.schema };
+  const scenario = normalize({ ...raw, schema: SCENARIO_SCHEMA, analyses: { ...raw.analyses, nozzleShear: defaultNozzleShear() }, learning: { selectedCellType: raw.learning.selectedCellType, selectedCellSystemId: defaultCellSystemId(raw.learning.selectedCellType), selectedMethodId: null, division: raw.learning.division, researchHorizonYears: raw.learning.researchHorizonYears, planningComparison: defaultPlanningComparison(), expansionTheory: defaultExpansionTheory(), longevityPerspective: defaultLongevityPerspective(), applicationsPerspective: defaultApplicationsPerspective(), researchProgram: defaultResearchProgram(), hardwareBudget: defaultHardwareBudget(), tissueAtlas: defaultTissueAtlas(), genomeRestoreIdea: defaultGenomeRestoreIdea() }, view: { ...raw.view, environment: 'lab' } });
+  return { scenario, warnings: ['Version 3 inputs restored; species-separated cell-system, method, hypothetical-comparison, longevity-perspective, applications, research-program, hardware-budget, tissue-atlas and genome-restore idea inputs and nozzle-shear design inputs initialized to defaults; environment set to laboratory. Derived results are recomputed, not restored.'], migratedFrom: raw.schema };
 }
 export function migrateScenarioV4(raw) {
   assertAllowedKeys(raw, ['schema','model','seed','parameters','time','procedure','view','analyses','datasets','learning','limitations']);
   if (raw.schema !== 'bioprinting-workbench/4') throw new RangeError('Expected version 4');
   assertAllowedKeys(raw.learning, ['selectedCellType','selectedCellSystemId','selectedMethodId','division','researchHorizonYears','planningComparison','expansionTheory'], 'learning');
-  const scenario = normalize({ ...raw, schema: SCENARIO_SCHEMA, analyses: { ...raw.analyses, nozzleShear: defaultNozzleShear() }, learning: { ...raw.learning, longevityPerspective: defaultLongevityPerspective(), applicationsPerspective: defaultApplicationsPerspective(), researchProgram: defaultResearchProgram(), hardwareBudget: defaultHardwareBudget(), tissueAtlas: defaultTissueAtlas() } });
-  return { scenario, warnings: ['Version 4 inputs restored; hypothetical longevity-perspective, applications, research-program, hardware-budget and tissue-atlas inputs initialized to defaults. Derived results are recomputed, not restored.'], migratedFrom: raw.schema };
+  const scenario = normalize({ ...raw, schema: SCENARIO_SCHEMA, analyses: { ...raw.analyses, nozzleShear: defaultNozzleShear() }, learning: { ...raw.learning, longevityPerspective: defaultLongevityPerspective(), applicationsPerspective: defaultApplicationsPerspective(), researchProgram: defaultResearchProgram(), hardwareBudget: defaultHardwareBudget(), tissueAtlas: defaultTissueAtlas(), genomeRestoreIdea: defaultGenomeRestoreIdea() } });
+  return { scenario, warnings: ['Version 4 inputs restored; hypothetical longevity-perspective, applications, research-program, hardware-budget, tissue-atlas and genome-restore idea inputs and nozzle-shear design inputs initialized to defaults. Derived results are recomputed, not restored.'], migratedFrom: raw.schema };
 }
 export function migrateScenarioV5(raw) {
   assertAllowedKeys(raw, ['schema','model','seed','parameters','time','procedure','view','analyses','datasets','learning','limitations']);
   if (raw.schema !== 'bioprinting-workbench/5') throw new RangeError('Expected version 5');
   assertAllowedKeys(raw.learning, ['selectedCellType','selectedCellSystemId','selectedMethodId','division','researchHorizonYears','planningComparison','expansionTheory','longevityPerspective'], 'learning');
-  const scenario = normalize({ ...raw, schema: SCENARIO_SCHEMA, analyses: { ...raw.analyses, nozzleShear: defaultNozzleShear() }, learning: { ...raw.learning, applicationsPerspective: defaultApplicationsPerspective(), researchProgram: defaultResearchProgram(), hardwareBudget: defaultHardwareBudget(), tissueAtlas: defaultTissueAtlas() } });
-  return { scenario, warnings: ['Version 5 inputs restored; hypothetical applications-comparison, research-program, hardware-budget and tissue-atlas inputs and nozzle-shear design inputs initialized to defaults. Derived results are recomputed, not restored.'], migratedFrom: raw.schema };
+  const scenario = normalize({ ...raw, schema: SCENARIO_SCHEMA, analyses: { ...raw.analyses, nozzleShear: defaultNozzleShear() }, learning: { ...raw.learning, applicationsPerspective: defaultApplicationsPerspective(), researchProgram: defaultResearchProgram(), hardwareBudget: defaultHardwareBudget(), tissueAtlas: defaultTissueAtlas(), genomeRestoreIdea: defaultGenomeRestoreIdea() } });
+  return { scenario, warnings: ['Version 5 inputs restored; hypothetical applications-comparison, research-program, hardware-budget, tissue-atlas and genome-restore idea inputs and nozzle-shear design inputs initialized to defaults. Derived results are recomputed, not restored.'], migratedFrom: raw.schema };
 }
 export function migrateScenarioV6(raw) {
   assertAllowedKeys(raw, ['schema','model','seed','parameters','time','procedure','view','analyses','datasets','learning','limitations']);
   if (raw.schema !== 'bioprinting-workbench/6') throw new RangeError('Expected version 6');
   assertAllowedKeys(raw.learning, ['selectedCellType','selectedCellSystemId','selectedMethodId','division','researchHorizonYears','planningComparison','expansionTheory','longevityPerspective','applicationsPerspective'], 'learning');
-  const scenario = normalize({ ...raw, schema: SCENARIO_SCHEMA, analyses: { ...raw.analyses, nozzleShear: defaultNozzleShear() }, learning: { ...raw.learning, researchProgram: defaultResearchProgram(), hardwareBudget: defaultHardwareBudget(), tissueAtlas: defaultTissueAtlas() } });
-  return { scenario, warnings: ['Version 6 inputs restored; research-program, hardware-budget and tissue-atlas selections and nozzle-shear design inputs initialized to defaults. Derived results are recomputed, not restored.'], migratedFrom: raw.schema };
+  const scenario = normalize({ ...raw, schema: SCENARIO_SCHEMA, analyses: { ...raw.analyses, nozzleShear: defaultNozzleShear() }, learning: { ...raw.learning, researchProgram: defaultResearchProgram(), hardwareBudget: defaultHardwareBudget(), tissueAtlas: defaultTissueAtlas(), genomeRestoreIdea: defaultGenomeRestoreIdea() } });
+  return { scenario, warnings: ['Version 6 inputs restored; research-program, hardware-budget and tissue-atlas selections, genome-restore idea inputs and nozzle-shear design inputs initialized to defaults. Derived results are recomputed, not restored.'], migratedFrom: raw.schema };
 }
 export function migrateScenarioV7(raw) {
   assertAllowedKeys(raw, ['schema','model','seed','parameters','time','procedure','view','analyses','datasets','learning','limitations']);
   if (raw.schema !== 'bioprinting-workbench/7') throw new RangeError('Expected version 7');
   assertAllowedKeys(raw.learning, ['selectedCellType','selectedCellSystemId','selectedMethodId','division','researchHorizonYears','planningComparison','expansionTheory','longevityPerspective','applicationsPerspective','researchProgram'], 'learning');
-  const scenario = normalize({ ...raw, schema: SCENARIO_SCHEMA, analyses: { ...raw.analyses, nozzleShear: defaultNozzleShear() }, learning: { ...raw.learning, hardwareBudget: defaultHardwareBudget(), tissueAtlas: defaultTissueAtlas() } });
-  return { scenario, warnings: ['Version 7 inputs restored; hardware-budget and tissue-atlas selections and nozzle-shear design inputs initialized to defaults. Derived results are recomputed, not restored.'], migratedFrom: raw.schema };
+  const scenario = normalize({ ...raw, schema: SCENARIO_SCHEMA, analyses: { ...raw.analyses, nozzleShear: defaultNozzleShear() }, learning: { ...raw.learning, hardwareBudget: defaultHardwareBudget(), tissueAtlas: defaultTissueAtlas(), genomeRestoreIdea: defaultGenomeRestoreIdea() } });
+  return { scenario, warnings: ['Version 7 inputs restored; hardware-budget and tissue-atlas selections, genome-restore idea inputs and nozzle-shear design inputs initialized to defaults. Derived results are recomputed, not restored.'], migratedFrom: raw.schema };
 }
 export function migrateScenarioV8(raw) {
   assertAllowedKeys(raw, ['schema','model','seed','parameters','time','procedure','view','analyses','datasets','learning','limitations']);
   if (raw.schema !== 'bioprinting-workbench/8') throw new RangeError('Expected version 8');
   assertAllowedKeys(raw.learning, ['selectedCellType','selectedCellSystemId','selectedMethodId','division','researchHorizonYears','planningComparison','expansionTheory','longevityPerspective','applicationsPerspective','researchProgram','hardwareBudget'], 'learning');
-  const scenario = normalize({ ...raw, schema: SCENARIO_SCHEMA, analyses: { ...raw.analyses, nozzleShear: defaultNozzleShear() }, learning: { ...raw.learning, tissueAtlas: defaultTissueAtlas() } });
-  return { scenario, warnings: ['Version 8 inputs restored; tissue-atlas selection and nozzle-shear design inputs initialized to defaults. Derived results are recomputed, not restored.'], migratedFrom: raw.schema };
+  const scenario = normalize({ ...raw, schema: SCENARIO_SCHEMA, analyses: { ...raw.analyses, nozzleShear: defaultNozzleShear() }, learning: { ...raw.learning, tissueAtlas: defaultTissueAtlas(), genomeRestoreIdea: defaultGenomeRestoreIdea() } });
+  return { scenario, warnings: ['Version 8 inputs restored; tissue-atlas selection, genome-restore idea inputs and nozzle-shear design inputs initialized to defaults. Derived results are recomputed, not restored.'], migratedFrom: raw.schema };
 }
 export function migrateScenarioV9(raw) {
   assertAllowedKeys(raw, ['schema','model','seed','parameters','time','procedure','view','analyses','datasets','learning','limitations']);
   if (raw.schema !== 'bioprinting-workbench/9') throw new RangeError('Expected version 9');
   assertAllowedKeys(raw.analyses, ['slab','oxygen3d','flow'], 'analyses');
   assertAllowedKeys(raw.learning, ['selectedCellType','selectedCellSystemId','selectedMethodId','division','researchHorizonYears','planningComparison','expansionTheory','longevityPerspective','applicationsPerspective','researchProgram','hardwareBudget','tissueAtlas'], 'learning');
-  const scenario = normalize({ ...raw, schema: SCENARIO_SCHEMA, analyses: { ...raw.analyses, nozzleShear: defaultNozzleShear() } });
-  return { scenario, warnings: ['Version 9 inputs restored; nozzle-shear design inputs initialized to defaults. Derived results are recomputed, not restored.'], migratedFrom: raw.schema };
+  const scenario = normalize({ ...raw, schema: SCENARIO_SCHEMA, analyses: { ...raw.analyses, nozzleShear: defaultNozzleShear() }, learning: { ...raw.learning, genomeRestoreIdea: defaultGenomeRestoreIdea() } });
+  return { scenario, warnings: ['Version 9 inputs restored; nozzle-shear design inputs and genome-restore idea selection initialized to defaults. Derived results are recomputed, not restored.'], migratedFrom: raw.schema };
+}
+export function migrateScenarioV10(raw) {
+  assertAllowedKeys(raw, ['schema','model','seed','parameters','time','procedure','view','analyses','datasets','learning','limitations']);
+  if (raw.schema !== 'bioprinting-workbench/10') throw new RangeError('Expected version 10');
+  assertAllowedKeys(raw.analyses, ['slab','oxygen3d','flow','nozzleShear'], 'analyses');
+  assertAllowedKeys(raw.learning, ['selectedCellType', 'selectedCellSystemId', 'selectedMethodId', 'division', 'researchHorizonYears', 'planningComparison', 'expansionTheory', 'longevityPerspective', 'applicationsPerspective', 'researchProgram', 'hardwareBudget', 'tissueAtlas', 'genomeRestoreIdea'], 'learning');
+  const scenario = normalize({ ...raw, schema: SCENARIO_SCHEMA, learning: { ...raw.learning, genomeRestoreIdea: raw.learning.genomeRestoreIdea ?? defaultGenomeRestoreIdea() } });
+  return { scenario, warnings: ['Version 10 inputs restored; genome-restore idea selection initialized to defaults where absent. Derived results are recomputed, not restored.'], migratedFrom: raw.schema };
 }
 export function migrateScenarioV2(raw) {
   assertAllowedKeys(raw, ['schema','model','seed','parameters','time','procedure','view','analyses','datasets','limitations']);
@@ -130,6 +139,7 @@ export function parseScenario(value) {
   if (raw.schema === 'bioprinting-workbench/7') return migrateScenarioV7(raw);
   if (raw.schema === 'bioprinting-workbench/8') return migrateScenarioV8(raw);
   if (raw.schema === 'bioprinting-workbench/9') return migrateScenarioV9(raw);
+  if (raw.schema === 'bioprinting-workbench/10') return migrateScenarioV10(raw);
   return { scenario: normalize(raw), warnings: [], migratedFrom: null };
 }
 export function serializeScenario(state) { return JSON.stringify(createScenario(state), null, 2); }

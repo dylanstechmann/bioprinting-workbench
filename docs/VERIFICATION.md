@@ -845,3 +845,37 @@ Actual verification results:
   rendered the new panel with six result rows and eleven quoted evidence entries, updated live
   on input changes, exported the nozzle-shear record in the scenario JSON, and reported 0
   console errors. Deployment propagated within minutes of the push.
+
+## 0.19.0-dev local follow-on (agent-run, November 2, 2026)
+
+Owner instruction: update ourselves on the latest in bioprinting and what may be helpful -
+including DNA editing (restoring a cell's DNA to the original by recording it on a computer and
+periodically fetching it back), differentiation, the 3D physical setups, and the frontier
+tissues. The frontier tissues were tiered hours earlier in the 0.14 atlas, so this milestone
+built the piece that did not exist: the genome-backup-and-restore wish promoted from atlas prose
+to an interactive, evidence-anchored module.
+
+Actual verification results:
+
+- **Evidence layer:** four open-access sources fetched 2026-11-02 (PMC8733422, PMC11408116,
+  PMC12449060, PMC9372949); 14 verbatim quotes with locators and source ids mirrored in
+  docs/genome-restore-audit.json and tested for equality with the runtime catalog; every claim
+  carries basis primary-text, honest limitations, and a species context; zebrafish-source
+  claims fail validation unless their limitations say they stay research context.
+- **Verdicts are computed from the catalog, never hardcoded:** selecting all four steps yields
+  exactly two established-practice and two theory-only verdicts, with blockers per step; the
+  summary is forbidden from saying will-safely, proven-safe, guaranteed or approved-for
+  (asserted in tests).
+- **Forge discipline:** the catalog rejects unknown steps, unknown verdicts, non-primary-text
+  basis, unknown species, mis-verdicted claims (e.g. flipping the no-single-original claim to
+  established practice), unknown source ids, duplicate ids, short quotes, missing step anchors
+  and removed context claims (15 mutation cases asserted).
+- **Scenario chain:** schema /11 with learning.genomeRestoreIdea; migrateScenarioV10 warns and
+  defaults; the v3-v9 migrations each default the new key with extended truthful warnings (which
+  also fixed a 0.18 oversight: the v4 migration warning did not mention the nozzle-shear
+  defaulting it performs); fixtures scenario-v11.json added, v10 now migrates with from-annotated
+  provenance; unknown /12 rejected. Unit tests: **150 passed, 0 failed** (up from 146), npm run
+  check over 100 modules, git diff --check clean.
+- **Not performed:** any fetch of the non-open-access Blaeser/Liu studies; any claim that genome
+  restoration will ever work, for any species, cell type or person; any coupling of the module
+  to the storyboard, oxygen, flow or nozzle-shear models.
