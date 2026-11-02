@@ -802,3 +802,37 @@ Actual verification results:
   deliberately simplified on GitHub by the owner (stack table removed, AGENTS.md deleted); the
   locally drafted stack-table row for this project was discarded to respect that edit - nothing
   was pushed to the profile repo.
+
+## 0.18.0-dev local follow-on (agent-run, November 2, 2026)
+
+Owner instruction: "Figure out how, with immense detail/sophistication, to make more
+meaningful/significant progress on the project(s)/repo(s), then do." The repo's own declared
+gap chose the milestone: the Print stage and README state that rheology, printability windows and
+cell-damage fluid mechanics are not modeled, so this milestone adds the one honestly-statable
+piece — the nozzle shear reference model.
+
+Actual verification results:
+
+- **Physics verified analytically:** the Newtonian wall shear satisfies all three identities
+  (4μQ/(πr³) ≡ 8μU/d ≡ 32μQ/(πd³)) to 1e-12 relative; the power-law branch equals
+  K·γ̇ᴶⁿ with the Rabinowitsch correction and reduces to the Newtonian branch at n = 1;
+  the Reynolds flag trips above 2300.
+- **The honest idealization gap is pinned, not hidden:** at the cited study's piston input
+  (0.4 mm, 10 mm³/s, fitted Cellink rheology) the model gives ≈468 Pa versus the paper's CFD
+  362.85–383.24 Pa — a test asserts the ratio sits in [1.15, 1.30] so the ~20% geometry gap
+  stays stated as context rather than silently converging or diverging.
+- **Evidence layer:** one open-access CC-BY source fetched 2026-11-02 (PMC10261129); 11 verbatim
+  quotes with locators are mirrored in docs/nozzle-shear-audit.json and tested for equality
+  with the runtime catalog; four secondhand restatements (Blaeser/Liu/Müller via that paper)
+  carry basis `secondhand-restatement` and validator-enforced not-fetched limitations.
+- **Band placement is labeling, not prediction:** placement classes change exactly at 455.43,
+  5000 and 10000 Pa (boundary tests at ±0.01-0.02 mm³/s steps), and every notice repeats that
+  bands restate in-vitro context secondhand with no cell-type, species or exposure-time
+  specificity.
+- **Scenario migration chain:** schema /10 with strict normalize; migrateScenarioV9 defaults the
+  nozzle-shear record with a truthful warning; v2–v8 migrations gained the same defaulting
+  (their fixtures predate the module); forge tests reject missing keys, origin/mode
+  contradictions and out-of-range geometry. Unit tests: **146 passed, 0 failed** (up from 138).
+- **Not performed:** any CFD of our own; fetching the non-open-access Blaeser/Liu/Müller
+  studies; coupling the shear model to the storyboard, oxygen box or flow network; any
+  biological, clinical or manufacturing claim.

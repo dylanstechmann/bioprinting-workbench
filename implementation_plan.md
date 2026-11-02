@@ -2,6 +2,64 @@
 
 [Overview]
 
+Deliver **v0.18.0-dev "The shear tradeoff"**: the workbench's first physics-anchored teaching model of the core extrusion-bioprinting tradeoff — nozzle wall shear stress versus reported cell-viability evidence — closing the single biggest honest gap the repo itself declares (the Print stage and README state that material rheology, printability windows and cell-damage fluid mechanics are not modeled). The model is an idealized steady laminar capillary reference with two viscosity modes (hypothetical constant; the cited Cellink power-law fit from an open-access CC-BY paper), an explicit Reynolds-assumption check, Rabinowitsch-corrected wall shear rate for the shear-thinning mode, and a cited evidence layer that positions the computed stress against verbatim-quoted open-access values and viability bands. A secondary workstream fixes the README's stale publication-status prose (it still claims the live site is at v0.3).
+
+[Context]
+
+Source of the evidence layer (fetched 2026-11-02, CC-BY, full text open at PMC10261129): Gómez-Blanco JC, Pagador JB, Galván-Chacón VP, Sánchez-Peralta LF, Matamoros M, Marcos A, Sánchez-Margallo FM, "Computational simulation-based comparative analysis of standard 3D printing and conical nozzles for pneumatic and piston-driven bioprinting", Int J Bioprint 2023;9(4):730, DOI 10.18063/ijb.730. Verbatim-quotable anchors extracted and stored under /tmp/gomez.html: (a) the studied geometries — a Cellink 22G conical tip and an E3D V6.4 0.4 mm standard nozzle; (b) inlet conditions — 15 kPa pneumatic (as Cellink recommends) and 10 mm³/s piston-driven; (c) the fitted rheology "μ = 87.906 (γ̇)^−0.792" for Cellink bioink at 37 °C (K = 87.906, n = 0.208); (d) their CFD shear results — 455.43/242.16 Pa (pneumatic nozzle/cone) and 362.85/383.24 Pa (piston nozzle/cone), with a stated maximum of 455.43 Pa "more than ten times lower than the threshold proposed by Blaeser et al."; (e) the viability bands as restated by that paper — <5 kPa "high cellular viability up to 96%", 5–10 kPa "91%", >10 kPa "76%"; (f) secondhand context values — Liu et al. 30/180/300 Pa and ~160 Pa across 22–30G tips; (g) the framing sentence that shear matters more than nozzle inner pressure for viability. The underlying Blaeser and Liu papers are not open-access and are NOT fetched: every claim is a verbatim quote from the fetched CC-BY text, and restatement status is enforced by the validator, matching the repo's species/technology-separation honesty rules.
+
+Physics core (all idealized, analytically verifiable, mirroring the oxygen slab and flow network house style): for nozzle inner diameter d, volumetric flow Q, radius r = d/2 — mean velocity U = Q/(πr²); Newtonian wall shear rate γ̇w = 4Q/(πr³) ≡ 8U/d; Newtonian wall shear τw = μγ̇w ≡ 8μU/d ≡ 32μQ/(πd³); Reynolds number Re = ρUd/μ with fixed hypothetical ρ = 1000 kg/m³ (laminar assumption flagged when Re > 2300, like the flow network's numerical-failure honesty). Shear-thinning mode uses the cited power law with the standard Rabinowitsch correction for power-law pipe flow γ̇w,corr = ((3n+1)/(4n))·4Q/(πr³), τw = K·γ̇w,corr^n. Continuity property (tested): with K = μ0 and n = 1 the shear-thinning branch reduces exactly to the Newtonian branch. Calibration-relevant sanity anchor (tested and stated in docs): at the paper's piston input (d = 0.4 mm, Q = 10 mm³/s, K = 87.906, n = 0.208) the idealized reference gives τw ≈ 468 Pa versus the paper's CFD 362.85–383.24 Pa — same order, ~20% gap attributed honestly to the contraction/drop geometry the idealization omits; the module states this as context, not reproduction.
+
+[Types]
+
+New data structures (src/nozzle-shear.js):
+- NOZZLE_SHEAR_MODEL = 'idealized-steady-laminar-capillary-shear-reference' (model string).
+- Settings: { diameterUm: number [60, 600], flowMm3PerS: number [0.001, 100], viscosityMode: 'hypothetical-constant' | 'cited-cellink-fit', viscosityPas: number [0.01, 200] (used only in constant mode), parameterOrigin: 'hypothetical-controls' | 'cited-fit-application' }.
+- Evidence catalog schema 'bioprinting-workbench/nozzle-shear-evidence/1': sources[] { id, doi, journalYear, fullTextUrl, license } and claims[] { id, statement, verbatimQuote, locator, supportStatus: 'reviewed', basis: 'primary-text' | 'secondhand-restatement', context: 'cfd-simulation' | 'rheology-fit' | 'inlet-conditions' | 'viability-context-restated', limitations: string[] }.
+- Evaluated result: { status, diameterUm, flowMm3PerS, viscosityMode, apparentViscosityPas, meanVelocityMmPerS, wallShearRatePerS, wallShearStressPa, ratioToLowBandPa, band: 'below-reported-context' | 'low' | 'medium' | 'high', reynoldsNumber, laminarAssumptionHolds, assumptions: string[], notices: string[], claims: [...] }.
+- Scenario /10: analyses.nozzleShear = { settings, parameterOrigin } (mirrors oxygen3d).
+
+[Files]
+
+New: src/nozzle-shear.js (physics + validation + catalog + evaluator); src/nozzle-shear-ui.js (sub-controller, pattern of hardware-costs-ui.js); tests/nozzle-shear.test.js (analytic verification, band boundaries, power-law continuity, forging rejections, audit-verbatim equality); tests/fixtures/scenario-v10.json; docs/NOZZLE_SHEAR.md (guide with formulas, cited comparison and limitations); docs/nozzle-shear-audit.json (fetchDate, source, verbatim quotes with locators).
+Modified: index.html (new panel after the resistance-network panel: inputs nozzle-diameter, nozzle-flow, nozzle-viscosity-mode, nozzle-viscosity, SVG nozzle-chart with band markers, nozzle-status, nozzle-values table, quoted-evidence list, micro notices; scenario-status prose Version 9→10; footer 0.18.0-dev); src/app.js (create/restore/export nozzleShear state beside analysisUI; wire applyScenario); src/scenario.js (SCENARIO_SCHEMA 'bioprinting-workbench/10', normalize gains analyses.nozzleShear, defaultAnalyses gains defaults, migrateScenarioV9 added with truthful warning, parseScenario dispatch); package.json (0.18.0-dev); docs/SCENARIOS.md, docs/SOURCES.md, CHANGELOG.md, docs/VERIFICATION.md, docs/ROADMAP.md, README.md (0.18 module paragraph + the stale "published v0.3 / unpublished working-tree extensions" section rewritten to current truthful state); tests/scenario.test.js (/10 normalization + v9 migration tests); implementation_plan.md (this plan; 0.17 archived verbatim).
+
+[Functions]
+
+New: validateNozzleShearSettings(raw), evaluateNozzleShear(settings), getNozzleShearCatalog(), validateNozzleShearCatalog(raw), NOZZLE_SHEAR_DEFAULTS — all in src/nozzle-shear.js; createNozzleShearUI({ elements, onStateChange }) in src/nozzle-shear-ui.js with render/propose/setState/getState/diagnostics/dispose.
+Modified: defaultAnalyses(parameters) in src/scenario.js (adds nozzleShear defaults); normalize(raw) in src/scenario.js (validates nozzleShear, keeps analyses key allowlist updated); parseScenario(value) in src/scenario.js (adds the v9 branch); createCellLearningUI untouched; scenarioState() in src/app.js (adds nozzleShear from the new controller); applyScenario in src/app.js (restores nozzleShear).
+
+[Classes]
+
+None (module-function style throughout, per repo convention).
+
+[Dependencies]
+
+None. No new packages; no runtime network; all literature quotes are baked into authored source with an audit JSON, per repo policy.
+
+[Testing]
+
+- tests/nozzle-shear.test.js: (1) analytic identities 4μQ/(πr³) === 8μU/d === 32μQ/(πd³) within 1e-9 relative; (2) band boundaries 4999.99/5000.01 and 9999.9/10000.1 with the 'below-reported-context' class under 30 Pa context floor... (band rule: τ < 455.43 Pa → 'below-reported-context'; 455.43–5000 → 'low'; 5000–10000 → 'medium'; > 10000 → 'high'; boundary values tested); (3) power-law continuity K=μ0, n=1 equals the Newtonian branch; (4) the piston-input anchor ≈ 468 Pa ± 0.5% with the doc-stated ~20% CFD gap as context assertion (468 not equal to CFD values; assert ratio in [1.15, 1.30]); (5) Reynolds flag at high flow; (6) forged-catalog rejections (bad schema, wrong basis enum, restated claim without limitation, unknown context, duplicate ids, short quotes); (7) verbatim equality: every catalog verbatimQuote appears in the shipped audit JSON with identical text, locators equal, source doi equal — same contract as tests/tissue-evidence.test.js.
+- tests/scenario.test.js: /10 round-trip normalization, v9 migration defaults nozzleShear with truthful warning, older-version chain (v8→/10 via v9) still warns per step; new fixture scenario-v10.json (minimal valid /10 scenario).
+- Existing suites must stay green: claims-language scanner (scan-claims.mjs PASS over the new authored text — the module must not say "will", "proven", "guarantees", "safe"); authoring-isolation static checks unaffected; assets/evidence suites untouched.
+- Full battery: node --test tests/*.test.js (expect 145+ passed), npm run check, git diff --check, verify:release detached (all PASS), local-server browser check (new panel renders, footer 0.18.0-dev, 0 console errors), commit/push, live Pages verification, doc-only record commit.
+
+[Implementation Order]
+
+1. Author src/nozzle-shear.js: constants, settings validation, physics evaluator (both viscosity modes), cited catalog with verbatim quotes + validator; re-extract exact quote strings from /tmp/gomez.html in the same run to guarantee character-for-character verbatim fidelity (reference-number artifacts like "[ 38 ]" preserved as they appear in the text layer).
+2. Write docs/nozzle-shear-audit.json from the same extraction; write tests/nozzle-shear.test.js; run it to green.
+3. Author src/nozzle-shear-ui.js; add the index.html panel; wire src/app.js (state, export, restore); footer 0.18.0-dev; run local server and browser-check the panel.
+4. Scenario /10: src/scenario.js schema bump + defaults + migrateScenarioV9 + parseScenario dispatch; scenario-status prose; tests/scenario.test.js additions + fixtures/scenario-v10.json; run scenario suite.
+5. Docs: NOZZLE_SHEAR.md, SCENARIOS.md (/10 chain), SOURCES.md (Gómez-Blanco entry), CHANGELOG 0.18, VERIFICATION 0.18, ROADMAP follow-on, README (module paragraph + stale publication-status section rewritten truthfully).
+6. Full battery + claims scanner + verify:release detached; commit/push; live Pages verification; doc-only record commit.
+7. Report: what the module teaches, the honest 468-vs-~380 Pa idealization gap, what remains not-modeled (no species/clinic claim, no exposure-time biology, secondhand bands labeled).
+
+---
+
+# Implementation Plan
+
+[Overview]
+
 Deliver **v0.17.0-dev "Blender, actually used — and the GitHub side catches up"**: run the live-in-Blender isolation checks for the first time by transferring the authoring scripts through the connected Blender MCP channel (the previous blocker — the owner's Blender host cannot see /workspace — is solved by shipping file content, not paths); record the run as a continuously re-checked evidence artifact; and close the concrete GitHub gaps the owner's "Update the github?" question exposes: the repo's homepage is null despite live Pages, it has zero topics, zero releases, and the owner's profile README does not list the project at all.
 
 [Workstream A — Live Blender isolation run (the previously-impossible check)]

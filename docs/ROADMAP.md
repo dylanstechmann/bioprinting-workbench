@@ -140,3 +140,12 @@ attempt recorded. No scenario-schema change; no learning-state change.
 Owner instruction (2026-11-02): "Why mention blender and then not use it?" The live isolation
 checks ran in the owner's Blender 5.1.2, the shipped assets became genuine Blender exports, and
 the GitHub side (homepage, topics, first release, profile listing) caught up with the project.
+
+## Local 0.18.0-dev follow-on — the shear tradeoff module
+
+Owner instruction (2026-11-02): "Figure out how, with immense detail/sophistication, to make more
+meaningful/significant progress on the project(s)/repo(s), then do." Delivered as the nozzle
+shear reference model: idealized laminar-capillary wall shear with a cited Cellink power-law fit,
+a pinned ~20% idealization-vs-CFD gap, verbatim-quoted open-access evidence with secondhand
+restatements labeled, scenario schema /10, and the README publication-status prose brought back
+in line with reality.

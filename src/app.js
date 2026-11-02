@@ -4,6 +4,7 @@ import { oxygenProfile } from './oxygen.js';
 import { PROCEDURE_STEPS, createProcedureState, toggleCheck, stepProgress, isStageUnlocked, unlockedStages, clampTime, setMode, procedureSummary, nextGate } from './procedure.js';
 import { NO_CALIBRATION, parseCalibrationInput, fitSlabDemand, calibrationExample } from './calibration.js';
 import { createAnalysisUI } from './analysis-ui.js';
+import { createNozzleShearUI } from './nozzle-shear-ui.js';
 import { serializeScenario, parseScenario, defaultAnalyses } from './scenario.js';
 import { SCENARIO_BYTES, MEASUREMENT_BYTES } from './validation.js';
 import { createCellLearningUI } from './cell-learning-ui.js';
@@ -50,7 +51,7 @@ $('environment').addEventListener('change', event => { environmentTheme = event.
 $('environment-attribution').textContent = environmentAttribution('lab');
 function scenarioState() {
   const analysis = analysisUI?.getState();
-  return { parameters, time, procedure: procedureState, view: { camera: cameraView, reveal: $('cutaway').checked, environment: environmentTheme }, analyses: { ...(analysis ? { oxygen3d: analysis.oxygen3d, flow: { ...analysis.flow, enabled: parameters.channels, pressureDrive: parameters.perfusion } } : defaultAnalyses(parameters)), slab: { demand: Number($('demand').value) } }, datasets: { slab: calibration.status === 'loaded' ? calibration.input : null, oxygen3d: analysis?.dataset || null }, learning: learningUI.getState() };
+  return { parameters, time, procedure: procedureState, view: { camera: cameraView, reveal: $('cutaway').checked, environment: environmentTheme }, analyses: { ...(analysis ? { oxygen3d: analysis.oxygen3d, flow: { ...analysis.flow, enabled: parameters.channels, pressureDrive: parameters.perfusion } } : defaultAnalyses(parameters)), nozzleShear: nozzleUI.getState(), slab: { demand: Number($('demand').value) } }, datasets: { slab: calibration.status === 'loaded' ? calibration.input : null, oxygen3d: analysis?.dataset || null }, learning: learningUI.getState() };
 }
 $('export').addEventListener('click', () => {
   if (exportUrl) URL.revokeObjectURL(exportUrl);
@@ -134,6 +135,7 @@ $('load-example').addEventListener('click', () => { calibrationGeneration++; con
 $('clear-calibration').addEventListener('click', () => { calibrationGeneration++; calibration = { ...NO_CALIBRATION }; showCalibration(); });
 showCalibration();
 analysisUI = createAnalysisUI({ elements: $, onFlow: result => lab?.setFlowResult(result) });
+const nozzleUI = createNozzleShearUI({ elements: $, onStateChange: () => {} });
 analysisUI.setState({ ...defaultAnalyses(parameters), dataset: null });
 function prepareScenarioApplication(raw) {
   const scenario = parseScenario(JSON.stringify(raw)).scenario;
@@ -147,7 +149,7 @@ function commitScenarioApplication({ scenario, nextCalibration }) {
   $('cutaway').checked = scenario.view.reveal; cameraView = scenario.view.camera; lab?.view(cameraView); $('view-label').textContent = `${cameraView.toUpperCase()} VIEW`;
   environmentTheme = scenario.view.environment; $('environment').value = environmentTheme; lab?.setEnvironment(environmentTheme); $('environment-attribution').textContent = environmentAttribution(environmentTheme);
   learningUI.setState(scenario.learning);
-  analysisUI.setState({ ...scenario.analyses, dataset: scenario.datasets.oxygen3d }); showCalibration(); render();
+  analysisUI.setState({ ...scenario.analyses, dataset: scenario.datasets.oxygen3d }); nozzleUI.setState(scenario.analyses.nozzleShear); showCalibration(); render();
 }
 function applyScenario(scenario) {
   const prepared = prepareScenarioApplication(scenario);

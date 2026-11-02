@@ -3,7 +3,31 @@
 Personal hobby and learning project, AI-assisted. Agent-run software/source checks are
 not biological validation or independent scientific review.
 
-## 0.17.0-dev — local, uncommitted and unpublished
+## 0.18.0-dev — local, uncommitted and unpublished
+
+- The shear tradeoff module: the workbench's first physics-anchored teaching model of the core
+  extrusion-bioprinting tradeoff. An idealized steady laminar capillary computes wall shear
+  from nozzle diameter, flow and viscosity mode (hypothetical constant, or the cited Cellink
+  power-law fit with the standard Rabinowitsch correction), with a Reynolds check that flags
+  when the laminar idealization breaks. Analytic identities are pinned by tests
+  (4μQ/(πr³) ≡ 8μU/d ≡ 32μQ/(πd³); the power-law branch reduces to the Newtonian branch
+  at n = 1).
+- The evidence layer is a single fetched open-access CC-BY CFD study (Gómez-Blanco et al. 2023,
+  Int J Bioprint, doi:10.18063/ijb.730): their wall-shear values, their rheology fit and inlet
+  conditions, and the viability context bands they rest ate from Blaeser et al. Eleven verbatim
+  quotes with locators ship in docs/nozzle-shear-audit.json and are tested for equality with
+  the runtime catalog; secondhand restatements are stored with that basis and cannot drop the
+  not-fetched limitation without failing validation.
+- The honest idealization gap is stated and pinned: at the study's piston input the idealized
+  model gives ~468 Pa versus their CFD 362.85-383.24 Pa (~20% from the contraction geometry the
+  idealization omits), asserted in a test as context, not reproduction.
+- Scenario schema /10: analyses.nozzleShear (settings plus origin consistent with the viscosity
+  mode); v9 and older files migrate with truthful defaults-and-warning; v3-v8 migrations gained
+  the same defaulting; new fixture scenario-v10.json. Unit tests 138 → 146.
+- README publication-status prose rewritten to match reality (it still described the live site
+  as published v0.3 with unpublished working-tree extensions).
+
+## 0.17.0-dev — committed and pushed to main on 2026-11-02
 
 - The live-in-Blender isolation checks finally ran: the six authoring/check python files were
   fetched from the repository into a temporary staging directory on the owner's Blender host

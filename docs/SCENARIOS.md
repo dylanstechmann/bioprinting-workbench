@@ -1,15 +1,15 @@
 # Local scenario import/export
 
-Version 9 exports **inputs**, not trusted model outcomes. Files stay in memory;
+Version 10 exports **inputs**, not trusted model outcomes. Files stay in memory;
 nothing is uploaded, persisted or fetched from source citations. Personal learning
 project with AI assistance; restored progress is self-reported, not scientific QC.
 
-`bioprinting-workbench/9` includes:
+`bioprinting-workbench/10` includes:
 - fixed storyboard model and seed 42;
 - validated parameters/time;
 - procedure mode and unique known completed check IDs;
 - camera preset, reveal state and scene environment theme (`lab` or `treedome`);
-- analytical slab demand, normalized 3D box settings/parameter origin, network settings;
+- analytical slab demand, normalized 3D box settings/parameter origin, network settings, and the nozzle-shear design record (inner diameter, volumetric flow, viscosity mode with origin consistency);
 - optional bounded raw slab and 3D point datasets with declared provenance;
 - learning cell category, species-separated cell system, optional method comparison,
   independent relative-doubling assumptions, an optional research horizon, a
@@ -25,8 +25,9 @@ project with AI assistance; restored progress is self-reported, not scientific Q
   unknown, not zero;
 - application-authored limitations.
 
-See `tests/fixtures/scenario-v9.json` for a complete synthetic fixture. The v2, v3, v4,
-v5, v6, v7 and v8 fixtures remain as migration evidence. Evidence prose, source-review status, recipe
+See `tests/fixtures/scenario-v10.json` for a complete synthetic fixture. The v2, v3, v4,
+v5, v6, v7, v8 and v9 fixtures remain as migration evidence; v9 and older files restore
+with nozzle-shear design inputs initialized to defaults and a warning that says so. Evidence prose, source-review status, recipe
 cards, arithmetic outcomes, cancer scores and organ-completion estimates are not
 export fields. Fields are validated explicitly; unknown structural keys, unsupported
 versions, nonfinite/out-of-range values, contradictory flow controls, unknown checks,

@@ -45,6 +45,12 @@ lab protocol, and directs nothing at any person or animal. The optional
 owner-supplied pairs with a source citation. Nothing is calibrated by default, and any
 fit remains bound to the slab assumptions rather than being tissue validation.
 
+**Nozzle shear reference** ([guide](docs/NOZZLE_SHEAR.md)): an idealized laminar-capillary
+wall-shear calculation with a Reynolds self-check, positioned against verbatim-quoted open-access
+CFD values and restated in-vitro viability context bands. The ~20% gap between the idealized
+reference and the cited CFD at the same input is stated and pinned by tests; band placement
+labels context, it predicts nothing.
+
 **Published-method reference recipes** ([guide](docs/METHOD_RECIPES.md)) restate
 actionable parameters from open-access papers — concentrations, seeding densities,
 incubation conditions — as cited third-person research descriptions. Every parameter
@@ -130,13 +136,23 @@ and data were not copied, merged, changed, or presented as new work here.
 
 Original project source is MIT licensed. Scientific ideas and third-party software retain
 their original attribution; no independent scientific review or physical validation is implied.
-## Unpublished working-tree extensions — 0.7.0-dev and 0.8.0-dev
+## Development history and publication status
+
+The site is published from this repository's main branch and was serving **v0.17.0-dev** at the
+last recorded live check (v0.18.0-dev follows the same publish-then-verify pattern; see
+[VERIFICATION.md](docs/VERIFICATION.md)). Every milestone since 0.10 is in the repository
+history and [CHANGELOG.md](CHANGELOG.md); the sections below keep the early working-tree
+notes that once described pre-publication work, edited only where they contradicted the
+published reality.
+
+### Original 0.7.0-dev and 0.8.0-dev working-tree notes
 
 All four approved milestones are implemented locally with AI assistance: generic
 Blender-authored incubator/microscope/chamber alongside the printer; an independent
 normalized 3D oxygen box and scalar point-ratio fit; a conservation-checked
 dimensionless resistance network; and version 2 local scenario restore/export.
-The published v0.3 site has not been updated by this work.
+That sentence described the site state at the time it was written; the live site has long
+since been updated and each push since has been live-verified in docs/VERIFICATION.md.
 
 These are agent-run mathematical/software checks, not measurements personally
 performed or independently reviewed by the owner. No real dataset is bundled or

@@ -189,3 +189,14 @@ authored estimates.
 | Adafruit product 324 (NEMA-17 stepper) | https://www.adafruit.com/product/324, fetched 2026-11-02 | Unit list price $14.00 | Any current price, any three-pack listing, or a purchase recommendation |
 | Adafruit product 352 (12V 5A supply) | https://www.adafruit.com/product/352, fetched 2026-11-02 | List price $24.95 | Any current price or purchase recommendation |
 | Thermo Fisher 10569010 (Gibco DMEM, GlutaMAX, 500 mL) | https://www.thermofisher.com/order/catalog/product/10569010, fetched 2026-11-02 | List price $27.41 | Any current price, suitability for any cell line, or purchase recommendation |
+
+## 0.18.0-dev nozzle-shear evidence (agent-run, November 2, 2026)
+
+One open-access CFD source fetched once and quoted verbatim (11 quotes with locators, mirrored in
+docs/nozzle-shear-audit.json and tested for equality with the runtime catalog). Secondhand
+restatements inside that paper (Blaeser et al., Liu et al., Müller et al.) are stored with basis
+`secondhand-restatement`; the underlying studies are not open-access and were not fetched.
+
+| Source | Identifier | Supported scope | Not inferred |
+| --- | --- | --- | --- |
+| Gómez-Blanco et al., Int J Bioprint 2023 | 10.18063/ijb.730; PMC10261129, fetched 2026-11-02 | CFD wall-shear values for a 22G conical tip and 0.4 mm nozzle with a fitted Cellink rheology (K = 87.906, n = 0.208) and its restated in-vitro viability context | Any viability prediction, cell-type or species specificity, print settings, or agreement of the idealized capillary model with their geometry |

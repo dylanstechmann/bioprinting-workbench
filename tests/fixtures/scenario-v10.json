@@ -1,0 +1,134 @@
+{
+  "schema": "bioprinting-workbench/10",
+  "model": "synthetic-dimensionless-storyboard",
+  "seed": 42,
+  "parameters": {
+    "spacing": 0.36,
+    "layers": 6,
+    "population": 0.6,
+    "perfusion": 0.6,
+    "channels": true,
+    "recipient": "animal"
+  },
+  "time": 0,
+  "procedure": {
+    "mode": "gated",
+    "completedChecks": []
+  },
+  "view": {
+    "camera": "lab",
+    "reveal": false,
+    "environment": "lab"
+  },
+  "analyses": {
+    "slab": {
+      "demand": 1
+    },
+    "oxygen3d": {
+      "settings": {
+        "model": "steady-3d-box-constant-consumption",
+        "demand": 1,
+        "resolution": 17,
+        "boundaryMode": "all-faces"
+      },
+      "parameterOrigin": "synthetic-controls"
+    },
+    "flow": {
+      "enabled": true,
+      "pressureDrive": 0.6,
+      "branchResistances": [
+        1,
+        1,
+        1
+      ]
+    },
+    "nozzleShear": {
+      "settings": {
+        "diameterUm": 250,
+        "flowMm3PerS": 2.5,
+        "viscosityMode": "hypothetical-constant",
+        "viscosityPas": 3
+      },
+      "parameterOrigin": "hypothetical-controls"
+    }
+  },
+  "datasets": {
+    "slab": null,
+    "oxygen3d": null
+  },
+  "learning": {
+    "selectedCellType": "msc",
+    "selectedCellSystemId": "human-msc",
+    "selectedMethodId": null,
+    "division": {
+      "model": "idealized-relative-doubling",
+      "doublings": 0,
+      "hypotheticalDoublingHours": null
+    },
+    "researchHorizonYears": null,
+    "planningComparison": {
+      "baselineHours": null,
+      "comparisonHours": null
+    },
+    "expansionTheory": {
+      "startCells": null,
+      "targetCells": null,
+      "doublingHours": null,
+      "overheadHours": null,
+      "splitRatio": null,
+      "attritionFraction": null,
+      "attritionRescuedFraction": null,
+      "mediumPdtMultiplier": null,
+      "forkCycleMultiplier": null,
+      "selectedMechanismIds": []
+    },
+    "longevityPerspective": {
+      "singleOrganFailureFraction": null,
+      "replacedOrganCount": null,
+      "replacementCadenceYears": null,
+      "planningHorizonYears": null,
+      "selectedBarrierIds": []
+    },
+    "applicationsPerspective": {
+      "plannedFatVolumeML": null,
+      "resorptionFraction": null,
+      "fatRetouchYears": null,
+      "implantReplacementYears": null,
+      "planningHorizonYears": null,
+      "selectedApproachIds": []
+    },
+    "researchProgram": {
+      "selectedNodeIds": []
+    },
+    "hardwareBudget": {
+      "includedPartIds": [
+        "used-fdm-printer-base",
+        "nema17-stepper-x3",
+        "stepper-controller",
+        "psu-12v",
+        "syringe-extruder-parts",
+        "carriage-print-filament",
+        "sodium-alginate-100g",
+        "gelatin-500g",
+        "calcium-chloride-100g",
+        "pressure-sterilizer",
+        "bench-laminar-hood",
+        "co2-incubator-used",
+        "microscope-basic",
+        "milligram-scale",
+        "ph-meter",
+        "usb-temp-logger",
+        "culture-medium-500ml",
+        "fbs-serum-100ml",
+        "syringes-needles-pack",
+        "culture-dishes-pack",
+        "sterile-filters-pack",
+        "gloves-disinfectant-pack"
+      ]
+    },
+    "tissueAtlas": {
+      "selectedTargetIds": []
+    }
+  },
+  "limitations": "Synthetic dimensionless teaching models; user provenance unverified. No biological validation, viability, clinical, animal-use or transplant-safety inference. Published-method recipe cards are cited research descriptions, not treatment instructions or validated protocols."
+}

@@ -1,0 +1,72 @@
+{
+  "schema": "bioprinting-workbench/nozzle-shear-audit/1",
+  "fetchDate": "2026-11-02",
+  "transcriptionNote": "Quotes transcribed from the PMC reading view of the CC-BY article on 2026-11-02; inline math and citation markers are transcribed in linear form. Reference-number line annotations in the HTML layer are page furniture and are excluded.",
+  "sources": [
+    {
+      "id": "gomez-blanco-2023",
+      "doi": "10.18063/ijb.730",
+      "journalYear": "Int J Bioprint 2023",
+      "fullTextUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10261129/",
+      "license": "CC-BY 4.0",
+      "citation": "Gomez-Blanco JC, Pagador JB, Galvan-Chacon VP, Sanchez-Peralta LF, Matamoros M, Marcos A, Sanchez-Margallo FM. Computational simulation-based comparative analysis of standard 3D printing and conical nozzles for pneumatic and piston-driven bioprinting. Int J Bioprint. 2023;9(4):730. doi:10.18063/ijb.730"
+    }
+  ],
+  "claims": [
+    {
+      "id": "nozzle-shear-cfd-values",
+      "verbatimQuote": "Bearing this in mind, the values of shear stress are 455.43 and 242.16 Pa for Nozzle and Cone pneumatic simulations, respectively, and 362.85 and 383.24 Pa for Nozzle and Cone piston-driven simulations, respectively.",
+      "locator": "Results, shear stress comparison"
+    },
+    {
+      "id": "nozzle-shear-max-vs-threshold",
+      "verbatimQuote": "Nevertheless, the maximum difference is approximately 213 Pa and the maximum value of shear stress for all simulations is 455.43 Pa, which are in both cases more than ten times lower than the threshold proposed by Blaeser et al. [38].",
+      "locator": "Results, shear stress comparison"
+    },
+    {
+      "id": "nozzle-shear-viability-bands-restated",
+      "verbatimQuote": "Blaeser et al. [38] classified the shear stress ranges that affect cellular viability into low shear stress (<5 kPa), that has high cellular viability up to 96%; medium shear stress (5–10 kPa), with a cellular viability of 91%; and high shear stress (>10 kPa), with a cell viability of 76%.",
+      "locator": "Introduction, viability thresholds paragraph"
+    },
+    {
+      "id": "nozzle-shear-below-threshold-survival",
+      "verbatimQuote": "Additionally, Blaeser et al. [38] also determined that shear stress lower than 5 kPa might not have an important influence on cell survival.",
+      "locator": "Introduction, viability thresholds paragraph"
+    },
+    {
+      "id": "nozzle-shear-rheology-fit",
+      "verbatimQuote": "In this work, Cellink bioink (Cellink USA) was simulated at 37°C with the following fitted potential law:",
+      "locator": "Materials and Methods, bioink model (Equation (I))"
+    },
+    {
+      "id": "nozzle-shear-rheology-variables",
+      "verbatimQuote": "where μ is the dynamic viscosity (Pa·s) and γ˙ is the shear rate (s−1).",
+      "locator": "Materials and Methods, bioink model (Equation (I))"
+    },
+    {
+      "id": "nozzle-shear-inlet-conditions",
+      "verbatimQuote": "Model inlets were configured to two approaches: a pneumatic process with 15 kPa inlet pressure, as recommended by Cellink [54], and a piston-driven process with 10 mm3/s volumetric inlet flow.",
+      "locator": "Materials and Methods, inlet conditions"
+    },
+    {
+      "id": "nozzle-shear-shear-dominates-pressure",
+      "verbatimQuote": "Previous studies showed that cell viability was highly impacted by the nozzle inner pressure, and even more by the shear stress [24].",
+      "locator": "Introduction"
+    },
+    {
+      "id": "nozzle-shear-liu-context",
+      "verbatimQuote": "Liu et al. [39] obtained low shear stress (30, 180, and 300 Pa) using different concentrations of a bioink with lower viscosity and using both needle and conical tips.",
+      "locator": "Results, comparison with previous studies"
+    },
+    {
+      "id": "nozzle-shear-gauge-context",
+      "verbatimQuote": "Müller et al. [55] also studied the shear stress using several needle and conical tips (namely 22, 23, 25, 27, and 30G) with a very similar alginate with nanocellulose bioink, obtaining results around 160 Pa.",
+      "locator": "Results, comparison with previous studies"
+    },
+    {
+      "id": "nozzle-shear-tip-geometry",
+      "verbatimQuote": "These two geometrical models were a bioprinting 22G conical tip (Cellink, BICO Company, Gothenburg, Sweden) and a 3D printing E3D V6.4 nozzle (E3D Online, Chalgrove, Oxfordshire, UK), named hereinafter as Cone and Nozzle, respectively.",
+      "locator": "Materials and Methods, nozzle geometries"
+    }
+  ]
+}
