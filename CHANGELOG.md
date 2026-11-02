@@ -3,7 +3,7 @@
 Personal hobby and learning project, AI-assisted. Agent-run software/source checks are
 not biological validation or independent scientific review.
 
-## 0.18.0-dev — local, uncommitted and unpublished
+## 0.18.0-dev — committed and pushed to main on 2026-11-02
 
 - The shear tradeoff module: the workbench's first physics-anchored teaching model of the core
   extrusion-bioprinting tradeoff. An idealized steady laminar capillary computes wall shear

@@ -836,3 +836,12 @@ Actual verification results:
 - **Not performed:** any CFD of our own; fetching the non-open-access Blaeser/Liu/Müller
   studies; coupling the shear model to the storyboard, oxygen box or flow network; any
   biological, clinical or manufacturing claim.
+
+- **Live Pages verification (after commit 6545a63 was pushed):** fetching
+  https://dylanstechmann.github.io/bioprinting-workbench/ returned the updated page with footer
+  "v0.18.0-dev"; /docs/nozzle-shear-audit.json served live at HTTP 200 (4,525 bytes);
+  /src/nozzle-shear.js served live at HTTP 200 (16,231 bytes); /docs/NOZZLE_SHEAR.md served live
+  with the Rabinowitsch correction section. The connected-browser check (local static server)
+  rendered the new panel with six result rows and eleven quoted evidence entries, updated live
+  on input changes, exported the nozzle-shear record in the scenario JSON, and reported 0
+  console errors. Deployment propagated within minutes of the push.
