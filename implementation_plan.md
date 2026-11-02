@@ -2,6 +2,81 @@
 
 [Overview]
 
+Deliver **v0.17.0-dev "Blender, actually used — and the GitHub side catches up"**: run the live-in-Blender isolation checks for the first time by transferring the authoring scripts through the connected Blender MCP channel (the previous blocker — the owner's Blender host cannot see /workspace — is solved by shipping file content, not paths); record the run as a continuously re-checked evidence artifact; and close the concrete GitHub gaps the owner's "Update the github?" question exposes: the repo's homepage is null despite live Pages, it has zero topics, zero releases, and the owner's profile README does not list the project at all.
+
+[Workstream A — Live Blender isolation run (the previously-impossible check)]
+
+The connected Blender is 5.1.2 (addon 1.8, protocol 15, telemetry off). Plan: (1) stage a temp directory on the Blender host (Blender's own `tempfile.gettempdir()`), never the user's scenes or a .blend; (2) transfer the six python files (assets/authoring_common.py 4857 B, author_bioprinter.py 4325 B, author_incubator.py 2371 B, author_microscope.py 2102 B, author_perfusion_chamber.py 1758 B, tests/blender_authoring_check.py 4662 B — about 20 KB, ~27 KB as base64) in chunked `execute_blender_code` calls that append decoded base64 into the staging tree (assets/ and tests/ layout preserved so the check script's `Path(__file__).resolve().parents[1]` root logic works); (3) run `run_checks(staging)` inside Blender: the script itself asserts foreign-scene fingerprints unchanged, second-generation reruns without data-block leaks, forced export failures handled, all node names carry the asset prefixes, size limits hold, and it exports the four GLBs into the staging dir and prints `AUTHORING_CHECKS_PASSED` plus a JSON entries list; (4) return the entries JSON and the staging-regenerated manifest to the container; (5) delete the staging directory from the Blender host (leave the owner's machine clean); (6) if Blender 5.x API changes break the 0.14-era script, adapt the staged copy live, run it, and record the adaptation honestly in the evidence — the repo copy stays canonical and the adaptation is folded back into the repo script so future runs work unmodified.
+
+Repo GLBs are NOT replaced: fresh exports from Blender 5.1.2 may differ byte-wise from the shipped files (different Blender version than the original generation; the shipped files are hash-pinned by the manifest and structure-tested). The evidence records the per-asset comparison (bytes/sha256/meshes/materials/triangles match-or-diverge) instead of silently swapping bytes. If, exceptionally, every structural count matches and only bytes differ, that is recorded as version-difference, not defect.
+
+[Workstream B — Evidence wiring and version bump]
+
+- New artifact `docs/blender-isolation-run-2026-11-02.json`: schema `bioprinting-workbench/blender-isolation-run/1` with blenderVersion, ranAt, stagingCleanupConfirmed, entries (id, bytes, sha256, meshes, materials, triangles, blenderBounds, maxBytes, nodePrefix, requiredNodes), shippedComparison (per asset: structural counts equal true/false, byteEqual true/false), and the run's pass/fail verdict. Written from the live run's own output, not hand-authored.
+- New `tests/blender-evidence.test.js`: asserts the evidence file exists and parses; asserts the run verdict is a pass and staging cleanup is confirmed; asserts every evidence entry's meshes/materials/triangles/requiredNodes match the shipped `assets/manifest.json` entry for the same asset — so any future GLB change that breaks consistency with the recorded live run fails tests until a fresh live run is recorded.
+- `scripts/verify-release.mjs`: the not-run row for the live Blender isolation checks keeps its not-run status for the script itself (the release script still cannot execute Blender) but its notes now point at the recorded live-run evidence path; the 0.16 static checks remain companions.
+- Version bump: `index.html` footer and `package.json` to `0.17.0-dev`.
+- Docs: VERIFICATION.md 0.17 section (live-run method, results, what was and was not done), CHANGELOG.md 0.17 entry, docs/ROADMAP.md follow-on section, `implementation_plan.md` (this plan; the 0.16 plan archived verbatim below the divider).
+
+[Workstream C — GitHub updates ("Update the github?")]
+
+The push itself was already current (main at 655703e in sync). What is actually missing on the GitHub side, to be fixed with `gh api`:
+
+1. **Repo metadata** (`repos/dylanstechmann/bioprinting-workbench`): set `homepage` to the live Pages URL (currently null despite the site being live); set `topics` to an honest set — bioprinting, tissue-engineering, simulation, education, browser, vanilla-javascript (no hype topics; nothing implying clinical use).
+2. **First release**: after the v0.17.0-dev push, create annotated tag `v0.17.0-dev` and a GitHub release documenting the 0.10→0.17 arc in house style: AI-assisted personal learning project, teaching simulation only, not biologically calibrated, no laboratory work performed, evidence and verification records in docs/. Reversible by the owner (a release can be edited or deleted).
+3. **Profile repo** (`dylanstechmann/dylanstechmann`): README "The stack" table does not list bioprinting-workbench; add one row (project name, role line in the table's existing voice, live Pages link), keeping the personal-hobby framing intact per workspace AGENTS.md. Commit and push.
+4. **regen-workbench metadata**: has_pages=true but homepage=null — set homepage to its Pages URL only if the Pages site is the research desk UI; otherwise leave and report. Metadata only; no content changes.
+
+[Types]
+
+New evidence record type `docs/blender-isolation-run-2026-11-02.json` as specified in Workstream B. No catalog or learning-state schema changes; no scenario bump.
+
+[Files]
+
+New: `docs/blender-isolation-run-2026-11-02.json` (generated from the live run), `tests/blender-evidence.test.js`.
+Modified: `scripts/verify-release.mjs` (not-run row notes point at the evidence), `index.html` (footer 0.17.0-dev), `package.json` (0.17.0-dev), `docs/VERIFICATION.md`, `CHANGELOG.md`, `docs/ROADMAP.md`, `implementation_plan.md` (archive + new plan), `assets/authoring_common.py` and/or `assets/author_*.py` and `tests/blender_authoring_check.py` ONLY if the live run exposes Blender 5.x API incompatibilities (fold the adaptation back into the repo; then re-run the 34 static invariants and the assets suite).
+Companion repos: `dylanstechmann/README.md` (one stack-table row).
+
+[Functions]
+
+New: none in src/ (this milestone is verification machinery, not catalog logic). Test-side: the assertions described in tests/blender-evidence.test.js. Blender-side: `run_checks(root)` executes live as-is (or adapted per Workstream A step 6).
+
+[Classes]
+
+None.
+
+[Dependencies]
+
+None. The Blender MCP channel is the only integration used (already connected, up to date, telemetry consent off). No npm packages; no runtime network calls; the app itself is unchanged.
+
+[Testing]
+
+- The live run itself is the primary validation; its printed AUTHORING_CHECKS_PASSED marker and entries JSON are captured to the evidence file.
+- `tests/blender-evidence.test.js` pins the evidence contract and its consistency with the shipped manifest (structural counts).
+- Full battery after the bump: node --test tests/*.test.js (expect 138 passed: 136 + 2 evidence tests), npm run check, git diff --check, verify:release detached (all PASS; two scripted honesty checks remain; live-Blender row stays script-not-run but evidence-noted).
+- Connected-browser check: footer v0.17.0-dev, no console errors, hardware panel unchanged.
+- Companion-repo change (profile README) is documentation-only; verify the table renders in the live profile README after push.
+
+[Implementation Order]
+
+1. Stage and transfer the six python files to the Blender host via chunked execute_blender_code; verify staging tree integrity by hashing the written files inside Blender and comparing against container-side hashes.
+2. Run the live isolation checks inside Blender; capture entries + staging manifest; delete the staging directory.
+3. Write docs/blender-isolation-run-2026-11-02.json from the live output (payload-JSON pattern to survive transport); fold back any API adaptations into the repo scripts and re-run the static invariants if needed.
+4. Write tests/blender-evidence.test.js; run it.
+5. Wire the verify-release not-run row notes to the evidence path.
+6. Version bump (footer + package.json).
+7. Docs pass: VERIFICATION, CHANGELOG, ROADMAP, implementation_plan archive.
+8. Full battery (tests, check, whitespace, verify:release detached, browser).
+9. Commit, push, live Pages verify.
+10. GitHub updates: repo homepage + topics; first release v0.17.0-dev with honest notes; profile README stack row (commit + push); regen-workbench homepage check (metadata only).
+11. Final report: what "update the github" concretely meant (already-current push; the real gaps were homepage/topics/releases/profile listing), why Blender went unused before and how it is used now, and the state of the other repos (report-only).
+
+---
+
+# Implementation Plan
+
+[Overview]
+
 Deliver **v0.16.0-dev "Anchors and honesty machinery"**: turn two long-standing compensations into first-class scripted checks, and — now that vendor pages are fetchable from this environment for the first time — anchor every hardware price that can be honestly fetched through the validator's reserved `fetched-list-price` path, recompute the reference totals, and update every string that pins them. Workstream 1: an in-repo **claims-language scanner** (Node, no python needed) that mechanically scans authored `src/` text for overclaim, procedure-imperative and human-outcome language, wired into `verify:release` as a real PASS check with unit tests (the external historical scanner stays honestly not-run; this adds a runnable sibling, not a fake of it). Workstream 2: **authoring-isolation static checks** (Node) verifying the five Blender authoring scripts keep their safety invariants textually, also wired as a PASS check — while the live-in-Blender isolation row stays not-run, honestly distinguished. Workstream 3: **price anchoring** — fetch specific product pages (adafruit product pages parse cleanly at HTTP 200; sigmaaldrich, creality and thermofisher reachable; fishersci returns 403 so its nine parts stay authored-estimates; the two open-perfusion-rig GitHub lines carry no list price and stay estimates), parse list prices conservatively, switch clean matches to `fetched-list-price` with fetch dates, recompute one-time/recurring totals, and update the four places the old totals are pinned. No scenario-schema change; no learning-state change.
 
 [Types]

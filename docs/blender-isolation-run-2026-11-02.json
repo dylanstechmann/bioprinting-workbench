@@ -1,0 +1,105 @@
+{
+  "schema": "bioprinting-workbench/blender-isolation-run/1",
+  "ranAt": "2026-11-02T13:04:17Z",
+  "executedBy": "agent via MCP for Blender (owner-authorized, telemetry consent off)",
+  "blenderVersion": "Blender 5.1.2",
+  "method": "The six authoring/check python files were fetched from raw.githubusercontent.com into a temporary staging directory on the Blender host (sha256-verified against the repository copies before running), then blender_authoring_check.run_checks(staging) was executed inside the live Blender session. Staging was deleted and the temporary listener stopped after the run; the owner's open scene was never saved and its fingerprints were asserted unchanged by the check itself.",
+  "verdict": "pass",
+  "marker": "AUTHORING_CHECKS_PASSED",
+  "findings": [
+    "First execution attempt failed with AssertionError (cancelled export reported as success) because the long-running Blender session had stale authoring modules cached in sys.modules from an earlier era; purging the cache and re-running passed. The stale-module purge is now part of blender_authoring_check.py so future live runs are immune.",
+    "Fresh Blender 5.1.2 exports differ structurally from the previously shipped Node-surgered files: bioprinter gained a seventh material (the exporter splits what the surgery reused) and triangle counts differ on three assets (different cylinder triangulation). The genuine exports replaced the surgered files in this milestone; the prior values are preserved below."
+  ],
+  "assets": [
+    {
+      "id": "bioprinter",
+      "file": "assets/bioprinter.glb",
+      "nodePrefix": "Printer_",
+      "requiredNodes": [
+        "Printer_Base",
+        "Printer_TopCap",
+        "Printer_BuildPlate",
+        "Printer_Glass_Door"
+      ],
+      "bytes": 176096,
+      "sha256": "c46fc85329426a85c75096ab2c450d7de01ff6adfbb1ec9b2e8ec017dfc83de6",
+      "meshes": 47,
+      "materials": 7,
+      "triangles": 3764,
+      "maxBytes": 358400,
+      "priorShippedBytes": 167412,
+      "priorShippedSha256": "148701cbeaec2fbb63fd5d095dc2376f1e12a98be950b257ebc322362afbabae",
+      "priorShippedMeshes": 47,
+      "priorShippedMaterials": 6,
+      "priorShippedTriangles": 3524,
+      "structuralCountsMatchPriorShipped": false
+    },
+    {
+      "id": "incubator",
+      "file": "assets/incubator.glb",
+      "nodePrefix": "Incubator_",
+      "requiredNodes": [
+        "Incubator_Base",
+        "Incubator_Glass_Door"
+      ],
+      "bytes": 124960,
+      "sha256": "48d11c071e70df7df2f065cda1760cb63940b8d18a411b54c60a6366931254ff",
+      "meshes": 26,
+      "materials": 5,
+      "triangles": 2536,
+      "maxBytes": 358400,
+      "priorShippedBytes": 111316,
+      "priorShippedSha256": "2be7644a389c4b878280ae994d6b459618b54c6e9a512dc9e6a91f8209f749e3",
+      "priorShippedMeshes": 26,
+      "priorShippedMaterials": 5,
+      "priorShippedTriangles": 2216,
+      "structuralCountsMatchPriorShipped": false
+    },
+    {
+      "id": "microscope",
+      "file": "assets/microscope.glb",
+      "nodePrefix": "Microscope_",
+      "requiredNodes": [
+        "Microscope_Base",
+        "Microscope_Stage",
+        "Microscope_Objective_1"
+      ],
+      "bytes": 88156,
+      "sha256": "01d2baca8fa23144b372df8b8f7be7cee11b8391f6d253c4b67cb727c96ee492",
+      "meshes": 20,
+      "materials": 4,
+      "triangles": 2288,
+      "maxBytes": 358400,
+      "priorShippedBytes": 84924,
+      "priorShippedSha256": "2b50bea16cf50fbf414ce61b358579f7a5d0797aa60cc7bed89d289a24e84552",
+      "priorShippedMeshes": 20,
+      "priorShippedMaterials": 4,
+      "priorShippedTriangles": 2208,
+      "structuralCountsMatchPriorShipped": false
+    },
+    {
+      "id": "perfusion-chamber",
+      "file": "assets/perfusion_chamber.glb",
+      "nodePrefix": "Chamber_",
+      "requiredNodes": [
+        "Chamber_Base",
+        "Chamber_Glass_Lid"
+      ],
+      "bytes": 67756,
+      "sha256": "b33afb6bb71fcd0ae7b571e99f4b800f5cc44159c2ca5f78d8d96a3246ecd7a6",
+      "meshes": 18,
+      "materials": 4,
+      "triangles": 1656,
+      "maxBytes": 358400,
+      "priorShippedBytes": 70544,
+      "priorShippedSha256": "a88e56ec373c84d835a10d7280c1c66af54a4d070366293fdd333c1b639b2326",
+      "priorShippedMeshes": 18,
+      "priorShippedMaterials": 4,
+      "priorShippedTriangles": 1656,
+      "structuralCountsMatchPriorShipped": true
+    }
+  ],
+  "isolationAssertions": "Foreign scene object/material/selection/active-object fingerprints unchanged; two generations without data-block leaks per asset; forced export failure and cancelled export both rejected; every node name carries its asset prefix; per-asset and total size limits hold.",
+  "stagingCleanupConfirmed": true,
+  "temporaryListenerStopped": true
+}

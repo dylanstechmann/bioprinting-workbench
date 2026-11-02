@@ -748,3 +748,42 @@ Actual verification results:
   "v0.16.0-dev" and the anchored-totals wording including "$5,586.95";
   /scripts/scan-claims.mjs and /scripts/check-authoring-isolation.mjs are served (HTTP 200).
   Deployment propagated within minutes of the push; no tag or release object was created.
+
+## 0.17.0-dev local follow-on (agent-run, November 2, 2026)
+
+Owner instruction: "Update the github? Why mention blender and then not use it? Continue
+improving this project/repo and you're welcome to improve some of the other projects/repos
+too." This milestone used the connected Blender for real.
+
+Actual verification results:
+
+- **Live Blender isolation checks (previously not-run, now executed):** run inside the owner's
+  live Blender 5.1.2 via the MCP channel. The six python files were fetched from
+  raw.githubusercontent.com into a temporary staging directory on the Blender host (every
+  sha256 verified against the repository before running), blender_authoring_check.run_checks
+  executed with AUTHORING_CHECKS_PASSED: foreign-scene fingerprints unchanged (the owner's
+  open 79-object scene untouched and never saved), two generations without data-block leaks
+  per asset, forced export failure and cancelled export both rejected, node prefixes and size
+  limits verified. Staging deleted and the temporary listener stopped afterward. Evidence:
+  docs/blender-isolation-run-2026-11-02.json (pinned by tests/blender-evidence.test.js).
+- **Finding from the first attempt:** the long-running Blender session had stale authoring
+  modules cached in sys.modules (pre-marker era), and the first run failed its cancelled-export
+  sub-test because the stale module, not the staged file, was imported. Purging the cache fixed
+  it; the purge is now folded into tests/blender_authoring_check.py and enforced as static
+  invariant #35 (36 total, zero failures).
+- **Genuine Blender assets:** the shipped GLBs are now real Blender 5.1.2 exports of the
+  canonical authoring scripts, transferred from the Blender host over a temporary LAN listener
+  and hash-verified on arrival (bioprinter c46fc853..., incubator 48d11c07..., microscope
+  01d2baca..., perfusion_chamber b33afb6b...). Structural counts moved honestly (bioprinter
+  7 materials/3764 triangles; incubator 2536; microscope 2288; perfusion_chamber 1656 - the
+  prior surgered values are preserved in the evidence file); the manifest regenerated from the
+  live run; container-side validation confirmed every hash, prefix, required node, count and
+  size limit.
+- **Unit tests:** node --test tests/*.test.js — **138 passed, 0 failed** (up from 136; +2
+  evidence-contract tests).
+- **GitHub side (the actual gaps behind "Update the github?"):** pushes were already current;
+  what was missing is recorded in the 0.17 release notes - repo homepage (was null despite
+  live Pages), topics (were empty), the first release object, and the owner's profile README
+  stack table (did not list this project).
+- **Not performed:** laboratory execution; saving or modifying the owner's open .blend (never
+  touched); any biological calibration.

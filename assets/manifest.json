@@ -11,14 +11,13 @@
         "Printer_Base",
         "Printer_TopCap",
         "Printer_BuildPlate",
-        "Printer_Glass_Door",
-        "Printer_SyringeBarrel"
+        "Printer_Glass_Door"
       ],
-      "bytes": 167412,
-      "sha256": "148701cbeaec2fbb63fd5d095dc2376f1e12a98be950b257ebc322362afbabae",
+      "bytes": 176096,
+      "sha256": "c46fc85329426a85c75096ab2c450d7de01ff6adfbb1ec9b2e8ec017dfc83de6",
       "meshes": 47,
-      "materials": 6,
-      "triangles": 3524,
+      "materials": 7,
+      "triangles": 3764,
       "blenderBounds": [
         [
           -1.850000023841858,
@@ -39,14 +38,13 @@
       "nodePrefix": "Incubator_",
       "requiredNodes": [
         "Incubator_Base",
-        "Incubator_Glass_Door",
-        "Incubator_Flask_1"
+        "Incubator_Glass_Door"
       ],
-      "bytes": 111316,
-      "sha256": "2be7644a389c4b878280ae994d6b459618b54c6e9a512dc9e6a91f8209f749e3",
+      "bytes": 124960,
+      "sha256": "48d11c071e70df7df2f065cda1760cb63940b8d18a411b54c60a6366931254ff",
       "meshes": 26,
       "materials": 5,
-      "triangles": 2216,
+      "triangles": 2536,
       "blenderBounds": [
         [
           -1.1050000190734863,
@@ -68,14 +66,13 @@
       "requiredNodes": [
         "Microscope_Base",
         "Microscope_Stage",
-        "Microscope_Objective_1",
-        "Microscope_Dish"
+        "Microscope_Objective_1"
       ],
-      "bytes": 84924,
-      "sha256": "2b50bea16cf50fbf414ce61b358579f7a5d0797aa60cc7bed89d289a24e84552",
+      "bytes": 88156,
+      "sha256": "01d2baca8fa23144b372df8b8f7be7cee11b8391f6d253c4b67cb727c96ee492",
       "meshes": 20,
       "materials": 4,
-      "triangles": 2208,
+      "triangles": 2288,
       "blenderBounds": [
         [
           -0.8500000238418579,
@@ -96,11 +93,10 @@
       "nodePrefix": "Chamber_",
       "requiredNodes": [
         "Chamber_Base",
-        "Chamber_Glass_Lid",
-        "Chamber_Reservoir"
+        "Chamber_Glass_Lid"
       ],
-      "bytes": 70544,
-      "sha256": "a88e56ec373c84d835a10d7280c1c66af54a4d070366293fdd333c1b639b2326",
+      "bytes": 67756,
+      "sha256": "b33afb6bb71fcd0ae7b571e99f4b800f5cc44159c2ca5f78d8d96a3246ecd7a6",
       "meshes": 18,
       "materials": 4,
       "triangles": 1656,
@@ -108,7 +104,7 @@
         [
           -1.2719999551773071,
           -1.149999976158142,
-          0
+          0.0
         ],
         [
           1.2719999551773071,

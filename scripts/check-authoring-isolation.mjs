@@ -14,6 +14,9 @@ export function checkAuthoringIsolation(directory) {
   invariant('refuses non-owned scene adoption', /is not marked as owned; rename it before generation/.test(common));
   invariant('refuses shared-object removal', /Refusing to remove shared object/.test(common));
   invariant('export context guarded', /Unsafe export context/.test(common) && /window\.scene = previous/.test(common));
+  const checkScript = readFileSync(join(assets, '..', 'tests', 'blender_authoring_check.py'), 'utf8');
+  invariant('check script purges stale authoring modules before import', checkScript.includes("for stale in [k for k in list(sys.modules) if 'authoring' in k or k.startswith('author_')]") && checkScript.includes('del sys.modules[stale]'));
+  invariant('check script writes no .blend and no files outside its staging root', !/save_mainfile|os.remove/.test(checkScript));
   invariant('no .blend save in common', !/save_mainfile|\.blend['"]\s*\)/.test(common));
   for (const f of AUTHOR_FILES) {
     const text = readFileSync(join(assets, f), 'utf8');

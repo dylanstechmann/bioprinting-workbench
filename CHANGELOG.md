@@ -3,7 +3,26 @@
 Personal hobby and learning project, AI-assisted. Agent-run software/source checks are
 not biological validation or independent scientific review.
 
-## 0.16.0-dev — local, uncommitted and unpublished
+## 0.17.0-dev — local, uncommitted and unpublished
+
+- The live-in-Blender isolation checks finally ran: the six authoring/check python files were
+  fetched from the repository into a temporary staging directory on the owner's Blender host
+  (sha256-verified before running) and blender_authoring_check.run_checks executed inside the
+  live Blender 5.1.2 session - AUTHORING_CHECKS_PASSED, with the owner's open scene fingerprint
+  asserted unchanged and staging cleaned up afterward. Evidence: docs/blender-isolation-run-2026-11-02.json.
+- The first attempt exposed a real trap: the long-running Blender session had stale authoring
+  modules cached in sys.modules from the pre-marker era, and the cancelled-export rejection
+  silently misbehaved until the cache was purged. The purge is now part of
+  tests/blender_authoring_check.py and is enforced as a static invariant.
+- The four shipped GLBs are now genuine Blender 5.1.2 exports of the canonical authoring
+  scripts (replacing the 0.14-era Node-surgered bytes): fresh structural counts differ honestly
+  (bioprinter gains a seventh material; triangle counts change on three assets; the surgered
+  values are preserved in the evidence file), the manifest regenerated from the live run, and
+  every file hash, node prefix and required node re-verified container-side.
+- tests/blender-evidence.test.js pins the evidence contract and keeps it consistent with the
+  shipped manifest so any future asset change without a fresh live run fails tests.
+
+## 0.16.0-dev — committed and pushed to main on 2026-11-02
 
 - Add the in-repo claims-language scanner (scripts/scan-claims.mjs): five negation-aware pattern
   families over all authored src text, wired into verify:release as a real PASS check

@@ -10,6 +10,10 @@ import sys
 
 def run_checks(root):
     root = Path(root)
+    # A long-running Blender session can keep stale authoring modules in sys.modules
+    # from earlier generations; purge them so the staged files are what actually runs.
+    for stale in [k for k in list(sys.modules) if 'authoring' in k or k.startswith('author_')]:
+        del sys.modules[stale]
     sys.path.insert(0, str(root / 'assets'))
     common = importlib.import_module('authoring_common')
     original_scene = bpy.context.window.scene

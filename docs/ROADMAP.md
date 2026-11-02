@@ -134,3 +134,9 @@ the milestone: the claims-language scanner and authoring-isolation static checks
 scripted PASS checks in verify:release, and the first successful vendor-fetch window anchors three
 hardware prices through the reserved fetched-list-price path with every blocked or ambiguous
 attempt recorded. No scenario-schema change; no learning-state change.
+
+## Local 0.17.0-dev follow-on — owner-authorized speculative teaching content
+
+Owner instruction (2026-11-02): "Why mention blender and then not use it?" The live isolation
+checks ran in the owner's Blender 5.1.2, the shipped assets became genuine Blender exports, and
+the GitHub side (homepage, topics, first release, profile listing) caught up with the project.
