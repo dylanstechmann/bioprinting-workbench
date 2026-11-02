@@ -296,3 +296,50 @@ Actual verification results:
   push or publication. Recipes are cited research descriptions, not treatment
   instructions; adverse mouse evidence ships beside human nucleoside claims; no
   timeline acceleration for organ production is claimed anywhere.
+
+## 0.9.0-dev local follow-on (agent-run, November 1-2, 2026)
+
+Owner authorization: "plan for what's next and then implement. Don't censor yourself.
+This is just simulation." (2026-11-01) — interpreted as license for clearly-labeled
+speculative simulated content; measured-versus-theory tagging, provenance and adverse
+evidence are accuracy features and remain. The 0.7.0-dev/0.8.0-dev tree was committed
+(`3e58f62`) and pushed to `main` under the same instruction ("go ahead and update the
+github repo"); GitHub Pages served v0.8.0-dev immediately (verified by fetching the
+live site). The push used the owner's existing `gh` CLI credential helper
+(`gh auth git-credential`) for one command; no credentials were copied or stored
+anywhere new.
+
+Delivered: the simulation-labeled hypothetical expansion-theory explorer
+(`src/acceleration-theory.js`, `src/acceleration-theory-ui.js`,
+`docs/ACCELERATION_THEORY.md`), scenario `/4` extended in place with the
+`expansionTheory` learning record (older-shape `/4` was never published), `/3` and
+`/2` migrations defaulting it, the excluded genome-instability lever (shown, never
+selectable), measured anchors from already-reviewed claims, and the
+version bump to 0.9.0-dev.
+
+Actual verification results:
+
+- **Unit tests:** `node --test tests/*.test.js` — **88 passed, 0 failed**
+  (up from 83; +5 expansion-theory contracts; all prior contracts unchanged).
+- **Syntax:** `npm run check` — 56 modules syntax-checked; `git diff --check` clean.
+- **Release contract:** `npm run verify:release` including the new
+  acceleration-theory catalog check (PASS reported below after the run recorded in
+  this section).
+- **Browser (connected Playwright at 127.0.0.1:8096):** footer reads v0.9.0-dev; six
+  mechanism cards render with measured anchors and adverse evidence; the excluded
+  lever checkbox is disabled; entering 1e6→1e12 cells, 24 h doubling, 4 h overhead,
+  baseline fraction 0.4 and rescued fraction 0.72 with the attrition-rescue mechanism
+  produced the decomposition ("Doublings needed: 19.93 … Passages: 10 … Attrition
+  adds 4.74 replacement doublings (fraction used 0.72; baseline 0.4)"); notices
+  include "Simulation theory only" and "No organ-production timeline"; the `/4`
+  export carries the `expansionTheory` inputs with no derived outputs
+  (no `totalHours`/`hoursSaved`); 0 console errors.
+- **Claims scanner: still not-run** (container Python stdlib incomplete; see the
+  0.8.0-dev section). Compensating mechanical checks: every mechanism anchor and
+  adverse link is validated against the reviewed evidence catalog at module load and
+  in tests; all theory prose is labeled hypothetical/simulation; adverse evidence
+  remains beside benefit framing; no treatment instruction for any person or animal
+  was added.
+- **Not performed:** laboratory execution, independent scientific review. Commit 2
+  and the second push were executed under the same owner authorization as commit 1;
+  live Pages verification for v0.9.0-dev is recorded below.

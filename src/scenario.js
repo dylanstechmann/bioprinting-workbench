@@ -8,6 +8,7 @@ import { parseBoundedJson, assertAllowedKeys, finite, SCENARIO_BYTES } from './v
 import { defaultLearningState, validateLearningState } from './cell-division.js';
 import { defaultCellSystemId } from './repair-research.js';
 import { defaultPlanningComparison } from './planning-comparison.js';
+import { defaultExpansionTheory } from './acceleration-theory.js';
 import { validateEnvironmentId } from './environment.js';
 export const SCENARIO_SCHEMA = 'bioprinting-workbench/4';
 const MODEL = 'synthetic-dimensionless-storyboard';
@@ -45,7 +46,7 @@ export function migrateScenarioV3(raw) {
   if (raw.schema !== 'bioprinting-workbench/3') throw new RangeError('Expected version 3');
   assertAllowedKeys(raw.learning, ['selectedCellType','division','researchHorizonYears'], 'learning');
   assertAllowedKeys(raw.view, ['camera','reveal'], 'view');
-  const scenario = normalize({ ...raw, schema: SCENARIO_SCHEMA, learning: { selectedCellType: raw.learning.selectedCellType, selectedCellSystemId: defaultCellSystemId(raw.learning.selectedCellType), selectedMethodId: null, division: raw.learning.division, researchHorizonYears: raw.learning.researchHorizonYears, planningComparison: defaultPlanningComparison() }, view: { ...raw.view, environment: 'lab' } });
+  const scenario = normalize({ ...raw, schema: SCENARIO_SCHEMA, learning: { selectedCellType: raw.learning.selectedCellType, selectedCellSystemId: defaultCellSystemId(raw.learning.selectedCellType), selectedMethodId: null, division: raw.learning.division, researchHorizonYears: raw.learning.researchHorizonYears, planningComparison: defaultPlanningComparison(), expansionTheory: defaultExpansionTheory() }, view: { ...raw.view, environment: 'lab' } });
   return { scenario, warnings: ['Version 3 inputs restored; species-separated cell-system, method and hypothetical-comparison inputs initialized to defaults; environment set to laboratory. Derived results are recomputed, not restored.'], migratedFrom: raw.schema };
 }
 export function migrateScenarioV2(raw) {

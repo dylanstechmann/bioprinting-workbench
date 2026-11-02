@@ -4,6 +4,7 @@ import { getOrganResearchSummary } from './organ-research.js';
 import { defaultCellSystemId } from './repair-research.js';
 import { createRepairResearchUI } from './repair-research-ui.js';
 import { createMethodRecipesUI } from './method-recipes-ui.js';
+import { createExpansionTheoryUI } from './acceleration-theory-ui.js';
 
 /** Single state owner: coordinates division arithmetic, research comparison and recipe subcontrollers. */
 export function createCellLearningUI({ elements: $, onStateChange = () => {} }) {
@@ -15,6 +16,7 @@ export function createCellLearningUI({ elements: $, onStateChange = () => {} }) 
   select.replaceChildren(...CELL_TYPE_IDS.map(id => { const option = element('option', getCellProfile(id).label); option.value = id; return option; }));
   const researchUI = createRepairResearchUI({ elements: $, onSelectionChange: patch => propose(patch), onComparisonChange: comparison => propose({ planningComparison: comparison }) });
   const recipesUI = createMethodRecipesUI({ elements: $ });
+  const expansionUI = createExpansionTheoryUI({ elements: $, onStateChange: patch => propose(patch) });
   function render() {
     const p = getCellProfile(state.selectedCellType), result = evaluateRelativeDivision(state.division);
     select.value = p.id;
@@ -38,6 +40,7 @@ export function createCellLearningUI({ elements: $, onStateChange = () => {} }) 
     $('learning-horizon-status').textContent = state.researchHorizonYears === null ? 'No research horizon specified. No organ completion time is calculated.' : `${state.researchHorizonYears} years is your research-planning annotation only. It changes no growth, oxygen, flow or storyboard value and establishes no whole-organ production timeline.`;
     researchUI.render(state);
     recipesUI.render(state);
+    expansionUI.render(state);
   }
   function listen(id, event, handler) { const el = $(id); el.addEventListener(event, handler); listeners.push(() => el.removeEventListener(event, handler)); }
   function propose(patch) {
@@ -63,5 +66,5 @@ export function createCellLearningUI({ elements: $, onStateChange = () => {} }) 
   $('organ-barriers').replaceChildren(element('p', organ.notice));
   for (const b of organ.barriers) { const card = document.createElement('article'); card.append(element('h3', b.label), element('p', b.missingEvidence.join(' ')), element('small', `Not modeled · depends on: ${b.dependencyIds.join(', ') || 'independent evidence'}. Dependency map is an authored teaching organization, not a proven fabrication order.`)); $('organ-barriers').append(card); }
   render();
-  return { getState: () => structuredClone(state), setState(next) { if (disposed) throw new Error('Learning controller disposed'); state = validateLearningState(next); render(); }, diagnostics: () => ({ ...structuredClone(state), arithmetic: evaluateRelativeDivision(state.division) }), dispose() { if (!disposed) { disposed = true; listeners.forEach(remove => remove()); researchUI.dispose(); recipesUI.dispose(); } } };
+  return { getState: () => structuredClone(state), setState(next) { if (disposed) throw new Error('Learning controller disposed'); state = validateLearningState(next); render(); }, diagnostics: () => ({ ...structuredClone(state), arithmetic: evaluateRelativeDivision(state.division) }), dispose() { if (!disposed) { disposed = true; listeners.forEach(remove => remove()); researchUI.dispose(); recipesUI.dispose(); expansionUI.dispose(); } } };
 }

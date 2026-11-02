@@ -16,20 +16,22 @@ test('v4 carries species system, method, comparison and environment as inputs on
   const s=createScenario(initial());
   s.learning.selectedCellType='esc';s.learning.selectedCellSystemId='mouse-esc';
   s.learning.planningComparison={baselineHours:120,comparisonHours:96};s.view.environment='treedome';
+  s.learning.expansionTheory={...s.learning.expansionTheory,startCells:1e6,targetCells:1e12,doublingHours:24,selectedMechanismIds:['attrition-rescue']};
   const restored=parseScenario(serializeScenario(s)).scenario;
   assert.deepEqual(restored.learning,s.learning);assert.equal(restored.view.environment,'treedome');
-  for(const mutate of [v=>v.learning.selectedCellSystemId='human-msc',v=>v.learning.selectedMethodId='halliwell-nucleosides',v=>v.learning.planningComparison.baselineHours=0,v=>v.view.environment='sandy-house',v=>v.learning.repairSuccess=true]){
+  for(const mutate of [v=>v.learning.selectedCellSystemId='human-msc',v=>v.learning.selectedMethodId='halliwell-nucleosides',v=>v.learning.planningComparison.baselineHours=0,v=>v.view.environment='sandy-house',v=>v.learning.repairSuccess=true,v=>v.learning.expansionTheory.selectedMechanismIds=['transformed-variant-selection'],v=>v.learning.expansionTheory.forkCycleMultiplier=.9,v=>v.learning.expansionTheory.targetCells=1e5,v=>v.learning.expansionTheory.extra=1]){
     const raw=structuredClone(s);mutate(raw);assert.throws(()=>parseScenario(JSON.stringify(raw)));
   }
   assert.ok(!serializeScenario(s).includes('differenceHours'));
   assert.ok(!serializeScenario(s).includes('relativeChangePercent'));
 });
 test('v3 migration preserves inputs and defaults the new fields with truthful warnings',()=>{
-  const v3=(()=>{const s=createScenario(initial());s.schema='bioprinting-workbench/3';delete s.learning.selectedCellSystemId;delete s.learning.selectedMethodId;delete s.learning.planningComparison;delete s.view.environment;s.learning.researchHorizonYears=7;s.learning.selectedCellType='ipsc';return s;})();
+  const v3=(()=>{const s=createScenario(initial());s.schema='bioprinting-workbench/3';delete s.learning.selectedCellSystemId;delete s.learning.selectedMethodId;delete s.learning.planningComparison;delete s.learning.expansionTheory;delete s.view.environment;s.learning.researchHorizonYears=7;s.learning.selectedCellType='ipsc';return s;})();
   const r=parseScenario(JSON.stringify(v3));
   assert.equal(r.migratedFrom,'bioprinting-workbench/3');assert.equal(r.scenario.schema,'bioprinting-workbench/4');
   assert.equal(r.scenario.learning.selectedCellSystemId,'human-ipsc');assert.equal(r.scenario.learning.selectedMethodId,null);
   assert.deepEqual(r.scenario.learning.planningComparison,{baselineHours:null,comparisonHours:null});
+  assert.deepEqual(r.scenario.learning.expansionTheory.selectedMechanismIds,[]);assert.equal(r.scenario.learning.expansionTheory.startCells,null);
   assert.equal(r.scenario.view.environment,'lab');assert.equal(r.scenario.learning.researchHorizonYears,7);
   assert.ok(r.warnings.length);assert.ok(r.warnings.some(w=>w.includes('species-separated')));
   const extra=JSON.parse(JSON.stringify(v3));extra.learning.selectedMethodId=null;
@@ -69,4 +71,6 @@ test('shipped migration fixtures restore to the current schema',()=>{
   assert.equal(v4.view.environment,'treedome');assert.equal(v4.learning.selectedCellSystemId,'mouse-esc');
   assert.equal(v4.learning.selectedMethodId,'kurashima-fork-acceleration');
   assert.deepEqual(v4.learning.planningComparison,{baselineHours:120,comparisonHours:96});
+  assert.deepEqual(v4.learning.expansionTheory.selectedMechanismIds,['attrition-rescue']);
+  assert.equal(v4.learning.expansionTheory.startCells,1e6);assert.equal(v4.learning.expansionTheory.targetCells,1e12);assert.equal(v4.learning.expansionTheory.doublingHours,24);
 });

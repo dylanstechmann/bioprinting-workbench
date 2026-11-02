@@ -60,6 +60,20 @@
     "planningComparison": {
       "baselineHours": 120,
       "comparisonHours": 96
+    },
+    "expansionTheory": {
+      "startCells": 1000000,
+      "targetCells": 1000000000000,
+      "doublingHours": 24,
+      "overheadHours": 4,
+      "splitRatio": 4,
+      "attritionFraction": 0.4,
+      "attritionRescuedFraction": 0.72,
+      "mediumPdtMultiplier": null,
+      "forkCycleMultiplier": null,
+      "selectedMechanismIds": [
+        "attrition-rescue"
+      ]
     }
   },
   "limitations": "Synthetic dimensionless teaching models; user provenance unverified. No biological validation, viability, clinical, animal-use or transplant-safety inference. Published-method recipe cards are cited research descriptions, not treatment instructions or validated protocols."

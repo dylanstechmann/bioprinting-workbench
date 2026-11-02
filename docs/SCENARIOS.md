@@ -12,9 +12,10 @@ project with AI assistance; restored progress is self-reported, not scientific Q
 - analytical slab demand, normalized 3D box settings/parameter origin, network settings;
 - optional bounded raw slab and 3D point datasets with declared provenance;
 - learning cell category, species-separated cell system, optional method comparison,
-  independent relative-doubling assumptions, an optional research horizon and a
-  hypothetical two-duration comparison; null time/horizon/durations remain unknown,
-  not zero;
+  independent relative-doubling assumptions, an optional research horizon, a
+  hypothetical two-duration comparison and the expansion-theory record (mechanism
+  selection, hypothetical multipliers, bounds-checked nullable inputs); null fields
+  remain unknown, not zero;
 - application-authored limitations.
 
 See `tests/fixtures/scenario-v4.json` for a complete synthetic fixture. The v2 and v3

@@ -47,3 +47,13 @@ assistance. Recipes are cited research descriptions with per-parameter provenanc
 treatment instructions; adverse mouse evidence ships beside the human benefit claims.
 AGENTS.md was revised by owner instruction on 2026-11-01. No commit, push or publication
 is authorized by implementation; see RELEASE.md.
+
+## Local 0.9.0-dev follow-on — not released as a tagged version
+
+Owner-authorized speculative teaching content ("Don't censor yourself. This is just
+simulation.", 2026-11-01): the hypothetical expansion-theory explorer encodes the
+in-conversation acceleration analysis as a simulation-labeled module — measured
+anchors, user-hypothetical multipliers, transparent arithmetic, and the excluded
+genome-instability lever. Scenario /4 (unpublished in its older shape) carries the new
+learning record. No measured-timeline, safety or organ-production claim is added; see
+docs/ACCELERATION_THEORY.md.

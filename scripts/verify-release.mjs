@@ -6,6 +6,7 @@ import { execFileSync } from 'node:child_process';
 import { getEvidenceCatalog, validateEvidenceCatalog } from '../src/cell-evidence.js';
 import { getRepairResearchCatalog, validateRepairResearchCatalog } from '../src/repair-research.js';
 import { getRecipeCatalog, validateRecipeCatalog } from '../src/method-recipes.js';
+import { getMechanismCatalog, validateMechanismCatalog } from '../src/acceleration-theory.js';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 /** An allowlisted candidate inventory, NOT an instruction to publish the repo root. */
@@ -31,6 +32,7 @@ export function verifyRelease(directory = root, { targetVersion = JSON.parse(rea
   check('evidence contract', 'validateEvidenceCatalog', () => validateEvidenceCatalog(getEvidenceCatalog()));
   check('repair-research contract', 'validateRepairResearchCatalog', () => validateRepairResearchCatalog(getRepairResearchCatalog()));
   check('method-recipes contract', 'validateRecipeCatalog', () => validateRecipeCatalog(getRecipeCatalog()));
+  check('acceleration-theory contract', 'validateMechanismCatalog', () => validateMechanismCatalog(getMechanismCatalog(), getEvidenceCatalog()));
   check('asset hashes', 'verify-release asset hash check', () => {
     for (const asset of JSON.parse(readFileSync(resolve(directory,'assets/manifest.json'),'utf8')).assets) {
       if (!/^assets\/[a-z_]+\.glb$/.test(asset.file)) throw Error('Invalid manifest path');

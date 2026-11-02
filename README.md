@@ -70,6 +70,9 @@ equipment, patient records or experimental measurements are connected.
   arithmetic (see [methods](docs/REPAIR_METHODS.md), [recipes](docs/METHOD_RECIPES.md)).
 - `src/environment.js`: original procedural lab/Treedome themes with owned-resource
   lifecycle (see [environments](docs/ENVIRONMENTS.md)).
+- `src/acceleration-theory.js`: simulation-labeled expansion-theory explorer — measured
+  anchors, user-hypothetical multipliers, transparent arithmetic (see
+  [theory write-up](docs/ACCELERATION_THEORY.md)).
 - `tests/model.test.js`: Node's built-in test runner; no package installation required.
 - `vendor/three/`: pinned Three.js 0.187.0 runtime and OrbitControls, MIT license retained.
 

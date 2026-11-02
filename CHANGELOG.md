@@ -3,7 +3,22 @@
 Personal hobby and learning project, AI-assisted. Agent-run software/source checks are
 not biological validation or independent scientific review.
 
-## 0.7.0-dev — local, uncommitted and unpublished
+## 0.9.0-dev — local, uncommitted and unpublished
+
+- Add the hypothetical expansion-theory explorer: a mechanism catalog anchored to
+  reviewed claims (survival-gate rescue, medium choice, split-ratio logistics,
+  passage overhead, replication-fork push) plus transparent wall-clock arithmetic on
+  user-hypothetical inputs; the genome-instability lever is shown, never selectable.
+- Extend scenario /4 (never published in the older shape) with the expansionTheory
+  learning record; /3 and /2 migrations default it.
+- Add docs/ACCELERATION_THEORY.md with every number tagged measured vs theory.
+
+## 0.7.0-dev and 0.8.0-dev — committed and pushed to main on 2026-11-01
+
+Owner-authorized publication (GitHub Pages serves the branch automatically). See the
+0.7/0.8 sections below for content, and VERIFICATION.md for the executed checks.
+
+## 0.7.0-dev — content
 
 - Harden malformed worker requests/replies, bounded timeout tests, stale fit/file intent,
   invalid-asset/late-disposal regressions and Blender canceled-export reporting.

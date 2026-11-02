@@ -112,3 +112,11 @@ the workbench. Validators enforce species separation, provenance, units on numer
 parameters, third-person phrasing and adverse-evidence linkage. None of these modules
 couples into `sample()`, oxygen or flow. See REPAIR_METHODS.md, METHOD_RECIPES.md,
 ENVIRONMENTS.md and `docs/method-recipes-audit.json`.
+
+`src/acceleration-theory.js` (0.9.0-dev) adds the simulation-labeled expansion-theory
+explorer: a mechanism catalog whose anchors and adverse links must resolve against the
+evidence catalog, plus a pure evaluator over user-hypothetical inputs (start/target
+cells, hours per doubling, split ratio, overhead, survival fractions, medium and fork
+multipliers). The excluded genome-instability lever is unselectable by validation.
+Every output is labeled user-hypothetical-simulation; no measured timeline, organ-production
+schedule or biological parameter is asserted. See ACCELERATION_THEORY.md.
