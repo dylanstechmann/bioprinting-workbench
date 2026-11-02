@@ -743,3 +743,8 @@ Actual verification results:
   documented in the release knownLimitations.
 - **Not performed:** laboratory execution, independent scientific review, live-in-Blender
   isolation testing (requires a Blender session with workspace access).
+- **Live Pages verification (after commit 0908f53 was pushed):** fetching
+  https://dylanstechmann.github.io/bioprinting-workbench/ returned the updated page with footer
+  "v0.16.0-dev" and the anchored-totals wording including "$5,586.95";
+  /scripts/scan-claims.mjs and /scripts/check-authoring-isolation.mjs are served (HTTP 200).
+  Deployment propagated within minutes of the push; no tag or release object was created.
