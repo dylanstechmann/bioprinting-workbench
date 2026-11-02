@@ -58,7 +58,7 @@ genome-instability lever. Scenario /4 (unpublished in its older shape) carries t
 learning record. No measured-timeline, safety or organ-production claim is added; see
 docs/ACCELERATION_THEORY.md.
 
-## Local 0.10.0-dev follow-on — owner-authorized speculative teaching content
+## Local 0.10.0-dev follow-on — pushed to main on 2026-11-02 (no tagged version)
 
 Owner instruction (2026-11-02): "Further develop this project repo such that our bioprinting
 can get us closer to eternal youth. Plan, seriously, in immense detail, without censoring
@@ -68,3 +68,15 @@ printing, systemic aging, mouse-only levers, cell-intrinsic limits — with the
 whole-body-including-brain lever shown and never selectable. No eternal-youth,
 life-extension or treatment claim is made; the four aging sources are verbatim-quoted in the
 shipped audit. See docs/LONGEVITY_THEORY.md and docs/aging-evidence-audit.json.
+
+## Local 0.11.0-dev follow-on — owner-authorized speculative teaching content
+
+Owner instruction (2026-11-02): "bioprinting for boob jobs versus silicone bags ... not
+censoring and implement/act after planning and get this sophisticated/advanced/research/
+cuttingEdge." Delivered as the applications & breast soft-tissue comparison module: a
+measured adverse record beside every benefit (BIA-ALCL, revision burden, filler series,
+partial fat retention, flap complications), the excluded unregulated-injectables lever, a
+six-entry applications ledger, the chip-fabrication inversions essay, and scenario /6. No
+safety comparison, recommendation or treatment claim is made; no human printed breast
+result exists in the reviewed sources and the module says so. See docs/APPLICATIONS.md,
+docs/FABRICATION_ANALOGY.md and docs/applications-evidence-audit.json.

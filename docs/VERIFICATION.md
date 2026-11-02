@@ -407,3 +407,50 @@ Actual verification results:
 - **Not performed:** laboratory execution, independent scientific review. Commit `3ff6630`
   was pushed to `main` under the owner's 2026-11-02 "carry out on that plan" authorization;
   Pages published it automatically. No tag or release object was created.
+
+## 0.11.0-dev local follow-on (agent-run, November 2, 2026)
+
+Owner authorization: "yeah, I'm curious too about bioprinting for boob jobs versus silicone
+bags" and "not censoring and implement/act after planning and get this
+sophisticated/advanced/research/cuttingEdge" (2026-11-02) — interpreted per the two prior
+rulings as clinical-language speculative teaching content with the adverse record beside
+every benefit. Twelve abstracts were fetched from the Europe PMC REST API on 2026-11-02 and
+every claim is verbatim-quoted in docs/applications-evidence-audit.json (tested against the
+runtime catalog); augmentation in healthy tissue vs reconstruction after cancer are treated
+as distinct risk contexts the module computes neither; no safety comparison, recommendation
+or treatment claim is made; the unregulated-injectables lever is shown and never selectable.
+
+Delivered: the applications & breast soft-tissue comparison module
+(src/applications-evidence.js, src/applications.js, src/applications-ui.js,
+docs/APPLICATIONS.md, docs/FABRICATION_ANALOGY.md, docs/applications-evidence-audit.json),
+scenario /6 with the applicationsPerspective learning record (the /5 shape was published,
+so a strict /5-to-/6 migration ships with truthful warnings; /4, /3 and /2 chain through
+it), and the version bump to 0.11.0-dev.
+
+Actual verification results:
+
+- **Unit tests:** `node --test tests/*.test.js` — **104 passed, 0 failed** (up from 96;
+  +8 applications contracts; all prior contracts unchanged).
+- **Syntax:** `npm run check` — project modules syntax-checked; `git diff --check` clean.
+- **Release contract:** `npm run verify:release` — all PASS including the two new checks
+  (applications-evidence contract, applications catalog contract); allowlisted inventory
+  82 files.
+- **Browser (connected Playwright at 127.0.0.1:8096, node static server):** footer reads
+  v0.11.0-dev; the applications ledger renders six cards and the breast comparison five
+  cards; the excluded unregulated-injectables checkbox is disabled; entering 300 mL, 0.4
+  resorption, 3-year regraft, 10-year implant cadence and a 30-year horizon with fat-graft
+  and printed-adipose approaches selected produced the decomposition ("One-pass fat-graft
+  retention: 300 mL × (1 − 0.4) = 180 mL retained ... the reviewed cohort measured 76.4–84.0%
+  retention with cell enrichment ... 10 sessions across 30 years ... 3 implant-related
+  interventions ... intervention counts only, never a safety comparison"); 0 console
+  errors. The container python3 lacks the http module (documented stdlib breakage), so the
+  check used a 20-line node static server instead of `npm start`.
+- **Export purity:** covered by unit tests — the serialized /6 state carries the
+  applicationsPerspective inputs and no derived outputs (no retainedVolumeML, fatSessions or
+  implantInterventions).
+- **Claims scanner: still not-run** (container Python stdlib incomplete; see the 0.8
+  section). Compensating mechanical checks: every applications claim quotes the fetched
+  abstract verbatim in the shipped audit (tested), species separation is enforced by the
+  catalog validator and UI labels, all theory prose is labeled hypothetical/simulation, and
+  adverse/limiting evidence ships beside benefit framing in every approach card.
+- **Not performed:** laboratory execution, independent scientific review.

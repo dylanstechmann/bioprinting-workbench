@@ -1,10 +1,10 @@
 # Local scenario import/export
 
-Version 5 exports **inputs**, not trusted model outcomes. Files stay in memory;
+Version 6 exports **inputs**, not trusted model outcomes. Files stay in memory;
 nothing is uploaded, persisted or fetched from source citations. Personal learning
 project with AI assistance; restored progress is self-reported, not scientific QC.
 
-`bioprinting-workbench/5` includes:
+`bioprinting-workbench/6` includes:
 - fixed storyboard model and seed 42;
 - validated parameters/time;
 - procedure mode and unique known completed check IDs;
@@ -16,11 +16,13 @@ project with AI assistance; restored progress is self-reported, not scientific Q
   hypothetical two-duration comparison, the expansion-theory record (mechanism
   selection, hypothetical multipliers, bounds-checked nullable inputs) and the
   longevity-perspective record (single-organ-failure fraction, replacement schedule,
-  barrier selection; all nullable); null fields remain unknown, not zero;
+  barrier selection) and the applications-comparison record (fat-graft volume,
+  resorption fraction, regraft and implant cadences, horizon, approach selection; all
+  nullable); null fields remain unknown, not zero;
 - application-authored limitations.
 
-See `tests/fixtures/scenario-v5.json` for a complete synthetic fixture. The v2, v3 and v4
-fixtures remain as migration evidence. Evidence prose, source-review status, recipe
+See `tests/fixtures/scenario-v6.json` for a complete synthetic fixture. The v2, v3, v4
+and v5 fixtures remain as migration evidence. Evidence prose, source-review status, recipe
 cards, arithmetic outcomes, cancer scores and organ-completion estimates are not
 export fields. Fields are validated explicitly; unknown structural keys, unsupported
 versions, nonfinite/out-of-range values, contradictory flow controls, unknown checks,
@@ -54,8 +56,8 @@ outputs. A malformed /2 file cannot smuggle /3 or /4 fields into state.
 Strictly validate the /3 contract (three-key learning record, two-key view), then add
 defaults for the newer inputs: the species-separated cell system is set to the default
 human system for the saved cell category, the method comparison is cleared, the
-hypothetical comparison starts empty, the longevity-perspective record starts empty and
-the environment theme defaults to `lab`. The
+hypothetical comparison, the longevity-perspective and applications-comparison records
+start empty and the environment theme defaults to `lab`. The
 migration warns truthfully; imports pause playback and recompute rather than trust
 saved results.
 
@@ -66,3 +68,11 @@ new /5 inputs: the longevity-perspective record starts empty — no single-organ
 fraction, no replacement schedule, no barriers selected. The migration warns truthfully;
 imports pause playback and recompute rather than trust saved results. A /4 file carrying a
 longevityPerspective key is rejected, not guessed or silently accepted.
+
+## Version 5 migration
+
+Strictly validate the /5 contract (eight-key learning record), then add defaults for the
+new /6 inputs: the applications-comparison record starts empty — no fat-graft volume, no
+resorption fraction, no cadences, no approaches selected. The migration warns truthfully;
+imports pause playback and recompute rather than trust saved results. A /5 file carrying
+an applicationsPerspective key is rejected, not guessed or silently accepted.

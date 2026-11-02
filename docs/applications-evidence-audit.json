@@ -1,0 +1,82 @@
+{
+  "schema": "bioprinting-workbench/applications-evidence-audit/1",
+  "fetchedFrom": "https://www.ebi.ac.uk/europepmc/webservices/rest/search (Europe PMC REST API, resultType=core, field abstractText)",
+  "fetchDate": "2026-11-02",
+  "agentReadingKind": "agent-source-reading (abstracts only; no figures, protocols or datasets reproduced)",
+  "sources": [
+    { "id": "bia-alcl-2026", "pmid": "42625740", "doi": "10.3389/fonc.2026.1889467", "title": "Breast implant-associated anaplastic large cell lymphoma: a case report and literature review.", "journalYear": 2026, "url": "https://europepmc.org/article/MED/42625740" },
+    { "id": "implant-revisions-2026", "pmid": "42295736", "doi": "10.1097/sap.0000000000004800", "title": "Secondary Procedures for Complications Associated With Breast Implants in the United States, 2019-2022.", "journalYear": 2026, "url": "https://europepmc.org/article/MED/42295736" },
+    { "id": "filler-complications-2026", "pmid": "42848728", "doi": "10.1159/mpp/adpag032", "title": "Complications following Breast Augmentation using Injectable Fillers in Kuwait.", "journalYear": 2026, "url": "https://europepmc.org/article/MED/42848728" },
+    { "id": "cal-svf-2026", "pmid": "42420658", "doi": "10.1007/s00266-026-06092-8", "title": "Cell-Assisted Lipotransfer (CAL) and Stromal Vascular Fraction (SVF) in Combination with Autologous Breast Reconstruction: A Preliminary Feasibility Case Series.", "journalYear": 2026, "url": "https://europepmc.org/article/MED/42420658" },
+    { "id": "diep-flap-2026", "pmid": "42903308", "doi": "10.1097/gox.0000000000008185", "title": "Prophylactic Superdrained Deep Inferior Epigastric Perforator Flap: Systematic Review of Survival and Morbidity.", "journalYear": 2026, "url": "https://europepmc.org/article/MED/42903308" },
+    { "id": "adipose-bioprint-2025", "pmid": "40509638", "doi": "10.1002/adhm.202500627", "title": "Bioprinting of Adipose Tissue Graft with Enhanced Neo-Vessel Formation in Vivo.", "journalYear": 2025, "url": "https://europepmc.org/article/MED/40509638" },
+    { "id": "adipocyte-print-2026", "pmid": "42780948", "doi": "10.48130/els-0026-0006", "title": "Engineering 3D adipose cell models by support bath bioprinting of mature adipocytes in gellan gum hydrogels.", "journalYear": 2026, "url": "https://europepmc.org/article/MED/42780948" },
+    { "id": "itop-2016", "pmid": "26878319", "doi": "10.1038/nbt.3413", "title": "A 3D bioprinting system to produce human-scale tissue constructs with structural integrity.", "journalYear": 2016, "url": "https://europepmc.org/article/MED/26878319" },
+    { "id": "skin-bioprint-review-2025", "pmid": "39569402", "doi": "10.1088/2631-7990/ad878c", "title": "Advancements in 3D skin bioprinting: processes, bioinks, applications and sensor integration.", "journalYear": 2025, "url": "https://europepmc.org/article/MED/39569402" },
+    { "id": "hair-skin-print-2025", "pmid": "40083946", "doi": "10.7150/thno.104854", "title": "3D bioprinting of prefabricated artificial skin with multicomponent hydrogel for skin and hair follicle regeneration.", "journalYear": 2025, "url": "https://europepmc.org/article/MED/40083946" },
+    { "id": "body-on-chip-2022", "pmid": "35987699", "doi": "10.1186/s13287-022-03130-5", "title": "Towards establishing human body-on-a-chip systems.", "journalYear": 2022, "url": "https://europepmc.org/article/MED/35987699" },
+    { "id": "ear-dlp-2026", "pmid": "42399996", "doi": "10.1186/s13287-026-05156-5", "title": "DLP bioprinting of cartilage organoid-laden bioinks yields high-fidelity auricular constructs with enhanced chondrogenesis.", "journalYear": 2026, "url": "https://europepmc.org/article/MED/42399996" }
+  ],
+  "claims": [
+    {
+      "id": "bia-alcl-textured-implants",
+      "locator": "Abstract, sentences 1–4 and 6",
+      "verbatimQuote": "Breast implant-associated anaplastic large cell lymphoma (BIA-ALCL) is a rare T-cell non-Hodgkin lymphoma primarily associated with textured breast implants. Its pathological hallmarks include CD30 positivity, ALK negativity, and clonal T-cell receptor gene rearrangement. Complete surgical excision is the primary treatment modality, and early diagnosis combined with standardized management is associated with a favorable prognosis. We report a case of BIA-ALCL in a 47-year-old female who presented with breast swelling 20 years after receiving textured breast implants."
+    },
+    {
+      "id": "implant-secondary-procedures",
+      "locator": "Abstract, Background, Results and Conclusions",
+      "verbatimQuote": "Breast implantation, whether reconstructive or cosmetic, carries a known risk of postoperative complications. Among 74,756 discharges, reconstructive cases accounted for 55.1% and cosmetic cases for 44.9%. Reconstructive revisions more often included fat grafting, while cosmetic revisions more frequently involved capsulectomy or implant removal without replacement ( P <0.001). Implant removal without replacement was associated with multiple complications [adjusted odds ratio (AOR)=2.17, 95% CI: 1.94-2.43], insurance type, and comorbidity. Secondary procedures for implant complications are common and differ by surgical indication, underscoring the need for patient counseling and individualized management strategies."
+    },
+    {
+      "id": "unregulated-filler-complications",
+      "locator": "Abstract, Results and Conclusion",
+      "verbatimQuote": "Amongst the 10 patients, 8 had complications from injectable fillers; co-polyamide (n=4), hyaluronic acid (n=1), collagen (n=1), unknown materials (n=3) and 2 from autologous fat transfer. Common complications included mastalgia (90%), palpable masses (80%), cyst formation (80%), filler migration (30%), and infection (20%). Surgical interventions, including mastectomy and drainage, were required in 40% of cases, while others were managed conservatively with imaging follow-up and/or aspiration. Injectable fillers for breast augmentation, particularly unregulated substances, are associated with a high risk of serious complications requiring invasive management."
+    },
+    {
+      "id": "cal-fat-retention",
+      "locator": "Abstract, Methods, Results and Conclusions",
+      "verbatimQuote": "Six patients undergoing breast reconstruction with CAL/SVF enrichment were prospectively evaluated. Twelve-month fat retention ranged from 76.4% to 84.0%. No major complications occurred; one minor fat necrosis resolved without intervention. Descriptively lower retention values were observed in previously irradiated breasts. Given the limited sample size and cohort heterogeneity, findings should be interpreted as preliminary and hypothesis-generating. Larger studies with extended follow-up are warranted to validate long-term durability and the impact of prior radiation."
+    },
+    {
+      "id": "diep-flap-profile",
+      "locator": "Abstract, Background and Results",
+      "verbatimQuote": "The deep inferior epigastric perforator (DIEP) flap is considered the gold standard option for autologous tissue reconstruction after total mastectomy. Seventeen studies were included, comprising 2964 flaps (1536 single-vein and 1428 dual-vein). In the dual-vein group, complication rates were low, including venous congestion (0%-13%), venous thrombosis (0%-2.7%), total flap loss (0%-8.7%), fat necrosis (0%-17.4%), and partial flap loss (0%-13.3%). In contrast, single-vein cohorts demonstrated higher rates of key complications, particularly venous congestion (2.6%-55.1%), venous thrombosis (1.8%-18.8%), fat necrosis (4.9%-48.2%), partial flap loss (up to 44.8%), and total flap loss (up to 17.2%)."
+    },
+    {
+      "id": "printed-adipose-neovessels",
+      "locator": "Abstract, sentences 1–5",
+      "verbatimQuote": "Adipose tissue (AT) grafts are widely used in clinical procedures including soft-tissue augmentation and post-trauma reconstruction. However, the slow vascularization of conventional AT grafts poses a challenge to their in vivo preservation. A polycaprolactone (PCL) framework containing precisely positioned ADSC spheroids is 3D bioprinted, and mechanically dissociated fat tissue is loaded into the framework to produce AT grafts. During an eight-week in vivo experiment, the bioprinted and transplanted AT grafts demonstrated an impressive 8 fold increase in neo-vessel formation compared to those in conventional grafts. This heightened neovascularization is directly correlated with a substantial improvement in transplanted AT survival and a 70% reduction in fibrous tissue formation."
+    },
+    {
+      "id": "printed-mature-adipocytes",
+      "locator": "Abstract, sentences 1–2 and final sentence",
+      "verbatimQuote": "Mature adipocytes (ACs) are essential for modeling human adipose tissue physiology in vitro, yet their large size, buoyancy, and shear sensitivity make them challenging to incorporate into engineered three-dimensional (3D) constructs. This study introduces an agarose support-bath (SB) extrusion workflow for bioprinting geometrically defined adipose constructs using a gellan gum (GG) bioink. This workflow offers a reproducible and accessible platform for generating physiologically relevant adipose cell models, supporting early-stage biological assessment, preliminary drug testing, and soft tissue engineering."
+    },
+    {
+      "id": "itop-human-scale-constructs",
+      "locator": "Abstract, sentences 1–5",
+      "verbatimQuote": "We present an integrated tissue-organ printer (ITOP) that can fabricate stable, human-scale tissue constructs of any shape. Mechanical stability is achieved by printing cell-laden hydrogels together with biodegradable polymers in integrated patterns and anchored on sacrificial hydrogels. The correct shape of the tissue construct is achieved by representing clinical imaging data as a computer model of the anatomical defect and translating the model into a program that controls the motions of the printer nozzles, which dispense cells to discrete locations. The incorporation of microchannels into the tissue constructs facilitates diffusion of nutrients to printed cells, thereby overcoming the diffusion limit of 100-200 μm for cell survival in engineered tissues. We demonstrate capabilities of the ITOP by fabricating mandible and calvarial bone, cartilage and skeletal muscle."
+    },
+    {
+      "id": "skin-bioprinting-status",
+      "locator": "Abstract, sentences 1–4",
+      "verbatimQuote": "This comprehensive review explores the multifaceted landscape of skin bioprinting, revolutionizing dermatological research. The applications of skin bioprinting utilizing techniques like extrusion-, droplet-, laser- and light-based methods, with specialized bioinks for skin biofabrication have been critically reviewed along with the intricate aspects of bioprinting hair follicles, sweat glands, and achieving skin pigmentation. Challenges remain with the need for vascularization, safety concerns, and the integration of automated processes for effective clinical translation."
+    },
+    {
+      "id": "hair-follicle-printing-mice",
+      "locator": "Abstract, Methods and Results",
+      "verbatimQuote": "We employed gelatin methacrylate (GelMA) and hyaluronic acid methacrylate (HAMA) as bioactive materials, in conjunction with epidermal stem cells (Epi-SCs) and skin-derived precursors (SKPs), to fabricate artificial skin utilizing 3D bioprinting. The transplantation of this artificial skin into cutaneous wounds in nude mice led to complete wound healing and functional tissue regeneration. The regenerated tissue comprised epidermis, dermis, hair follicles, blood vessels, and sebaceous glands, closely resembling native skin."
+    },
+    {
+      "id": "body-on-chip-drug-testing",
+      "locator": "Abstract, sentences 1–3",
+      "verbatimQuote": "Body-on-a-chip (BoC) platforms are established from multiple organs-on-chips (OoCs) to recapitulate the interactions between different tissues. Recently, Vunjak-Novakovic and colleagues reported the creation of a BoC system comprising four fluidically linked OoCs. Herein, the major innovations in their BoC system are discussed, followed by our future perspectives on enhancing the physiological relevance and scalability of BoCs for applications in studying disease mechanisms, testing potential therapeutics, and developing personalized medicine."
+    },
+    {
+      "id": "auricular-ear-printing",
+      "locator": "Abstract, Materials and methods, Results",
+      "verbatimQuote": "Full-scale ears were DLP-printed from acellular, chondrocyte-laden, or CO-laden inks. In vivo, constructs were implanted subcutaneously in nude mice and analyzed at 4/8 weeks by Hematoxylin-eosin (H&E), Safranin O/Fast Green, ACAN and COL II IHC staining, and compressive Young's modulus measurement on implants. After implantation, CO-laden explants exhibited more abundant lacuna-like cartilage morphology, stronger ACAN and COL II staining, increased EVG-positive elastic fiber-associated matrix, and a higher compressive Young's modulus at 8 weeks."
+    }
+  ]
+}

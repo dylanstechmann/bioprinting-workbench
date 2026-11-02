@@ -3,7 +3,20 @@
 Personal hobby and learning project, AI-assisted. Agent-run software/source checks are
 not biological validation or independent scientific review.
 
-## 0.10.0-dev — local, uncommitted and unpublished
+## 0.11.0-dev — local, uncommitted and unpublished
+
+- Add the simulation-labeled applications & breast soft-tissue comparison module: a
+  six-entry applications ledger (ear, skin, breast soft tissue, hair, human-scale
+  constructs, drug-testing tissues) and a five-approach comparison (silicone implants,
+  autologous fat grafting, autologous flaps, hypothetical printed adipose, and the excluded
+  unregulated-injectables lever), all anchored to twelve newly fetched abstracts with
+  adverse records beside every benefit.
+- Extend the scenario to /6 with the applicationsPerspective learning record; /5, /4, /3 and
+  /2 migrations default it with truthful warnings.
+- Add docs/APPLICATIONS.md (measured/preclinical/research-stage/theory tagged) and
+  docs/FABRICATION_ANALOGY.md (why organs are not chips).
+
+## 0.10.0-dev — committed and pushed to main on 2026-11-02
 
 - Add the simulation-labeled longevity & aging-barrier module: a six-barrier catalog
   anchored to four newly reviewed geroscience sources (hallmarks of aging 2013/2023, mouse

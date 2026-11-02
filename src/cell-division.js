@@ -4,10 +4,11 @@ import { defaultCellSystemId, validateCellSystemSelection, validateMethodSelecti
 import { defaultPlanningComparison, validatePlanningComparison } from './planning-comparison.js';
 import { defaultExpansionTheory, validateExpansionTheory } from './acceleration-theory.js';
 import { defaultLongevityPerspective, validateLongevityPerspective } from './longevity-theory.js';
+import { defaultApplicationsPerspective, validateApplicationsPerspective } from './applications.js';
 
 /** Independent arithmetic inputs, never a culture schedule or storyboard clock. */
 export function defaultLearningState() {
-  return { selectedCellType: 'msc', selectedCellSystemId: defaultCellSystemId('msc'), selectedMethodId: null, division: { model: 'idealized-relative-doubling', doublings: 0, hypotheticalDoublingHours: null }, researchHorizonYears: null, planningComparison: defaultPlanningComparison(), expansionTheory: defaultExpansionTheory(), longevityPerspective: defaultLongevityPerspective() };
+  return { selectedCellType: 'msc', selectedCellSystemId: defaultCellSystemId('msc'), selectedMethodId: null, division: { model: 'idealized-relative-doubling', doublings: 0, hypotheticalDoublingHours: null }, researchHorizonYears: null, planningComparison: defaultPlanningComparison(), expansionTheory: defaultExpansionTheory(), longevityPerspective: defaultLongevityPerspective(), applicationsPerspective: defaultApplicationsPerspective() };
 }
 export function validateDivisionSettings(raw) {
   assertAllowedKeys(raw, ['model', 'doublings', 'hypotheticalDoublingHours'], 'division');
@@ -15,11 +16,11 @@ export function validateDivisionSettings(raw) {
   return { model: raw.model, doublings: finite(raw.doublings, 0, 40, 'doublings'), hypotheticalDoublingHours: raw.hypotheticalDoublingHours === null ? null : finite(raw.hypotheticalDoublingHours, 1, 1000, 'hypotheticalDoublingHours') };
 }
 export function validateLearningState(raw) {
-  assertAllowedKeys(raw, ['selectedCellType', 'selectedCellSystemId', 'selectedMethodId', 'division', 'researchHorizonYears', 'planningComparison', 'expansionTheory', 'longevityPerspective'], 'learning');
+  assertAllowedKeys(raw, ['selectedCellType', 'selectedCellSystemId', 'selectedMethodId', 'division', 'researchHorizonYears', 'planningComparison', 'expansionTheory', 'longevityPerspective', 'applicationsPerspective'], 'learning');
   if (!CELL_TYPE_IDS.includes(raw.selectedCellType)) throw new RangeError('Unknown cell type');
   validateCellSystemSelection(raw.selectedCellType, raw.selectedCellSystemId);
   validateMethodSelection(raw.selectedCellSystemId, raw.selectedMethodId);
-  return { selectedCellType: raw.selectedCellType, selectedCellSystemId: raw.selectedCellSystemId, selectedMethodId: raw.selectedMethodId, division: validateDivisionSettings(raw.division), researchHorizonYears: raw.researchHorizonYears === null ? null : finite(raw.researchHorizonYears, 0, 20, 'researchHorizonYears'), planningComparison: validatePlanningComparison(raw.planningComparison), expansionTheory: validateExpansionTheory(raw.expansionTheory), longevityPerspective: validateLongevityPerspective(raw.longevityPerspective) };
+  return { selectedCellType: raw.selectedCellType, selectedCellSystemId: raw.selectedCellSystemId, selectedMethodId: raw.selectedMethodId, division: validateDivisionSettings(raw.division), researchHorizonYears: raw.researchHorizonYears === null ? null : finite(raw.researchHorizonYears, 0, 20, 'researchHorizonYears'), planningComparison: validatePlanningComparison(raw.planningComparison), expansionTheory: validateExpansionTheory(raw.expansionTheory), longevityPerspective: validateLongevityPerspective(raw.longevityPerspective), applicationsPerspective: validateApplicationsPerspective(raw.applicationsPerspective) };
 }
 export function evaluateRelativeDivision(raw) {
   const settings = validateDivisionSettings(raw);

@@ -77,6 +77,11 @@ equipment, patient records or experimental measurements are connected.
   honest ceiling/logistics decomposition of the "eternal youth" question, anchored to
   reviewed geroscience sources with the whole-body lever excluded (see
   [theory write-up](docs/LONGEVITY_THEORY.md)).
+- `src/applications.js`: simulation-labeled applications ledger plus breast soft-tissue
+  comparison — printed tissue vs silicone implants vs fat grafting vs flaps with measured
+  adverse records, and the excluded unregulated-injectables lever (see
+  [applications write-up](docs/APPLICATIONS.md) and
+  [why organs are not chips](docs/FABRICATION_ANALOGY.md)).
 - `tests/model.test.js`: Node's built-in test runner; no package installation required.
 - `vendor/three/`: pinned Three.js 0.187.0 runtime and OrbitControls, MIT license retained.
 

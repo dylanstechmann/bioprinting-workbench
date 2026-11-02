@@ -2,6 +2,129 @@
 
 [Overview]
 
+Add v0.11.0-dev: a simulation-labeled **applications & breast soft-tissue comparison module** answering the owner's request — "bioprinting for boob jobs versus silicone bags", "not censoring and implement/act after planning and get this sophisticated/advanced/research/cuttingEdge" (2026-11-02). Three deliverables: (1) an **applications ledger** — cosmetic/functional/research entries (ear reconstruction, skin/wound printing, breast soft tissue, hair follicles, human-scale constructs, drug-testing tissues) anchored to twelve newly fetched Europe PMC abstracts; (2) a **hypothetical breast soft-tissue comparison** — silicone implants vs autologous fat grafting vs autologous (DIEP-style) flaps vs hypothetical printed adipose, each with its measured adverse record beside the benefit framing (BIA-ALCL and textured implants; the 74,756-discharge revision study; 12-month fat retention 76.4–84.0% in a small cell-enriched cohort; flap complication ranges), transparent intervention-count arithmetic on user-hypothetical inputs, and the **excluded lever: unregulated injectable fillers** (a measured 10-patient complication series — shown, never selectable); (3) **docs** — `docs/APPLICATIONS.md` (measured/preclinical/research-stage/theory tagged) and `docs/FABRICATION_ANALOGY.md` (the "why organs aren't chips" inversions essay, tagged textbook/theory). Then publish: commit, push, live Pages verification.
+
+Interpretation (same as the 0.9/0.10 rulings): uncensored means the full clinical reality is shown — including the adverse records that marketing omits (BIA-ALCL, revision burden, filler catastrophes, fat necrosis, irradiated-breast retention loss) and the honest absence (no reviewed source demonstrates a bioprinted breast graft in a living human). Clinical language throughout (breast augmentation / reconstruction); augmentation in healthy tissue vs reconstruction after cancer are distinct risk contexts and the module computes neither; no recommendation, no surgical or medical instruction, nothing directed at any person; every measured claim verbatim-quoted in `docs/applications-evidence-audit.json` (tested against the runtime catalog); mouse/animal findings never become human outcomes.
+
+[Types]
+
+**`learning.applicationsPerspective`** (new key in the `/6` learning record; all numeric fields nullable):
+
+- `plannedFatVolumeML: number|null` — 10..2000, hypothetical per-session graft volume
+- `resorptionFraction: number|null` — 0..0.99, hypothetical fraction of grafted volume lost (user sets; reviewed retention is a small-cohort anchor, never a default)
+- `fatRetouchYears: number|null` — 0.5..10, hypothetical regraft interval
+- `implantReplacementYears: number|null` — 1..40, hypothetical implant revision/replacement cadence (no universal schedule exists in the reviewed sources)
+- `planningHorizonYears: number|null` — 1..80, horizon for intervention-count arithmetic
+- `selectedApproachIds: string[]` — unique, subset of selectable approach ids; the excluded id always rejects
+
+**Ledger record**: `{ id, label, category: 'cosmetic'|'functional'|'research', status: 'measured-in-humans'|'preclinical'|'research-stage'|'theory', anchorClaimIds, adverseClaimIds, summary, caveat }`.
+
+**Approach record**: `{ id, label, category: 'implant'|'graft'|'flap'|'printed'|'excluded', selectable, anchorClaimIds, adverseClaimIds, measuredSummary, theoryNote }`.
+
+**Evaluator result** (`evaluateApplicationsTheory`): `{ status, assumptionOrigin: 'user-hypothetical-simulation', retainedVolumeML, fatSessions, implantInterventions, approachEffects: [{ id, label, note }], anchorSummaries, adverseSummaries, notices }` — nulls while unconfigured.
+
+**Applications evidence catalog** — `APPLICATIONS_EVIDENCE_SCHEMA = 'bioprinting-workbench/applications-evidence/1'`: 12 sources, 12 claims (one per source, species-separated):
+
+- `bia-alcl-2026` / `bia-alcl-textured-implants` (human) — PMID 42625740, DOI 10.3389/fonc.2026.1889467, PMC13489856
+- `implant-revisions-2026` / `implant-secondary-procedures` (human) — PMID 42295736, DOI 10.1097/sap.0000000000004800
+- `filler-complications-2026` / `unregulated-filler-complications` (human) — PMID 42848728, DOI 10.1159/mpp/adpag032
+- `cal-svf-2026` / `cal-fat-retention` (human) — PMID 42420658, DOI 10.1007/s00266-026-06092-8, PMC13630905
+- `diep-flap-2026` / `diep-flap-profile` (human) — PMID 42903308, DOI 10.1097/gox.0000000000008185, PMC13680933
+- `adipose-bioprint-2025` / `printed-adipose-neovessels` (other, animal in vivo) — PMID 40509638, DOI 10.1002/adhm.202500627
+- `adipocyte-print-2026` / `printed-mature-adipocytes` (human, in vitro) — PMID 42780948, DOI 10.48130/els-0026-0006, PMC13599641
+- `itop-2016` / `itop-human-scale-constructs` (other, preclinical) — PMID 26878319, DOI 10.1038/nbt.3413
+- `skin-bioprint-review-2025` / `skin-bioprinting-status` (other, review) — PMID 39569402, DOI 10.1088/2631-7990/ad878c, PMC11574952
+- `hair-skin-print-2025` / `hair-follicle-printing-mice` (mouse) — PMID 40083946, DOI 10.7150/thno.104854, PMC11898285
+- `body-on-chip-2022` / `body-on-chip-drug-testing` (other, review) — PMID 35987699, DOI 10.1186/s13287-022-03130-5, PMC9392934
+- `ear-dlp-2026` / `auricular-ear-printing` (other, animal preclinical) — PMID 42399996, DOI 10.1186/s13287-026-05156-5, PMC13613730
+
+**Audit JSON**: `docs/applications-evidence-audit.json`, schema `bioprinting-workbench/applications-evidence-audit/1` — verbatim abstract quotes + locators + fetch metadata (Europe PMC REST, 2026-11-02); audit↔runtime equality tested.
+
+[Files]
+
+New:
+
+- `src/applications-evidence.js` — 12 sources + 12 species-separated claims mirroring the aging-evidence validator rules (plus no-id-collision checks against cell-evidence and aging-evidence claims).
+- `src/applications.js` — `LEDGER` (6 entries: auricular-reconstruction, skin-wound-printing, breast-soft-tissue, hair-follicle-regeneration, human-scale-constructs, drug-testing-tissues), `APPROACHES` (5: silicone-implant, autologous-fat-graft, autologous-flap, bioprinted-adipose, excluded unregulated-injectables), `NOTICES`, default/validate `applicationsPerspective`, `validateApplicationsCatalog`, `evaluateApplicationsTheory`.
+- `src/applications-ui.js` — `createApplicationsUI` rendering the ledger cards and the comparison panel (disabled excluded lever, status/result roles, dispose).
+- `docs/APPLICATIONS.md` — ledger narrative + the breast comparison narrative; every number tagged measured/preclinical/research-stage/theory.
+- `docs/FABRICATION_ANALOGY.md` — "Why organs aren't chips" (ten inversions), tags [textbook]/[theory] defined upfront; authored reasoning, no fabricated citations.
+- `docs/applications-evidence-audit.json` — verbatim quotes.
+- `tests/applications-evidence.test.js`, `tests/applications.test.js`, `tests/applications-ui.test.js`.
+- `tests/fixtures/scenario-v6.json` — native `/6` fixture with populated applicationsPerspective (300 mL, 0.4 resorption, 3-year retouch, 10-year implant cadence, 30-year horizon, approaches fat-graft + printed-adipose).
+
+Modified:
+
+- `src/cell-division.js` — import default/validate applications functions; `defaultLearningState()` adds `applicationsPerspective`; `validateLearningState` accepts it.
+- `src/cell-learning-ui.js` — instantiate/render/dispose `createApplicationsUI`.
+- `src/scenario.js` — `SCENARIO_SCHEMA = 'bioprinting-workbench/6'`; new `migrateScenarioV5` (strict /5 contract → defaults applicationsPerspective, truthful warning); `migrateScenarioV4` and `migrateScenarioV3` add the applications default too; `parseScenario` dispatches `/5`.
+- `index.html` — applications-ledger panel + breast-comparison panel (5 labeled inputs: apps-fat-volume, apps-resorption, apps-fat-retouch, apps-implant-years, apps-horizon); Version 6 restore note; footer `v0.11.0-dev`.
+- `package.json` — `0.11.0-dev`.
+- `scripts/verify-release.mjs` — new checks `applications-evidence contract` and `applications catalog contract`.
+- `tests/release.test.js` — both new contract validations asserted.
+- `tests/cell-division.test.js` — applicationsPerspective default asserts + rejection patches.
+- `tests/scenario.test.js` — v5→v6 renames; new v5-migration test; fixture loop gains `scenario-v6.json` (native) and `scenario-v5.json` (migrates from /5); invalid-schema case becomes `bioprinting-workbench/7`; applications fields in round-trip/rejection tests; export purity (no retainedVolumeML/fatSessions in export).
+- `docs/SOURCES.md` — 0.10 aging-source catch-up entry + 0.11 applications ledger (same table format).
+- `docs/SCENARIOS.md` — Version 6 header/list + Version 5 migration section.
+- `CHANGELOG.md` — 0.11.0-dev section; 0.10.0-dev relabeled as pushed.
+- `docs/ROADMAP.md` — 0.11 follow-on section.
+- `README.md` — feature bullet for `src/applications.js` + docs links.
+- `docs/VERIFICATION.md` — 0.11 section with executed checks; live-check paragraph after push (doc-only commit).
+- `implementation_plan.md` — this plan; the prior 0.10 plan preserved verbatim below the archive divider.
+
+[Functions]
+
+New:
+
+- `src/applications-evidence.js`: `getApplicationsEvidenceCatalog()`, `validateApplicationsEvidenceCatalog(raw)`.
+- `src/applications.js`: `getApplicationsLedger()`, `getApproachCatalog()`, `validateApplicationsCatalog(ledger, approaches, applicationsEvidence)`, `defaultApplicationsPerspective()`, `validateApplicationsPerspective(raw)`, `evaluateApplicationsTheory(settings)`.
+- `src/applications-ui.js`: `createApplicationsUI({ elements, onStateChange })` → `{ render, dispose }`.
+
+Modified:
+
+- `defaultLearningState()` / `validateLearningState()` (src/cell-division.js) — add the applicationsPerspective key.
+- `migrateScenarioV3` / `migrateScenarioV4` (src/scenario.js) — add `applicationsPerspective: defaultApplicationsPerspective()` to the defaulted learning patch.
+- `parseScenario` (src/scenario.js) — `/5` branch → `migrateScenarioV5`.
+- `verifyRelease` (scripts/verify-release.mjs) — two new contract rows.
+
+[Classes]
+
+None — module-level factories and frozen catalogs only, per house convention.
+
+[Dependencies]
+
+None. No packages, no runtime network. The only new inputs are the twelve fetched bibliographic records (PMIDs above) stored as static strings in the evidence file and audit JSON.
+
+[Testing]
+
+- `tests/applications-evidence.test.js`: catalog validates; species separation (mouse/other claims never human); every claim has an audit entry with verbatim quote + locator; audit id/source sets equal runtime sets; mutations reject (dangling source, fake species, upgraded status, id collision with cell-evidence or aging-evidence claims, empty limitations, empty locator).
+- `tests/applications.test.js`: ledger + approach catalog contracts (ids unique, categories/status enums, anchors/adverses resolve, excluded approach never selectable, evidence-bearing statuses require anchors, mutation rejections incl. making the excluded approach selectable and category moves); evaluator arithmetic (unconfigured on defaults; gate = planned volume + resorption; retainedVolume = planned × (1−r); ceil-based session/intervention counts when cadences present; per-approach notes; anchor/adverse summaries); validation rejections (excluded id, duplicates, out-of-range values, unknown key).
+- `tests/applications-ui.test.js`: harness mirror — 6 ledger cards + 5 approach cards render; excluded filler checkbox disabled; patch proposes through `validateLearningState`; result text contains the retention and intervention-count lines and notices; export purity (no derived keys in accepted state); dispose; missing callback throws.
+- Existing suites updated as listed; expected total ≈ 106 (96 + 10).
+- Release verification: `npm test`, `npm run check`, `npm run verify:release` (both new checks PASS), `git diff --check`, connected-browser check at 127.0.0.1:8096 (footer v0.11.0-dev; ledger + comparison panels; excluded lever disabled; inputs 300 mL / 0.4 / 3 y / 10 y / 30 y → retention and intervention decomposition; 0 console errors). Claims scanner remains not-run (documented); compensating mechanical checks continue.
+
+[Implementation Order]
+
+1. Write `src/applications-evidence.js` + `docs/applications-evidence-audit.json` + `tests/applications-evidence.test.js`; run.
+2. Write `src/applications.js` + `tests/applications.test.js`; run.
+3. Write `src/applications-ui.js` + `tests/applications-ui.test.js`; extend `src/cell-division.js` + `tests/cell-division.test.js`; run.
+4. Add the index.html panels + Version-6 note + footer bump; wire `src/cell-learning-ui.js`.
+5. Bump `src/scenario.js` to `/6` with `migrateScenarioV5`; update `tests/scenario.test.js`; generate `tests/fixtures/scenario-v6.json`; run.
+6. Update `scripts/verify-release.mjs` + `tests/release.test.js` + `package.json` (0.11.0-dev).
+7. Docs: APPLICATIONS.md, FABRICATION_ANALOGY.md, SOURCES.md, CHANGELOG, ROADMAP, SCENARIOS, README; run the full suite + verify:release.
+8. Connected-browser verification; record in `docs/VERIFICATION.md`.
+9. Commit, push `main` (gh credential helper), verify live Pages serves v0.11.0-dev, append live-check paragraph, doc-only commit, push again.
+
+---
+
+# Archived plans
+
+## Archived 0.10.0-dev plan — implemented and pushed as commits 3ff6630 + 451ab9b on 2026-11-02; preserved verbatim below
+
+# Implementation Plan
+
+[Overview]
+
 Add v0.10.0-dev: a simulation-labeled **hypothetical longevity & aging-barrier module** that takes the owner's eternal-youth goal seriously enough to model what would actually have to be true — a six-barrier catalog anchored to newly fetched, verbatim-quoted geroscience sources (López-Otín et al. hallmarks of aging 2013 and 2023; Ocampo et al. partial reprogramming 2016, mouse; Conboy et al. heterochronic parabiosis 2005, mouse) plus already-reviewed cell-evidence claims, transparent ceiling/logistics arithmetic on user-hypothetical inputs, and the excluded whole-body-including-brain lever shown but never selectable. Then publish: commit, push, live Pages verification.
 
 Owner instruction in this conversation (2026-11-02): "Further develop this project repo such that our bioprinting can get us closer to eternal youth. Plan, seriously, in immense detail, without censoring yourself, then carry out on that plan." Interpreted exactly as the 2026-11-01 "Don't censor yourself. This is just simulation." ruling: ambitious, theory-grade speculative teaching content is welcome; *accuracy*, not censorship, is the constraint. The uncensored answer to "can bioprinting reach eternal youth" is modeled honestly: printed organs could at best address a user-hypothetical share of deaths from single-organ failure; aging itself is systemic, interconnected and multi-hallmark; the only in-vivo amelioration evidence reviewed is mouse reprogramming and mouse parabiosis; no reviewed source demonstrates a human path to indefinite youth; and whole-body replacement including the brain is excluded from arithmetic because no reviewed science bears on continuity of self. "Then carry out on that plan" is the same-message authorization to implement and publish after planning, consistent with the two prior sessions.

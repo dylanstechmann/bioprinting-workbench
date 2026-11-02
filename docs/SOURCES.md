@@ -72,3 +72,35 @@ not-restated gaps — is in `method-recipes-audit.json`; the cards live in
 
 Registry resolution alone never upgrades a claim; recipe provenance is recorded from
 the fetched full texts, not from citation metadata. Source review remains agent-run.
+
+## 0.10.0-dev aging-evidence ledger (agent-run, November 2, 2026; added retroactively)
+
+Four geroscience abstracts fetched from the Europe PMC REST API on 2026-11-02; verbatim
+quotes and locators in `docs/aging-evidence-audit.json`.
+
+| Source | Identifier | Supported scope | Not inferred |
+| --- | --- | --- | --- |
+| Lopez-Otin et al. (2013), The hallmarks of aging | 10.1016/j.cell.2013.05.039; PMID 23746838 | Review framing: nine hallmarks, interconnectedness | Any therapy, timeline or intervention claim |
+| Lopez-Otin et al. (2023), Hallmarks of aging: An expanding universe | 10.1016/j.cell.2022.11.001; PMID 36599349 | Twelve hallmarks and the three-premise definition | Any demonstrated human deceleration/reversal of aging |
+| Ocampo et al. (2016), In vivo amelioration of age-associated hallmarks by partial reprogramming | 10.1016/j.cell.2016.11.052; PMID 27984723 | Mouse in-vivo cyclic-OSKM findings; in-vitro premise sentence | Human outcomes, safety or any life-extension claim |
+| Conboy et al. (2005), Rejuvenation of aged progenitor cells by exposure to a young systemic environment | 10.1038/nature03260; PMID 15716955 | Mouse heterochronic parabiosis findings | Human application or any blood-product use |
+
+## 0.11.0-dev applications ledger (agent-run, November 2, 2026)
+
+Twelve abstracts fetched from the Europe PMC REST API on 2026-11-02; verbatim quotes and
+locators in `docs/applications-evidence-audit.json`.
+
+| Source | Identifier | Supported scope | Not inferred |
+| --- | --- | --- | --- |
+| BIA-ALCL case report and literature review (2026) | 10.3389/fonc.2026.1889467; PMID 42625740 | Rare lymphoma primarily associated with textured implants; excision as primary treatment | Incidence quantification or implant-choice advice |
+| Secondary procedures for breast implant complications, US 2019-2022 | 10.1097/sap.0000000000004800; PMID 42295736 | 74,756-discharge revision burden and patterns | Per-implant complication probabilities |
+| Complications following breast augmentation using injectable fillers (Kuwait) | 10.1159/mpp/adpag032; PMID 42848728 | 10-patient complication series; harms of unregulated shortcuts | Complication rates for regulated methods |
+| CAL/SVF preliminary feasibility case series | 10.1007/s00266-026-06092-8; PMID 42420658 | 12-month MRI retention 76.4-84.0% in six patients | Universal fat-graft retention expectations |
+| Prophylactic superdrained DIEP flap systematic review | 10.1097/gox.0000000000008185; PMID 42903308 | DIEP gold-standard framing; complication ranges across 2,964 flaps | Comparison against implant or grafting outcomes |
+| Bioprinting of adipose tissue graft with enhanced neo-vessel formation in vivo | 10.1002/adhm.202500627; PMID 40509638 | Animal 8-week printed-graft vascularization result | Any human breast or soft-tissue result |
+| Support bath bioprinting of mature adipocytes in gellan gum | 10.48130/els-0026-0006; PMID 42780948 | In-vitro printed adipose cell models for early drug testing | A tissue graft or validated drug-testing platform |
+| Kang et al. (2016), ITOP human-scale tissue constructs | 10.1038/nbt.3413; PMID 26878319 | Human-scale printed bone/cartilage/muscle constructs; 100-200 um diffusion-limit context | Any human application or solid-organ result |
+| Advancements in 3D skin bioprinting (review) | 10.1088/2631-7990/ad878c; PMID 39569402 | Field status; vascularization/safety/automation barriers | Any clinical result or product endorsement |
+| 3D bioprinting of prefabricated artificial skin (nude mice) | 10.7150/thno.104854; PMID 40083946 | Skin plus appendage regeneration in mouse wounds | Any human result |
+| Towards establishing human body-on-a-chip systems | 10.1186/s13287-022-03130-5; PMID 35987699 | Multi-organ chip research directions | A validated drug-testing replacement |
+| DLP bioprinting of auricular constructs (rat cells, nude mice) | 10.1186/s13287-026-05156-5; PMID 42399996 | Full-scale printed ears with cartilage-like matrix in animals | Any human auricular result |
