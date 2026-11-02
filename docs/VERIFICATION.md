@@ -640,4 +640,14 @@ Actual verification results:
   abstract verbatim in the shipped audit (tested), species separation is enforced by the
   catalog validator (tested), the aspiration entry is non-selectable by validator and
   UI (tested), and in-vitro/preclinical targets carry adverse anchors (tested).
+- **Live Pages verification (after commit `8426f5a` was pushed):** fetching
+  https://dylanstechmann.github.io/bioprinting-workbench/ returned the updated page with
+  footer "Bioprinting Workbench / v0.14.0-dev", the FRONTIER-TARGET ATLAS panel with its
+  nine-target description and "Version 9 restores ... tissue-atlas selection" restore
+  note; `/src/tissue-atlas.js` and `/docs/ATLAS.md` are served (HTTP 200); the live
+  `assets/manifest.json` shows the re-pinned bioprinter entry (167,412 bytes, sha256
+  148701cbeaec2fbb..., 47 meshes, 3,524 triangles, Printer_SyringeBarrel in requiredNodes),
+  confirming the updated GLB is published. Deployment propagated within minutes of the
+  push. Commit `8426f5a` was pushed under the owner's 2026-11-02 "then act upon it"
+  authorization; no tag or release object was created.
 - **Not performed:** laboratory execution, independent scientific review.
