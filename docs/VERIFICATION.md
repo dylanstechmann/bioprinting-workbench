@@ -397,4 +397,13 @@ Actual verification results:
   validator and UI labels ("mouse study — never transferred to human outcomes"), all theory
   prose is labeled hypothetical/simulation, adverse/limiting evidence ships beside benefit
   framing, and no treatment instruction for any person or animal was added.
-- **Not performed:** laboratory execution, independent scientific review.
+- **Live Pages verification (after commit `3ff6630` was pushed):** fetching
+  https://dylanstechmann.github.io/bioprinting-workbench/ returned the updated page with
+  footer "Bioprinting Workbench / v0.10.0-dev", the HYPOTHETICAL LONGEVITY THEORY panel with
+  all four inputs, and a "Version 5 restores ... longevity perspective" restore note;
+  `/src/longevity-theory.js` (12,151 bytes, six barriers including the excluded lever and
+  the evaluator) and `/docs/LONGEVITY_THEORY.md` (with [measured]/[theory] tags and the
+  excluded-lever section) are both served. Deployment propagated within minutes of the push.
+- **Not performed:** laboratory execution, independent scientific review. Commit `3ff6630`
+  was pushed to `main` under the owner's 2026-11-02 "carry out on that plan" authorization;
+  Pages published it automatically. No tag or release object was created.
