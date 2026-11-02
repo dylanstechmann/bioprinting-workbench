@@ -48,7 +48,7 @@ treatment instructions; adverse mouse evidence ships beside the human benefit cl
 AGENTS.md was revised by owner instruction on 2026-11-01. No commit, push or publication
 is authorized by implementation; see RELEASE.md.
 
-## Local 0.9.0-dev follow-on — not released as a tagged version
+## Local 0.9.0-dev follow-on — pushed to main on 2026-11-01 (no tagged version)
 
 Owner-authorized speculative teaching content ("Don't censor yourself. This is just
 simulation.", 2026-11-01): the hypothetical expansion-theory explorer encodes the
@@ -57,3 +57,14 @@ anchors, user-hypothetical multipliers, transparent arithmetic, and the excluded
 genome-instability lever. Scenario /4 (unpublished in its older shape) carries the new
 learning record. No measured-timeline, safety or organ-production claim is added; see
 docs/ACCELERATION_THEORY.md.
+
+## Local 0.10.0-dev follow-on — owner-authorized speculative teaching content
+
+Owner instruction (2026-11-02): "Further develop this project repo such that our bioprinting
+can get us closer to eternal youth. Plan, seriously, in immense detail, without censoring
+yourself, then carry out on that plan." Delivered as a simulation-labeled longevity &
+aging-barrier module: the honest decomposition — single-organ ceiling, state of organ
+printing, systemic aging, mouse-only levers, cell-intrinsic limits — with the
+whole-body-including-brain lever shown and never selectable. No eternal-youth,
+life-extension or treatment claim is made; the four aging sources are verbatim-quoted in the
+shipped audit. See docs/LONGEVITY_THEORY.md and docs/aging-evidence-audit.json.

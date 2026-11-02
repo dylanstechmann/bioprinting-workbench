@@ -73,6 +73,10 @@ equipment, patient records or experimental measurements are connected.
 - `src/acceleration-theory.js`: simulation-labeled expansion-theory explorer — measured
   anchors, user-hypothetical multipliers, transparent arithmetic (see
   [theory write-up](docs/ACCELERATION_THEORY.md)).
+- `src/longevity-theory.js`: simulation-labeled longevity & aging-barrier explorer — the
+  honest ceiling/logistics decomposition of the "eternal youth" question, anchored to
+  reviewed geroscience sources with the whole-body lever excluded (see
+  [theory write-up](docs/LONGEVITY_THEORY.md)).
 - `tests/model.test.js`: Node's built-in test runner; no package installation required.
 - `vendor/three/`: pinned Three.js 0.187.0 runtime and OrbitControls, MIT license retained.
 

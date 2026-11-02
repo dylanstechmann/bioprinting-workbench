@@ -1,6 +1,6 @@
 {
   "name": "bioprinting-workbench",
-  "version": "0.9.0-dev",
+  "version": "0.10.0-dev",
   "private": true,
   "type": "module",
   "description": "An educational, synthetic browser-based tissue engineering workbench",

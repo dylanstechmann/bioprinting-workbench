@@ -7,6 +7,8 @@ import { getEvidenceCatalog, validateEvidenceCatalog } from '../src/cell-evidenc
 import { getRepairResearchCatalog, validateRepairResearchCatalog } from '../src/repair-research.js';
 import { getRecipeCatalog, validateRecipeCatalog } from '../src/method-recipes.js';
 import { getMechanismCatalog, validateMechanismCatalog } from '../src/acceleration-theory.js';
+import { getAgingEvidenceCatalog, validateAgingEvidenceCatalog } from '../src/aging-evidence.js';
+import { getBarrierCatalog, validateBarrierCatalog } from '../src/longevity-theory.js';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 /** An allowlisted candidate inventory, NOT an instruction to publish the repo root. */
@@ -33,6 +35,8 @@ export function verifyRelease(directory = root, { targetVersion = JSON.parse(rea
   check('repair-research contract', 'validateRepairResearchCatalog', () => validateRepairResearchCatalog(getRepairResearchCatalog()));
   check('method-recipes contract', 'validateRecipeCatalog', () => validateRecipeCatalog(getRecipeCatalog()));
   check('acceleration-theory contract', 'validateMechanismCatalog', () => validateMechanismCatalog(getMechanismCatalog(), getEvidenceCatalog()));
+  check('aging-evidence contract', 'validateAgingEvidenceCatalog', () => validateAgingEvidenceCatalog(getAgingEvidenceCatalog()));
+  check('longevity-theory contract', 'validateBarrierCatalog', () => validateBarrierCatalog(getBarrierCatalog(), getEvidenceCatalog(), getAgingEvidenceCatalog()));
   check('asset hashes', 'verify-release asset hash check', () => {
     for (const asset of JSON.parse(readFileSync(resolve(directory,'assets/manifest.json'),'utf8')).assets) {
       if (!/^assets\/[a-z_]+\.glb$/.test(asset.file)) throw Error('Invalid manifest path');

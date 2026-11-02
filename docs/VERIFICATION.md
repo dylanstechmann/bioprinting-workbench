@@ -352,3 +352,49 @@ Actual verification results:
   `3e58f62` (0.7/0.8) and `a58062d` (0.9) were pushed to `main` under the owner's
   2026-11-01 repo-update authorization; Pages published both automatically. No tag or
   release object was created.
+
+## 0.10.0-dev local follow-on (agent-run, November 2, 2026)
+
+Owner authorization: "Further develop this project repo such that our bioprinting can get us
+closer to eternal youth. Plan, seriously, in immense detail, without censoring yourself,
+then carry out on that plan." (2026-11-02) — interpreted, like the 2026-11-01 "Don't censor
+yourself" instruction, as license for clearly-labeled speculative simulated content with
+accuracy intact. The four new geroscience sources (hallmarks of aging 2013 and 2023, Ocampo
+partial reprogramming 2016, Conboy parabiosis 2005) were fetched from the Europe PMC REST
+API on 2026-11-02 and every claim is verbatim-quoted in docs/aging-evidence-audit.json
+(tested against the runtime catalog); mouse findings stay species-separated; no
+eternal-youth, life-extension, treatment or timeline claim is made; the
+whole-body-including-brain lever is shown and never selectable.
+
+Delivered: the simulation-labeled longevity & aging-barrier module
+(src/aging-evidence.js, src/longevity-theory.js, src/longevity-theory-ui.js,
+docs/LONGEVITY_THEORY.md, docs/aging-evidence-audit.json), scenario /5 with the
+longevityPerspective learning record (the /4 shape was already published, so a strict
+/4 to /5 migration ships with truthful warnings; /3 and /2 chain through it), and the
+version bump to 0.10.0-dev.
+
+Actual verification results:
+
+- **Unit tests:** `node --test tests/*.test.js` — **96 passed, 0 failed** (up from 88;
+  +8 longevity/aging contracts; all prior contracts unchanged).
+- **Syntax:** `npm run check` — 62 modules syntax-checked; `git diff --check` clean.
+- **Release contract:** `npm run verify:release` — all PASS including the two new checks
+  (aging-evidence contract, longevity-theory contract); allowlisted inventory 76 files.
+- **Browser (connected Playwright at 127.0.0.1:8096):** footer reads v0.10.0-dev; the
+  HYPOTHETICAL LONGEVITY THEORY panel renders six barrier cards with measured anchors and
+  the excluded whole-body-including-brain lever disabled; entering fraction 0.25, 3 organs,
+  10-year cadence, 60-year horizon and selecting the systemic-aging barrier produced the
+  decomposition ("Addressable ceiling: 0.25 ... Untouched in principle: 0.75 ... 3 organs x
+  6 replacements each = 18 printed-organ transplants across 60 years (~0.3 per
+  person-year). That is a factory plan, not a rejuvenation plan."); notices include "No
+  reviewed source demonstrates eternal youth"; 0 console errors.
+- **Export purity:** covered by unit tests — the serialized /5 state carries the
+  longevityPerspective inputs and no derived outputs (no totalReplacements, no
+  addressableCeiling).
+- **Claims scanner: still not-run** (container Python stdlib incomplete; see the 0.8
+  section). Compensating mechanical checks: every aging claim quotes the fetched abstract
+  verbatim in the shipped audit (tested), species separation is enforced by the catalog
+  validator and UI labels ("mouse study — never transferred to human outcomes"), all theory
+  prose is labeled hypothetical/simulation, adverse/limiting evidence ships beside benefit
+  framing, and no treatment instruction for any person or animal was added.
+- **Not performed:** laboratory execution, independent scientific review.

@@ -3,7 +3,18 @@
 Personal hobby and learning project, AI-assisted. Agent-run software/source checks are
 not biological validation or independent scientific review.
 
-## 0.9.0-dev — local, uncommitted and unpublished
+## 0.10.0-dev — local, uncommitted and unpublished
+
+- Add the simulation-labeled longevity & aging-barrier module: a six-barrier catalog
+  anchored to four newly reviewed geroscience sources (hallmarks of aging 2013/2023, mouse
+  partial reprogramming 2016, mouse parabiosis 2005; verbatim-quoted in
+  docs/aging-evidence-audit.json) plus transparent ceiling/logistics arithmetic on
+  user-hypothetical inputs; the whole-body-including-brain lever is shown, never selectable.
+- Extend the scenario to /5 with the longevityPerspective learning record; /4, /3 and /2
+  migrations default it with truthful warnings.
+- Add docs/LONGEVITY_THEORY.md with every number tagged measured vs theory.
+
+## 0.9.0-dev — committed and pushed to main on 2026-11-01
 
 - Add the hypothetical expansion-theory explorer: a mechanism catalog anchored to
   reviewed claims (survival-gate rescue, medium choice, split-ratio logistics,

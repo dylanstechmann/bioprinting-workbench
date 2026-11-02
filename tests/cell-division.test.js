@@ -15,6 +15,7 @@ test('learning state carries species system, method and hypothetical comparison 
   assert.equal(state.selectedCellType,'msc');assert.equal(state.selectedCellSystemId,'human-msc');assert.equal(state.selectedMethodId,null);
   assert.deepEqual(state.planningComparison,{baselineHours:null,comparisonHours:null});
   assert.deepEqual(state.expansionTheory.selectedMechanismIds,[]);assert.equal(state.expansionTheory.startCells,null);
+  assert.deepEqual(state.longevityPerspective.selectedBarrierIds,[]);assert.equal(state.longevityPerspective.singleOrganFailureFraction,null);
   const mouse=validateLearningState({...state,selectedCellType:'esc',selectedCellSystemId:'mouse-esc'});
   assert.equal(mouse.selectedCellSystemId,'mouse-esc');
   const withMethod=validateLearningState({...state,selectedCellType:'ipsc',selectedCellSystemId:'human-ipsc',selectedMethodId:'halliwell-nucleosides'});
@@ -24,7 +25,9 @@ test('learning state carries species system, method and hypothetical comparison 
   assert.equal(validateLearningState({...state,selectedMethodId:'bhat-media-expansion'}).selectedMethodId,'bhat-media-expansion');
   const expanded=validateLearningState({...state,expansionTheory:{...state.expansionTheory,startCells:1e6,targetCells:1e12,doublingHours:24,selectedMechanismIds:['medium-formulation'],mediumPdtMultiplier:1.1}});
   assert.equal(expanded.expansionTheory.startCells,1e6);
-  for(const patch of [{selectedCellSystemId:'mouse-esc'},{selectedCellSystemId:'human-esc'},{selectedCellSystemId:'fake'},{selectedMethodId:'halliwell-nucleosides'},{planningComparison:{baselineHours:0,comparisonHours:1}},{planningComparison:{extra:1}},{expansionTheory:{...state.expansionTheory,selectedMechanismIds:['transformed-variant-selection']}},{expansionTheory:{...state.expansionTheory,forkCycleMultiplier:.9}},{expansionTheory:{...state.expansionTheory,startCells:1e6,targetCells:1e5}},{expansionTheory:{...state.expansionTheory,extra:1}}]){
+  const longevity=validateLearningState({...state,longevityPerspective:{...state.longevityPerspective,singleOrganFailureFraction:0.25,selectedBarrierIds:['systemic-aging-environment']}});
+  assert.equal(longevity.longevityPerspective.singleOrganFailureFraction,0.25);
+  for(const patch of [{selectedCellSystemId:'mouse-esc'},{selectedCellSystemId:'human-esc'},{selectedCellSystemId:'fake'},{selectedMethodId:'halliwell-nucleosides'},{planningComparison:{baselineHours:0,comparisonHours:1}},{planningComparison:{extra:1}},{expansionTheory:{...state.expansionTheory,selectedMechanismIds:['transformed-variant-selection']}},{expansionTheory:{...state.expansionTheory,forkCycleMultiplier:.9}},{expansionTheory:{...state.expansionTheory,startCells:1e6,targetCells:1e5}},{expansionTheory:{...state.expansionTheory,extra:1}},{longevityPerspective:{...state.longevityPerspective,selectedBarrierIds:['whole-body-including-brain']}},{longevityPerspective:{...state.longevityPerspective,singleOrganFailureFraction:1.5}},{longevityPerspective:{...state.longevityPerspective,extra:1}}]){
     assert.throws(()=>validateLearningState({...state,...patch}));
   }
 });

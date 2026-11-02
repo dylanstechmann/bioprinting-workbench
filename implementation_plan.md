@@ -2,6 +2,115 @@
 
 [Overview]
 
+Add v0.10.0-dev: a simulation-labeled **hypothetical longevity & aging-barrier module** that takes the owner's eternal-youth goal seriously enough to model what would actually have to be true — a six-barrier catalog anchored to newly fetched, verbatim-quoted geroscience sources (López-Otín et al. hallmarks of aging 2013 and 2023; Ocampo et al. partial reprogramming 2016, mouse; Conboy et al. heterochronic parabiosis 2005, mouse) plus already-reviewed cell-evidence claims, transparent ceiling/logistics arithmetic on user-hypothetical inputs, and the excluded whole-body-including-brain lever shown but never selectable. Then publish: commit, push, live Pages verification.
+
+Owner instruction in this conversation (2026-11-02): "Further develop this project repo such that our bioprinting can get us closer to eternal youth. Plan, seriously, in immense detail, without censoring yourself, then carry out on that plan." Interpreted exactly as the 2026-11-01 "Don't censor yourself. This is just simulation." ruling: ambitious, theory-grade speculative teaching content is welcome; *accuracy*, not censorship, is the constraint. The uncensored answer to "can bioprinting reach eternal youth" is modeled honestly: printed organs could at best address a user-hypothetical share of deaths from single-organ failure; aging itself is systemic, interconnected and multi-hallmark; the only in-vivo amelioration evidence reviewed is mouse reprogramming and mouse parabiosis; no reviewed source demonstrates a human path to indefinite youth; and whole-body replacement including the brain is excluded from arithmetic because no reviewed science bears on continuity of self. "Then carry out on that plan" is the same-message authorization to implement and publish after planning, consistent with the two prior sessions.
+
+Provenance discipline (unchanged): the four new sources were fetched from the Europe PMC REST API on 2026-11-02 and every claim quotes the fetched abstract verbatim in `docs/aging-evidence-audit.json`; claims are third-person restatements with locators; species separation is enforced (mouse findings never become human outcomes); every computed number is labeled user-hypothetical-simulation; no measured timeline, treatment, safety, life-extension or eternal-youth claim is made; adverse and limiting evidence ships beside benefit framing.
+
+[Types]
+
+**`learning.longevityPerspective`** (new key in the `/5` learning record; all numeric fields nullable, null = not specified):
+
+- `singleOrganFailureFraction: number|null` — 0..1, user-hypothetical share of deaths that replacing one organ could in principle address; the module's gate input
+- `replacedOrganCount: integer|null` — 1..10, organs on a hypothetical replacement schedule
+- `replacementCadenceYears: number|null` — 0.5..50, years between replacements per scheduled organ
+- `planningHorizonYears: number|null` — 1..120, horizon for schedule arithmetic
+- `selectedBarrierIds: string[]` — unique, subset of selectable barrier ids; the excluded id always rejects
+
+**Barrier record** (`BARRIERS` catalog entries, mirroring `MECHANISMS`): `{ id, label, category: 'ceiling'|'state-of-printing'|'systemic'|'levers'|'cell-intrinsic'|'excluded', selectable: boolean, anchorClaimIds: string[], adverseClaimIds: string[], measuredSummary: string, theoryNote: string }`. Claim ids resolve against the union of `cell-evidence` claims and the new `aging-evidence` claims.
+
+**Evaluator result** (`evaluateLongevityTheory`): `{ status: 'unconfigured'|'calculated', assumptionOrigin: 'user-hypothetical-simulation', addressableCeiling, unaffectedShare, replacementsPerOrgan, totalReplacements, replacementsPerPersonYear, barrierEffects: [{ id, label, note }], anchorSummaries: [claim], adverseSummaries: [claim], notices: string[] }` with nulls while unconfigured.
+
+**Aging evidence catalog** (`AGING_EVIDENCE_SCHEMA = 'bioprinting-workbench/aging-evidence/1'`): sources `{ id, doi, title, journalYear, onlineDate, url, fullTextUrl, identifierStatus, supportStatus, reviewedOn, reviewKind, limitations }` (mirrors cell-evidence sources) and claims `{ id, sourceId, species: 'human'|'mouse'|'other', modelContext, statement, locator, supportStatus, limitations }` (organism-level, so no cellTypeIds binding; species enum and review discipline unchanged).
+
+**Audit JSON** (`docs/aging-evidence-audit.json`, schema `bioprinting-workbench/aging-evidence-audit/1`): `{ schema, fetchedFrom, fetchDate, sources: [{ id, pmid, doi, title, journalYear, url }], claims: [{ id, locator, verbatimQuote }] }` — the runtime catalog and the audit must match exactly (tested).
+
+[Files]
+
+New files:
+
+- `src/aging-evidence.js` — four reviewed sources + five verbatim-anchored, species-separated claims (aging-nine-hallmarks-2013 [other], aging-twelve-hallmarks-2023 [other], reprogramming-in-vitro-age [other], reprogramming-in-vivo-mouse [mouse], parabiosis-systemic-factors [mouse]); `validateAgingEvidenceCatalog` mirrors cell-evidence rules.
+- `src/longevity-theory.js` — `BARRIERS` catalog (six barriers incl. excluded `whole-body-including-brain`), `NOTICES`, `defaultLongevityPerspective`, `validateLongevityPerspective`, `validateBarrierCatalog`, `evaluateLongevityTheory`.
+- `src/longevity-theory-ui.js` — `createLongevityTheoryUI` mirroring the expansion panel (cards, disabled excluded lever, status/result roles, dispose).
+- `docs/LONGEVITY_THEORY.md` — "Could bioprinting reach eternal youth? (simulation theory, not measurement)"; every number tagged [measured] or [theory]; measured anchors quote the fetched abstracts with PMIDs.
+- `docs/aging-evidence-audit.json` — verbatim abstract quotes + fetch metadata (audit↔runtime equality tested).
+- `tests/aging-evidence.test.js`, `tests/longevity-theory.test.js`, `tests/longevity-theory-ui.test.js` — contract + arithmetic + harness tests mirroring the acceleration-theory suite.
+- `tests/fixtures/scenario-v5.json` — native `/5` fixture (mouse-esc system, kurashima method, expansion inputs, populated longevityPerspective: fraction 0.25, 3 organs, 10-year cadence, 60-year horizon, barriers ['systemic-aging-environment','partial-reprogramming-lever']).
+
+Modified files:
+
+- `src/cell-division.js` — import default/validate longevity functions; `defaultLearningState()` adds `longevityPerspective`; `validateLearningState` accepts and validates the key.
+- `src/cell-learning-ui.js` — instantiate + render + dispose `createLongevityTheoryUI` exactly like `expansionUI`.
+- `src/scenario.js` — `SCENARIO_SCHEMA = 'bioprinting-workbench/5'`; new `migrateScenarioV4` (old four-key learning → defaults longevity with truthful warning); `migrateScenarioV3` retargets `/5` and defaults longevity too; `parseScenario` dispatches `/4`; `/2` chains unchanged; `/1` reset semantics unchanged.
+- `index.html` — new longevity panel after the expansion panel; scenario-status helper text says Version 5 and mentions the longevity perspective; footer `v0.10.0-dev`.
+- `src/app.js` — no change expected (footer is static; schema consumed through scenario.js).
+- `package.json` — version `0.10.0-dev`.
+- `scripts/verify-release.mjs` — new checks `aging-evidence contract` and `longevity-theory contract` (catalog validators run against both evidence catalogs).
+- `tests/release.test.js` — assert both new contract validations alongside the existing three.
+- `tests/scenario.test.js` — v4→v5 renames; new v4-migration test (defaults + warning); fixture loop gains `scenario-v5.json` (native, schema /5) and `scenario-v4.json` now migrates from `/4`; the invalid-schema case becomes `bioprinting-workbench/6`; longevity fields in the round-trip/rejection tests.
+- `tests/cell-division.test.js` — default-state key assertions + new rejection patches (excluded barrier id, out-of-range fraction, unknown key).
+- `docs/SCENARIOS.md` — Version 5 section + Version 4 migration section; header copy updated.
+- `docs/VERIFICATION.md` — new 0.10.0-dev section with executed checks; live-verification paragraph appended after the push (doc-only commit, same as last session).
+- `CHANGELOG.md` — 0.10.0-dev section at top; 0.9.0-dev section re-labeled as pushed to main on 2026-11-01.
+- `docs/ROADMAP.md` — "Local 0.10.0-dev follow-on" section; 0.9 section updated to reflect publication.
+- `README.md` — feature-list bullet for `src/longevity-theory.js` beside the acceleration-theory bullet.
+- `implementation_plan.md` — this plan; the prior 0.9 plan is preserved verbatim below the archive divider.
+
+[Functions]
+
+New (all in `/workspace/bioprinting-workbench`):
+
+- `src/aging-evidence.js`: `getAgingEvidenceCatalog()`, `validateAgingEvidenceCatalog(raw)` — schema/source/claim validation mirroring cell-evidence (species enum, locator length, reviewed-source rules, no cross-catalog id collisions with cell-evidence claim ids).
+- `src/longevity-theory.js`: `defaultLongevityPerspective()`, `validateLongevityPerspective(raw)`, `getBarrierCatalog()`, `validateBarrierCatalog(barrers, evidenceCatalog, agingCatalog)`, `evaluateLongevityTheory(settings)`.
+- `src/longevity-theory-ui.js`: `createLongevityTheoryUI({ elements, onStateChange })` returning `{ render, dispose }`.
+
+Modified:
+
+- `defaultLearningState()` (src/cell-division.js) — adds `longevityPerspective: defaultLongevityPerspective()`.
+- `validateLearningState(raw)` (src/cell-division.js) — allowed-keys list gains `longevityPerspective`; delegates to `validateLongevityPerspective`.
+- `migrateScenarioV3(raw)` (src/scenario.js) — learning patch gains `longevityPerspective: defaultLongevityPerspective()`; warning text updated truthfully.
+- `parseScenario(value)` (src/scenario.js) — adds the `/4` → `migrateScenarioV4` branch before the native `/5` branch.
+- `verifyRelease(directory, options)` (scripts/verify-release.mjs) — two new `check(...)` contract rows.
+
+[Classes]
+
+None — the project uses module-level factory functions and frozen catalogs only (no classes anywhere); the new module follows that convention. `BARRIERS`/claims/sources are plain frozen data validated at import time.
+
+[Dependencies]
+
+None. No packages, no build step, no network calls at runtime; the only new "inputs" are the four fetched bibliographic references (PMIDs 23746838, 36599349, 27984723, 15716955) recorded as static strings in the evidence file and audit JSON. Node built-in tests and the existing `npm start` python http.server (verified working in this container) are the only tooling.
+
+[Testing]
+
+- `tests/aging-evidence.test.js`: catalog validates; species separation (mouse claims never human); every claim has an audit entry with a non-empty verbatimQuote and locator; audit id set == runtime id set; mutations (dangling source, unknown species, dropped limitation, empty locator) reject.
+- `tests/longevity-theory.test.js`: six-barrier catalog contract (ids unique, one excluded + non-selectable, anchors/adverses resolve across both catalogs, mutations reject); evaluator — unconfigured on nulls, ceiling/unaffected arithmetic at the gate input, schedule arithmetic only when all three schedule inputs present, barrier notes + anchor/adverse summaries for selections, notices include 'Simulation theory only' and 'No reviewed source demonstrates eternal youth'; validation rejections (excluded id, dup ids, fraction 1.5, organs 0, cadence 0.1, horizon 200, unknown key, fraction present without schedule inputs is allowed).
+- `tests/longevity-theory-ui.test.js`: harness mirror of the expansion UI tests — six cards render, excluded checkbox disabled with 'shown, never selectable', patch proposes through `validateLearningState`, result text contains the ceiling line and notices, dispose stops callbacks, missing onStateChange throws.
+- Existing suites updated as listed in [Files]; expected pass count ≈ 100+ (88 baseline + ~14 new assertions/tests).
+- Release verification: `npm test`, `npm run check`, `npm run verify:release` (both new contract checks must PASS), `git diff --check`, then a connected-browser check at 127.0.0.1:8096 (python http.server): footer v0.10.0-dev, six barrier cards, excluded lever disabled, fraction 0.25 → ceiling decomposition, `/5` export carries only inputs, 0 console errors. Claims scanner remains not-run (container Python stdlib incomplete — documented); compensating mechanical checks continue.
+
+[Implementation Order]
+
+1. Write `src/aging-evidence.js` + `docs/aging-evidence-audit.json` + `tests/aging-evidence.test.js`; run them.
+2. Write `src/longevity-theory.js` + `tests/longevity-theory.test.js`; run them.
+3. Write `src/longevity-theory-ui.js` + `tests/longevity-theory-ui.test.js`; extend `src/cell-division.js` + `tests/cell-division.test.js`; run them.
+4. Add the index.html panel, helper-text and footer bump; wire `src/cell-learning-ui.js`.
+5. Bump `src/scenario.js` to `/5` with `migrateScenarioV4`; update `tests/scenario.test.js`; generate `tests/fixtures/scenario-v5.json` via `serializeScenario`; run the suite.
+6. Update `scripts/verify-release.mjs` + `tests/release.test.js` + `package.json` (0.10.0-dev).
+7. Docs: `docs/LONGEVITY_THEORY.md`, SCENARIOS, CHANGELOG, ROADMAP, README; run the full `npm test` + `npm run check` + `npm run verify:release`.
+8. Connected-browser verification; record honestly in `docs/VERIFICATION.md`.
+9. Commit (message records owner authorization, AI-assisted framing, what was and was not verified), push `main` via the gh credential helper, verify live Pages serves v0.10.0-dev, append the live-check paragraph, doc-only commit, push again.
+
+---
+
+# Archived plans
+
+## Archived 0.9.0-dev plan — implemented and pushed as commits a58062d + d9205e8 on 2026-11-01; preserved verbatim below
+
+# Implementation Plan
+
+[Overview]
+
 Publish the fully verified 0.7.0-dev/0.8.0-dev working tree to GitHub (owner-authorized this conversation: "go ahead and update the github repo"), then add v0.9.0-dev: a simulation-labeled **hypothetical expansion & acceleration theory explorer** that turns the in-conversation mechanism-by-mechanism acceleration analysis into an app module — a mechanism catalog anchored to already-reviewed measured claims plus pure, fully-explained wall-clock arithmetic.
 
 Owner instructions in this conversation, in order: (1) the acceleration-theory question ("could guess/theorize how much acceleration based upon various mechanisms"); (2) **"go ahead and update the github repo"** — explicit commit/push/publication authorization for the existing verified tree (Pages publishes automatically from `main`); (3) "plan for what's next and then implement. Don't censor yourself. This is just simulation."

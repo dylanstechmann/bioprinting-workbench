@@ -1,0 +1,67 @@
+{
+  "schema": "bioprinting-workbench/aging-evidence-audit/1",
+  "fetchedFrom": "https://www.ebi.ac.uk/europepmc/webservices/rest/search (Europe PMC REST API, resultType=core, field abstractText)",
+  "fetchDate": "2026-11-02",
+  "agentReadingKind": "agent-source-reading (abstracts only; no figures, protocols or datasets reproduced)",
+  "sources": [
+    {
+      "id": "hallmarks-2013",
+      "pmid": "23746838",
+      "doi": "10.1016/j.cell.2013.05.039",
+      "title": "The hallmarks of aging",
+      "journalYear": 2013,
+      "url": "https://europepmc.org/article/MED/23746838"
+    },
+    {
+      "id": "hallmarks-2023",
+      "pmid": "36599349",
+      "doi": "10.1016/j.cell.2022.11.001",
+      "title": "Hallmarks of aging: An expanding universe",
+      "journalYear": 2023,
+      "url": "https://europepmc.org/article/MED/36599349"
+    },
+    {
+      "id": "ocampo-2016",
+      "pmid": "27984723",
+      "doi": "10.1016/j.cell.2016.11.052",
+      "title": "In Vivo Amelioration of Age-Associated Hallmarks by Partial Reprogramming",
+      "journalYear": 2016,
+      "url": "https://europepmc.org/article/MED/27984723"
+    },
+    {
+      "id": "conboy-2005",
+      "pmid": "15716955",
+      "doi": "10.1038/nature03260",
+      "title": "Rejuvenation of aged progenitor cells by exposure to a young systemic environment",
+      "journalYear": 2005,
+      "url": "https://europepmc.org/article/MED/15716955"
+    }
+  ],
+  "claims": [
+    {
+      "id": "aging-nine-hallmarks-2013",
+      "locator": "Abstract, sentences 1–2 and 4–5",
+      "verbatimQuote": "Aging is characterized by a progressive loss of physiological integrity, leading to impaired function and increased vulnerability to death. This deterioration is the primary risk factor for major human pathologies, including cancer, diabetes, cardiovascular disorders, and neurodegenerative diseases. This Review enumerates nine tentative hallmarks that represent common denominators of aging in different organisms, with special emphasis on mammalian aging. These hallmarks are: genomic instability, telomere attrition, epigenetic alterations, loss of proteostasis, deregulated nutrient sensing, mitochondrial dysfunction, cellular senescence, stem cell exhaustion, and altered intercellular communication."
+    },
+    {
+      "id": "aging-twelve-hallmarks-2023",
+      "locator": "Abstract, sentences 1–2",
+      "verbatimQuote": "Aging is driven by hallmarks fulfilling the following three premises: (1) their age-associated manifestation, (2) the acceleration of aging by experimentally accentuating them, and (3) the opportunity to decelerate, stop, or reverse aging by therapeutic interventions on them. We propose the following twelve hallmarks of aging: genomic instability, telomere attrition, epigenetic alterations, loss of proteostasis, disabled macroautophagy, deregulated nutrient-sensing, mitochondrial dysfunction, cellular senescence, stem cell exhaustion, altered intercellular communication, chronic inflammation, and dysbiosis. These hallmarks are interconnected among each other, as well as to the recently proposed hallmarks of health, which include organizational features of spatial compartmentalization, maintenance of homeostasis, and adequate responses to stress."
+    },
+    {
+      "id": "reprogramming-in-vitro-age",
+      "locator": "Abstract, sentence 2",
+      "verbatimQuote": "In vitro studies have demonstrated that cellular reprogramming to pluripotency reverses cellular age, but alteration of the aging process through reprogramming has not been directly demonstrated in vivo."
+    },
+    {
+      "id": "reprogramming-in-vivo-mouse",
+      "locator": "Abstract, sentences 3–4",
+      "verbatimQuote": "Here, we report that partial reprogramming by short-term cyclic expression of Oct4, Sox2, Klf4, and c-Myc (OSKM) ameliorates cellular and physiological hallmarks of aging and prolongs lifespan in a mouse model of premature aging. Similarly, expression of OSKM in vivo improves recovery from metabolic disease and muscle injury in older wild-type mice."
+    },
+    {
+      "id": "parabiosis-systemic-factors",
+      "locator": "Abstract, sentences 4–5 and 7–8",
+      "verbatimQuote": "To examine the influence of systemic factors on aged progenitor cells from these tissues, we established parabiotic pairings (that is, a shared circulatory system) between young and old mice (heterochronic parabioses), exposing old mice to factors present in young serum. Notably, heterochronic parabiosis restored the activation of Notch signalling as well as the proliferation and regenerative capacity of aged satellite cells. Furthermore, heterochronic parabiosis increased aged hepatocyte proliferation and restored the cEBP-alpha complex to levels seen in young animals. These results suggest that the age-related decline of progenitor cell activity can be modulated by systemic factors that change with age."
+    }
+  ]
+}

@@ -9,8 +9,9 @@ import { defaultLearningState, validateLearningState } from './cell-division.js'
 import { defaultCellSystemId } from './repair-research.js';
 import { defaultPlanningComparison } from './planning-comparison.js';
 import { defaultExpansionTheory } from './acceleration-theory.js';
+import { defaultLongevityPerspective } from './longevity-theory.js';
 import { validateEnvironmentId } from './environment.js';
-export const SCENARIO_SCHEMA = 'bioprinting-workbench/4';
+export const SCENARIO_SCHEMA = 'bioprinting-workbench/5';
 const MODEL = 'synthetic-dimensionless-storyboard';
 const LIMITATIONS = 'Synthetic dimensionless teaching models; user provenance unverified. No biological validation, viability, clinical, animal-use or transplant-safety inference. Published-method recipe cards are cited research descriptions, not treatment instructions or validated protocols.';
 export function defaultAnalyses(parameters = DEFAULTS) {
@@ -46,8 +47,15 @@ export function migrateScenarioV3(raw) {
   if (raw.schema !== 'bioprinting-workbench/3') throw new RangeError('Expected version 3');
   assertAllowedKeys(raw.learning, ['selectedCellType','division','researchHorizonYears'], 'learning');
   assertAllowedKeys(raw.view, ['camera','reveal'], 'view');
-  const scenario = normalize({ ...raw, schema: SCENARIO_SCHEMA, learning: { selectedCellType: raw.learning.selectedCellType, selectedCellSystemId: defaultCellSystemId(raw.learning.selectedCellType), selectedMethodId: null, division: raw.learning.division, researchHorizonYears: raw.learning.researchHorizonYears, planningComparison: defaultPlanningComparison(), expansionTheory: defaultExpansionTheory() }, view: { ...raw.view, environment: 'lab' } });
-  return { scenario, warnings: ['Version 3 inputs restored; species-separated cell-system, method and hypothetical-comparison inputs initialized to defaults; environment set to laboratory. Derived results are recomputed, not restored.'], migratedFrom: raw.schema };
+  const scenario = normalize({ ...raw, schema: SCENARIO_SCHEMA, learning: { selectedCellType: raw.learning.selectedCellType, selectedCellSystemId: defaultCellSystemId(raw.learning.selectedCellType), selectedMethodId: null, division: raw.learning.division, researchHorizonYears: raw.learning.researchHorizonYears, planningComparison: defaultPlanningComparison(), expansionTheory: defaultExpansionTheory(), longevityPerspective: defaultLongevityPerspective() }, view: { ...raw.view, environment: 'lab' } });
+  return { scenario, warnings: ['Version 3 inputs restored; species-separated cell-system, method, hypothetical-comparison and longevity-perspective inputs initialized to defaults; environment set to laboratory. Derived results are recomputed, not restored.'], migratedFrom: raw.schema };
+}
+export function migrateScenarioV4(raw) {
+  assertAllowedKeys(raw, ['schema','model','seed','parameters','time','procedure','view','analyses','datasets','learning','limitations']);
+  if (raw.schema !== 'bioprinting-workbench/4') throw new RangeError('Expected version 4');
+  assertAllowedKeys(raw.learning, ['selectedCellType','selectedCellSystemId','selectedMethodId','division','researchHorizonYears','planningComparison','expansionTheory'], 'learning');
+  const scenario = normalize({ ...raw, schema: SCENARIO_SCHEMA, learning: { ...raw.learning, longevityPerspective: defaultLongevityPerspective() } });
+  return { scenario, warnings: ['Version 4 inputs restored; hypothetical longevity-perspective inputs initialized to defaults. Derived results are recomputed, not restored.'], migratedFrom: raw.schema };
 }
 export function migrateScenarioV2(raw) {
   assertAllowedKeys(raw, ['schema','model','seed','parameters','time','procedure','view','analyses','datasets','limitations']);
@@ -70,6 +78,7 @@ export function parseScenario(value) {
   if (raw.schema === 'bioprinting-workbench/1') return migrateScenarioV1(raw);
   if (raw.schema === 'bioprinting-workbench/2') return migrateScenarioV2(raw);
   if (raw.schema === 'bioprinting-workbench/3') return migrateScenarioV3(raw);
+  if (raw.schema === 'bioprinting-workbench/4') return migrateScenarioV4(raw);
   return { scenario: normalize(raw), warnings: [], migratedFrom: null };
 }
 export function serializeScenario(state) { return JSON.stringify(createScenario(state), null, 2); }
