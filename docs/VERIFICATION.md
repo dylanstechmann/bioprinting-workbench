@@ -1,5 +1,122 @@
 # Agent-run verification — 2026-11-01
 
+## Local 0.7.0-dev follow-on — uncommitted and unpublished
+
+Owner authorized implementation only. Personal learning project with AI assistance.
+Software/source checks are agent-run, not biological validation or independent domain
+review. No numerical model equations changed.
+
+### Reproduced findings and fixes
+
+- New tests reproduced null worker-envelope and null reply-handler crashes, then passed
+  after guards. Added error/messageerror, bounded timeout, postMessage, unsupported-kind
+  and repeated-disposal tests.
+- Deferred-client UI tests confirm new file intent rejects stale fit updates, clearing
+  wins over a delayed file, and failed refit removes old success/actions. Fit inputs are
+  cloned/generation-checked; nonconverged results cannot be applied.
+- New equipment regression reproduced invalid-root disposal and double disposal after
+  late completion; fixed without changing geometry, GLB hashes or fallbacks.
+- Blender cancellation now requires FINISHED. Connected Blender 5.1.2 exercised CANCELLED
+  and FINISHED using an injected exporter, restored scene, preserved foreign object,
+  selection and active-object fingerprints, and removed its temporary empty scene.
+  No .blend or GLB written. Full four-asset regeneration was not rerun.
+- Scenario /3 validates learning inputs, /2 strictly adds defaults/warning and /1 retains
+  reset semantics. Preparation validates slab arithmetic before commit. UI commit
+  exceptions attempt restoration of prior canonical state; rollback failure not injected.
+
+### Actual checks
+
+- Node 24.18.1: `npm test`, **66 passed, 0 failed, 0 skipped** (51-test baseline).
+- `npm run check`: **40 project modules**. Six Python sources compiled without bytecode
+  using external Python 3.12 runtime. No install or Docker layer.
+- `npm run verify:release -- --out /tmp/bioprint-release-verification.json`: tests, syntax,
+  version, evidence contract, four GLB hashes, whitespace and allowlisted inventory pass.
+  This script deliberately does NOT certify browser/source/claims/Blender/authorization
+  or deployment automatically; its corresponding fields remain not-run.
+- Six research DOIs resolved November 1, 2026, no registry flags; no expected-title MATCH
+  requested. Claim review used PMC browser text and Europe PMC XML where fetches were
+  challenged. Official NHGRI/ATCC pages read. Claim locators/limits are in
+  cell-evidence-audit.json; no recipes, figures or datasets copied.
+- Claims scanner: **exit 1, one HIGH disclosure-removed false positive**, 0 MED/LOW,
+  0 missing limitations. Footer disclosure remains visible; version-line replacement
+  triggered the scanner. This is **not a clean scan**.
+- Connected Chromium root preview: gates, moving printhead, slab example/clear, fit/apply
+  and /3 restore passed; zero page errors in normal smoke. Actual download event used
+  `bioprinting-scenario.json`. Learning edits left storyboard/analysis settings unchanged.
+  Invalid learning input retained prior state; /2 and /1 migrations paused with warnings.
+- Keyboard selection and explicit unknown timing passed; 390px viewport had no horizontal
+  overflow. Native labels/status regions and timing table inspected.
+- Individual failure tests passed: blocked worker leaves learning/export usable; blocked
+  printer GLB falls back while three others load; no WebGL leaves learning and /3 export
+  available. Simulated `/bioprinting-workbench/` route loaded four GLBs, learning and a
+  converged worker. This is a routed local test, not deployed-site verification.
+- Combined browser failure batch exceeded the 60-second tool timeout; cases rerun
+  individually. Dynamic smoke-helper import was unsupported; equivalent direct actions
+  executed instead. Neither unsuccessful attempt counted as a passing test.
+
+No exhaustive accessibility audit, every asynchronous file race, full four-asset Blender
+rerun or deployed-site test is claimed. Source reading does not establish universal cell
+rates, cancer prevention, mutation reversal or organ-production time. Candidate inventory
+is not an upload. Nothing staged, committed, pushed or published; Pages main/root risk remains.
+
+## Local four-milestone extension — not committed or published
+
+Agent-run checks on November 1, 2026, Node v24.18.1:
+- `npm test`: **51 passed, 0 failed, 0 skipped**. Analytical slab tests preserved.
+- `npm run check`: **29 authored/test/script modules** passed syntax checking.
+- Blender 5.1.2: four GLBs generated twice; stable scene/mesh/material counts,
+  foreign scene object/material/selection/active-object fingerprints unchanged;
+  forced exporter exceptions restore active scene. No `.blend` saved. Historical
+  v0.3 isolation claims were qualified: the old operator path did not establish
+  untouched selection/active-object state. Legacy asset scene retained/renamed.
+- GLBs: 366,168 bytes combined; manifest hashes, GLB chunks/accessors, names,
+  required parts and budgets checked. Python sources compiled without bytecode files.
+- PCG true residual, zero RHS, exhaustion and breakdown checked. Box symmetry,
+  zero demand, flux balance, analytical slab-x, manufactured all-face solution.
+  Grid 9/17/33 max errors: slab 0.00617284 / 0.00173010 / 0.000459137;
+  smooth manufactured 0.0102161 / 0.00285077 / 0.000755592 (second-order refinement).
+- Scalar fitting: exact synthetic recovery, boundary-only unidentifiability,
+  incompatible estimates, matching boundary modes, overflow and bounded parsing.
+- Network: analytical series/parallel/reversed/zero-flow comparisons, unanchored
+  component rejection, node conservation and global balance.
+- Scenario: canonical v2 round-trip, strict inputs, gates, conflicting controls,
+  legacy reset/warning and invalid-input rejection. Worker supersession/disposal
+  and creation failure tests.
+
+Headless Chromium with real WebGL, agent-operated (not owner review):
+- Persisted `scripts/browser-smoke.js` completed nine grouped checks: layout, legacy
+  slab example/clear, gates, moving deposition head, synthetic 3D fit/explicit apply,
+  scenario round-trip, invalid-import atomicity, 390px no overflow and no page errors.
+  Its tool response timed out at 60 seconds; the completion report was subsequently
+  read from the page (57,312 ms, all nine checks recorded), not inferred from timeout.
+- Independently checked file download schema /2 with raw points and no derived field;
+  unequal resistance gives inverse branch-flow ratio; channels off reports disabled;
+  zero drive gives zero edge flows.
+- Blocked incubator GLB retains its fallback while other assets/analyses load.
+  Forced WebGL failure leaves box and flow usable; blocked Worker leaves other
+  panels usable. Simulated Pages-style subpath loads worker and all four GLBs.
+- Default box center 0.7746077515; infinity residual 6.21e-11, flux imbalance
+  7.90e-14. Synthetic analytical point fixture (q=1.2, off-grid) fits 1.19765637
+  on grid 17; this small discrepancy is discretization/interpolation error, not
+  a real measurement result. Grid 33 slab-x finished in about 6.05 seconds including
+  UI/tool overhead under headless rendering. No real-time performance guarantee.
+- Observed loaded stage-0 counters 493 draw calls / 249 allocated geometries /
+  16 textures after visiting deposition (counters are history/stage-dependent).
+  No controlled same-state v0.3 performance comparison was performed.
+- Desktop equipment/analysis screenshots inspected; new preview generated locally.
+
+No new biological literature claims or sources were introduced. Existing evidence
+ledger/citations were retained; new equations are explicitly mathematical references.
+Claims scanner final result: 1 HIGH (footer disclosure-removed), 0 MED, 0 LOW,
+0 missing statements. The one finding is a reviewed false positive: the footer
+line was split/version-edited but its AI disclosure is byte-identical and visible.
+The scanner exits 1; this is not reported as a clean automated scan.
+
+Not tested: Safari/Firefox, physical/mobile devices, assistive-technology audit,
+continuous performance or physical equipment, real measurement data, owner visual
+approval, flow–oxygen coupling or biology. No Docker run or dependency installation.
+No commit, push, Pages publication, or published-version bump was performed.
+
 ## v0.3 — Blender-authored bioprinter asset (resumption)
 
 Authored `assets/bioprinter.glb` in the owner's Blender 5.1.2 through the Blender MCP
@@ -129,3 +246,53 @@ count remains a performance improvement opportunity; no frame-rate guarantee is 
 
 No Safari, Firefox, physical phone, assistive-technology audit, calibrated mechanics,
 fluid simulation, oxygen solver, tissue experiment, physical printing or transplant tested.
+## 0.8.0-dev local follow-on (agent-run, November 1, 2026)
+
+Owner authorization: the 2026-11-01 second instruction ("you can have actionable
+laboratory recipes. Don't have a gated workstream.") revised the procedure boundary;
+`AGENTS.md` was updated as the first implementation step. Everything below is local;
+no commit, push or publication was performed.
+
+Delivered: species-separated human/mouse cell systems and method comparisons
+(`src/repair-research.js`); three published-method reference recipe cards with 43
+provenance-bound parameters (`src/method-recipes.js`,
+`docs/METHOD_RECIPES.md`, audit `docs/method-recipes-audit.json`); the independent
+hypothetical time comparison (`src/planning-comparison.js`); scenario schema `/4`
+with strict `/3`, `/2` and warned-reset `/1` migrations; the environment module with
+lab parity and the original fan-inspired Treedome theme (`src/environment.js`,
+`docs/ENVIRONMENTS.md`); new learning/research/recipe UI panels.
+
+Actual verification results:
+
+- **Unit tests:** `node --test tests/*.test.js` — **83 passed, 0 failed** (up from 66;
+  the 16 walkthrough gate IDs and all prior contracts are unchanged).
+- **Syntax:** `npm run check` — 52 modules syntax-checked.
+- **Release contract:** `npm run verify:release` — PASS on version consistency
+  (0.8.0-dev footer/package), evidence contract, repair-research contract,
+  method-recipes contract, asset hashes, whitespace (`git diff --check`), unit tests,
+  syntax and the 68-file allowlisted inventory; browser/citation/claims/Blender/
+  owner-approval/deployment checks remain explicitly not-run by that script
+  (`/tmp/vr-run.log`).
+- **Browser (connected Playwright at 127.0.0.1:8096):** page loads with 0 console
+  errors; recipe cards render with parameter tables (19 rows for the default
+  human-MSC selection); category switch defaulted the system (ipsc -> human-ipsc) and
+  the Halliwell card shows the 15 µM formulation with linked adverse evidence; the
+  hypothetical comparison computed 100 vs 80 as 20 h (20.0%); Treedome switch reported
+  `fictional: true` with attribution containing "SpongeBob SquarePants" and
+  "Unofficial", and returned to lab cleanly; the `/4` export carried
+  environment/system/method/comparison with no derived outputs; the `/4` fixture import
+  restored theme, mouse-esc system, method and comparison; an invalid import retained
+  state atomically; 390 px viewport showed no horizontal overflow. Screenshots:
+  `/tmp/cline-playwright/bioprint-v08-lab.png`, `bioprint-v08-treedome.png`.
+- **Claims scanner: not-run this round.** The container's Python 3.12 distribution is
+  incomplete (`dataclasses` and `xml` stdlib modules are absent), so the advisory
+  `claims_scan.py` could not execute. Compensating mechanical checks ran instead: the
+  recipe validator enforces third-person phrasing, second-person/unsafe-wording
+  blocklists and per-parameter source+locator provenance at module load (covered by
+  unit tests), and the README/footer AI-assistance disclosure is unchanged — the only
+  footer edit is the version label. The previously documented HIGH
+  footer-disclosure false positive applies to this same one-line edit pattern.
+- **Not performed:** laboratory execution, independent scientific review, commit,
+  push or publication. Recipes are cited research descriptions, not treatment
+  instructions; adverse mouse evidence ships beside human nucleoside claims; no
+  timeline acceleration for organ production is claimed anywhere.

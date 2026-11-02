@@ -3,12 +3,20 @@ import { createLab } from './scene.js';
 import { oxygenProfile } from './oxygen.js';
 import { PROCEDURE_STEPS, createProcedureState, toggleCheck, stepProgress, isStageUnlocked, unlockedStages, clampTime, setMode, procedureSummary, nextGate } from './procedure.js';
 import { NO_CALIBRATION, parseCalibrationInput, fitSlabDemand, calibrationExample } from './calibration.js';
+import { createAnalysisUI } from './analysis-ui.js';
+import { serializeScenario, parseScenario, defaultAnalyses } from './scenario.js';
+import { SCENARIO_BYTES, MEASUREMENT_BYTES } from './validation.js';
+import { createCellLearningUI } from './cell-learning-ui.js';
+import { getEnvironmentSpecs } from './environment.js';
 
 const $ = id => document.getElementById(id);
 let parameters = { ...DEFAULTS }, time = 0, playing = false, last = 0, lab = null;
 let exportUrl;
 let procedureState = createProcedureState();
 let calibration = { ...NO_CALIBRATION };
+let cameraView = 'lab', environmentTheme = 'lab', analysisUI = null;
+let importGeneration = 0, calibrationGeneration = 0;
+const learningUI = createCellLearningUI({ elements: $ });
 function drawOxygen() {
   const result = oxygenProfile(Number($('demand').value));
   $('demand-value').textContent = result.demand.toFixed(2);
@@ -36,11 +44,17 @@ $('timeline').addEventListener('input', () => { time = clampTime(procedureState,
 $('play').addEventListener('click', () => { if (time >= 4.999) time = 0; playing = !playing; $('play').textContent = playing ? 'Pause sequence' : 'Play sequence'; });
 $('reset').addEventListener('click', () => { time = 0; pause(); render(); });
 $('cutaway').addEventListener('change', render);
-document.querySelectorAll('[data-camera]').forEach(b => b.addEventListener('click', () => { lab?.view(b.dataset.camera); $('view-label').textContent = `${b.textContent.toUpperCase()} VIEW`; }));
+document.querySelectorAll('[data-camera]').forEach(b => b.addEventListener('click', () => { cameraView = b.dataset.camera; lab?.view(cameraView); $('view-label').textContent = `${b.textContent.toUpperCase()} VIEW`; }));
+const environmentAttribution = id => getEnvironmentSpecs().find(s => s.id === id)?.attribution || '';
+$('environment').addEventListener('change', event => { environmentTheme = event.target.value; lab?.setEnvironment(environmentTheme); $('environment-attribution').textContent = environmentAttribution(environmentTheme); });
+$('environment-attribution').textContent = environmentAttribution('lab');
+function scenarioState() {
+  const analysis = analysisUI?.getState();
+  return { parameters, time, procedure: procedureState, view: { camera: cameraView, reveal: $('cutaway').checked, environment: environmentTheme }, analyses: { ...(analysis ? { oxygen3d: analysis.oxygen3d, flow: { ...analysis.flow, enabled: parameters.channels, pressureDrive: parameters.perfusion } } : defaultAnalyses(parameters)), slab: { demand: Number($('demand').value) } }, datasets: { slab: calibration.status === 'loaded' ? calibration.input : null, oxygen3d: analysis?.dataset || null }, learning: learningUI.getState() };
+}
 $('export').addEventListener('click', () => {
   if (exportUrl) URL.revokeObjectURL(exportUrl);
-  const exported = { ...snapshot(time, parameters), oxygenTeachingModel: oxygenProfile(Number($('demand').value)), procedure: procedureSummary(procedureState), calibration: calibration.status === 'loaded' ? { status: 'loaded', source: calibration.input.source, fit: calibration.fit } : { status: calibration.status } };
-  exportUrl = URL.createObjectURL(new Blob([JSON.stringify(exported, null, 2)], { type: 'application/json' }));
+  exportUrl = URL.createObjectURL(new Blob([serializeScenario(scenarioState())], { type: 'application/json' }));
   const a = document.createElement('a'); a.href = exportUrl; a.download = 'bioprinting-scenario.json'; a.click();
 });
 // ---- Procedure walkthrough, gated progression and local calibration import ----
@@ -104,23 +118,61 @@ function showCalibration(errorMessage) {
   const line = (label, value) => { const row = document.createElement('p'); const strong = document.createElement('strong'); strong.textContent = value; const span = document.createElement('span'); span.textContent = label; row.append(strong, span); box.append(row); };
   line('dimensionless demand estimate q (assumption-bound)', fit.q.toFixed(3));
   line('measurement pairs (n)', String(fit.n));
+  line('data provenance (unverified declaration)', fit.dataKind);
   line('residual std of per-pair estimates', fit.residualStd.toFixed(3));
   if (!fit.inDomain) { const warn = document.createElement('p'); warn.className = 'calibration-warning'; warn.textContent = 'Estimate falls outside the model domain [0, 2]; the slab assumptions do not hold for these values.'; box.append(warn); }
   const notice = document.createElement('p'); notice.className = 'micro'; notice.textContent = `${fit.assumptionNotice} Source: ${fit.sourceCitation}`; box.append(notice);
 }
 $('calibration-file').addEventListener('change', async event => {
   const file = event.target.files[0]; if (!file) return;
-  try { const input = parseCalibrationInput(await file.text()); calibration = { status: 'loaded', input, fit: fitSlabDemand(input) }; showCalibration(); }
-  catch (error) { calibration = { ...NO_CALIBRATION }; showCalibration(error.message); }
+  const current = ++calibrationGeneration;
+  try { if (file.size > MEASUREMENT_BYTES) throw new RangeError('Measurement file exceeds 256 KiB'); const input = parseCalibrationInput(await file.text()); if (current !== calibrationGeneration) return; calibration = { status: 'loaded', input, fit: fitSlabDemand(input) }; showCalibration(); }
+  catch (error) { if (current === calibrationGeneration) showCalibration(error.message); }
   event.target.value = ''; render();
 });
-$('load-example').addEventListener('click', () => { try { const input = parseCalibrationInput(calibrationExample()); calibration = { status: 'loaded', input, fit: fitSlabDemand(input) }; } catch (error) { calibration = { ...NO_CALIBRATION }; } showCalibration(); });
-$('clear-calibration').addEventListener('click', () => { calibration = { ...NO_CALIBRATION }; showCalibration(); });
+$('load-example').addEventListener('click', () => { calibrationGeneration++; const input = parseCalibrationInput(calibrationExample()); calibration = { status: 'loaded', input, fit: fitSlabDemand(input) }; showCalibration(); });
+$('clear-calibration').addEventListener('click', () => { calibrationGeneration++; calibration = { ...NO_CALIBRATION }; showCalibration(); });
 showCalibration();
+analysisUI = createAnalysisUI({ elements: $, onFlow: result => lab?.setFlowResult(result) });
+analysisUI.setState({ ...defaultAnalyses(parameters), dataset: null });
+function prepareScenarioApplication(raw) {
+  const scenario = parseScenario(JSON.stringify(raw)).scenario;
+  const nextCalibration = scenario.datasets.slab ? { status: 'loaded', input: scenario.datasets.slab, fit: fitSlabDemand(scenario.datasets.slab) } : { ...NO_CALIBRATION };
+  return { scenario, nextCalibration };
+}
+function commitScenarioApplication({ scenario, nextCalibration }) {
+  calibrationGeneration++; pause(); parameters = { ...scenario.parameters }; time = scenario.time; procedureState = scenario.procedure; calibration = nextCalibration;
+  for (const key of Object.keys(parameters)) { if (key === 'channels') $(key).checked = parameters[key]; else $(key).value = parameters[key]; }
+  $('demand').value = scenario.analyses.slab.demand; drawOxygen();
+  $('cutaway').checked = scenario.view.reveal; cameraView = scenario.view.camera; lab?.view(cameraView); $('view-label').textContent = `${cameraView.toUpperCase()} VIEW`;
+  environmentTheme = scenario.view.environment; $('environment').value = environmentTheme; lab?.setEnvironment(environmentTheme); $('environment-attribution').textContent = environmentAttribution(environmentTheme);
+  learningUI.setState(scenario.learning);
+  analysisUI.setState({ ...scenario.analyses, dataset: scenario.datasets.oxygen3d }); showCalibration(); render();
+}
+function applyScenario(scenario) {
+  const prepared = prepareScenarioApplication(scenario);
+  const previous = prepareScenarioApplication(JSON.parse(serializeScenario(scenarioState())));
+  try { commitScenarioApplication(prepared); }
+  catch (error) { commitScenarioApplication(previous); throw error; }
+}
+async function importScenarioFile(file) {
+  const current = ++importGeneration;
+  try {
+    if (file.size > SCENARIO_BYTES) throw new RangeError('Scenario exceeds 1 MiB');
+    const imported = parseScenario(await file.text());
+    if (current !== importGeneration) return;
+    // Validate derived slab arithmetic before committing any UI state.
+    if (imported.scenario.datasets.slab) fitSlabDemand(imported.scenario.datasets.slab);
+    applyScenario(imported.scenario);
+    $('scenario-status').textContent = imported.warnings.join(' ') || 'Version 4 inputs, learning selections and self-reported walkthrough progress restored. Derived analyses recomputed; provenance remains unverified.';
+  } catch (error) { if (current === importGeneration) $('scenario-status').textContent = `Not imported; previous state retained. ${error.message}`; }
+}
+$('scenario-file').addEventListener('change', event => { const file = event.target.files[0]; if (file) importScenarioFile(file); event.target.value = ''; });
 function render(clock = 0) {
   // Event objects are not animation times.
   if (typeof clock !== 'number') clock = 0;
   const s = sample(time, parameters), stage = STAGES[s.stage];
+  analysisUI?.setFlowControls(parameters.channels, parameters.perfusion);
   for (const key of ['spacing', 'layers', 'population', 'perfusion']) $('' + key + '-value').textContent = key === 'layers' ? parameters[key] : parameters[key].toFixed(2);
   const unlocked = unlockedStages(procedureState);
   let highestUnlocked = 0; for (let i = 0; i < 5 && unlocked[i]; i++) highestUnlocked = i;
@@ -139,5 +191,5 @@ function frame(now) {
   if (playing && !document.hidden) { const next = clampTime(procedureState, time + dt / 9); if (next <= time + 1e-9) pause(); time = next; }
   render(now / 1000); lab?.draw(); requestAnimationFrame(frame);
 }
-globalThis.bioprintingWorkbench = { diagnostics: () => ({ ...snapshot(time, parameters), playing, procedure: procedureSummary(procedureState), calibration: calibration.status === 'loaded' ? { status: 'loaded', q: calibration.fit.q, n: calibration.fit.n } : { status: calibration.status }, graphics: lab?.diagnostics() ?? { webgl: false } }) };
+globalThis.bioprintingWorkbench = { exportScenario: () => JSON.parse(serializeScenario(scenarioState())), diagnostics: () => ({ ...snapshot(time, parameters), playing, procedure: procedureSummary(procedureState), calibration: calibration.status === 'loaded' ? { status: 'loaded', q: calibration.fit.q, n: calibration.fit.n } : { status: calibration.status }, analyses: analysisUI?.diagnostics(), learning: learningUI.diagnostics(), graphics: lab?.diagnostics() ?? { webgl: false, environment: environmentTheme } }) };
 render(); requestAnimationFrame(frame);

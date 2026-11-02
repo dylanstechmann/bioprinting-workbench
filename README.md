@@ -45,6 +45,13 @@ lab protocol, and directs nothing at any person or animal. The optional
 owner-supplied pairs with a source citation. Nothing is calibrated by default, and any
 fit remains bound to the slab assumptions rather than being tissue validation.
 
+**Published-method reference recipes** ([guide](docs/METHOD_RECIPES.md)) restate
+actionable parameters from open-access papers — concentrations, seeding densities,
+incubation conditions — as cited third-person research descriptions. Every parameter
+carries its source and section locator; the cards address no reader, direct nothing at
+any person or animal, and claim no safety, validation or timeline acceleration. Adverse
+mouse evidence for forced fork acceleration ships beside the human nucleoside card.
+
 **This is not biologically calibrated, a wet-lab protocol, a transplant-readiness tool,
 or guidance for treating a person or animal.** Cells, channels and tissue are intentionally
 magnified; there is no physical unit conversion or biological timescale. Cell expansion,
@@ -58,6 +65,11 @@ equipment, patient records or experimental measurements are connected.
 - `src/model.js`: pure deterministic state, bounded dimensionless inputs and JSON export.
 - `src/scene.js`: Three.js lab, scaffold geometry and illustrative animation.
 - `src/app.js`: controls and playback; all stage views use the same sampled state.
+- `src/repair-research.js`, `src/method-recipes.js`, `src/planning-comparison.js`:
+  species-separated method evidence, provenance-bound recipe cards and user-hypothetical
+  arithmetic (see [methods](docs/REPAIR_METHODS.md), [recipes](docs/METHOD_RECIPES.md)).
+- `src/environment.js`: original procedural lab/Treedome themes with owned-resource
+  lifecycle (see [environments](docs/ENVIRONMENTS.md)).
 - `tests/model.test.js`: Node's built-in test runner; no package installation required.
 - `vendor/three/`: pinned Three.js 0.187.0 runtime and OrbitControls, MIT license retained.
 
@@ -70,9 +82,9 @@ See [methods](docs/METHODS.md), [sources](docs/SOURCES.md),
 [assets and Blender/CAD extension path](docs/ASSETS.md) and [roadmap](docs/ROADMAP.md).
 This first release prioritizes coherent interactive equipment and inspectable geometry;
 it is a real-time illustrative 3D scene, not a photorealistic or physically validated digital twin.
-The bioprinter body is an original **Blender-authored GLB** (`assets/bioprinter.glb`,
-regenerate with `assets/author_bioprinter.py`) loaded with a procedural fallback; the
-animated printhead and the rest of the bench remain procedural. See
+The printer, incubator, microscope and perfusion chamber have original **Blender-authored
+GLBs**, independently loaded with procedural fallbacks; the animated printhead and dynamic
+storyboard content remain procedural. See
 [asset provenance and regeneration](docs/ASSETS.md).
 
 ## Research and software credits
@@ -92,3 +104,39 @@ and data were not copied, merged, changed, or presented as new work here.
 
 Original project source is MIT licensed. Scientific ideas and third-party software retain
 their original attribution; no independent scientific review or physical validation is implied.
+## Unpublished working-tree extensions — 0.7.0-dev and 0.8.0-dev
+
+All four approved milestones are implemented locally with AI assistance: generic
+Blender-authored incubator/microscope/chamber alongside the printer; an independent
+normalized 3D oxygen box and scalar point-ratio fit; a conservation-checked
+dimensionless resistance network; and version 2 local scenario restore/export.
+The published v0.3 site has not been updated by this work.
+
+These are agent-run mathematical/software checks, not measurements personally
+performed or independently reviewed by the owner. No real dataset is bundled or
+loaded by default. Flow and oxygen are deliberately uncoupled; neither establishes
+biological validation, viability, living vascular function or transplant safety.
+Existing source/software credits and the analytical slab remain applicable.
+See [flow](docs/FLOW.md), [scenarios](docs/SCENARIOS.md), [oxygen](docs/OXYGEN.md),
+[calibration](docs/CALIBRATION.md) and [verification](docs/VERIFICATION.md).
+
+The local follow-on adds ten cited cell-category profiles, read-only timing evidence,
+conceptual culture locations, genome-stability explanations and liver research barriers.
+It distinguishes population doubling from a cell cycle and retains unknown timing rather
+than inventing a universal rate. No cancer-risk calculator is provided. Independent relative-doubling arithmetic has no biological default time; an
+optional seven-year research horizon is an annotation, **not** a whole-liver forecast.
+Neither changes the existing storyboard, oxygen or network equations.
+
+Scenario /4 saves these learning inputs with strict /3 and /2 migrations and
+warned/reset /1 restoration. The 0.8.0-dev extension (owner-authorized 2026-11-01)
+adds species-separated human/mouse cell systems, reviewed method comparisons, cited
+published-method reference recipes, a separate hypothetical time comparison and an
+original fan-inspired Treedome theme (unofficial, no show assets; adverse mouse
+evidence ships beside human nucleoside findings). `npm run verify:release` verifies local software/artifact contracts and creates
+no commit or deployment. Publication remains separately unauthorized; pushing the existing
+Pages source branch may publish automatically. Read [release boundaries](docs/RELEASE.md).
+
+New primary research context is credited in [cell division](docs/CELL_DIVISION.md),
+[genome stability](docs/GENOME_STABILITY.md), [organ research](docs/ORGAN_RESEARCH.md) and
+the [source ledger](docs/SOURCES.md). Agent-run source review is not independent domain
+review, and no real dataset, biological experiment or functional organ was produced.

@@ -1,0 +1,50 @@
+{
+  "schema": "bioprinting-workbench/2",
+  "model": "synthetic-dimensionless-storyboard",
+  "seed": 42,
+  "parameters": {
+    "spacing": 0.36,
+    "layers": 6,
+    "population": 0.6,
+    "perfusion": 0.6,
+    "channels": true,
+    "recipient": "animal"
+  },
+  "time": 0,
+  "procedure": {
+    "mode": "gated",
+    "completedChecks": []
+  },
+  "view": {
+    "camera": "lab",
+    "reveal": false
+  },
+  "analyses": {
+    "slab": {
+      "demand": 1
+    },
+    "oxygen3d": {
+      "settings": {
+        "model": "steady-3d-box-constant-consumption",
+        "demand": 1,
+        "resolution": 17,
+        "boundaryMode": "all-faces"
+      },
+      "parameterOrigin": "synthetic-controls"
+    },
+    "flow": {
+      "enabled": true,
+      "pressureDrive": 0.6,
+      "branchResistances": [
+        1,
+        1,
+        1
+      ]
+    }
+  },
+  "datasets": {
+    "slab": null,
+    "oxygen3d": null
+  },
+  "limitations": "Synthetic dimensionless teaching models; user provenance unverified. No biological validation, viability, clinical, animal-use or transplant-safety inference. No experimental protocol."
+}

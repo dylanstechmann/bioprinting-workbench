@@ -1,0 +1,119 @@
+{
+  "generator": "Blender 5.1.2",
+  "provenance": "Original agent-authored artwork; AI-assisted personal learning project",
+  "units": "Arbitrary illustrative scene units; Blender Z-up exports to glTF Y-up",
+  "assets": [
+    {
+      "id": "bioprinter",
+      "file": "assets/bioprinter.glb",
+      "nodePrefix": "Printer_",
+      "requiredNodes": [
+        "Printer_Base",
+        "Printer_TopCap",
+        "Printer_BuildPlate",
+        "Printer_Glass_Door"
+      ],
+      "bytes": 141264,
+      "sha256": "df6642f71740af621644dc87dadc4e4e4ce32cb80ea1db4eb6cb87a62c12acc5",
+      "meshes": 39,
+      "materials": 6,
+      "triangles": 2868,
+      "blenderBounds": [
+        [
+          -1.850000023841858,
+          -1.7675000429153442,
+          -0.13500000536441803
+        ],
+        [
+          1.850000023841858,
+          1.7200000286102295,
+          3.440000057220459
+        ]
+      ],
+      "maxBytes": 358400
+    },
+    {
+      "id": "incubator",
+      "file": "assets/incubator.glb",
+      "nodePrefix": "Incubator_",
+      "requiredNodes": [
+        "Incubator_Base",
+        "Incubator_Glass_Door"
+      ],
+      "bytes": 92852,
+      "sha256": "cbde6dce0d521a48a26c446966939058ba1e9a16de73c1017e1458a6125aa9fd",
+      "meshes": 19,
+      "materials": 5,
+      "triangles": 1796,
+      "blenderBounds": [
+        [
+          -1.1050000190734863,
+          -1.0899999141693115,
+          -0.07999999821186066
+        ],
+        [
+          1.1050000190734863,
+          0.9200000166893005,
+          2.799999952316284
+        ]
+      ],
+      "maxBytes": 358400
+    },
+    {
+      "id": "microscope",
+      "file": "assets/microscope.glb",
+      "nodePrefix": "Microscope_",
+      "requiredNodes": [
+        "Microscope_Base",
+        "Microscope_Stage",
+        "Microscope_Objective_1"
+      ],
+      "bytes": 79192,
+      "sha256": "1c8f69d12e6bd3051e6082eae62bf028e7cc4b437c66981c11841e622a070a36",
+      "meshes": 18,
+      "materials": 4,
+      "triangles": 2072,
+      "blenderBounds": [
+        [
+          -0.8500000238418579,
+          -1.190000057220459,
+          -0.05999999865889549
+        ],
+        [
+          0.8500000238418579,
+          0.875,
+          2.309999942779541
+        ]
+      ],
+      "maxBytes": 358400
+    },
+    {
+      "id": "perfusion-chamber",
+      "file": "assets/perfusion_chamber.glb",
+      "nodePrefix": "Chamber_",
+      "requiredNodes": [
+        "Chamber_Base",
+        "Chamber_Glass_Lid"
+      ],
+      "bytes": 52860,
+      "sha256": "abf383609c9da34a27276025623bb8ac23b375a623b4f641564b9e7aea44e724",
+      "meshes": 14,
+      "materials": 4,
+      "triangles": 1160,
+      "blenderBounds": [
+        [
+          -1.2719999551773071,
+          -1.149999976158142,
+          0.0
+        ],
+        [
+          1.2719999551773071,
+          1.149999976158142,
+          0.9399999976158142
+        ]
+      ],
+      "maxBytes": 358400
+    }
+  ],
+  "verification": "Foreign scene object/material/selection/active-object fingerprints unchanged; two generations and forced export failure per asset"
+}

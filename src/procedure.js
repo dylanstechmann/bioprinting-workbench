@@ -13,7 +13,7 @@ export const PROCEDURE_STEPS = [
     virtualChecks: [
       { id: 'expand-population', label: 'Set the relative cell population control and watch the dish population rise during Cell expansion.' },
       { id: 'expand-bench', label: 'Identify the incubator, culture dishes and inverted microscope on the virtual bench.' }],
-    unknowns: ['Cell identity, sterility and contamination testing are not simulated.', 'Passage limits, donor variability and phenotype stability remain unmeasured here.'],
+    unknowns: ['Cell identity, sterility and contamination testing are not simulated.', 'Passage limits, donor variability, genome stability, residual pluripotent cells and phenotype stability remain unmeasured here. Division speed is not a cancer-risk assessment.'],
   },
   {
     id: 'prepare-materials', order: 2, stage: 1,
@@ -99,6 +99,13 @@ export function procedureForStage(stage) {
   return PROCEDURE_STEPS.filter(s => s.stage === stage);
 }
 
+export function validateProcedureState(raw) {
+  if (!raw || !['gated', 'free'].includes(raw.mode) || !Array.isArray(raw.completedChecks) || raw.completedChecks.length > CHECK_INDEX.size) throw new TypeError('Invalid procedure state');
+  if (Object.keys(raw).some(key => !['mode', 'completedChecks'].includes(key))) throw new TypeError('Unsupported procedure field');
+  const checks = raw.completedChecks;
+  if (new Set(checks).size !== checks.length || checks.some(id => !CHECK_INDEX.has(id))) throw new RangeError('Unknown or duplicate check IDs');
+  return { mode: raw.mode, completedChecks: [...checks] };
+}
 export function createProcedureState() {
   return { completedChecks: [], mode: 'gated' };
 }

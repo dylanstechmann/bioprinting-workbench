@@ -1,0 +1,27 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { defaultLearningState, validateLearningState, evaluateRelativeDivision } from '../src/cell-division.js';
+test('relative arithmetic has no biological time default and bounded finite results',()=>{
+  const state=defaultLearningState();assert.equal(evaluateRelativeDivision(state.division).relativePopulation,1);
+  assert.equal(evaluateRelativeDivision(state.division).hypotheticalElapsedHours,null);
+  for(const d of [1,.5,40]){const r=evaluateRelativeDivision({...state.division,doublings:d,hypotheticalDoublingHours:10});assert.equal(r.relativePopulation,2**d);assert.equal(r.hypotheticalElapsedHours,d*10);}
+  const horizon=validateLearningState({...state,researchHorizonYears:7});assert.deepEqual(evaluateRelativeDivision(horizon.division),evaluateRelativeDivision(state.division));
+  for(const v of [-1,41,NaN,Infinity])assert.throws(()=>evaluateRelativeDivision({...state.division,doublings:v}));
+  for(const v of [0,1001,NaN,undefined])assert.throws(()=>evaluateRelativeDivision({...state.division,hypotheticalDoublingHours:v}));
+  for(const patch of [{selectedCellType:'unknown'},{researchHorizonYears:21},{cancerRisk:0},{division:{...state.division,extra:1}}])assert.throws(()=>validateLearningState({...state,...patch}));
+});
+test('learning state carries species system, method and hypothetical comparison under strict matching',()=>{
+  const state=defaultLearningState();
+  assert.equal(state.selectedCellType,'msc');assert.equal(state.selectedCellSystemId,'human-msc');assert.equal(state.selectedMethodId,null);
+  assert.deepEqual(state.planningComparison,{baselineHours:null,comparisonHours:null});
+  const mouse=validateLearningState({...state,selectedCellType:'esc',selectedCellSystemId:'mouse-esc'});
+  assert.equal(mouse.selectedCellSystemId,'mouse-esc');
+  const withMethod=validateLearningState({...state,selectedCellType:'ipsc',selectedCellSystemId:'human-ipsc',selectedMethodId:'halliwell-nucleosides'});
+  assert.equal(withMethod.selectedMethodId,'halliwell-nucleosides');
+  const compared=validateLearningState({...state,planningComparison:{baselineHours:120,comparisonHours:96}});
+  assert.equal(compared.planningComparison.baselineHours,120);
+  assert.equal(validateLearningState({...state,selectedMethodId:'bhat-media-expansion'}).selectedMethodId,'bhat-media-expansion');
+  for(const patch of [{selectedCellSystemId:'mouse-esc'},{selectedCellSystemId:'human-esc'},{selectedCellSystemId:'fake'},{selectedMethodId:'halliwell-nucleosides'},{planningComparison:{baselineHours:0,comparisonHours:1}},{planningComparison:{extra:1}}]){
+    assert.throws(()=>validateLearningState({...state,...patch}));
+  }
+});

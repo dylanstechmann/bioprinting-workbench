@@ -25,7 +25,10 @@ cells, expanded in culture before printing.
 *Checkpoints:* set the relative cell population control and watch the dish population rise;
 identify the incubator, culture dishes and inverted microscope on the bench.
 *Not established here:* cell identity, sterility and contamination testing are not
-simulated; passage limits, donor variability and phenotype stability remain unmeasured.
+simulated; passage limits, donor variability, genome stability, residual pluripotent cells
+and phenotype stability remain unmeasured. Division speed is not a cancer-risk assessment.
+The independent cell-learning panels add cited context without changing the 16 gate IDs
+or turning virtual checks into laboratory certification; see CELL_DIVISION.md.
 
 ## Stage 2 · Scaffold deposition
 

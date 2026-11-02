@@ -4,6 +4,8 @@ import { RoomEnvironment } from 'three/addons/RoomEnvironment.js';
 import { RoundedBoxGeometry } from 'three/addons/RoundedBoxGeometry.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { random, scaffold } from './model.js';
+import { EQUIPMENT_SPECS, createEquipmentAssets } from './equipment.js';
+import { createEnvironment } from './environment.js';
 
 export function createLab(canvas) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
@@ -13,12 +15,13 @@ export function createLab(canvas) {
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color('#e0e8e3');
-  scene.fog = new THREE.Fog('#e0e8e3', 22, 55);
   const pmrem = new THREE.PMREMGenerator(renderer);
   scene.environment = pmrem.fromScene(new RoomEnvironment(), .04).texture;
   pmrem.dispose();
   scene.environmentIntensity = .45;
+  const prefersReducedMotion = typeof matchMedia === 'function' ? matchMedia('(prefers-reduced-motion: reduce)').matches : false;
+  const environment = createEnvironment({ THREE, scene, reducedMotion: prefersReducedMotion });
+  environment.setEnvironment('lab');
   const camera = new THREE.PerspectiveCamera(38, 1, .05, 100);
   const controls = new OrbitControls(camera, canvas);
   controls.enableDamping = true;
@@ -48,9 +51,7 @@ export function createLab(canvas) {
     }
     const tex = new THREE.CanvasTexture(c); tex.wrapS = tex.wrapT = THREE.RepeatWrapping; tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4; return tex;
   }
-  const speckleTex = proceduralTexture('speckle'); speckleTex.repeat.set(5, 2.5);
   const brushedTex = proceduralTexture('brushed');
-  const floorTex = proceduralTexture('floor-grid'); floorTex.repeat.set(24, 24);
   const mat = (color, metalness = 0, roughness = .45, opacity = 1) => new THREE.MeshStandardMaterial({ color, metalness, roughness, transparent: opacity < 1, opacity, depthWrite: opacity === 1 });
   const physical = (color, opts = {}) => new THREE.MeshPhysicalMaterial({ color, metalness: opts.metalness ?? 0, roughness: opts.roughness ?? .45, transparent: (opts.opacity ?? 1) < 1, opacity: opts.opacity ?? 1, depthWrite: (opts.opacity ?? 1) === 1, clearcoat: opts.clearcoat ?? 0, clearcoatRoughness: opts.clearcoatRoughness ?? .3, transmission: opts.transmission ?? 0, thickness: opts.thickness ?? 0, ior: opts.ior ?? 1.45, map: opts.map ?? null });
   const white = physical('#eef0e9', { metalness: .08, clearcoat: .4, clearcoatRoughness: .3 });
@@ -77,24 +78,7 @@ export function createLab(canvas) {
     const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace;
     const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex })); sprite.position.set(...pos); sprite.scale.set(width, width * 96 / 512, 1); parent.add(sprite); return sprite;
   }
-  // Architectural context and original generic lab furniture.
-  box([60, .15, 60], [0, -2.1, 0], physical('#eef2ec', { map: floorTex, roughness: .85, metalness: .02 }));
-  box([16, .25, 7], [0, -.3, 0], physical('#c8d0ca', { roughness: .6, metalness: .15, clearcoat: .2 }));
-  box([16.1, .08, 7.1], [0, -.13, 0], physical('#f4f6ef', { map: speckleTex, roughness: .5, metalness: .05, clearcoat: .18 }));
-  for (const x of [-7, 0, 7]) for (const z of [-2.7, 2.7]) box([.16, 1.65, .16], [x, -1.2, z], metal);
-  box([16, 4, .15], [0, 1.7, -3.6], mat('#d8e2d8'));
-  box([16, .08, .7], [0, 3.3, -3.35], white);
-  for (let x = -7; x <= 7; x += 2) box([1.6, .02, .1], [x, 3.24, -3], mat('#faffea'));
-  // Generic service panel, splashback and cabinet faces add material scale cues.
-  box([15.9, .08, .12], [0, .1, -3.35], metal);
-  for (let x = -6.4; x <= 6.4; x += 3.2) {
-    box([2.85, 1.3, .06], [x, -1.18, 2.75], white);
-    box([.8, .035, .07], [x, -.78, 2.8], metal);
-  }
-  for (const x of [-7, -3, 1, 5]) {
-    box([.55, .42, .05], [x, .65, -3.48], white);
-    for (const dx of [-.14, .14]) box([.08, .12, .02], [x + dx, .65, -3.44], dark);
-  }
+  // Architectural context now lives in src/environment.js (lab parity preserved).
   // Incubator.
   const incubator = new THREE.Group(); incubator.position.set(-6, 0, -1.8); scene.add(incubator);
   box([2.25, 3.4, 1.9], [0, 1.6, 0], white, incubator, .07);
@@ -102,6 +86,7 @@ export function createLab(canvas) {
   box([1.65, 2.3, .03], [0, 1.5, 1.08], mat('#3e6760', .4, .25), incubator);
   for (const y of [.6, 1.2, 1.8, 2.4]) box([1.6, .03, .04], [0, y, 1.12], metal, incubator);
   box([.08, 1.7, .1], [.78, 1.5, 1.18], dark, incubator);
+  const incubatorFallback = [...incubator.children];
   label('CULTURE INCUBATOR', [0, 3.04, 1.08], 1.8, incubator);
   label('CELL EXPANSION', [-5.4, .02, 2.7], 2.2);
   // Dishes with translucent walls and medium.
@@ -112,6 +97,7 @@ export function createLab(canvas) {
     const rim = mesh(new THREE.TorusGeometry(radius, .024, 8, 64), glass, [x, .24, z]); rim.rotation.x = Math.PI / 2;
   }
   dish(-5.7, .7); dish(-4.1, 1.4, .57);
+  const microscopeStart = new Set(scene.children);
   // Inverted microscope silhouette with stage, objectives and eyepieces.
   box([1.4, .15, 1.6], [-3.8, .06, -1.5], white);
   box([.38, 1.3, .55], [-3.8, .75, -2], white);
@@ -125,6 +111,8 @@ export function createLab(canvas) {
   }
   for (let i = 0; i < 3; i++) cyl(.07, .24, [-4 + i * .19, .63, -1.35], metal);
   cyl(.2, .1, [-3.8, .9, -1.4], glass); label('INVERTED MICROSCOPE', [-3.8, .15, -.32], 1.9);
+  const microscopeFallback = scene.children.filter(o => !microscopeStart.has(o) && !o.isSprite);
+  const microscopeMount = new THREE.Group(); microscopeMount.position.set(-3.8, 0, -1.5); scene.add(microscopeMount);
   // Printer, transparent doors, rails, cartridge and build platform.
   const printer = new THREE.Group(); printer.position.set(.1, 0, -.6); scene.add(printer);
   box([3.7, .27, 3.4], [0, .07, 0], white, printer, .05);
@@ -152,23 +140,7 @@ export function createLab(canvas) {
   for (let y = 1.98; y <= 2.4; y += .1) box([.12, .012, .015], [.08, y, .13], dark, head);
   cyl(.1, .3, [0, 1.73, 0], metal, head, .025);
   label('ENCLOSED BIOPRINTER', [.1, .03, 2.05], 2.6);
-  // Blender-authored static printer body (assets/author_bioprinter.py). The
-  // procedural housing stays as the fallback and while loading; the animated
-  // printhead always remains procedural so deposition still moves it.
-  let assetStatus = 'procedural';
-  const staticPrinterParts = printer.children.filter(o => o !== head);
-  const glbGlass = [];
-  new GLTFLoader().load('./assets/bioprinter.glb', gltf => {
-    gltf.scene.traverse(o => {
-      if (!o.isMesh) return;
-      o.receiveShadow = true;
-      o.castShadow = true;
-      if (o.name.includes('Glass')) { o.castShadow = false; glbGlass.push(o); }
-    });
-    staticPrinterParts.forEach(o => { o.visible = false; });
-    printer.add(gltf.scene);
-    assetStatus = 'glb-loaded';
-  }, undefined, () => { assetStatus = 'procedural-fallback'; });
+  const staticPrinterParts = printer.children.filter(o => o !== head && !o.isSprite);
   // Perfusion circuit: closed geometric tubing loop, not a fluid solver.
   box([1.45, .65, 1.3], [4.8, .3, -.9], white, scene, .06);
   const rotor = cyl(.43, .12, [4.8, .7, -.9], dark);
@@ -176,11 +148,22 @@ export function createLab(canvas) {
   label('PERISTALTIC PUMP', [4.8, .22, .0], 1.75);
   cyl(.48, 1.25, [6.6, .65, -1.9], glass); cyl(.46, .7, [6.6, .4, -1.9], pink); cyl(.49, .12, [6.6, 1.32, -1.9], teal);
   label('RESERVOIR', [6.6, 1.7, -1.9], 1.4);
+  const chamberStart = new Set(scene.children);
   box([2.3, .18, 2.3], [4.5, .12, 1.8], white);
   box([2, .65, 2], [4.5, .5, 1.8], glass);
+  const chamberFallback = scene.children.filter(o => !chamberStart.has(o));
+  const chamberMount = new THREE.Group(); chamberMount.position.set(4.5, .03, 1.8); scene.add(chamberMount);
   label('PERFUSION CHAMBER', [4.5, .05, 3], 2.2);
   tube([[6.6, 1.4, -1.9], [6.7, 1.9, -.9], [5.4, .9, -.9], [4.8, .9, -.9], [3.5, .25, .2], [3.4, .45, 1.8]], .035, pink);
   tube([[5.6, .45, 1.8], [6.3, .2, 1.4], [7, .3, -.6], [6.6, 1.4, -1.9]], .035, glass);
+  const loader = new GLTFLoader();
+  const equipment = createEquipmentAssets(EQUIPMENT_SPECS, {
+    bioprinter: { parent: printer, fallback: staticPrinterParts },
+    incubator: { parent: incubator, fallback: incubatorFallback },
+    microscope: { parent: microscopeMount, fallback: microscopeFallback },
+    'perfusion-chamber': { parent: chamberMount, fallback: chamberFallback },
+  }, { load: url => loader.loadAsync(url) });
+  let flowResult = null;
   // Tissue model re-parented by stage. Cell coordinates have a fixed seed.
   const construct = new THREE.Group(); scene.add(construct);
   const fibers = new THREE.Group(), cells = new THREE.Group(), vessels = new THREE.Group();
@@ -203,7 +186,7 @@ export function createLab(canvas) {
   for (const z of [-.68, 0, .68]) {
     const points = [[-1.48, .47, z], [-.7, .48, z + .1], [.2, .46, z - .1], [1.48, .47, z]];
     const v = tube(points, .075, mat('#b64d57', 0, .32, .8), vessels);
-    for (let i = 0; i < 9; i++) tracers.push({ object: mesh(new THREE.SphereGeometry(.04, 8, 6), mat('#6bd5c6'), [0, 0, 0], vessels), curve: v.userData.curve, phase: i / 9 });
+    for (let i = 0; i < 9; i++) tracers.push({ object: mesh(new THREE.SphereGeometry(.04, 8, 6), mat('#6bd5c6'), [0, 0, 0], vessels), curve: v.userData.curve, channelId: `branch-${[-.68, 0, .68].indexOf(z)}`, phase: i / 9 });
   }
   tube([[-1.48, .47, -.68], [-1.6, .47, 0], [-1.48, .47, .68]], .09, mat('#b64d57'), vessels);
   tube([[1.48, .47, -.68], [1.6, .47, 0], [1.48, .47, .68]], .09, mat('#b64d57'), vessels);
@@ -248,9 +231,9 @@ export function createLab(canvas) {
     dishCells.children.forEach((o, i) => { o.visible = i < 140 * s.expansion * p.population; });
     matrix.visible = s.stage >= 2 && !reveal; matrix.scale.y = Math.max(.02, s.occupancy);
     vessels.visible = s.stage >= 3 && p.channels;
-    tracers.forEach(t => { t.object.visible = s.flow > 0; t.object.position.copy(t.curve.getPoint((t.phase + clock * s.flow * .2) % 1)); });
-    enclosure.visible = !reveal && assetStatus !== 'glb-loaded';
-    glbGlass.forEach(o => { o.visible = !reveal; });
+    tracers.forEach(t => { const flow = flowResult?.status === 'solved' ? Math.abs(flowResult.edgeFlows.find(e => e.id === t.channelId)?.flow || 0) : flowResult ? 0 : s.flow; t.object.visible = s.flow > 0 && flow > 0; t.object.position.copy(t.curve.getPoint((t.phase + clock * flow * .6) % 1)); });
+    enclosure.visible = !reveal && equipment.diagnostics().bioprinter.status !== 'loaded';
+    equipment.setReveal(reveal);
     const line = lineData[Math.min(visibleCount, lineData.length - 1)];
     if (line && s.stage === 1) { head.position.set(line.a[0] + (line.b[0] - line.a[0]) * ((s.progress * lineData.length) % 1), line.a[1] - 1.2, line.a[2] + (line.b[2] - line.a[2]) * ((s.progress * lineData.length) % 1)); }
     else head.position.set(1.25, .1, -1.1);
@@ -263,5 +246,5 @@ export function createLab(canvas) {
     controls.update(); renderer.render(scene, camera);
   }
   view('lab');
-  return { update, draw, view, diagnostics: () => ({ webgl: true, stage: currentStage, filamentCount: lineData.length, geometries: renderer.info.memory.geometries, calls: renderer.info.render.calls, environment: 'room-pmrem', textures: renderer.info.memory.textures, printerAsset: assetStatus }) };
+  return { update, draw, view, setEnvironment: id => environment.setEnvironment(id), setFlowResult(result) { flowResult = result; }, dispose() { environment.dispose(); equipment.dispose(); controls.dispose(); renderer.dispose(); }, diagnostics: () => ({ webgl: true, stage: currentStage, filamentCount: lineData.length, geometries: renderer.info.memory.geometries, calls: renderer.info.render.calls, environment: environment.diagnostics(), textures: renderer.info.memory.textures, printerAsset: ({ loading: 'procedural', loaded: 'glb-loaded', fallback: 'procedural-fallback' })[equipment.diagnostics().bioprinter.status], equipment: equipment.diagnostics(), printheadPosition: head.position.toArray(), tracerModel: flowResult ? 'network-relative-illustration' : 'scripted' }) };
 }

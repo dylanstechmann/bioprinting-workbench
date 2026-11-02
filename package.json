@@ -1,12 +1,13 @@
 {
   "name": "bioprinting-workbench",
-  "version": "0.3.0",
+  "version": "0.8.0-dev",
   "private": true,
   "type": "module",
   "description": "An educational, synthetic browser-based tissue engineering workbench",
   "scripts": {
     "start": "python3 -B -m http.server 8096 --bind 0.0.0.0",
     "test": "node --test tests/*.test.js",
-    "check": "node --check src/app.js && node --check src/scene.js && node --check src/model.js && node --check src/oxygen.js && node --check src/procedure.js && node --check src/calibration.js"
+    "check": "node scripts/check-syntax.mjs",
+    "verify:release": "node scripts/verify-release.mjs"
   }
 }

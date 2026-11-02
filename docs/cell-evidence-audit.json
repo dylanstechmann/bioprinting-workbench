@@ -1,0 +1,827 @@
+{
+  "schema": "bioprinting-workbench/cell-evidence-audit/1",
+  "reviewedOn": "2026-11-01",
+  "reviewKind": "agent-source-reading",
+  "independentDomainReview": false,
+  "registryResults": [
+    {
+      "kind": "DOI",
+      "ident": "10.1002/jcp.22440",
+      "status": "OK",
+      "title": "Reprogramming the pluripotent cell cycle: Restoration of an abbreviated G1 phase in human induced pluripotent stem (iPS) cells",
+      "authors": "Ghule P, Medina R, Lengner C et al.",
+      "venue": "Journal of Cellular Physiology",
+      "date": "2011-02-22",
+      "doi": "10.1002/jcp.22440",
+      "url": "https://doi.org/10.1002/jcp.22440",
+      "detail": {
+        "type": "journal-article",
+        "publisher": "Wiley"
+      },
+      "flags": [],
+      "expect_title": "",
+      "title_match": "",
+      "title_score": null,
+      "where": [],
+      "retrieved": "2026-11-01"
+    },
+    {
+      "kind": "DOI",
+      "ident": "10.1016/j.stemcr.2020.04.004",
+      "status": "OK",
+      "title": "Nucleosides Rescue Replication-Mediated Genome Instability of Human Pluripotent Stem Cells",
+      "authors": "Halliwell J, Frith T, Laing O et al.",
+      "venue": "Stem Cell Reports",
+      "date": "2020-06",
+      "doi": "10.1016/j.stemcr.2020.04.004",
+      "url": "https://doi.org/10.1016/j.stemcr.2020.04.004",
+      "detail": {
+        "type": "journal-article",
+        "publisher": "Elsevier BV"
+      },
+      "flags": [],
+      "expect_title": "",
+      "title_match": "",
+      "title_score": null,
+      "where": [],
+      "retrieved": "2026-11-01"
+    },
+    {
+      "kind": "DOI",
+      "ident": "10.1038/nature22312",
+      "status": "OK",
+      "title": "Human pluripotent stem cells recurrently acquire and expand dominant negative P53 mutations",
+      "authors": "Merkle F, Ghosh S, Kamitaki N et al.",
+      "venue": "Nature",
+      "date": "2017-04-26",
+      "doi": "10.1038/nature22312",
+      "url": "https://doi.org/10.1038/nature22312",
+      "detail": {
+        "type": "journal-article",
+        "publisher": "Springer Science and Business Media LLC"
+      },
+      "flags": [],
+      "expect_title": "",
+      "title_match": "",
+      "title_score": null,
+      "where": [],
+      "retrieved": "2026-11-01"
+    },
+    {
+      "kind": "DOI",
+      "ident": "10.1038/s41586-025-09884-1",
+      "status": "OK",
+      "title": "Human assembloids recapitulate periportal liver tissue in vitro",
+      "authors": "Yuan L, Dawka S, Kim Y et al.",
+      "venue": "Nature",
+      "date": "2025-12-17",
+      "doi": "10.1038/s41586-025-09884-1",
+      "url": "https://doi.org/10.1038/s41586-025-09884-1",
+      "detail": {
+        "type": "journal-article",
+        "publisher": "Springer Science and Business Media LLC"
+      },
+      "flags": [],
+      "expect_title": "",
+      "title_match": "",
+      "title_score": null,
+      "where": [],
+      "retrieved": "2026-11-01"
+    },
+    {
+      "kind": "DOI",
+      "ident": "10.1038/s41598-021-83088-1",
+      "status": "OK",
+      "title": "Expansion and characterization of bone marrow derived human mesenchymal stromal cells in serum-free conditions",
+      "authors": "Bhat S, Viswanathan P, Chandanala S et al.",
+      "venue": "Scientific Reports",
+      "date": "2021-02-09",
+      "doi": "10.1038/s41598-021-83088-1",
+      "url": "https://doi.org/10.1038/s41598-021-83088-1",
+      "detail": {
+        "type": "journal-article",
+        "publisher": "Springer Science and Business Media LLC"
+      },
+      "flags": [],
+      "expect_title": "",
+      "title_match": "",
+      "title_score": null,
+      "where": [],
+      "retrieved": "2026-11-01"
+    },
+    {
+      "kind": "DOI",
+      "ident": "10.1080/15592294.2019.1626651",
+      "status": "OK",
+      "title": "Human aging DNA methylation signatures are conserved but accelerated in cultured fibroblasts",
+      "authors": "Sturm G, Cardenas A, Bind M et al.",
+      "venue": "Epigenetics",
+      "date": "2019-06-12",
+      "doi": "10.1080/15592294.2019.1626651",
+      "url": "https://doi.org/10.1080/15592294.2019.1626651",
+      "detail": {
+        "type": "journal-article",
+        "publisher": "Informa UK Limited"
+      },
+      "flags": [],
+      "expect_title": "",
+      "title_match": "",
+      "title_score": null,
+      "where": [],
+      "retrieved": "2026-11-01"
+    }
+  ],
+  "catalog": {
+    "sources": [
+      {
+        "id": "bhat",
+        "doi": "10.1038/s41598-021-83088-1",
+        "title": "Expansion and characterization of bone marrow derived human mesenchymal stromal cells in serum-free conditions",
+        "journalYear": 2021,
+        "onlineDate": null,
+        "url": "https://doi.org/10.1038/s41598-021-83088-1",
+        "fullTextUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7873235/",
+        "identifierStatus": "resolved",
+        "supportStatus": "reviewed",
+        "reviewedOn": "2026-11-01",
+        "reviewKind": "agent-source-reading",
+        "limitations": [
+          "Source reading is agent-run, not independent domain review. No figures, protocols or datasets reproduced."
+        ]
+      },
+      {
+        "id": "ghule",
+        "doi": "10.1002/jcp.22440",
+        "title": "Reprogramming the pluripotent cell cycle: Restoration of an abbreviated G1 phase in human induced pluripotent stem (iPS) cells",
+        "journalYear": 2011,
+        "onlineDate": null,
+        "url": "https://doi.org/10.1002/jcp.22440",
+        "fullTextUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3045197/",
+        "identifierStatus": "resolved",
+        "supportStatus": "reviewed",
+        "reviewedOn": "2026-11-01",
+        "reviewKind": "agent-source-reading",
+        "limitations": [
+          "Source reading is agent-run, not independent domain review. No figures, protocols or datasets reproduced."
+        ]
+      },
+      {
+        "id": "halliwell",
+        "doi": "10.1016/j.stemcr.2020.04.004",
+        "title": "Nucleosides Rescue Replication-Mediated Genome Instability of Human Pluripotent Stem Cells",
+        "journalYear": 2020,
+        "onlineDate": null,
+        "url": "https://doi.org/10.1016/j.stemcr.2020.04.004",
+        "fullTextUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7355123/",
+        "identifierStatus": "resolved",
+        "supportStatus": "reviewed",
+        "reviewedOn": "2026-11-01",
+        "reviewKind": "agent-source-reading",
+        "limitations": [
+          "Source reading is agent-run, not independent domain review. No figures, protocols or datasets reproduced."
+        ]
+      },
+      {
+        "id": "merkle",
+        "doi": "10.1038/nature22312",
+        "title": "Human pluripotent stem cells recurrently acquire and expand dominant negative P53 mutations",
+        "journalYear": 2017,
+        "onlineDate": null,
+        "url": "https://doi.org/10.1038/nature22312",
+        "fullTextUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5427175/",
+        "identifierStatus": "resolved",
+        "supportStatus": "reviewed",
+        "reviewedOn": "2026-11-01",
+        "reviewKind": "agent-source-reading",
+        "limitations": [
+          "Source reading is agent-run, not independent domain review. No figures, protocols or datasets reproduced."
+        ]
+      },
+      {
+        "id": "sturm",
+        "doi": "10.1080/15592294.2019.1626651",
+        "title": "Human aging DNA methylation signatures are conserved but accelerated in cultured fibroblasts",
+        "journalYear": 2019,
+        "onlineDate": null,
+        "url": "https://doi.org/10.1080/15592294.2019.1626651",
+        "fullTextUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6691995/",
+        "identifierStatus": "resolved",
+        "supportStatus": "reviewed",
+        "reviewedOn": "2026-11-01",
+        "reviewKind": "agent-source-reading",
+        "limitations": [
+          "Source reading is agent-run, not independent domain review. No figures, protocols or datasets reproduced."
+        ]
+      },
+      {
+        "id": "yuan",
+        "doi": "10.1038/s41586-025-09884-1",
+        "title": "Human assembloids recapitulate periportal liver tissue in vitro",
+        "journalYear": 2026,
+        "onlineDate": "2025-12-17",
+        "url": "https://doi.org/10.1038/s41586-025-09884-1",
+        "fullTextUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12893922/",
+        "identifierStatus": "resolved",
+        "supportStatus": "reviewed",
+        "reviewedOn": "2026-11-01",
+        "reviewKind": "agent-source-reading",
+        "limitations": [
+          "Source reading is agent-run, not independent domain review. No figures, protocols or datasets reproduced."
+        ]
+      },
+      {
+        "id": "cycle",
+        "doi": null,
+        "title": "NHGRI: Cell Cycle",
+        "journalYear": 2026,
+        "onlineDate": null,
+        "url": "https://www.genome.gov/genetics-glossary/Cell-Cycle",
+        "fullTextUrl": "https://www.genome.gov/genetics-glossary/Cell-Cycle",
+        "identifierStatus": "not-applicable",
+        "supportStatus": "reviewed",
+        "reviewedOn": "2026-11-01",
+        "reviewKind": "agent-source-reading",
+        "limitations": [
+          "Source reading is agent-run, not independent domain review. No figures, protocols or datasets reproduced."
+        ]
+      },
+      {
+        "id": "dna",
+        "doi": null,
+        "title": "NHGRI: DNA Replication",
+        "journalYear": 2026,
+        "onlineDate": null,
+        "url": "https://www.genome.gov/genetics-glossary/DNA-Replication",
+        "fullTextUrl": "https://www.genome.gov/genetics-glossary/DNA-Replication",
+        "identifierStatus": "not-applicable",
+        "supportStatus": "reviewed",
+        "reviewedOn": "2026-11-01",
+        "reviewKind": "agent-source-reading",
+        "limitations": [
+          "Source reading is agent-run, not independent domain review. No figures, protocols or datasets reproduced."
+        ]
+      },
+      {
+        "id": "culture",
+        "doi": null,
+        "title": "ATCC: Primary Cell Culture Guide",
+        "journalYear": 2026,
+        "onlineDate": null,
+        "url": "https://www.atcc.org/resources/culture-guides/primary-cell-culture-guide",
+        "fullTextUrl": "https://www.atcc.org/resources/culture-guides/primary-cell-culture-guide",
+        "identifierStatus": "not-applicable",
+        "supportStatus": "reviewed",
+        "reviewedOn": "2026-11-01",
+        "reviewKind": "agent-source-reading",
+        "limitations": [
+          "Source reading is agent-run, not independent domain review. No figures, protocols or datasets reproduced."
+        ]
+      }
+    ],
+    "claims": [
+      {
+        "id": "cycle-location",
+        "sourceId": "cycle",
+        "cellTypeIds": [
+          "msc",
+          "endothelial",
+          "fibroblast",
+          "ipsc",
+          "esc",
+          "hepatocyte",
+          "cholangiocyte",
+          "liver-sinusoidal-endothelial",
+          "liver-stromal",
+          "liver-immune"
+        ],
+        "species": "human",
+        "modelContext": "cell-cycle definitions",
+        "statement": "Nuclear DNA is copied in S phase; mitosis partitions chromosomes and cytokinesis separates daughter cells. Cell-cycle duration is not automatically the population doubling time.",
+        "locator": "Definition and narration",
+        "supportStatus": "reviewed",
+        "limitations": [
+          "No universal duration or synchronization is inferred."
+        ]
+      },
+      {
+        "id": "copy-genome",
+        "sourceId": "dna",
+        "cellTypeIds": [
+          "msc",
+          "endothelial",
+          "fibroblast",
+          "ipsc",
+          "esc",
+          "hepatocyte",
+          "cholangiocyte",
+          "liver-sinusoidal-endothelial",
+          "liver-stromal",
+          "liver-immune"
+        ],
+        "species": "human",
+        "modelContext": "DNA replication definition",
+        "statement": "DNA replication copies the genome before division; it is not the creation of a new organ.",
+        "locator": "Definition",
+        "supportStatus": "reviewed",
+        "limitations": [
+          "No error rate or repair treatment is specified."
+        ]
+      },
+      {
+        "id": "culture-location",
+        "sourceId": "culture",
+        "cellTypeIds": [
+          "msc",
+          "endothelial",
+          "fibroblast",
+          "ipsc",
+          "esc",
+          "hepatocyte",
+          "cholangiocyte",
+          "liver-sinusoidal-endothelial",
+          "liver-stromal",
+          "liver-immune"
+        ],
+        "species": "human",
+        "modelContext": "human cell culture",
+        "statement": "Culture vessels are housed in controlled culture equipment; microscopy is used for observation. Primary-cell comparisons are sensitive to donor and culture differences.",
+        "locator": "Primary cell culture introduction; Challenges; endothelial culture and microscopy sections",
+        "supportStatus": "reviewed",
+        "limitations": [
+          "Conceptual equipment mapping only. No handling instructions or equipment settings."
+        ]
+      },
+      {
+        "id": "msc-variability",
+        "sourceId": "bhat",
+        "cellTypeIds": [
+          "msc"
+        ],
+        "species": "human",
+        "modelContext": "human cell culture",
+        "statement": "The Figure 4 caption reports BM-MSC population doubling times across compared conditions of about 22–46 hours, excluding one formulation; Results include different P4–P5 summaries.",
+        "locator": "Figure 4 caption; Results: growth kinetics; Discussion",
+        "supportStatus": "reviewed",
+        "limitations": [
+          "Study-specific comparison, not a universal interval, confidence interval or schedule. Distinct endpoints must not be pooled."
+        ]
+      },
+      {
+        "id": "pluripotent-cycle",
+        "sourceId": "ghule",
+        "cellTypeIds": [
+          "ipsc",
+          "esc"
+        ],
+        "species": "human",
+        "modelContext": "human cell culture",
+        "statement": "The studied human iPS and hES cultures showed an approximately 16–18-hour cell cycle, measured between successive S phases.",
+        "locator": "Results: Reprogrammed Pluripotent Cells Have an Abbreviated Cell Cycle of 16–18 Hours; Figure 6",
+        "supportStatus": "reviewed",
+        "limitations": [
+          "Cell-cycle observation, not population doubling or a duration for differentiated derivatives."
+        ]
+      },
+      {
+        "id": "fibroblast-senescence",
+        "sourceId": "sturm",
+        "cellTypeIds": [
+          "fibroblast"
+        ],
+        "species": "human",
+        "modelContext": "human cell culture",
+        "statement": "The studied primary dermal fibroblast culture slowed to a replicative-senescence plateau.",
+        "locator": "Results: Primary human fibroblasts grown across the cellular lifespan; Figure 1b",
+        "supportStatus": "reviewed",
+        "limitations": [
+          "A specified donor culture; no universal fibroblast lifespan or indefinite expansion is inferred."
+        ]
+      },
+      {
+        "id": "replication-stress",
+        "sourceId": "halliwell",
+        "cellTypeIds": [
+          "ipsc",
+          "esc"
+        ],
+        "species": "human",
+        "modelContext": "human cell culture",
+        "statement": "Nucleosides added to culture medium reduced replication stress, genome-damage markers and mitotic aberrations in the studied human PSC cultures.",
+        "locator": "Summary; Results and Discussion; Figure 3",
+        "supportStatus": "reviewed",
+        "limitations": [
+          "Not a generic coating or repair recipe. No demonstrated reversal of existing mutations, removal of mutant clones, cancer prevention or graft-safety guarantee."
+        ]
+      },
+      {
+        "id": "culture-selection",
+        "sourceId": "merkle",
+        "cellTypeIds": [
+          "ipsc",
+          "esc"
+        ],
+        "species": "human",
+        "modelContext": "human cell culture",
+        "statement": "TP53-mutant subpopulations expanded across passages in the studied hESC cultures; the broader screen also included hiPSC lines.",
+        "locator": "Results; Figure 3d; Figure 4",
+        "supportStatus": "reviewed",
+        "limitations": [
+          "Selection is different from counting replication events. Not every line had detectable mutations; no cancer probability is computed."
+        ]
+      },
+      {
+        "id": "liver-assembloid",
+        "sourceId": "yuan",
+        "cellTypeIds": [
+          "hepatocyte",
+          "cholangiocyte",
+          "liver-sinusoidal-endothelial",
+          "liver-stromal",
+          "liver-immune"
+        ],
+        "species": "human",
+        "modelContext": "human periportal liver assembloids in vitro",
+        "statement": "The work assembled human periportal liver tissue models containing hepatocyte and cholangiocyte compartments with portal fibroblasts, not a complete liver.",
+        "locator": "Abstract; Introduction; Discussion",
+        "supportStatus": "reviewed",
+        "limitations": [
+          "Human in-vitro model and reported mouse experiments are different endpoints. No whole-liver production duration is established."
+        ]
+      },
+      {
+        "id": "liver-gaps",
+        "sourceId": "yuan",
+        "cellTypeIds": [
+          "hepatocyte",
+          "cholangiocyte",
+          "liver-sinusoidal-endothelial",
+          "liver-stromal",
+          "liver-immune"
+        ],
+        "species": "human",
+        "modelContext": "scope limitations of a periportal assembloid",
+        "statement": "The Discussion identifies absent immune/other mesenchymal populations and portal vasculature as limitations.",
+        "locator": "Discussion",
+        "supportStatus": "reviewed",
+        "limitations": [
+          "No generic endothelial or stromal population is automatically equivalent to its liver-specific counterpart."
+        ]
+      }
+    ],
+    "profiles": [
+      {
+        "id": "msc",
+        "label": "Mesenchymal stromal cells",
+        "roles": [
+          "Stromal tissue-engineering context; not automatically hepatocytes."
+        ],
+        "cultureLocation": "Conceptual bench mapping: culture vessel in controlled culture equipment; microscope for observation. Later construct studies may use culture/perfusion chambers. No device settings or culture schedule.",
+        "claimIds": [
+          "cycle-location",
+          "copy-genome",
+          "culture-location",
+          "msc-variability"
+        ],
+        "timingIds": [
+          "msc-time"
+        ],
+        "uncertainties": [
+          "Identity, contamination, genomic stability, passage effects and function are not measured by this app."
+        ]
+      },
+      {
+        "id": "endothelial",
+        "label": "Endothelial cells",
+        "roles": [
+          "Vessel-lining research context; generic cells are not automatically liver sinusoidal endothelium."
+        ],
+        "cultureLocation": "Conceptual bench mapping: culture vessel in controlled culture equipment; microscope for observation. Later construct studies may use culture/perfusion chambers. No device settings or culture schedule.",
+        "claimIds": [
+          "cycle-location",
+          "copy-genome",
+          "culture-location"
+        ],
+        "timingIds": [
+          "endothelial-unknown"
+        ],
+        "uncertainties": [
+          "Identity, contamination, genomic stability, passage effects and function are not measured by this app."
+        ]
+      },
+      {
+        "id": "fibroblast",
+        "label": "Fibroblasts",
+        "roles": [
+          "Connective-tissue/stromal culture context."
+        ],
+        "cultureLocation": "Conceptual bench mapping: culture vessel in controlled culture equipment; microscope for observation. Later construct studies may use culture/perfusion chambers. No device settings or culture schedule.",
+        "claimIds": [
+          "cycle-location",
+          "copy-genome",
+          "culture-location",
+          "fibroblast-senescence"
+        ],
+        "timingIds": [
+          "fibroblast-unknown"
+        ],
+        "uncertainties": [
+          "Identity, contamination, genomic stability, passage effects and function are not measured by this app."
+        ]
+      },
+      {
+        "id": "ipsc",
+        "label": "Induced pluripotent stem cells (iPSCs)",
+        "roles": [
+          "Pluripotent source, distinct from differentiated derivatives."
+        ],
+        "cultureLocation": "Conceptual bench mapping: culture vessel in controlled culture equipment; microscope for observation. Later construct studies may use culture/perfusion chambers. No device settings or culture schedule.",
+        "claimIds": [
+          "cycle-location",
+          "copy-genome",
+          "culture-location",
+          "pluripotent-cycle",
+          "replication-stress",
+          "culture-selection"
+        ],
+        "timingIds": [
+          "ipsc-cycle"
+        ],
+        "uncertainties": [
+          "Identity, contamination, genomic stability, passage effects and function are not measured by this app."
+        ]
+      },
+      {
+        "id": "esc",
+        "label": "Embryonic pluripotent stem cells",
+        "roles": [
+          "Pluripotent research comparison, not interchangeable with all iPSC lines."
+        ],
+        "cultureLocation": "Conceptual bench mapping: culture vessel in controlled culture equipment; microscope for observation. Later construct studies may use culture/perfusion chambers. No device settings or culture schedule.",
+        "claimIds": [
+          "cycle-location",
+          "copy-genome",
+          "culture-location",
+          "pluripotent-cycle",
+          "replication-stress",
+          "culture-selection"
+        ],
+        "timingIds": [
+          "esc-cycle"
+        ],
+        "uncertainties": [
+          "Identity, contamination, genomic stability, passage effects and function are not measured by this app."
+        ]
+      },
+      {
+        "id": "hepatocyte",
+        "label": "Hepatocytes / hepatocyte-like derivatives",
+        "roles": [
+          "Liver parenchymal context; identity and maturity are distinct from cell number."
+        ],
+        "cultureLocation": "Conceptual bench mapping: culture vessel in controlled culture equipment; microscope for observation. Later construct studies may use culture/perfusion chambers. No device settings or culture schedule.",
+        "claimIds": [
+          "cycle-location",
+          "copy-genome",
+          "culture-location",
+          "liver-assembloid",
+          "liver-gaps"
+        ],
+        "timingIds": [
+          "hepatocyte-unknown"
+        ],
+        "uncertainties": [
+          "Identity, contamination, genomic stability, passage effects and function are not measured by this app."
+        ]
+      },
+      {
+        "id": "cholangiocyte",
+        "label": "Cholangiocytes",
+        "roles": [
+          "Biliary epithelial compartment in the cited liver model."
+        ],
+        "cultureLocation": "Conceptual bench mapping: culture vessel in controlled culture equipment; microscope for observation. Later construct studies may use culture/perfusion chambers. No device settings or culture schedule.",
+        "claimIds": [
+          "cycle-location",
+          "copy-genome",
+          "culture-location",
+          "liver-assembloid",
+          "liver-gaps"
+        ],
+        "timingIds": [
+          "cholangiocyte-unknown"
+        ],
+        "uncertainties": [
+          "Identity, contamination, genomic stability, passage effects and function are not measured by this app."
+        ]
+      },
+      {
+        "id": "liver-sinusoidal-endothelial",
+        "label": "Liver sinusoidal endothelial context",
+        "roles": [
+          "Liver-specific endothelial identity is an evidence gap here."
+        ],
+        "cultureLocation": "Conceptual bench mapping: culture vessel in controlled culture equipment; microscope for observation. Later construct studies may use culture/perfusion chambers. No device settings or culture schedule.",
+        "claimIds": [
+          "cycle-location",
+          "copy-genome",
+          "culture-location",
+          "liver-gaps"
+        ],
+        "timingIds": [
+          "liver-sinusoidal-endothelial-unknown"
+        ],
+        "uncertainties": [
+          "Identity, contamination, genomic stability, passage effects and function are not measured by this app."
+        ]
+      },
+      {
+        "id": "liver-stromal",
+        "label": "Liver stromal / stellate / portal-fibroblast context",
+        "roles": [
+          "Portal fibroblasts appear in the cited model; stromal subtypes remain distinct."
+        ],
+        "cultureLocation": "Conceptual bench mapping: culture vessel in controlled culture equipment; microscope for observation. Later construct studies may use culture/perfusion chambers. No device settings or culture schedule.",
+        "claimIds": [
+          "cycle-location",
+          "copy-genome",
+          "culture-location",
+          "liver-assembloid",
+          "liver-gaps"
+        ],
+        "timingIds": [
+          "liver-stromal-unknown"
+        ],
+        "uncertainties": [
+          "Identity, contamination, genomic stability, passage effects and function are not measured by this app."
+        ]
+      },
+      {
+        "id": "liver-immune",
+        "label": "Liver resident immune-cell context",
+        "roles": [
+          "Immune populations are absent from the cited assembloid model."
+        ],
+        "cultureLocation": "Conceptual bench mapping: culture vessel in controlled culture equipment; microscope for observation. Later construct studies may use culture/perfusion chambers. No device settings or culture schedule.",
+        "claimIds": [
+          "cycle-location",
+          "copy-genome",
+          "culture-location",
+          "liver-gaps"
+        ],
+        "timingIds": [
+          "liver-immune-unknown"
+        ],
+        "uncertainties": [
+          "Identity, contamination, genomic stability, passage effects and function are not measured by this app."
+        ]
+      }
+    ],
+    "timings": [
+      {
+        "id": "msc-time",
+        "claimId": "msc-variability",
+        "cellTypeId": "msc",
+        "metric": "population-doubling",
+        "hours": {
+          "min": 22,
+          "max": 46
+        },
+        "valueKind": "reported-range",
+        "statistic": "Approximate reported range, not a confidence interval",
+        "context": "Read-only literature observation; never automatically applied to arithmetic controls.",
+        "limitations": [
+          "Study-specific comparison, not a universal interval, confidence interval or schedule. Distinct endpoints must not be pooled."
+        ]
+      },
+      {
+        "id": "endothelial-unknown",
+        "claimId": "culture-location",
+        "cellTypeId": "endothelial",
+        "metric": "population-doubling",
+        "hours": null,
+        "valueKind": "not-established",
+        "statistic": null,
+        "context": "A transferable timing interval is not established from the reviewed sources for this cell category.",
+        "limitations": [
+          "Unknown does not mean zero growth or that no literature exists."
+        ]
+      },
+      {
+        "id": "fibroblast-unknown",
+        "claimId": "fibroblast-senescence",
+        "cellTypeId": "fibroblast",
+        "metric": "population-doubling",
+        "hours": null,
+        "valueKind": "not-established",
+        "statistic": null,
+        "context": "A transferable timing interval is not established from the reviewed sources for this cell category.",
+        "limitations": [
+          "Unknown does not mean zero growth or that no literature exists."
+        ]
+      },
+      {
+        "id": "ipsc-cycle",
+        "claimId": "pluripotent-cycle",
+        "cellTypeId": "ipsc",
+        "metric": "cell-cycle",
+        "hours": {
+          "min": 16,
+          "max": 18
+        },
+        "valueKind": "reported-range",
+        "statistic": "Approximate reported range, not a confidence interval",
+        "context": "Read-only literature observation; never automatically applied to arithmetic controls.",
+        "limitations": [
+          "Cell-cycle observation, not population doubling or a duration for differentiated derivatives."
+        ]
+      },
+      {
+        "id": "esc-cycle",
+        "claimId": "pluripotent-cycle",
+        "cellTypeId": "esc",
+        "metric": "cell-cycle",
+        "hours": {
+          "min": 16,
+          "max": 18
+        },
+        "valueKind": "reported-range",
+        "statistic": "Approximate reported range, not a confidence interval",
+        "context": "Read-only literature observation; never automatically applied to arithmetic controls.",
+        "limitations": [
+          "Cell-cycle observation, not population doubling or a duration for differentiated derivatives."
+        ]
+      },
+      {
+        "id": "hepatocyte-unknown",
+        "claimId": "liver-gaps",
+        "cellTypeId": "hepatocyte",
+        "metric": "population-doubling",
+        "hours": null,
+        "valueKind": "not-established",
+        "statistic": null,
+        "context": "A transferable timing interval is not established from the reviewed sources for this cell category.",
+        "limitations": [
+          "Unknown does not mean zero growth or that no literature exists."
+        ]
+      },
+      {
+        "id": "cholangiocyte-unknown",
+        "claimId": "liver-gaps",
+        "cellTypeId": "cholangiocyte",
+        "metric": "population-doubling",
+        "hours": null,
+        "valueKind": "not-established",
+        "statistic": null,
+        "context": "A transferable timing interval is not established from the reviewed sources for this cell category.",
+        "limitations": [
+          "Unknown does not mean zero growth or that no literature exists."
+        ]
+      },
+      {
+        "id": "liver-sinusoidal-endothelial-unknown",
+        "claimId": "liver-gaps",
+        "cellTypeId": "liver-sinusoidal-endothelial",
+        "metric": "population-doubling",
+        "hours": null,
+        "valueKind": "not-established",
+        "statistic": null,
+        "context": "A transferable timing interval is not established from the reviewed sources for this cell category.",
+        "limitations": [
+          "Unknown does not mean zero growth or that no literature exists."
+        ]
+      },
+      {
+        "id": "liver-stromal-unknown",
+        "claimId": "liver-gaps",
+        "cellTypeId": "liver-stromal",
+        "metric": "population-doubling",
+        "hours": null,
+        "valueKind": "not-established",
+        "statistic": null,
+        "context": "A transferable timing interval is not established from the reviewed sources for this cell category.",
+        "limitations": [
+          "Unknown does not mean zero growth or that no literature exists."
+        ]
+      },
+      {
+        "id": "liver-immune-unknown",
+        "claimId": "liver-gaps",
+        "cellTypeId": "liver-immune",
+        "metric": "population-doubling",
+        "hours": null,
+        "valueKind": "not-established",
+        "statistic": null,
+        "context": "A transferable timing interval is not established from the reviewed sources for this cell category.",
+        "limitations": [
+          "Unknown does not mean zero growth or that no literature exists."
+        ]
+      }
+    ]
+  },
+  "notes": [
+    "Registry resolution is separate from claim support. No automated expected-title MATCH was requested.",
+    "PMC browser challenges occurred; Europe PMC full-text XML used for accessible articles. No recipes, figures or datasets redistributed.",
+    "Official source journalYear is access-year label, not publication-date claim.",
+    "No transferable timing accepted for generic endothelium, fibroblasts or liver categories."
+  ]
+}

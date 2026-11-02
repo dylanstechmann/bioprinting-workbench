@@ -1,0 +1,584 @@
+{
+  "schema": "bioprinting-workbench/method-recipes-audit/1",
+  "generatedOn": "2026-11-01",
+  "reviewKind": "agent-source-reading",
+  "authorization": "Owner instruction, 2026-11-01: actionable laboratory recipes authorized as cited published-method reference content; every parameter must trace to a primary source the development agent actually opened.",
+  "identifierChecks": [
+    {
+      "sourceId": "halliwell",
+      "doi": "10.1016/j.stemcr.2020.04.004",
+      "status": "resolved",
+      "checkedOn": "2026-11-01",
+      "note": "DOI resolution is not claim support; no expected-title MATCH was requested."
+    },
+    {
+      "sourceId": "bhat",
+      "doi": "10.1038/s41598-021-83088-1",
+      "status": "resolved",
+      "checkedOn": "2026-11-01",
+      "note": "DOI resolution is not claim support; no expected-title MATCH was requested."
+    },
+    {
+      "sourceId": "kurashima",
+      "doi": "10.1038/s44319-024-00207-5",
+      "status": "resolved",
+      "checkedOn": "2026-11-01",
+      "note": "DOI resolution is not claim support; no expected-title MATCH was requested."
+    }
+  ],
+  "fullTextAccess": [
+    {
+      "sourceId": "halliwell",
+      "pmcid": "PMC7355123",
+      "method": "Europe PMC fullTextXML (curl download)",
+      "bytes": 73803,
+      "license": "CC BY (Elsevier, Stem Cell Reports)",
+      "readableSections": [
+        "Abstract",
+        "Summary",
+        "Introduction",
+        "Results and Discussion",
+        "Experimental Procedures",
+        "Human Pluripotent Stem Cell Culture",
+        "Differentiation of Human PSCs",
+        "Fibroblast Cell Culture",
+        "Nucleoside Supplementation",
+        "References"
+      ]
+    },
+    {
+      "sourceId": "bhat",
+      "pmcid": "PMC7873235",
+      "method": "Europe PMC fullTextXML (curl download)",
+      "bytes": 151203,
+      "license": "CC BY 4.0 (Scientific Reports)",
+      "readableSections": [
+        "Abstract",
+        "Introduction",
+        "Results",
+        "Discussion",
+        "Materials and methods",
+        "Isolation and culturing of BM-MSCs",
+        "Sub culturing and expansion of BM-MSCs in different serum-free media",
+        "Population doublings",
+        "References"
+      ]
+    },
+    {
+      "sourceId": "kurashima",
+      "pmcid": "PMC11387781",
+      "method": "Europe PMC fullTextXML (curl download)",
+      "bytes": 156982,
+      "license": "Open access (EMBO Reports)",
+      "readableSections": [
+        "Abstract",
+        "Introduction",
+        "Results and discussion",
+        "Methods",
+        "Cell culture",
+        "Chemicals",
+        "Figure EV3 caption",
+        "References"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "recipeId": "halliwell-nucleoside-supplementation",
+      "stepId": "halliwell-coat-substrate",
+      "name": "Vitronectin dilution",
+      "value": "6",
+      "unit": "µg/mL in PBS",
+      "sourceId": "halliwell",
+      "locator": "Experimental Procedures: Human Pluripotent Stem Cell Culture",
+      "note": null
+    },
+    {
+      "recipeId": "halliwell-nucleoside-supplementation",
+      "stepId": "halliwell-coat-substrate",
+      "name": "Coating volume",
+      "value": "200",
+      "unit": "µL/cm²",
+      "sourceId": "halliwell",
+      "locator": "Experimental Procedures: Human Pluripotent Stem Cell Culture",
+      "note": null
+    },
+    {
+      "recipeId": "halliwell-nucleoside-supplementation",
+      "stepId": "halliwell-coat-substrate",
+      "name": "Coating incubation time",
+      "value": "1",
+      "unit": "h",
+      "sourceId": "halliwell",
+      "locator": "Experimental Procedures: Human Pluripotent Stem Cell Culture",
+      "note": "Reported as at least 1 h"
+    },
+    {
+      "recipeId": "halliwell-nucleoside-supplementation",
+      "stepId": "halliwell-coat-substrate",
+      "name": "Coating incubation temperature",
+      "value": "37",
+      "unit": "°C",
+      "sourceId": "halliwell",
+      "locator": "Experimental Procedures: Human Pluripotent Stem Cell Culture",
+      "note": null
+    },
+    {
+      "recipeId": "halliwell-nucleoside-supplementation",
+      "stepId": "halliwell-maintain-culture",
+      "name": "Feeding interval",
+      "value": "1",
+      "unit": "day",
+      "sourceId": "halliwell",
+      "locator": "Experimental Procedures: Human Pluripotent Stem Cell Culture",
+      "note": "Reported as batch fed daily"
+    },
+    {
+      "recipeId": "halliwell-nucleoside-supplementation",
+      "stepId": "halliwell-maintain-culture",
+      "name": "StemBeads FGF2 supplement",
+      "value": "800",
+      "unit": "µL per 100 mL",
+      "sourceId": "halliwell",
+      "locator": "Experimental Procedures: Human Pluripotent Stem Cell Culture",
+      "note": "Used in the Essential 8 without FGF2 arm"
+    },
+    {
+      "recipeId": "halliwell-nucleoside-supplementation",
+      "stepId": "halliwell-maintain-culture",
+      "name": "Incubation temperature",
+      "value": "37",
+      "unit": "°C",
+      "sourceId": "halliwell",
+      "locator": "Experimental Procedures: Human Pluripotent Stem Cell Culture",
+      "note": null
+    },
+    {
+      "recipeId": "halliwell-nucleoside-supplementation",
+      "stepId": "halliwell-maintain-culture",
+      "name": "CO₂ concentration",
+      "value": "5",
+      "unit": "% CO₂",
+      "sourceId": "halliwell",
+      "locator": "Experimental Procedures: Human Pluripotent Stem Cell Culture",
+      "note": "Humidified incubator"
+    },
+    {
+      "recipeId": "halliwell-nucleoside-supplementation",
+      "stepId": "halliwell-passage",
+      "name": "Dissociation product",
+      "value": "ReLeSR",
+      "unit": null,
+      "sourceId": "halliwell",
+      "locator": "Experimental Procedures: Human Pluripotent Stem Cell Culture",
+      "note": "Applied per the manufacturer’s guidelines as reported"
+    },
+    {
+      "recipeId": "halliwell-nucleoside-supplementation",
+      "stepId": "halliwell-supplement-nucleosides",
+      "name": "Cytidine",
+      "value": "15",
+      "unit": "µM",
+      "sourceId": "halliwell",
+      "locator": "Experimental Procedures: Nucleoside Supplementation",
+      "note": "Final concentration"
+    },
+    {
+      "recipeId": "halliwell-nucleoside-supplementation",
+      "stepId": "halliwell-supplement-nucleosides",
+      "name": "Guanosine",
+      "value": "15",
+      "unit": "µM",
+      "sourceId": "halliwell",
+      "locator": "Experimental Procedures: Nucleoside Supplementation",
+      "note": "Final concentration"
+    },
+    {
+      "recipeId": "halliwell-nucleoside-supplementation",
+      "stepId": "halliwell-supplement-nucleosides",
+      "name": "Uridine",
+      "value": "15",
+      "unit": "µM",
+      "sourceId": "halliwell",
+      "locator": "Experimental Procedures: Nucleoside Supplementation",
+      "note": "Final concentration"
+    },
+    {
+      "recipeId": "halliwell-nucleoside-supplementation",
+      "stepId": "halliwell-supplement-nucleosides",
+      "name": "Adenosine",
+      "value": "15",
+      "unit": "µM",
+      "sourceId": "halliwell",
+      "locator": "Experimental Procedures: Nucleoside Supplementation",
+      "note": "Final concentration"
+    },
+    {
+      "recipeId": "halliwell-nucleoside-supplementation",
+      "stepId": "halliwell-supplement-nucleosides",
+      "name": "Thymidine",
+      "value": "6",
+      "unit": "µM",
+      "sourceId": "halliwell",
+      "locator": "Experimental Procedures: Nucleoside Supplementation",
+      "note": "Final concentration"
+    },
+    {
+      "recipeId": "halliwell-nucleoside-supplementation",
+      "stepId": "halliwell-supplement-nucleosides",
+      "name": "Stock dilution",
+      "value": "0.5",
+      "unit": "× of the 100× stock",
+      "sourceId": "halliwell",
+      "locator": "Experimental Procedures: Nucleoside Supplementation",
+      "note": null
+    },
+    {
+      "recipeId": "halliwell-nucleoside-supplementation",
+      "stepId": "halliwell-supplement-nucleosides",
+      "name": "Time in culture before reported assays",
+      "value": "72",
+      "unit": "h",
+      "sourceId": "halliwell",
+      "locator": "Experimental Procedures: Nucleoside Supplementation",
+      "note": null
+    },
+    {
+      "recipeId": "bhat-msc-serum-free-expansion",
+      "stepId": "bhat-isolate",
+      "name": "Donor age range",
+      "value": "18–40",
+      "unit": "years",
+      "sourceId": "bhat",
+      "locator": "Materials and methods: Isolation and culturing of BM-MSCs",
+      "note": "Healthy donors, written informed consent reported"
+    },
+    {
+      "recipeId": "bhat-msc-serum-free-expansion",
+      "stepId": "bhat-isolate",
+      "name": "FBS in initial medium",
+      "value": "10",
+      "unit": "%",
+      "sourceId": "bhat",
+      "locator": "Materials and methods: Isolation and culturing of BM-MSCs",
+      "note": null
+    },
+    {
+      "recipeId": "bhat-msc-serum-free-expansion",
+      "stepId": "bhat-isolate",
+      "name": "L-Glutamax",
+      "value": "2",
+      "unit": "mM",
+      "sourceId": "bhat",
+      "locator": "Materials and methods: Isolation and culturing of BM-MSCs",
+      "note": null
+    },
+    {
+      "recipeId": "bhat-msc-serum-free-expansion",
+      "stepId": "bhat-isolate",
+      "name": "Incubation temperature",
+      "value": "37",
+      "unit": "°C",
+      "sourceId": "bhat",
+      "locator": "Materials and methods: Isolation and culturing of BM-MSCs",
+      "note": null
+    },
+    {
+      "recipeId": "bhat-msc-serum-free-expansion",
+      "stepId": "bhat-isolate",
+      "name": "CO₂ concentration",
+      "value": "5",
+      "unit": "% CO₂",
+      "sourceId": "bhat",
+      "locator": "Materials and methods: Isolation and culturing of BM-MSCs",
+      "note": "Humidified"
+    },
+    {
+      "recipeId": "bhat-msc-serum-free-expansion",
+      "stepId": "bhat-seed-p4",
+      "name": "Seeding density (low)",
+      "value": "1000",
+      "unit": "cells/cm²",
+      "sourceId": "bhat",
+      "locator": "Materials and methods: Sub culturing and expansion of BM-MSCs in different serum-free media",
+      "note": null
+    },
+    {
+      "recipeId": "bhat-msc-serum-free-expansion",
+      "stepId": "bhat-seed-p4",
+      "name": "Seeding density (high)",
+      "value": "5000",
+      "unit": "cells/cm²",
+      "sourceId": "bhat",
+      "locator": "Materials and methods: Sub culturing and expansion of BM-MSCs in different serum-free media",
+      "note": null
+    },
+    {
+      "recipeId": "bhat-msc-serum-free-expansion",
+      "stepId": "bhat-seed-p4",
+      "name": "Thaw bath temperature",
+      "value": "37",
+      "unit": "°C",
+      "sourceId": "bhat",
+      "locator": "Materials and methods: Sub culturing and expansion of BM-MSCs in different serum-free media",
+      "note": null
+    },
+    {
+      "recipeId": "bhat-msc-serum-free-expansion",
+      "stepId": "bhat-seed-p4",
+      "name": "Centrifugation speed",
+      "value": "1200",
+      "unit": "rpm",
+      "sourceId": "bhat",
+      "locator": "Materials and methods: Sub culturing and expansion of BM-MSCs in different serum-free media",
+      "note": null
+    },
+    {
+      "recipeId": "bhat-msc-serum-free-expansion",
+      "stepId": "bhat-seed-p4",
+      "name": "Centrifugation time",
+      "value": "10",
+      "unit": "min",
+      "sourceId": "bhat",
+      "locator": "Materials and methods: Sub culturing and expansion of BM-MSCs in different serum-free media",
+      "note": null
+    },
+    {
+      "recipeId": "bhat-msc-serum-free-expansion",
+      "stepId": "bhat-control-medium",
+      "name": "FBS in control medium",
+      "value": "10",
+      "unit": "%",
+      "sourceId": "bhat",
+      "locator": "Materials and methods: Sub culturing and expansion of BM-MSCs in different serum-free media",
+      "note": null
+    },
+    {
+      "recipeId": "bhat-msc-serum-free-expansion",
+      "stepId": "bhat-control-medium",
+      "name": "L-Glutamax",
+      "value": "2",
+      "unit": "mM",
+      "sourceId": "bhat",
+      "locator": "Materials and methods: Sub culturing and expansion of BM-MSCs in different serum-free media",
+      "note": null
+    },
+    {
+      "recipeId": "bhat-msc-serum-free-expansion",
+      "stepId": "bhat-control-medium",
+      "name": "Penicillin-streptomycin",
+      "value": "1",
+      "unit": "×",
+      "sourceId": "bhat",
+      "locator": "Materials and methods: Sub culturing and expansion of BM-MSCs in different serum-free media",
+      "note": null
+    },
+    {
+      "recipeId": "bhat-msc-serum-free-expansion",
+      "stepId": "bhat-control-medium",
+      "name": "bFGF",
+      "value": "2",
+      "unit": "ng/mL",
+      "sourceId": "bhat",
+      "locator": "Materials and methods: Sub culturing and expansion of BM-MSCs in different serum-free media",
+      "note": null
+    },
+    {
+      "recipeId": "bhat-msc-serum-free-expansion",
+      "stepId": "bhat-harvest-p5",
+      "name": "Harvest confluence",
+      "value": "80–90",
+      "unit": "%",
+      "sourceId": "bhat",
+      "locator": "Materials and methods: Sub culturing and expansion of BM-MSCs in different serum-free media",
+      "note": null
+    },
+    {
+      "recipeId": "bhat-msc-serum-free-expansion",
+      "stepId": "bhat-harvest-p5",
+      "name": "Trypsin-EDTA concentration",
+      "value": "0.25",
+      "unit": "%",
+      "sourceId": "bhat",
+      "locator": "Materials and methods: Sub culturing and expansion of BM-MSCs in different serum-free media",
+      "note": null
+    },
+    {
+      "recipeId": "bhat-msc-serum-free-expansion",
+      "stepId": "bhat-harvest-p5",
+      "name": "Digestion time",
+      "value": "2–3",
+      "unit": "min",
+      "sourceId": "bhat",
+      "locator": "Materials and methods: Sub culturing and expansion of BM-MSCs in different serum-free media",
+      "note": "At 37 °C, followed by neutralization"
+    },
+    {
+      "recipeId": "bhat-msc-serum-free-expansion",
+      "stepId": "bhat-harvest-p5",
+      "name": "Media-change confluence",
+      "value": "55–60",
+      "unit": "%",
+      "sourceId": "bhat",
+      "locator": "Materials and methods: Sub culturing and expansion of BM-MSCs in different serum-free media",
+      "note": null
+    },
+    {
+      "recipeId": "bhat-msc-serum-free-expansion",
+      "stepId": "bhat-kinetics-window",
+      "name": "Kinetics passage window",
+      "value": "P3–P5",
+      "unit": null,
+      "sourceId": "bhat",
+      "locator": "Materials and methods: Population doublings; Results: growth kinetics",
+      "note": "PD and PDT estimated across this window"
+    },
+    {
+      "recipeId": "kurashima-es-nucleoside-treatment",
+      "stepId": "kurashima-es-culture",
+      "name": "FBS",
+      "value": "10",
+      "unit": "%",
+      "sourceId": "kurashima",
+      "locator": "Methods: Cell culture",
+      "note": null
+    },
+    {
+      "recipeId": "kurashima-es-nucleoside-treatment",
+      "stepId": "kurashima-es-culture",
+      "name": "β-mercaptoethanol",
+      "value": "0.1",
+      "unit": "mM",
+      "sourceId": "kurashima",
+      "locator": "Methods: Cell culture",
+      "note": null
+    },
+    {
+      "recipeId": "kurashima-es-nucleoside-treatment",
+      "stepId": "kurashima-es-culture",
+      "name": "Sodium pyruvate",
+      "value": "1",
+      "unit": "×",
+      "sourceId": "kurashima",
+      "locator": "Methods: Cell culture",
+      "note": null
+    },
+    {
+      "recipeId": "kurashima-es-nucleoside-treatment",
+      "stepId": "kurashima-es-culture",
+      "name": "Incubation temperature",
+      "value": "37",
+      "unit": "°C",
+      "sourceId": "kurashima",
+      "locator": "Methods: Cell culture",
+      "note": null
+    },
+    {
+      "recipeId": "kurashima-es-nucleoside-treatment",
+      "stepId": "kurashima-es-culture",
+      "name": "CO₂ concentration",
+      "value": "5",
+      "unit": "% CO₂",
+      "sourceId": "kurashima",
+      "locator": "Methods: Cell culture",
+      "note": null
+    },
+    {
+      "recipeId": "kurashima-es-nucleoside-treatment",
+      "stepId": "kurashima-nucleoside-treatment",
+      "name": "Stock dilution",
+      "value": "50",
+      "unit": "fold",
+      "sourceId": "kurashima",
+      "locator": "Methods: Cell culture; Results and discussion: Exogenous ribonucleoside supplementation section",
+      "note": "Equals 2× the suggested concentration of the 100× stock"
+    },
+    {
+      "recipeId": "kurashima-es-nucleoside-treatment",
+      "stepId": "kurashima-nucleoside-treatment",
+      "name": "Fiber-assay treatment duration",
+      "value": "48",
+      "unit": "h",
+      "sourceId": "kurashima",
+      "locator": "Results and discussion: Exogenous ribonucleoside supplementation section; Figure EV3 caption",
+      "note": null
+    },
+    {
+      "recipeId": "kurashima-es-nucleoside-treatment",
+      "stepId": "kurashima-nucleoside-treatment",
+      "name": "Long-term assessment duration",
+      "value": "12",
+      "unit": "days",
+      "sourceId": "kurashima",
+      "locator": "Results and discussion: Exogenous ribonucleoside supplementation section; Figure EV3 caption",
+      "note": "With daily media changes"
+    }
+  ],
+  "stepBasis": [
+    {
+      "stepId": "halliwell-coat-substrate",
+      "sourceId": "halliwell",
+      "quote": "These PSCs were all cultured on vitronectin (VTN-N) recombinant human protein (Thermo Fisher Scientific, A14700). Culture vessels were coated with 200μL/cm2 of vitronectin that had been diluted to 6μg/mL with PBS and incubated at 37°C for at least 1 h."
+    },
+    {
+      "stepId": "halliwell-maintain-culture",
+      "sourceId": "halliwell",
+      "quote": "The cells were maintained in feeder-free conditions, batch fed daily with Essential 8 (Chen et al., 2011), mTeSR1 (STEMCELL Technologies, 85850), NutriStem XF (Biological Industries, 05-100-1A) or Essential 8 medium (Chen et al., 2011) without fibroblast growth factor 2 (FGF2) but supplemented with StemBeads FGF2 (800μL per 100 mL) (StemCultures, SB500), and incubated in a 37°C, 5% CO2 humidified incubator."
+    },
+    {
+      "stepId": "halliwell-passage",
+      "sourceId": "halliwell",
+      "quote": "Passaging of cells was performed by clump dissociation using ReLeSR (STEMCELL Technologies, 05,873) following the manufacturer’s guidelines."
+    },
+    {
+      "stepId": "halliwell-supplement-nucleosides",
+      "sourceId": "halliwell",
+      "quote": "EmbryoMax Nucleosides 100X (Merck, ES-008-D) were added to mTeSR, E8, Nutristem, or StemBeads cell culture media at a final concentration of 0.5× (15μM cytidine, 15μM guanosine, 15μM uridine, 15μM adenosine, and 6μM thymidine). All experiments were performed after 72 h in culture with the supplementation of nucleosides."
+    },
+    {
+      "stepId": "bhat-isolate",
+      "sourceId": "bhat",
+      "quote": "Bone marrow was aspirated from healthy donors of age group between 18 and 40 years [...] Cells were plated in T-75 flasks with DMEM-KO (Thermo Fisher Scientific, USA) containing 10% FBS (Hyclone, Waltham, USA), 2 mM L-Glutamax (Invitrogen, USA) and maintained at 37 °C incubator with 5% humidified CO2. [...] The MSCs were grown in serum-containing medium up to passage 3 (P3) and are derived from multiple donor pool (3 different donors)."
+    },
+    {
+      "stepId": "bhat-seed-p4",
+      "sourceId": "bhat",
+      "quote": "Human MSCs that are cryopreserved at P3 were thawed at 37 °C in a water bath, revived with pre-warmed culture medium, centrifuged at 1200 rpm for 10 min. [...] seeded (P4) at low (1000 cells/cm2) and high seeding densities (5000 cells/cm2) in T-75 flasks [...] The T-75 flasks were coated with MSC attachment solution (Biological Industries, USA) for MSCs cultured in NutriStem XF Medium and human fibronectin (R&D Systems, Minneapolis, USA) for MSCs cultured in StemXVivo human mesenchymal stem cell expansion media according to manufacturer’s instructions. Other SFM tested are coating-free media."
+    },
+    {
+      "stepId": "bhat-control-medium",
+      "sourceId": "bhat",
+      "quote": "MSCs cultured in DMEM-KO medium supplemented with 10% FBS, 2 mM L-Glutamax, 1X Pen-Strep (Invitrogen, USA) and 2 ng/ml bFGF (Invitrogen, USA) served as the control (hereafter referred as control medium)."
+    },
+    {
+      "stepId": "bhat-harvest-p5",
+      "sourceId": "bhat",
+      "quote": "Once the cultures attained 80–90% confluency, the cells were harvested by enzymatic digestion with 0.25% trypsin–EDTA (Gibco, USA) at 37 °C for 2–3 min followed by neutralization of trypsin activity. The resulting cell suspension was expanded in the next passage (P5) in CellSTACK—1 (CS-1) chamber with vent caps (Corning, New York, USA) at low and high seeding densities. Media change was performed when the cultures attained 55–60% confluency and were harvested at 80–90% confluence. The cells were washed two times with Dulbecco’s phosphate-buffered saline (DPBS, Gibco, USA) for 2–3 min."
+    },
+    {
+      "stepId": "bhat-kinetics-window",
+      "sourceId": "bhat",
+      "quote": "The population doublings (PDs) and doubling time (PDT) of BM-MSCs cultured in these media and control medium were estimated from P3 to P5 and harvesting was carried out after reaching 80–90% confluency in each passage."
+    },
+    {
+      "stepId": "kurashima-es-culture",
+      "sourceId": "kurashima",
+      "quote": "The mouse ES cell line, E14Tg2A (Hooper et al, 1987), was maintained in G-MEM (078-05525, WAKO) with 10% FBS (BioWest), MEM Non-Essential Amino Acids (NEAA, Gibco), 1 x Sodium Pyruvate (Gibco), 0.1 mM β-mercaptoethanol (WAKO), 1× Penicillin–Streptomycin (WAKO) and Leukemia Inhibitory Factor (LIF). [...] All cell lines were cultured at 37 °C under 5% CO2."
+    },
+    {
+      "stepId": "kurashima-nucleoside-treatment",
+      "sourceId": "kurashima",
+      "quote": "For nucleoside supplementation, EmbryoMax® Nucleosides 100× (ES-008-D, Sigma-Aldrich) were used with 50-fold dilution (2× the suggested concentration). [...] continuous nucleoside supplementation for as long as 12 days neither altered colony morphology (Fig. EV3A) nor the expression of pluripotency-associated genes (Fig. EV3B). [...] ES cells were cultured with (+nuc) or without (control) nucleosides for 12 days with daily media changes [...] MEF and ES cells were treated with nucleosides (48 h) [...] prior to fixation."
+    }
+  ],
+  "notRestated": [
+    "Halliwell et al.: nucleoside stock solvent, storage, sterilization and lot information were not present in the fetched text and are not restated.",
+    "Bhat et al.: proprietary compositions of the compared media are not available publicly; per-product manufacturer instructions are not restated.",
+    "Kurashima et al.: the numeric nucleoside species concentrations at the 2× dilution were not stated numerically in the fetched text and were not computed or interpolated."
+  ],
+  "limitations": [
+    "Agent-run source reading during development; no independent expert review, no laboratory execution, no figure or dataset reproduction.",
+    "Quotes are short verbatim excerpts from open-access full texts fetched via Europe PMC for provenance; the papers remain the authoritative sources.",
+    "A parameter's presence in this audit records that the development agent read it in the fetched text; it does not endorse, verify performance or extend the finding beyond the studied conditions."
+  ]
+}

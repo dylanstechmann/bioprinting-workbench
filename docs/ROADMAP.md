@@ -21,3 +21,29 @@ procedural fallback and an animated procedural printhead.
 - Obtain independent domain review before making stronger scientific teaching claims.
 
 No milestone implies experimental execution, clinical use or animal-use readiness.
+## Local implementation status (not released)
+
+The approved equipment, normalized-box oxygen/fit, resistance-network and scenario
+restore milestones are implemented in the working tree. Earlier bullets above are
+historical intentions, not evidence that tissue transport, fluid dynamics or
+experimental calibration was achieved. See VERIFICATION.md for actual checks.
+No physical calibration, flow–oxygen coupling or biological validation is claimed.
+
+## Local 0.7.0-dev follow-on — not released
+
+The approved hardening, cell/genome-stability learning, scenario /3 and read-only release
+verification follow-on is implemented locally. Timing observations are not protocols;
+unknowns remain visible. A seven-year research horizon is an annotation, not an organ
+production estimate. No complete-organ, coupled growth/transport or cancer model was added.
+Implementation permission does not authorize commits or publication. See RELEASE.md and
+the current VERIFICATION.md evidence before considering a candidate release.
+
+## Local 0.8.0-dev follow-on — not released
+
+Owner-authorized actionable published-method reference recipes, the species-separated
+human/mouse method-evidence comparison, the independent hypothetical time comparison,
+scenario /4 and the original fan-inspired Treedome theme are implemented locally with AI
+assistance. Recipes are cited research descriptions with per-parameter provenance, not
+treatment instructions; adverse mouse evidence ships beside the human benefit claims.
+AGENTS.md was revised by owner instruction on 2026-11-01. No commit, push or publication
+is authorized by implementation; see RELEASE.md.
