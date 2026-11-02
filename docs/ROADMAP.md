@@ -167,3 +167,11 @@ computer and fetching it back), differentiation and the 3D physical setups. The 
 were already tiered in the 0.14 atlas, so this milestone delivered the genome-backup-and-restore
 module: four selectable steps, computed verdicts from four fetched open-access sources, the
 mosaicism no-single-original finding, scenario /11, and the v4-warning honesty fix.
+
+## Local 0.20.0-dev follow-on - the physical setups
+
+The peristaltic perfusion-pump circuit is now a genuine Blender-authored GLB (25 meshes, 2,876
+triangles), exported from the owner's live Blender 5.1.2 with all ten authoring-isolation checks
+passed and the owner's own scene untouched and unsaved. The fifth asset mounts at the procedural
+pump's bench position with the procedural pump as its fallback; the dated evidence file
+pins the run, and the asset tests cover five GLBs. No scenario schema change.

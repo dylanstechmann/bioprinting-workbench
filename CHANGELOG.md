@@ -3,23 +3,17 @@
 Personal hobby and learning project, AI-assisted. Agent-run software/source checks are
 not biological validation or independent scientific review.
 
-## 0.19.0-dev - committed and pushed to main on 2026-11-02
+## 0.20.0-dev - local, uncommitted and unpublished
 
-- The genome-backup-and-restore idea became an interactive module: the owner's wish (record the
-  original genome to disk, bank original cells, fetch the stored DNA periodically to rewrite
-  fast-dividing cells, edit toward differentiation) decomposed into four selectable steps, each
-  with a computed verdict from four freshly fetched open-access sources. Two steps are
-  established practice (digital backup; cell banking via the cord-blood/iPSC literature), two
-  are theory-only (periodic whole-genome write-back; edit-directed differentiation) - anchored
-  to CRISPR-recording reality (bits of cell history into barcodes, not genomes back into
-  chromatin), locus-by-locus editing limits, and the mosaicism fact that there is no single
-  original genome. 14 verbatim quotes with locators and source ids, mirrored in
-  docs/genome-restore-audit.json and tested for equality; zebrafish-source claims carry
-  validator-enforced research-context limitations.
-- Scenario schema /11: learning.genomeRestoreIdea; migrateScenarioV10 with truthful warning; the
-  v3-v9 migrations gained the same defaulting; new fixture scenario-v11.json. Unit tests
-  146 -> 150.
-- Companion doc docs/GENOME_RESTORE.md; ATLAS.md ideas desk now points to the module.
+- The peristaltic perfusion-pump circuit joined the shipped assets as a genuine Blender-authored
+  GLB (25 meshes, 6 materials, 2,876 triangles), authored in the owner's live Blender 5.1.2 via
+  MCP and exported without touching or saving their own open scene. All ten
+  AUTHORING_CHECKS_PASSED checks and the export hashes are recorded in
+  docs/blender-isolation-run-2026-11-02-pump.json; the GLB was transferred over the temporary
+  host listener and verified hash-identical.
+- Fifth manifest entry and equipment spec (perfusion-pump); the GLB mounts at the procedural
+  pump's bench position with the procedural pump as its fallback. No scenario schema change.
+- Tests 150 -> 152; the manifest suite covers five GLBs and a new test pins the pump evidence.
 
 ## 0.19.0-dev - committed and pushed to main on 2026-11-02
 

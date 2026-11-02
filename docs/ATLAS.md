@@ -117,3 +117,11 @@ verdicts here are unchanged and still true: two steps real, two theory, the writ
 The ideas desk above is now an interactive module with fetched evidence behind every verdict:
 see [GENOME_RESTORE.md](GENOME_RESTORE.md) and the genome-restore panel in the app. The prose
 verdicts here are unchanged and still true: two steps real, two theory, the write-path open.
+
+## 0.20 addition
+
+The peristaltic pump and reservoir circuit named in stage 4's equipment line is now a real
+Blender-authored asset (assets/perfusion_pump.glb), the fifth in the manifest, with its own
+dated isolation evidence (docs/blender-isolation-run-2026-11-02-pump.json). The procedural
+pump remains as the loading fallback. This was a genuine live-Blender export via MCP, not
+GLB-binary surgery; the owner's separate open scene was never saved or modified.

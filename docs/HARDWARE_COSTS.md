@@ -86,3 +86,24 @@ directs anything at any person or animal.
 | Motion-platform printer | Creality Ender-3 product page | 200; structured price $976.52, wildly out of band for an Ender-3 and possibly a bundle | Not anchored - ambiguous structured price; the part is also priced as used equipment |
 | Fetal bovine serum 100 mL | Thermo Fisher FBS pages | 200; only 500 mL bottles listed ($1,064 / $906) | Not anchored - the part is 100 mL and no 100 mL list price was fetched; per-fifth arithmetic was not invented |
 | Two open-perfusion-rig lines | GitHub companion repo | 200; repositories carry no list price | Not anchored - no price exists to fetch |
+
+## 0.20 pointer
+
+The peristaltic pump and reservoir now have a genuine Blender-authored 3D counterpart:
+assets/perfusion_pump.glb (fifth manifest entry), with its live-run evidence in
+docs/blender-isolation-run-2026-11-02-pump.json. The illustration is not a vendor CAD model
+and does not change any reference-price entry.
+
+## 0.20 pointer
+
+The peristaltic pump and reservoir now have a genuine Blender-authored 3D counterpart:
+assets/perfusion_pump.glb (fifth manifest entry), with its live-run evidence in
+docs/blender-isolation-run-2026-11-02-pump.json. The illustration is not a vendor CAD model
+and does not change any reference-price entry.
+
+## 0.20 pointer
+
+The peristaltic pump and reservoir now have a genuine Blender-authored 3D counterpart:
+assets/perfusion_pump.glb (fifth manifest entry), with its live-run evidence in
+docs/blender-isolation-run-2026-11-02-pump.json. The illustration is not a vendor CAD model
+and does not change any reference-price entry.

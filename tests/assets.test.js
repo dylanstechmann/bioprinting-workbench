@@ -40,9 +40,9 @@ test('authoring script and loader dependencies are vendored', () => {
     assert.ok(existsSync(new URL(path, import.meta.url)), path);
   }
 });
-test('all four GLBs match manifest, budgets, chunk and accessor bounds', () => {
+test('all five GLBs match manifest, budgets, chunk and accessor bounds', () => {
   const manifest=JSON.parse(readFileSync(new URL('../assets/manifest.json',import.meta.url),'utf8'));
-  assert.equal(manifest.assets.length,4);let total=0;
+  assert.equal(manifest.assets.length,5);let total=0;
   for(const asset of manifest.assets){
     const data=readFileSync(new URL(`../${asset.file}`,import.meta.url));total+=data.length;
     assert.equal(data.length,asset.bytes);assert.ok(data.length<=asset.maxBytes);

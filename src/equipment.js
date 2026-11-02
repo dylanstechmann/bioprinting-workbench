@@ -3,6 +3,7 @@ export const EQUIPMENT_SPECS = [
   ['incubator', 'incubator', 'Incubator_', ['Incubator_Base', 'Incubator_Glass_Door']],
   ['microscope', 'microscope', 'Microscope_', ['Microscope_Base', 'Microscope_Stage']],
   ['perfusion-chamber', 'perfusion_chamber', 'Chamber_', ['Chamber_Base', 'Chamber_Glass_Lid']],
+  ['perfusion-pump', 'perfusion_pump', 'Pump_', ['Pump_Base', 'Pump_Head', 'Pump_Reservoir']],
 ].map(([id, file, nodePrefix, requiredNodes]) => ({ id, url: new URL(`../assets/${file}.glb`, import.meta.url).href, nodePrefix, requiredNodes }));
 
 export function validateEquipmentAsset(root, spec) {

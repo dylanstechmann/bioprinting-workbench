@@ -894,18 +894,36 @@ Actual verification results:
   not run this session and is the planned v0.20 fast-follow for the peristaltic perfusion-pump
   circuit. The shipped bioprinter, incubator, microscope and perfusion-chamber GLBs remain
   pinned by the 2026-11-02 live-run evidence; nothing about them changed here.
-- **Live Pages verification (after commit b532540 was pushed):** fetching
-  https://dylanstechmann.github.io/bioprinting-workbench/ returned the updated page with footer
-  "v0.19.0-dev"; /docs/genome-restore-audit.json served live at HTTP 200 (8,351 bytes);
-  /src/genome-restore.js served live at HTTP 200 (20,223 bytes); /docs/GENOME_RESTORE.md served
-  live with the no-single-original-genome finding. The connected-browser check (local static
-  server) rendered the panel with four step checkboxes and two context quotes, computed the
-  "periodic write-back - verdict: theory only" card on live selection, exported the selection in
-  the scenario JSON, and reported 0 console errors.
-- **3D fast-follow, honestly scoped:** the owner's live Blender 5.1.2 session was verified
-  reachable via MCP for this milestone (their open 79-object IEEE scene, C:/.../field-v3.blend,
-  untouched and not saved), but the full live asset workflow (author script -> push -> fetch to
-  staging -> author in a fresh blend -> export -> transfer -> manifest re-pin -> asset tests) was
-  not run this session and is the planned v0.20 fast-follow for the peristaltic perfusion-pump
-  circuit. The shipped bioprinter, incubator, microscope and perfusion-chamber GLBs remain
-  pinned by the 2026-11-02 live-run evidence; nothing about them changed here.
+## 0.20.0-dev live 3D follow-on (agent-run, November 2, 2026)
+
+The 0.19 fast-follow, executed: the peristaltic perfusion-pump circuit was authored in the
+owner's live Blender 5.1.2 via MCP for Blender (telemetry consent off) and exported as a
+genuine GLB. The owner had unsaved changes in their own IEEE scene (field-v3.blend, 79 objects);
+their scene, selection, active object, mode, dirty flag and filepath were verified unchanged
+before and after, no .blend was saved, the owned authoring scene and all staging were removed.
+All ten AUTHORING_CHECKS_PASSED checks are recorded in
+docs/blender-isolation-run-2026-11-02-pump.json with the export stats and hashes.
+
+- Authoring: assets/author_perfusion_pump.py (commit 51835f8) plus the unchanged
+  authoring_common.py were fetched to tempfile staging from raw.githubusercontent with sha256
+  verification against the workspace copies; stale authoring modules were purged from
+  sys.modules before the run. The pump has a head with three rollers, an eight-segment race
+  loop, a media reservoir with cap and collar, inlet/outlet tubing stubs and a control panel
+  with display - illustrative artwork, arbitrary scene units, not vendor CAD or a flow model.
+- Export: perfusion_pump.glb, 108,588 bytes, sha256
+  63af27c04703529275e7464bf39de5889124578f6bbb78bc115f783b8242fa4a, 25 meshes, 6 materials,
+  2,876 triangles; transferred via the temporary host listener at 192.168.1.71:8765 and
+  verified hash-identical in the container; the listener was shut down and staging deleted.
+- Integration: fifth EQUIPMENT_SPECS row and manifest entry (id perfusion-pump, nodePrefix
+  Pump_, requiredNodes Pump_Base/Pump_Head/Pump_Reservoir); the pump GLB mounts at the
+  procedural pump's bench position [4.8, 0.03, -0.9] and the procedural pump body, rotor and
+  three rollers become the fallback that hides on a successful load. No scenario schema change:
+  the asset touches no learning or analysis state.
+- Tests: 152 passed, 0 failed (up from 150). The generic manifest test now validates five
+  GLBs (hash, chunk structure, accessor bounds, node namespaces, budgets); a new evidence test
+  pins the pump run file and its manifest equality; npm run check and git diff --check clean.
+- Browser check: all five GLBs fetched HTTP 200 including assets/perfusion_pump.glb; the pump
+  renders on the bench in the connected-browser screenshot; 0 console errors; footer
+  v0.20.0-dev.
+- Not performed: any change to the owner's scene or its unsaved work; any new scientific,
+  clinical or species claim; any flow-rate model of the pump.

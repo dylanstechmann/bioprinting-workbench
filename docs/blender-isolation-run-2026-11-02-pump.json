@@ -1,0 +1,70 @@
+{
+  "schema": "bioprinting-workbench/blender-isolation-run/1",
+  "ranAt": "2026-11-02T17:21:39Z",
+  "executedBy": "agent via MCP for Blender (owner-authorized, telemetry consent off)",
+  "blenderVersion": "Blender 5.1.2",
+  "hostContext": {
+    "openSceneFile": "C:/Users/AyeBayBay/Projects/other5/workspace/ieee/ieee/derived/ieee-field-v3/field-v3.blend",
+    "openSceneObjectCount": 79,
+    "note": "The owner had unsaved changes in their own IEEE scene; nothing was saved and nothing in that scene was modified."
+  },
+  "stagingFetch": {
+    "authoring_common.py": {
+      "bytes": 4857,
+      "sha256": "19dab8db0e8e0ff55756f49caed317fe0306cb4f40f699a000e78e206e9d8df6"
+    },
+    "author_perfusion_pump.py": {
+      "bytes": 3163,
+      "sha256": "fd20162a86166e56137d121933dbeaa640fcd4b970a359c4b814596228fe53f9"
+    },
+    "source": "raw.githubusercontent.com/dylanstechmann/bioprinting-workbench/main/assets (commit 51835f8)",
+    "staleModulePurge": [
+      "authoring_common",
+      "author_perfusion_pump"
+    ]
+  },
+  "export": {
+    "asset": "perfusion-pump",
+    "file": "assets/perfusion_pump.glb",
+    "bytes": 108588,
+    "sha256": "63af27c04703529275e7464bf39de5889124578f6bbb78bc115f783b8242fa4a",
+    "meshes": 25,
+    "materials": 6,
+    "triangles": 2876,
+    "blenderBounds": [
+      [
+        -1.0750000476837158,
+        -0.574999988079071,
+        0
+      ],
+      [
+        1.2400000095367432,
+        0.574999988079071,
+        1.1399999856948853
+      ]
+    ],
+    "nodePrefix": "Pump_",
+    "requiredNodes": [
+      "Pump_Base",
+      "Pump_Head",
+      "Pump_Reservoir"
+    ]
+  },
+  "transfer": {
+    "method": "temporary HTTP listener on the Blender host (0.0.0.0:8765), GLB fetched from the container at 192.168.1.71:8765 and sha256-verified identical to the host export",
+    "listenerShutdown": true
+  },
+  "checks": {
+    "ownerFilepathUnchanged": true,
+    "ownerScenesUnchanged": true,
+    "activeSceneUnchanged": true,
+    "activeObjectUnchanged": true,
+    "selectionUnchanged": true,
+    "modeUnchanged": true,
+    "dirtyFlagUnchanged": true,
+    "noBlendSaved": true,
+    "stagingRemoved": true,
+    "ownedSceneRemoved": true
+  },
+  "result": "AUTHORING_CHECKS_PASSED"
+}

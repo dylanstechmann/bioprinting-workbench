@@ -2,6 +2,120 @@
 
 [Overview]
 
+Deliver **v0.20.0-dev "The physical setups"**: author the missing peristaltic perfusion-pump circuit (the fourth physical-setup piece stage 4's equipment line names: "perfusion chamber · reservoir · peristaltic pump · tubing") as a genuine Blender-authored GLB, in the owner's live Blender 5.1.2 via MCP for Blender, with the same provenance discipline as the 2026-11-02 four-asset run: owner-scene fingerprint untouched, fresh owned scene, export without saving any .blend, sha-verified transfer, dated isolation evidence, and a manifest re-pin. Wire the asset into the scene with a procedural fallback, extend the asset/evidence tests, and ship through the full battery with live Pages verification. This is the fast-follow explicitly recorded in the 0.19 milestone.
+
+[Context]
+
+The four shipped GLBs (bioprinter 47 meshes/3,764 tris, incubator 26/2,536, microscope 20/2,288, perfusion-chamber 18/1,656) are pinned by docs/blender-isolation-run-2026-11-02.json; the pump is the missing fifth. authoring_common.py supplies create_owned_scene (refuses foreign scenes; marker asset_owner='bioprinting-workbench'), material(), box(), cylinder(), export_owned_scene (temporary window-scene switch, never saves a .blend). src/equipment.js: EQUIPMENT_SPECS rows [id, file, nodePrefix, requiredNodes] and validateEquipmentAsset (namespace, bounds, required nodes); createEquipmentAssets consumes mounts keyed by id with {parent, fallback}. Scene integration in src/scene.js near the existing chamberMount/chamberFallback. The 3D load diagnostics surface through diagnostics().equipment, so a live check can assert the pump reports glb-loaded. No scenario schema change in this milestone: an asset touches no learning or analysis state; /11 stays.
+
+[Types]
+
+- New manifest entry (assets/manifest.json): id 'perfusion-pump', file 'assets/perfusion_pump.glb', nodePrefix 'Pump_', requiredNodes ['Pump_Base','Pump_Head','Pump_Reservoir'], bytes, sha256, meshes, materials, triangles, blenderBounds [[minx,miny,minz],[maxx,maxy,maxz]] recorded from the live Blender run, maxBytes 358400 (house budget).
+- New equipment spec row in src/equipment.js: ['perfusion-pump', 'perfusion_pump', 'Pump_', ['Pump_Base','Pump_Head','Pump_Reservoir']].
+- New isolation evidence file docs/blender-isolation-run-2026-11-02-pump.json: schema bioprinting-workbench/blender-isolation-run/1, ranAt, executedBy, blenderVersion, hostContext (the open owner scene name/path/object count), sceneFingerprint before/after with assertion equal, staging cleanup, exported file sha256, export stats (meshes/materials/triangles/blenderBounds), transfer method and hash equality, and the AUTHORING_CHECKS_PASSED marker.
+- No TypeScript, no new enums beyond the asset id; no scenario/learning types.
+
+[Files]
+
+New: assets/author_perfusion_pump.py (authoring script in the author_incubator.py style); assets/perfusion_pump.glb (genuine live-Blender export, never a synthetic download or edit); docs/blender-isolation-run-2026-11-02-pump.json (dated evidence).
+Modified: assets/manifest.json (regenerated with the fifth entry); src/equipment.js (fifth EQUIPMENT_SPECS row); src/scene.js (pumpMount + procedural fallback, placement on the bench beside the perfusion chamber, mount passed to createEquipmentAssets); tests/assets.test.js (pump GLB structural test: glTF magic/version/length/chunk, embedded buffers, mesh and material floors); tests/blender-evidence.test.js (pump evidence pin + manifest consistency for the new asset); index.html (footer v0.20.0-dev only; no new panels); package.json (0.20.0-dev); docs/VERIFICATION.md (run details + browser checks + honest scope), docs/ROADMAP.md (0.20 entry), docs/ATLAS.md (3D setup refresh section gains the pump), docs/HARDWARE_COSTS.md (pump line links its 3D counterpart), CHANGELOG.md; implementation_plan.md (this plan; 0.19 archived).
+
+[Functions]
+
+New: build_asset(output_path=None) in assets/author_perfusion_pump.py — creates BioWorkbench_Pump via create_owned_scene, builds the circuit, calls export_owned_scene to perfusion_pump.glb, returns the scene.
+Modified: none in the shared Python helpers (authoring_common.py is reused unchanged and must not drift from its 2026-11-02 hash-verified copy).
+Removed: none.
+
+[Classes]
+
+None (function-based authoring scripts and the existing equipment loader).
+
+[Dependencies]
+
+None. MCP for Blender (live, addon 1.8, Blender 5.1.2) authors and exports; no new npm packages; no runtime network for the app (the GLB is a static asset served by Pages).
+
+[Testing]
+
+- tests/assets.test.js: new test 'perfusion pump GLB is a valid self-contained glTF 2.0 asset' — magic glTF, version 2, length equals file length, chunk JSON, no external buffer URIs, meshes >= 20, materials >= 3; manifest sha256 equals the file hash (existing manifest consistency coverage extended to the pump entry).
+- tests/blender-evidence.test.js: the dated pump evidence file exists and validates (schema, ranAt, blenderVersion, scene-fingerprint equality, AUTHORING_CHECKS_PASSED, exported sha256 equals the manifest entry), and the five-asset manifest matches the equipment spec list exactly.
+- Full battery: node --test tests/*.test.js (150 + new), npm run check, git diff --check, npm run verify:release detached (all-allowed-assets and claims-language checks stay green).
+- Connected-browser check on the local static server: diagnostics().equipment['perfusion-pump'].status === 'glb-loaded' with zero console errors, and the fallback path verified by reading diagnostics after disposing/reloading if feasible.
+- Commit + push + live Pages verification (footer v0.20.0-dev, the new GLB and evidence JSON served HTTP 200) + doc-only record commit.
+
+[Implementation Order]
+
+1. Write assets/author_perfusion_pump.py in the house style (Pump_ prefix; base, head housing, three rollers, race segments, reservoir with cap and label, inlet/outlet tubing stubs, control box with display; ~30 meshes, <3,500 tris, arbitrary illustrative units, no vendor CAD claims).
+2. Commit and push the author script alone so raw.githubusercontent.com serves it (asset-prep commit).
+3. Live MCP run: staging fetch of author_perfusion_pump.py and authoring_common.py from raw.githubusercontent with sha256 comparison against the workspace copies; purge authoring modules from sys.modules; fingerprint the owner's scene (name, filepath, object names, active object, selection, mode) before and after; run the author script in a fresh owned scene; export to the host staging dir; read the GLB stats back through MCP for the evidence file.
+4. Transfer: temporary HTTP listener on the Blender host (0.0.0.0:8765, background thread) serving the staging GLB; fetch it from the container at http://192.168.1.71:8765/perfusion_pump.glb; assert sha256 equality; shut the listener down and delete host staging. If the LAN path is unreachable, stop and record honestly rather than shipping an unverified asset.
+5. Regenerate assets/manifest.json (Node, LF-normalized), write docs/blender-isolation-run-2026-11-02-pump.json from the live-run values.
+6. Wire src/equipment.js and src/scene.js (mount + procedural fallback), extend tests/assets.test.js and tests/blender-evidence.test.js, run the asset suites green.
+7. Docs pass (VERIFICATION, ROADMAP, ATLAS 3D section, HARDWARE_COSTS pointer, CHANGELOG) and footer/package.json to 0.20.0-dev.
+8. Full battery, connected-browser glb-loaded check, commit + push, live Pages verification, doc-only record commit. Report the live-run provenance, the scene diagnostics, and what was not touched (owner scene unsaved; no scenario schema change).
+
+---
+
+# Implementation Plan
+
+[Overview]
+
+Deliver **v0.20.0-dev "The physical setups"**: author the missing peristaltic perfusion-pump circuit (the fourth physical-setup piece stage 4's equipment line names: "perfusion chamber · reservoir · peristaltic pump · tubing") as a genuine Blender-authored GLB, in the owner's live Blender 5.1.2 via MCP for Blender, with the same provenance discipline as the 2026-11-02 four-asset run: owner-scene fingerprint untouched, fresh owned scene, export without saving any .blend, sha-verified transfer, dated isolation evidence, and a manifest re-pin. Wire the asset into the scene with a procedural fallback, extend the asset/evidence tests, and ship through the full battery with live Pages verification. This is the fast-follow explicitly recorded in the 0.19 milestone.
+
+[Context]
+
+The four shipped GLBs (bioprinter 47 meshes/3,764 tris, incubator 26/2,536, microscope 20/2,288, perfusion-chamber 18/1,656) are pinned by docs/blender-isolation-run-2026-11-02.json; the pump is the missing fifth. authoring_common.py supplies create_owned_scene (refuses foreign scenes; marker asset_owner='bioprinting-workbench'), material(), box(), cylinder(), export_owned_scene (temporary window-scene switch, never saves a .blend). src/equipment.js: EQUIPMENT_SPECS rows [id, file, nodePrefix, requiredNodes] and validateEquipmentAsset (namespace, bounds, required nodes); createEquipmentAssets consumes mounts keyed by id with {parent, fallback}. Scene integration in src/scene.js near the existing chamberMount/chamberFallback. The 3D load diagnostics surface through diagnostics().equipment, so a live check can assert the pump reports glb-loaded. No scenario schema change in this milestone: an asset touches no learning or analysis state; /11 stays.
+
+[Types]
+
+- New manifest entry (assets/manifest.json): id 'perfusion-pump', file 'assets/perfusion_pump.glb', nodePrefix 'Pump_', requiredNodes ['Pump_Base','Pump_Head','Pump_Reservoir'], bytes, sha256, meshes, materials, triangles, blenderBounds [[minx,miny,minz],[maxx,maxy,maxz]] recorded from the live Blender run, maxBytes 358400 (house budget).
+- New equipment spec row in src/equipment.js: ['perfusion-pump', 'perfusion_pump', 'Pump_', ['Pump_Base','Pump_Head','Pump_Reservoir']].
+- New isolation evidence file docs/blender-isolation-run-2026-11-02-pump.json: schema bioprinting-workbench/blender-isolation-run/1, ranAt, executedBy, blenderVersion, hostContext (the open owner scene name/path/object count), sceneFingerprint before/after with assertion equal, staging cleanup, exported file sha256, export stats (meshes/materials/triangles/blenderBounds), transfer method and hash equality, and the AUTHORING_CHECKS_PASSED marker.
+- No TypeScript, no new enums beyond the asset id; no scenario/learning types.
+
+[Files]
+
+New: assets/author_perfusion_pump.py (authoring script in the author_incubator.py style); assets/perfusion_pump.glb (genuine live-Blender export, never a synthetic download or edit); docs/blender-isolation-run-2026-11-02-pump.json (dated evidence).
+Modified: assets/manifest.json (regenerated with the fifth entry); src/equipment.js (fifth EQUIPMENT_SPECS row); src/scene.js (pumpMount + procedural fallback, placement on the bench beside the perfusion chamber, mount passed to createEquipmentAssets); tests/assets.test.js (pump GLB structural test: glTF magic/version/length/chunk, embedded buffers, mesh and material floors); tests/blender-evidence.test.js (pump evidence pin + manifest consistency for the new asset); index.html (footer v0.20.0-dev only; no new panels); package.json (0.20.0-dev); docs/VERIFICATION.md (run details + browser checks + honest scope), docs/ROADMAP.md (0.20 entry), docs/ATLAS.md (3D setup refresh section gains the pump), docs/HARDWARE_COSTS.md (pump line links its 3D counterpart), CHANGELOG.md; implementation_plan.md (this plan; 0.19 archived).
+
+[Functions]
+
+New: build_asset(output_path=None) in assets/author_perfusion_pump.py — creates BioWorkbench_Pump via create_owned_scene, builds the circuit, calls export_owned_scene to perfusion_pump.glb, returns the scene.
+Modified: none in the shared Python helpers (authoring_common.py is reused unchanged and must not drift from its 2026-11-02 hash-verified copy).
+Removed: none.
+
+[Classes]
+
+None (function-based authoring scripts and the existing equipment loader).
+
+[Dependencies]
+
+None. MCP for Blender (live, addon 1.8, Blender 5.1.2) authors and exports; no new npm packages; no runtime network for the app (the GLB is a static asset served by Pages).
+
+[Testing]
+
+- tests/assets.test.js: new test 'perfusion pump GLB is a valid self-contained glTF 2.0 asset' — magic glTF, version 2, length equals file length, chunk JSON, no external buffer URIs, meshes >= 20, materials >= 3; manifest sha256 equals the file hash (existing manifest consistency coverage extended to the pump entry).
+- tests/blender-evidence.test.js: the dated pump evidence file exists and validates (schema, ranAt, blenderVersion, scene-fingerprint equality, AUTHORING_CHECKS_PASSED, exported sha256 equals the manifest entry), and the five-asset manifest matches the equipment spec list exactly.
+- Full battery: node --test tests/*.test.js (150 + new), npm run check, git diff --check, npm run verify:release detached (all-allowed-assets and claims-language checks stay green).
+- Connected-browser check on the local static server: diagnostics().equipment['perfusion-pump'].status === 'glb-loaded' with zero console errors, and the fallback path verified by reading diagnostics after disposing/reloading if feasible.
+- Commit + push + live Pages verification (footer v0.20.0-dev, the new GLB and evidence JSON served HTTP 200) + doc-only record commit.
+
+[Implementation Order]
+
+1. Write assets/author_perfusion_pump.py in the house style (Pump_ prefix; base, head housing, three rollers, race segments, reservoir with cap and label, inlet/outlet tubing stubs, control box with display; ~30 meshes, <3,500 tris, arbitrary illustrative units, no vendor CAD claims).
+2. Commit and push the author script alone so raw.githubusercontent.com serves it (asset-prep commit).
+3. Live MCP run: staging fetch of author_perfusion_pump.py and authoring_common.py from raw.githubusercontent with sha256 comparison against the workspace copies; purge authoring modules from sys.modules; fingerprint the owner's scene (name, filepath, object names, active object, selection, mode) before and after; run the author script in a fresh owned scene; export to the host staging dir; read the GLB stats back through MCP for the evidence file.
+4. Transfer: temporary HTTP listener on the Blender host (0.0.0.0:8765, background thread) serving the staging GLB; fetch it from the container at http://192.168.1.71:8765/perfusion_pump.glb; assert sha256 equality; shut the listener down and delete host staging. If the LAN path is unreachable, stop and record honestly rather than shipping an unverified asset.
+5. Regenerate assets/manifest.json (Node, LF-normalized), write docs/blender-isolation-run-2026-11-02-pump.json from the live-run values.
+6. Wire src/equipment.js and src/scene.js (mount + procedural fallback), extend tests/assets.test.js and tests/blender-evidence.test.js, run the asset suites green.
+7. Docs pass (VERIFICATION, ROADMAP, ATLAS 3D section, HARDWARE_COSTS pointer, CHANGELOG) and footer/package.json to 0.20.0-dev.
+8. Full battery, connected-browser glb-loaded check, commit + push, live Pages verification, doc-only record commit. Report the live-run provenance, the scene diagnostics, and what was not touched (owner scene unsaved; no scenario schema change).
+
+---
+
+# Implementation Plan
+
+[Overview]
+
 Deliver **v0.19.0-dev "The write path"**: the owner's genome-backup-and-restore idea (sequencing the original genome to disk, keeping organic reserves, periodically writing it back into fast-dividing cells, editing for differentiation) gets promoted from the atlas prose desk to a full interactive evidence module with fresh verbatim-quoted open-access sources on what is real (digital backup, cell banking, CRISPR event recording) and what is theory (whole-genome write-back, edit-directed differentiation, and the mosaicism fact that there is no single "original" genome to restore) — plus a genuine live-Blender 3D update: a new peristaltic perfusion-pump asset authored in the owner's Blender 5.1.2 via MCP, exported as a real GLB, manifest-pinned with dated isolation evidence, and wired into the scene with a procedural fallback.
 
 [Context]

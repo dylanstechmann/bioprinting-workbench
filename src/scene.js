@@ -142,9 +142,12 @@ export function createLab(canvas) {
   label('ENCLOSED BIOPRINTER', [.1, .03, 2.05], 2.6);
   const staticPrinterParts = printer.children.filter(o => o !== head && !o.isSprite);
   // Perfusion circuit: closed geometric tubing loop, not a fluid solver.
+  const pumpStart = new Set(scene.children);
   box([1.45, .65, 1.3], [4.8, .3, -.9], white, scene, .06);
   const rotor = cyl(.43, .12, [4.8, .7, -.9], dark);
   for (let i = 0; i < 3; i++) { const a = i * Math.PI * 2 / 3; cyl(.09, .07, [4.8 + Math.cos(a) * .28, .79, -.9 + Math.sin(a) * .28], metal); }
+  const pumpFallback = scene.children.filter(o => !pumpStart.has(o));
+  const pumpMount = new THREE.Group(); pumpMount.position.set(4.8, .03, -.9); scene.add(pumpMount);
   label('PERISTALTIC PUMP', [4.8, .22, .0], 1.75);
   cyl(.48, 1.25, [6.6, .65, -1.9], glass); cyl(.46, .7, [6.6, .4, -1.9], pink); cyl(.49, .12, [6.6, 1.32, -1.9], teal);
   label('RESERVOIR', [6.6, 1.7, -1.9], 1.4);
@@ -162,6 +165,7 @@ export function createLab(canvas) {
     incubator: { parent: incubator, fallback: incubatorFallback },
     microscope: { parent: microscopeMount, fallback: microscopeFallback },
     'perfusion-chamber': { parent: chamberMount, fallback: chamberFallback },
+    'perfusion-pump': { parent: pumpMount, fallback: pumpFallback },
   }, { load: url => loader.loadAsync(url) });
   let flowResult = null;
   // Tissue model re-parented by stage. Cell coordinates have a fixed seed.

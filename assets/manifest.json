@@ -104,12 +104,40 @@
         [
           -1.2719999551773071,
           -1.149999976158142,
-          0.0
+          0
         ],
         [
           1.2719999551773071,
           1.149999976158142,
           0.9399999976158142
+        ]
+      ],
+      "maxBytes": 358400
+    },
+    {
+      "id": "perfusion-pump",
+      "file": "assets/perfusion_pump.glb",
+      "nodePrefix": "Pump_",
+      "requiredNodes": [
+        "Pump_Base",
+        "Pump_Head",
+        "Pump_Reservoir"
+      ],
+      "bytes": 108588,
+      "sha256": "63af27c04703529275e7464bf39de5889124578f6bbb78bc115f783b8242fa4a",
+      "meshes": 25,
+      "materials": 6,
+      "triangles": 2876,
+      "blenderBounds": [
+        [
+          -1.0750000476837158,
+          -0.574999988079071,
+          0
+        ],
+        [
+          1.2400000095367432,
+          0.574999988079071,
+          1.1399999856948853
         ]
       ],
       "maxBytes": 358400
