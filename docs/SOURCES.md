@@ -175,3 +175,17 @@ recorded in the 0.14 tissue-evidence table's companion source (Gundersen 2010, P
 | In-situ bioprinting design-rule framework (2026) | 10.1177/08853282261503314; PMID 42956823 | Point-of-care design rules mini-review | Bedside-printed human graft result |
 | PEG-heparin-laminin GDNF gradient conduits (2015) | 10.1016/j.biomaterials.2015.08.054; PMID 26352518 | Reversible growth-factor gradients in synthetic nerve conduits | Restored human nerve function |
 | 4D shape-morphing via vat photopolymerization (2026) | 10.3390/gels12050382; PMID 42196067 | Proof-of-concept programmed morphing in GelMA | Tissue-level or in-vivo application |
+
+## 0.16.0-dev price-anchor ledger (agent-run, November 2, 2026)
+
+Three vendor list prices fetched once and shipped as static values; the app performs no network
+calls. Extraction required JSON-LD, og:price and itemprop agreement where available. All other
+attempts (Sigma-Aldrich and Fisher 403; Creality ambiguous; wrong-product Adafruit candidate;
+GitHub no list price; FBS size mismatch) are recorded in docs/HARDWARE_COSTS.md and stay
+authored estimates.
+
+| Source | Identifier | Supported scope | Not inferred |
+| --- | --- | --- | --- |
+| Adafruit product 324 (NEMA-17 stepper) | https://www.adafruit.com/product/324, fetched 2026-11-02 | Unit list price $14.00 | Any current price, any three-pack listing, or a purchase recommendation |
+| Adafruit product 352 (12V 5A supply) | https://www.adafruit.com/product/352, fetched 2026-11-02 | List price $24.95 | Any current price or purchase recommendation |
+| Thermo Fisher 10569010 (Gibco DMEM, GlutaMAX, 500 mL) | https://www.thermofisher.com/order/catalog/product/10569010, fetched 2026-11-02 | List price $27.41 | Any current price, suitability for any cell line, or purchase recommendation |

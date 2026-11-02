@@ -4,12 +4,12 @@ Owner-authorized speculative teaching content for an AI-assisted personal learni
 project (2026-11-02: "Go through the parts list for the bioprinting and the cost for each
 and make visualizations that will display in a browser? The parts list and prices are for
 reference … figuring stuff out on the computer prior to in the physical in which more is
-at stake"). **Every price below is an authored indicative estimate** — not a quote, not
-current, and subject to change without notice. Public vendor pages (Adafruit, Creality,
-Fisher, Sigma-Aldrich) were attempted for price anchoring on 2026-11-02 and could not be
-fetched from this environment, so no price here claims to be what any page shows today;
-the validator keeps a `fetched-list-price` path for future anchored numbers, and none are
-present. No purchase is recommended. The interactive version is the workbench's
+at stake"). **Prices below are either fetched vendor list prices (with fetch dates) or authored
+indicative estimates** — not a quote, not a promise of current pricing, and subject to change
+without notice. A second anchoring pass on 2026-11-02 (vendor pages became fetchable from this
+environment) anchored three parts through the validator's `fetched-list-price` path; the
+remaining nineteen stay authored estimates, each for a recorded reason (see the fetch-attempts
+section at the end). No purchase is recommended. The interactive version is the workbench's
 *Reference hardware costs* panel (`src/hardware-costs.js` + the SVG chart in
 `src/hardware-costs-ui.js`); the printed syringe carriage is the companion project
 [open-perfusion-rig](https://github.com/dylanstechmann/open-perfusion-rig), whose own
@@ -55,11 +55,11 @@ reuse is a contamination decision, not a saving.
 
 ## Two honest ways into the hobby
 
-- **Acellular practice path (no cells): about $725 once + $185/month.** Printing practice
+- **Acellular practice path (no cells): about $696.95 once + $185/month.** Printing practice
   hydrogels, learning extrusion, checking mass and pH. This is the path the workbench
   itself prepares you for, and it needs none of the sterile-culture category, medium or
   serum.
-- **Cell-culture-capable path: about $5,615 once + $525/month.** Everything above, plus
+- **Cell-culture-capable path: about $5,586.95 once + $462.41/month.** Everything above, plus
   the infrastructure cells require. Roughly 87% of the one-time money is sterile-culture
   infrastructure alone — not the printer, not the toolhead.
 
@@ -72,3 +72,17 @@ outcome; the research-program module's evidence floor still applies, a thousand 
 of stepper motors adds zero to it, and the free simulation is the honest place to make
 the beginner's mistakes. No amount of parts makes any of this medicine, and nothing here
 directs anything at any person or animal.
+
+## Fetch attempts (2026-11-02, second anchoring pass)
+
+| Part | Vendor page | Result | Outcome |
+| --- | --- | --- | --- |
+| NEMA17 steppers x3 | Adafruit product 324 | 200; unit list price $14.00 (JSON-LD, meta and itemprop agree) | Anchored at 3 x $14.00 = $42; the multiplication is stated in the note |
+| 12 V enclosed supply | Adafruit product 352 | 200; list price $24.95 (triple-agreeing extraction) | Anchored at $24.95 |
+| Basal medium 500 mL | Thermo Fisher 10569010 (Gibco DMEM, GlutaMAX, 500 mL) | 200; list price $27.41 | Anchored at $27.41 |
+| GRBL/RAMPS-class controller | Adafruit product 5836 | 200; page is a different product (an ADC board) | Not anchored - no clean product match found |
+| Sodium alginate / gelatin / calcium chloride | Sigma-Aldrich product pages | 403 Access Denied | Not anchored - vendor blocked this environment |
+| Nine Fisher-sourced parts | fishersci.com | 403 on every attempt | Not anchored - vendor blocked this environment |
+| Motion-platform printer | Creality Ender-3 product page | 200; structured price $976.52, wildly out of band for an Ender-3 and possibly a bundle | Not anchored - ambiguous structured price; the part is also priced as used equipment |
+| Fetal bovine serum 100 mL | Thermo Fisher FBS pages | 200; only 500 mL bottles listed ($1,064 / $906) | Not anchored - the part is 100 mL and no 100 mL list price was fetched; per-fifth arithmetic was not invented |
+| Two open-perfusion-rig lines | GitHub companion repo | 200; repositories carry no list price | Not anchored - no price exists to fetch |

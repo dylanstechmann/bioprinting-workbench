@@ -3,7 +3,25 @@
 Personal hobby and learning project, AI-assisted. Agent-run software/source checks are
 not biological validation or independent scientific review.
 
-## 0.15.0-dev — local, uncommitted and unpublished
+## 0.16.0-dev — local, uncommitted and unpublished
+
+- Add the in-repo claims-language scanner (scripts/scan-claims.mjs): five negation-aware pattern
+  families over all authored src text, wired into verify:release as a real PASS check
+  (claims-language scan) with unit tests; the external scanner review stays not-run, honestly
+  distinguished.
+- Add authoring-isolation static checks (scripts/check-authoring-isolation.mjs): 34 textual
+  invariants over authoring_common.py and the four author scripts, wired as a second PASS check;
+  the live-in-Blender isolation test stays not-run.
+- Anchor three hardware prices through the reserved fetched-list-price path (vendor pages became
+  fetchable): NEMA17 steppers $42 (3 x fetched $14.00 unit price, multiplication stated), 12 V
+  supply $24.95, basal medium 500 mL $27.41; reference totals move to $5,586.95 once +
+  $462.41/month cell-capable and $696.95 once + $185/month acellular; every other attempt
+  (Sigma-Aldrich/Fisher 403, Creality ambiguous, wrong-product candidate, FBS size mismatch,
+  GitHub no-list-price) is recorded in HARDWARE_COSTS.md and stays an authored estimate.
+- Price validator now allows cent precision (sub-cent values rejected); part factory carries
+  basis and fetch-date parameters.
+
+## 0.15.0-dev — committed and pushed to main on 2026-11-02
 
 - Add the scaffold-methods survey: nine methods across established, experimental and theoretical
 tiers (extrusion, FRESH support baths, sacrificial vascular writing, DLP, volumetric printing,

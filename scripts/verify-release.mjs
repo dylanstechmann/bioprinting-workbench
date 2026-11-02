@@ -18,6 +18,8 @@ import { getTissueEvidenceCatalog, validateTissueEvidenceCatalog } from '../src/
 import { getTissueTargets, validateTissueTargets } from '../src/tissue-atlas.js';
 import { getScaffoldEvidenceCatalog, validateScaffoldEvidenceCatalog } from '../src/scaffold-evidence.js';
 import { getScaffoldMethods, validateScaffoldMethods } from '../src/scaffold-methods.js';
+import { scanClaims } from './scan-claims.mjs';
+import { checkAuthoringIsolation } from './check-authoring-isolation.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 /** An allowlisted candidate inventory, NOT an instruction to publish the repo root. */
@@ -63,8 +65,10 @@ export function verifyRelease(directory = root, { targetVersion = JSON.parse(rea
   });
   check('whitespace', 'git diff --check', () => execFileSync('git',['diff','--check'],{cwd:directory,stdio:'pipe'}));
   for (const [name, command] of [['unit tests','npm test'],['syntax','npm run check']]) check(name,command,()=>execFileSync('npm',command.split(' ').slice(1),{cwd:directory,stdio:'pipe',timeout:120000}));
-  for (const name of ['browser checks','citation claim-support review','claims scanner review','Blender isolation checks','owner release approval','deployment']) checks.push({name,status:'not-run',command:null,evidencePath:null,notes:'Separate evidence/authorization required; this script neither claims nor performs this check.'});
-  let inventory=[];check('allowlisted inventory','collectReleaseInventory',()=>{inventory=collectReleaseInventory(directory);});
+  for (const name of ['browser checks','citation claim-support review','external claims scanner review','live Blender isolation checks','owner release approval','deployment']) checks.push({name,status:'not-run',command:null,evidencePath:null,notes:'Separate evidence/authorization required; this script neither claims nor performs this check. The in-repo claims-language scan and authoring-isolation static checks above are scripted companions, not substitutes for these external/live reviews.'});
+  let inventory=[];  check('claims-language scan', 'scanClaims', () => { const r = scanClaims(directory); if (r.findings.length) throw Error('Claims scan findings: ' + JSON.stringify(r.findings)); });
+  check('authoring-isolation static checks', 'checkAuthoringIsolation', () => { const r = checkAuthoringIsolation(directory); if (r.failures.length) throw Error('Authoring isolation failures: ' + JSON.stringify(r.failures)); });
+  check('allowlisted inventory','collectReleaseInventory',()=>{inventory=collectReleaseInventory(directory);});
   return { schema:'bioprinting-workbench/release-verification/1',generatedAt:new Date().toISOString(),targetVersion,candidateCommit:null,checks,inventory,knownLimitations:['Local uncommitted candidate, not a manufacturing or biological release.','Prior claims scan has a reviewed HIGH footer-disclosure false positive; not a clean scan.','Pages main/root pushes may publish automatically; pushing and publication remain unauthorized.'] };
 }
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

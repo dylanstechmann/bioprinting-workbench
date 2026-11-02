@@ -31,8 +31,8 @@ test('hardware cost UI renders the reference list, chart and live budget updates
   assert.equal($('hardware-cost-parts').children.length, 22);
   const svg = $('hardware-cost-chart');
   assert.ok(svg.children.length > 10);
-  assert.ok($('hardware-cost-result').textContent.includes('One-time: $5615'));
-  assert.ok($('hardware-cost-result').textContent.includes('about $525 per month'));
+  assert.ok($('hardware-cost-result').textContent.includes('One-time: $5586.95'));
+  assert.ok($('hardware-cost-result').textContent.includes('about $462.41 per month'));
   assert.ok($('hardware-cost-result').textContent.includes('never summed'));
   assert.ok($('hardware-cost-result').textContent.includes('Sterile-culture infrastructure $4890'));
   assert.ok(!$('hardware-cost-result').textContent.includes('grandTotal'));
@@ -43,7 +43,7 @@ test('hardware cost UI renders the reference list, chart and live budget updates
   assert.ok($('hardware-cost-status').textContent.includes('not a quote'));
   const accepted = validateLearningState({ ...state, hardwareBudget: patch.hardwareBudget });
   ui.render(accepted);
-  assert.ok($('hardware-cost-result').textContent.includes('One-time: $3715'));
+  assert.ok($('hardware-cost-result').textContent.includes('One-time: $3686.95'));
   const allOff = patch.hardwareBudget.includedPartIds.length;
   assert.ok(!JSON.stringify(accepted).includes('oneTimeTotalUSD'));
   ui.dispose();

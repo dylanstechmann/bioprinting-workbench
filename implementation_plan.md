@@ -2,6 +2,80 @@
 
 [Overview]
 
+Deliver **v0.16.0-dev "Anchors and honesty machinery"**: turn two long-standing compensations into first-class scripted checks, and — now that vendor pages are fetchable from this environment for the first time — anchor every hardware price that can be honestly fetched through the validator's reserved `fetched-list-price` path, recompute the reference totals, and update every string that pins them. Workstream 1: an in-repo **claims-language scanner** (Node, no python needed) that mechanically scans authored `src/` text for overclaim, procedure-imperative and human-outcome language, wired into `verify:release` as a real PASS check with unit tests (the external historical scanner stays honestly not-run; this adds a runnable sibling, not a fake of it). Workstream 2: **authoring-isolation static checks** (Node) verifying the five Blender authoring scripts keep their safety invariants textually, also wired as a PASS check — while the live-in-Blender isolation row stays not-run, honestly distinguished. Workstream 3: **price anchoring** — fetch specific product pages (adafruit product pages parse cleanly at HTTP 200; sigmaaldrich, creality and thermofisher reachable; fishersci returns 403 so its nine parts stay authored-estimates; the two open-perfusion-rig GitHub lines carry no list price and stay estimates), parse list prices conservatively, switch clean matches to `fetched-list-price` with fetch dates, recompute one-time/recurring totals, and update the four places the old totals are pinned. No scenario-schema change; no learning-state change.
+
+[Types]
+
+**Price-basis record extension** (`src/hardware-costs.js`): the `part()` factory gains two optional trailing parameters so anchored parts can carry `priceBasis: 'fetched-list-price'` and `fetchDate: 'YYYY-MM-DD'` (validator already enforces: fetched prices require a fetch date; estimates must keep `fetchDate: null`). The catalog notice text changes from "public vendor pages could not be fetched" to a truthful mixed-basis statement naming which vendors were anchored, which were blocked (fishersci 403) and which carry no list price (GitHub companion lines). Expected anchored candidates (fetch-and-verify, not assumed): the three adafruit parts (NEMA17 stepper, GRBL-class controller, 12 V enclosed PSU), sodium alginate and possibly gelatin/calcium-chloride at sigmaaldrich, the motion-platform printer at creality, and the two thermofisher recurring lines (medium, FBS) if their product pages parse. Every fetch attempt is logged; only pages returning an unambiguous, single-product list price are anchored; ambiguous pages stay estimates with the attempt recorded.
+
+**Claims-scan finding type** (`scripts/scan-claims.mjs`): `{ finding: string, file: string, line: number, pattern: string, severity: 'high'|'medium' }`. Pattern families (all case-insensitive, word-boundary aware, applied to `src/*.js` string literals only — the scanner strips code structure conservatively by scanning raw file text with documented false-positive handling): outcome-assertion (`will (cure|regenerate|restore|heal)`, `guarantees? (repair|function|safety)`, `clinically proven`), imperative-procedure (`you (should|must) (inject|take|administer|implant)`, direct second-person dosing), and human-outcome upgrade (`safe (for|in) humans?`, `established (for|in) humans?` without an adjacent negation such as `not`/`no`/`un`). Findings on lines within an explicit `ALLOWLIST` (documented, e.g. disclosure footers that quote the boundary itself) are recorded as `reviewed` and do not fail the check. The check fails on any unreviewed finding.
+
+**Authoring-isolation invariant type** (`scripts/check-authoring-isolation.mjs`): a list of textual invariants over `assets/authoring_common.py` and the four `assets/author_*.py` files — each imports `authoring_common`; each calls `create_owned_scene` and `export_owned_scene`; no author file references `bpy.data.scenes.remove`, `bpy.ops.wm.save`, `.blend` writes or `os.remove`; scene removal and refusal logic live only in `authoring_common.py`; every `box(`/`cylinder(` name literal in author files starts with the asset's required node prefix (`Printer_`, `Incubator_`, `Microscope_`, `Chamber_`); the ownership marker constant (`OWNER = 'bioprinting-workbench'`) is present in `authoring_common.py`.
+
+[Files]
+
+New:
+
+- `scripts/scan-claims.mjs` — `scanClaims(directory)` → `{ findings, reviewed, summary }`; also a `main` that prints findings and exits non-zero on unreviewed findings.
+- `scripts/check-authoring-isolation.mjs` — `checkAuthoringIsolation(directory)` → invariant results list; throws on any violated invariant.
+- `tests/scan-claims.test.js` — synthetic positive/negative samples (a temp fixture string set exercised through the pattern functions), the documented-allowlist behavior, and an assertion that the real `src/` scan returns zero unreviewed findings.
+- `tests/authoring-isolation.test.js` — asserts the real asset scripts satisfy every invariant, and that the checker rejects deliberately broken samples.
+
+Modified:
+
+- `src/hardware-costs.js` — factory gains `priceBasis`/`fetchDate` parameters; anchored parts switch basis with product-page `sourceUrl` and `fetchDate: '2026-11-02'`; catalog notices rewritten truthfully (mixed bases, blocked vendors, no-price sources).
+- `scripts/verify-release.mjs` — two new checks: `claims-language scan` (runs `scanClaims`, PASS when zero unreviewed findings) and `authoring-isolation static checks` (runs `checkAuthoringIsolation`); the `not-run` list drops none (the live Blender isolation row and the external claims-scanner review row stay not-run with sharpened notes distinguishing the new in-repo static scans from the external/live checks they complement).
+- `tests/hardware-costs.test.js` — totals re-pinned to the post-anchoring values; new assertions: at least one part carries `fetched-list-price` with a valid fetch date; every fishersci-sourced part still carries `authored-estimate` with `fetchDate: null`; fetched and estimate parts never mix basis rules.
+- `index.html` — hardware panel intro rewritten (anchored vs estimated wording, new totals); footer `v0.16.0-dev`.
+- `package.json` — `0.16.0-dev`.
+- `docs/HARDWARE_COSTS.md` — per-part table gains basis and fetch-date columns; a new "Fetch attempts (2026-11-02)" section records every vendor attempt: anchored, blocked (fishersci 403), or no-list-price (GitHub); summary totals updated.
+- `docs/SOURCES.md` — 0.16 ledger rows for each anchored price (URL + date + what the page showed).
+- `CHANGELOG.md`, `docs/ROADMAP.md`, `docs/VERIFICATION.md` — 0.16 sections; VERIFICATION records the new scripted checks and the first anchored prices.
+- `implementation_plan.md` — this plan; the 0.15 plan archived verbatim below the divider.
+
+[Functions]
+
+New: `scanClaims(directory)` (scripts/scan-claims.mjs), `checkAuthoringIsolation(directory)` (scripts/check-authoring-isolation.mjs).
+
+Modified: `part(...)` (src/hardware-costs.js — two optional trailing parameters, no call-site breakage for estimate parts); `verifyRelease` (scripts/verify-release.mjs — two check rows added ahead of the not-run loop).
+
+[Classes]
+
+None — the scanner and isolation checker are function modules returning plain data, matching house convention.
+
+[Dependencies]
+
+None. All price fetches happen once, agent-side, at plan-execution time (2026-11-02) and ship as static strings with dates — identical to the evidence-catalog pattern; the app itself still performs no network calls. The fishersci 403 is recorded, not retried indefinitely.
+
+[Testing]
+
+- `tests/scan-claims.test.js`: (a) pattern functions flag synthetic overclaims ("will regenerate tissue", "you must inject", "safe in humans") and reject honest negatives ("no reviewed method is safe in humans", "not established in humans"); (b) allowlisted disclosure text is recorded as reviewed, not a failure; (c) the live scan over the real `src/` returns zero unreviewed findings (the catalogs' honesty language passes by design — negation-aware patterns are required for this to hold).
+- `tests/authoring-isolation.test.js`: real assets pass all invariants; mutated samples (an author script that calls `bpy.data.scenes.remove`, one missing the `authoring_common` import, one with an unprefixed node name) are rejected by the checker.
+- `tests/hardware-costs.test.js`: re-pinned totals (cell-capable and acellular, one-time and monthly — exact values depend on which fetches anchor cleanly and are computed during implementation); basis assertions as above; chart/UI suite re-run because `hardware-costs-ui.test.js` may reference part counts (not prices — verify).
+- Full suite + `npm run check` + `git diff --check` + `verify:release` (two new PASS rows) + connected-browser check (footer v0.16.0-dev, panel shows anchored/estimated wording, totals match, 0 console errors).
+
+[Implementation Order]
+
+1. Write `scripts/scan-claims.mjs` + `tests/scan-claims.test.js`; run; iterate patterns until the real-src scan is clean.
+2. Write `scripts/check-authoring-isolation.mjs` + `tests/authoring-isolation.test.js`; run.
+3. Wire both into `scripts/verify-release.mjs` with sharpened not-run notes; run verify:release detached.
+4. Price-anchoring fetch pass: fetch candidate product pages, parse conservatively, log every attempt to /tmp for the docs table; decide the anchored set.
+5. Extend `src/hardware-costs.js` (factory + anchored parts + notices); recompute totals; update `tests/hardware-costs.test.js` and run the hardware suites.
+6. Update `index.html` panel + footer, `package.json`.
+7. Docs: HARDWARE_COSTS.md (basis columns + attempts section), SOURCES 0.16 rows, CHANGELOG, ROADMAP, VERIFICATION.
+8. Full verification battery; connected-browser check.
+9. Commit, push, verify live Pages (footer v0.16.0-dev, updated panel text and served docs), doc-only live-verification commit, push.
+
+---
+
+# Archived plans
+
+## Archived 0.15.0-dev plan — implemented, committed 3633235 + 8b45306 and pushed to main on 2026-11-02; preserved verbatim below
+
+# Implementation Plan
+
+[Overview]
+
 Close the honest gaps in v0.14 with **v0.15.0-dev**: a **scaffold-methods survey** (the "various established/experimental/theoretical methods… scaffolding… vascularization… biochemical" ask the original prompt named and v0.14 under-covered), a second **ideas-desk entry** (myonuclear "muscle memory", anchored to the 2010 PNAS overload-myonuclei study), a **machine-checked snapshot** of the sibling base-editing-evidence catalog replacing prose-only citation of that repo, **finishing the 3D plural** by refreshing the remaining three GLBs (incubator, perfusion chamber, microscope) with the same Node-surgery pattern proven on the bioprinter, and a **reciprocal cross-reference commit** into the one sibling repo whose tree is clean (regen-workbench). Companion-repo handling is decided by investigation, not preference: anagen and base-editing-evidence both carry **uncommitted prior work** (`M docs/atlas.js`, `M ABE8E_Y149V_REVIEW.md`) and this container cannot run base-editing-evidence's packaged provenance tools (python stdlib broken, no workspace-control), so those repos are reported-not-modified — the snapshot pins their committed state instead (studies.json sha256 50893e27d59cab60ddc23e5a7f89ef6d6fa5bb851bd55e49ededfe3fbdbc69d at commit 4d49f75, data file itself clean).
 
 [Types]

@@ -118,7 +118,7 @@ theory steps, companion repos cited read-only), and the bioprinter GLB syringe-t
 refresh. No clinical readiness claim, no human-outcome inference, no procedure; see
 docs/ATLAS.md.
 
-## Local 0.15.0-dev follow-on — owner-authorized speculative teaching content
+## Local 0.15.0-dev follow-on — pushed to main on 2026-11-02 (no tagged version)
 
 Owner follow-up (2026-11-02): "Do you think you could have done more... could you have made more use
 of my other projects/repos and maybe even have updated them some as well?" Delivered as the honest
@@ -126,3 +126,11 @@ gap-closing milestone: the scaffold-methods survey (the methods landscape the or
 for), the myonuclear-memory ideas entry, the machine-checked base-editing-evidence snapshot, the
 remaining three GLB refreshes, and a reciprocal cross-reference into regen-workbench. anagen and
 base-editing-evidence carry uncommitted prior work and were reported, not modified.
+
+## Local 0.16.0-dev follow-on — owner-authorized speculative teaching content
+
+Owner instruction (2026-11-02): "Plan... then act on it." The repo's own standing limitations chose
+the milestone: the claims-language scanner and authoring-isolation static checks become runnable
+scripted PASS checks in verify:release, and the first successful vendor-fetch window anchors three
+hardware prices through the reserved fetched-list-price path with every blocked or ambiguous
+attempt recorded. No scenario-schema change; no learning-state change.

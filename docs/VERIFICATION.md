@@ -702,3 +702,44 @@ Actual verification results:
   served (HTTP 200) with the manifest hashes verified in the release contract. The regen-workbench
   companion cross-reference was committed separately as e650b99 and pushed to its own main
   (8cca45b..e650b99); its untracked data directory was left untouched.
+
+## 0.16.0-dev local follow-on (agent-run, November 2, 2026)
+
+Owner instruction: "Plan... then act on it." The repo's own standing limitations chose the
+milestone: two compensating checks became runnable scripted PASS checks, and the first
+successful vendor-fetch window anchored three hardware prices through the validator's reserved
+fetched-list-price path.
+
+Actual verification results:
+
+- **Unit tests:** node --test tests/*.test.js — **136 passed, 0 failed** (up from 132; +2
+  claims-scanner, +2 authoring-isolation; hardware suites re-pinned for anchored prices).
+- **Syntax:** npm run check — 93 project modules; git diff --check clean.
+- **Release contract:** npm run verify:release — all PASS including the two new scripted checks
+  (claims-language scan, authoring-isolation static checks); the not-run rows are honestly
+  renamed (external claims scanner review, live Blender isolation checks) with notes stating
+  the new checks are scripted companions, not substitutes; allowlisted inventory 100 files.
+- **Claims-language scan:** five negation-aware pattern families over 44 authored source files
+  returned zero unreviewed findings; synthetic overclaims flag and honest negations pass in
+  unit tests.
+- **Authoring-isolation static checks:** 34 textual invariants across authoring_common.py and
+  the four author scripts, zero failures.
+- **Price anchoring (fetched once on 2026-11-02, shipped as static values with dates; the app
+  performs no network calls):** NEMA17 steppers anchored at 3 x $14.00 (Adafruit product 324;
+  the multiplication is stated in the part note), 12 V supply at $24.95 (Adafruit product 352),
+  basal medium 500 mL at $27.41 (Thermo Fisher 10569010, DMEM GlutaMAX, size confirmed in the
+  page title). Reference totals move to $5,586.95 once + $462.41/month cell-capable and
+  $696.95 once + $185/month acellular. Not anchored, with reasons recorded in HARDWARE_COSTS.md:
+  Sigma-Aldrich and Fisher returned 403; the Creality structured price was ambiguous ($976.52,
+  out of band); the Adafruit controller candidate was a different product; FBS pages listed
+  only 500 mL bottles (no 100 mL list price — per-fifth arithmetic was not invented); the two
+  GitHub companion lines carry no list price.
+- **Browser (connected Playwright at 127.0.0.1:8096):** footer v0.16.0-dev; the hardware panel
+  renders the anchored/estimated wording and new totals; live result reads "One-time: $5586.95.
+  Recurring: about $462.41 per month"; unchecking the used CO2 incubator live-recomputed to
+  $3086.95 (5586.95 - 2500); 0 console errors.
+- **Claims scanner (external):** remains not-run and is now explicitly distinguished from the
+  in-repo scripted scan above; the historical reviewed HIGH footer-disclosure finding stays
+  documented in the release knownLimitations.
+- **Not performed:** laboratory execution, independent scientific review, live-in-Blender
+  isolation testing (requires a Blender session with workspace access).

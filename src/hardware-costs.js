@@ -4,14 +4,14 @@ import { assertAllowedKeys, text } from './validation.js';
 export const HARDWARE_COST_SCHEMA = 'bioprinting-workbench/hardware-cost/1';
 export const HARDWARE_CATEGORIES = ['motion-platform', 'extrusion-toolhead', 'bioink-materials', 'sterile-culture', 'measurement-qc', 'consumables-recurring'];
 const CATEGORY_LABELS = { 'motion-platform': 'Motion platform (the printer that moves)', 'extrusion-toolhead': 'Extrusion toolhead (syringe pump and mounts)', 'bioink-materials': 'Bioink materials (practice hydrogels, culture reagents)', 'sterile-culture': 'Sterile-culture infrastructure (hood, incubator, microscope)', 'measurement-qc': 'Measurement and QC (scale, pH, temperature)', 'consumables-recurring': 'Recurring consumables (syringes, dishes, filters, gloves)' };
-function part(id, label, category, referencePriceUSD, sourceUrl, note, recurring = false, optional = false) {
-  return { id, label, category, referencePriceUSD, priceBasis: 'authored-estimate', sourceUrl, note, recurring, optional, fetchDate: null };
+function part(id, label, category, referencePriceUSD, sourceUrl, note, recurring = false, optional = false, priceBasis = 'authored-estimate', fetchDate = null) {
+  return { id, label, category, referencePriceUSD, priceBasis, sourceUrl, note, recurring, optional, fetchDate };
 }
 const PARTS = [
   part('used-fdm-printer-base', 'Used or kit FDM 3D printer as motion platform (Ender-3 class)', 'motion-platform', 180, 'https://www.creality.com/', 'An off-the-shelf motion stage is the honest starting point; the workbench models the rig, not a purchase, and the printer is a tool, not a validated instrument.'),
-  part('nema17-stepper-x3', 'Spare NEMA17 stepper motors, pack of three', 'motion-platform', 60, 'https://www.adafruit.com/category/75', 'Spares for axis and extruder work; reference price is a widely-seen hobby-retail band, not a quote.'),
+  part('nema17-stepper-x3', 'Spare NEMA17 stepper motors, pack of three', 'motion-platform', 42, 'https://www.adafruit.com/product/324', 'Anchored: fetched unit list price $14.00 (Adafruit product 324, NEMA-17 size, fetched 2026-11-02) times three spares - the multiplication by three is ours and stated here, not a listed three-pack price. No purchase is recommended.', false, false, 'fetched-list-price', '2026-11-02'),
   part('stepper-controller', 'GRBL or RAMPS-class stepper controller board', 'motion-platform', 50, 'https://www.adafruit.com/category/234', 'Open-source controller firmware routes motion commands; no controller purchase is recommended and none is validated here.'),
-  part('psu-12v', 'Enclosed 12 V power supply, hobby grade', 'motion-platform', 35, 'https://www.adafruit.com/category/15', 'Power belongs in a commercial enclosed unit; open-perfusion-rig documentation carries the same warning about supplies and safety.'),
+  part('psu-12v', 'Enclosed 12 V power supply, hobby grade', 'motion-platform', 24.95, 'https://www.adafruit.com/product/352', 'Anchored: fetched list price $24.95 (Adafruit product 352, 12V 5A switching supply, fetched 2026-11-02). Power belongs in a commercial enclosed unit; open-perfusion-rig documentation carries the same warning about supplies and safety.', false, false, 'fetched-list-price', '2026-11-02'),
   part('syringe-extruder-parts', 'DIY syringe-pump extruder hardware (leadscrew, linear rail, coupling, mounts)', 'extrusion-toolhead', 90, 'https://github.com/dylanstechmann/open-perfusion-rig', 'The printed plunger carriage is the companion project open-perfusion-rig; this line is its non-printed hardware at an estimate band.'),
   part('carriage-print-filament', 'Filament to print the syringe carriage and mounts', 'extrusion-toolhead', 25, 'https://github.com/dylanstechmann/open-perfusion-rig', 'Printing the open-perfusion-rig carriage consumes a spool fraction; PLA parts are never a sterile fluid path, as that project documents.'),
   part('sodium-alginate-100g', 'Sodium alginate, 100 g practice bioink', 'bioink-materials', 45, 'https://www.sigmaaldrich.com/', 'Acellular practice hydrogel used in the teaching literature; price is an estimate band for laboratory-grade material.'),
@@ -24,7 +24,7 @@ const PARTS = [
   part('milligram-scale', 'Bench scale, 0.001 g resolution', 'measurement-qc', 70, 'https://www.fishersci.com/', 'Gravimetric checking is the cheapest honest QC step and mirrors the perfusion-calibration-lab approach of measuring before believing.'),
   part('ph-meter', 'Bench pH meter', 'measurement-qc', 90, 'https://www.fishersci.com/', 'Hydrogel crosslinking and culture media are pH-sensitive; a meter reads, it does not certify sterility or viability.'),
   part('usb-temp-logger', 'USB temperature data logger', 'measurement-qc', 45, 'https://www.fishersci.com/', 'Recording what actually happened is the difference between a run and a rumor; this is a logging tool only.'),
-  part('culture-medium-500ml', 'Basal cell-culture medium, 500 mL (recurring)', 'bioink-materials', 90, 'https://www.thermofisher.com/', 'Recurring cost of keeping cells alive; optional because the acellular path skips it, unavoidable once cells enter the picture.', true, true),
+  part('culture-medium-500ml', 'Basal cell-culture medium, 500 mL (recurring)', 'bioink-materials', 27.41, 'https://www.thermofisher.com/order/catalog/product/10569010', 'Anchored: fetched list price $27.41 (Thermo Fisher/Gibco DMEM high glucose with GlutaMAX, 1 x 500 mL, fetched 2026-11-02). Recurring cost of keeping cells alive; optional because the acellular path skips it, unavoidable once cells enter the picture.', true, true, 'fetched-list-price', '2026-11-02'),
   part('fbs-serum-100ml', 'Fetal bovine serum, 100 mL (recurring)', 'bioink-materials', 250, 'https://www.thermofisher.com/', 'The heaviest recurring line in the hobby cell-culture band and an ethical and supply-chain question in its own right.', true, true),
   part('syringes-needles-pack', 'Sterile syringes and needles, packs (recurring)', 'consumables-recurring', 40, 'https://www.fishersci.com/', 'Recurring sterile consumables; single-use items are the rule and reuse is a contamination decision, not a saving.', true),
   part('culture-dishes-pack', 'Sterile culture dishes and flasks, packs (recurring)', 'consumables-recurring', 55, 'https://www.fishersci.com/', 'Plasticware recurs monthly in any bench that runs; here it is a reference band, not a subscription quote.', true),
@@ -32,9 +32,9 @@ const PARTS = [
   part('gloves-disinfectant-pack', 'Nitrile gloves and disinfectant (recurring)', 'consumables-recurring', 30, 'https://www.fishersci.com/', 'Recurring bench hygiene; the cheapest line on the list and the one that guards every other line.', true),
 ];
 const NOTICES = [
-  'Reference costs only: every price is an authored indicative estimate (2026-11-02), not a quote, not current, and subject to change without notice; public vendor pages could not be fetched from this environment for anchoring.',
+  'Reference costs only: three parts carry fetched vendor list prices with fetch dates (not a quote, subject to change without notice); every other price is an authored indicative estimate (2026-11-02). Fetch attempts on 2026-11-02: Adafruit and Thermo Fisher pages returned clean list prices; Sigma-Aldrich and Fishersci returned access-denied (403); the Creality product page returned an ambiguous structured price that was not anchored; GitHub companion links carry no list price.',
   'No purchase is recommended or directed here; this is a teaching visualization of where money goes when a physical benchtop bioprinting practice begins, and no parts total buys any biological outcome, youth, repair or safety.',
-  'One-time and recurring costs are never summed into a single number: a $5,615 bench and a $525-per-month habit are different facts, and hiding the difference is how hobby budgets go wrong.',
+  'One-time and recurring costs are never summed into a single number: a $5,586.95 bench and a $462.41-per-month habit are different facts, and hiding the difference is how hobby budgets go wrong.',
   'In-silico first is the point of this workbench: the physical rig is where cells, money, sterility and safety are at stake, and the free simulation is the honest place to make the beginner\u2019s mistakes.',
 ];
 export function defaultHardwareBudget() { return { includedPartIds: PARTS.map(p => p.id) }; }
@@ -50,7 +50,7 @@ export function validateHardwareCatalog(raw) {
     const id = text(p.id, 128, 'id'); if (ids.has(id)) throw new RangeError('Duplicate hardware part ID'); ids.add(id);
     text(p.label, 2000, 'label');
     if (!HARDWARE_CATEGORIES.includes(p.category)) throw new RangeError('Unknown hardware category');
-    if (!Number.isInteger(p.referencePriceUSD) || p.referencePriceUSD < 1 || p.referencePriceUSD > 50000) throw new RangeError('Reference price out of bounds');
+    if (typeof p.referencePriceUSD !== 'number' || !Number.isFinite(p.referencePriceUSD) || p.referencePriceUSD !== Math.round(p.referencePriceUSD * 100) / 100 || p.referencePriceUSD < 1 || p.referencePriceUSD > 50000) throw new RangeError('Reference price out of bounds (cent precision maximum)');
     if (!['fetched-list-price', 'authored-estimate'].includes(p.priceBasis)) throw new RangeError('Unknown price basis');
     if (!/^https:\/\/[^ ]+$/.test(text(p.sourceUrl, 256, 'sourceUrl'))) throw new TypeError('Hardware source URL must be https');
     const note = text(p.note, 2000, 'note');
