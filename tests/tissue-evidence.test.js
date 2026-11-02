@@ -12,8 +12,8 @@ test('tissue evidence is species-separated, reviewed, and matches the shipped ve
   const foreign = [getEvidenceCatalog().claims, getAgingEvidenceCatalog().claims, getApplicationsEvidenceCatalog().claims, getGeroscienceEvidenceCatalog().claims].flat();
   validateTissueEvidenceCatalog(catalog);
   assert.equal(catalog.schema, TISSUE_EVIDENCE_SCHEMA);
-  assert.equal(catalog.sources.length, 12);
-  assert.equal(catalog.claims.length, 12);
+  assert.equal(catalog.sources.length, 13);
+  assert.equal(catalog.claims.length, 13);
   for (const c of catalog.claims) {
     assert.equal(c.supportStatus, 'reviewed');
     assert.ok(c.limitations.length >= 1);
@@ -24,6 +24,9 @@ test('tissue evidence is species-separated, reviewed, and matches the shipped ve
   assert.equal(human.species, 'human');
   assert.ok(human.limitations.some(l => l.includes('creates none')));
   assert.ok(catalog.claims.every(c => c.species !== 'human' || c.id === 'myonuclei-are-measurable'));
+  const gundersen = catalog.claims.find(c => c.id === 'myonuclei-retained-through-atrophy');
+  assert.equal(gundersen.species, 'mouse');
+  assert.ok(gundersen.limitations.some(l => l.includes('no human result')));
   const audit = JSON.parse(readFileSync(new URL('../docs/tissue-evidence-audit.json', import.meta.url), 'utf8'));
   assert.equal(audit.schema, 'bioprinting-workbench/tissue-evidence-audit/1');
   assert.equal(audit.fetchDate, '2026-11-02');

@@ -651,3 +651,47 @@ Actual verification results:
   push. Commit `8426f5a` was pushed under the owner's 2026-11-02 "then act upon it"
   authorization; no tag or release object was created.
 - **Not performed:** laboratory execution, independent scientific review.
+
+## 0.15.0-dev local follow-on (agent-run, November 2, 2026)
+
+Owner follow-up (2026-11-02): "Do you think you could have done more for the below prompt? Also, do
+you think you could have made more use of my other projects/repos and maybe even have updated them
+some as well?" Honest gap-closing for v0.14: the scaffold-methods survey (the methods landscape the
+original prompt asked for), a second ideas-desk entry (myonuclear muscle memory, Gundersen 2010
+mouse in-vivo imaging with the human transfer kept theory), a provenance-pinned snapshot of the
+sibling base-editing-evidence catalog (machine-checked instead of prose-cited), the remaining
+three GLB refreshes, and a reciprocal cross-reference into regen-workbench.
+
+Companion-repo decision record (investigated, not assumed): regen-workbench's tree was clean apart
+from an untracked data directory (left untouched) and received a one-paragraph cross-reference
+commit with its own history; anagen carried an uncommitted docs/atlas.js modification and
+base-editing-evidence carried an uncommitted ABE8E_Y149V_REVIEW.md modification plus this
+container cannot run that repo's append-only receipt tooling (broken python stdlib, no
+workspace-control), so both were reported-not-modified - the snapshot pins base-editing-evidence's
+committed data state (studies.json sha256 50893e27d59cab600ddc23e5a7f89ef6d6fa5bb851bd55e49ededfe3fbdbc69d
+at commit 4d49f75) and no sibling result is imported as evidence (NEIGHBORS.md respected).
+
+Actual verification results:
+
+- **Unit tests:** node --test tests/*.test.js — **132 passed, 0 failed** (up from 125; +2 scaffold
+  evidence, +2 scaffold methods, +2 snapshot, +1 myonuclear idea; the tissue catalog grew to 13
+  claims and its suite updated).
+- **Syntax:** npm run check — 89 project modules; git diff --check clean.
+- **Release contract:** npm run verify:release — all PASS including the new scaffold-evidence and
+  scaffold-methods contracts; asset hashes PASS against all four re-pinned GLBs (incubator
+  111,316 bytes / 26 meshes / 2,216 triangles; perfusion chamber 70,544 / 18 / 1,656; microscope
+  84,924 / 20 / 2,208; bioprinter unchanged from 0.14); allowlisted inventory 100 files.
+- **Browser (connected Playwright at 127.0.0.1:8096):** footer v0.15.0-dev; the atlas panel renders
+  11 cards (9 targets + 2 ideas-desk entries) and the new methods section renders 9 method cards
+  across established/experimental/theoretical tiers with the survey summary; the myonuclear entry
+  shows both measured-in-mice and theory verdicts; 0 console errors — all three updated GLBs load
+  through the browser loader.
+- **Snapshot integrity:** tests machine-check the 23-card census against the sibling's own stated
+  counts (7 human_cells, 1 human_case, 7 animal, 3 plant, 2 human_cohort, 3 human_trial) and pin
+  provenance (repo, commit, sha256, date, uncommitted-modification note).
+- **Claims scanner: still not-run** (container Python stdlib incomplete; see the 0.8 section).
+  Compensating checks continue: every new claim quotes its fetched abstract verbatim in the shipped
+  audit (tested), species separation enforced (tested), and the methods survey carries no
+  human-outcome inference anywhere.
+- **Not performed:** laboratory execution, independent scientific review, and commits to the two
+  sibling repos carrying uncommitted prior work.

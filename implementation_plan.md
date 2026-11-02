@@ -2,6 +2,126 @@
 
 [Overview]
 
+Close the honest gaps in v0.14 with **v0.15.0-dev**: a **scaffold-methods survey** (the "various established/experimental/theoretical methods… scaffolding… vascularization… biochemical" ask the original prompt named and v0.14 under-covered), a second **ideas-desk entry** (myonuclear "muscle memory", anchored to the 2010 PNAS overload-myonuclei study), a **machine-checked snapshot** of the sibling base-editing-evidence catalog replacing prose-only citation of that repo, **finishing the 3D plural** by refreshing the remaining three GLBs (incubator, perfusion chamber, microscope) with the same Node-surgery pattern proven on the bioprinter, and a **reciprocal cross-reference commit** into the one sibling repo whose tree is clean (regen-workbench). Companion-repo handling is decided by investigation, not preference: anagen and base-editing-evidence both carry **uncommitted prior work** (`M docs/atlas.js`, `M ABE8E_Y149V_REVIEW.md`) and this container cannot run base-editing-evidence's packaged provenance tools (python stdlib broken, no workspace-control), so those repos are reported-not-modified — the snapshot pins their committed state instead (studies.json sha256 50893e27d59cab60ddc23e5a7f89ef6d6fa5bb851bd55e49ededfe3fbdbc69d at commit 4d49f75, data file itself clean).
+
+[Types]
+
+**New evidence claims** (`SCAFFOLD_EVIDENCE_SCHEMA = 'bioprinting-workbench/scaffold-evidence/1'`; 9 sources / 9 claims, species `'other'` for all — reviews, in-vitro and animal-model work; fetched 2026-11-02 from Europe PMC; verbatim quotes in `docs/scaffold-evidence-audit.json`):
+
+1. `co-swift-2024` / `coaxial-sacrificial-vessels` — PMID 39092638, 10.1002/adma.202401528 — coaxial sacrificial writing into functional tissue: hierarchically branching, multilayered vascular networks with smooth-muscle-cell-laden shells around perfusable lumens, in granular and densely cellular matrices.
+2. `sacrificial-vascularization-review-2026` / `sacrificial-biofabrication-family` — PMID 40922624, 10.1002/adma.202507747 — review defining sacrificial biofabrication for vascularization: temporary templates removed to leave defined channels, taxonomy of stimuli-responsive sacrificial materials.
+3. `fresh-collagens-2025` / `fresh-collagen-isoforms` — PMID 39622052, 10.1021/acsbiomaterials.4c01826 — FRESH support-bath printing extended beyond collagen I to type II, III and combination bioinks with comparable fidelity.
+4. `cell-only-bath-2026` / `cell-only-ink-alignment` — PMID 42326069, 10.1016/j.mtbio.2026.103308 — MSC-only bioinks printed into a methacrylated xanthan support bath; geometric confinement directs collagen alignment in fibrocartilage.
+5. `volumetric-optogenetics-2026` / `volumetric-post-print-stimulation` — PMID 42573182, 10.1002/adma.74563 — tomographic volumetric bioprinting repurposed for post-printing optogenetic activation of light-responsive protein switches deep inside centimeter-scale constructs.
+6. `dlp-review-2026` / `dlp-bioink-landscape` — PMID 42436547, 10.1186/s13036-026-00718-w — DLP review: resolution/speed/gentle cell handling; bioink advances including methacrylated natural polymers, dECM-derived hydrogels, hybrid nanocomposites, cell-laden formulations.
+7. `in-situ-wounds-2026` / `in-situ-design-rules` — PMID 42956823, 10.1177/08853282261503314 — in-situ bioprinting at wound interfaces as a clinically driven design-rule framework; on-site deposition at point-of-care; lab-only validation gap named.
+8. `gdnf-gradient-2015` / `gradient-nerve-conduits` — PMID 26352518, 10.1016/j.biomaterials.2015.08.054 — synthetic PEG-heparin-laminin microsphere nerve conduits forming reversible GDNF concentration gradients for motor-axon extension.
+9. `shape-morphing-4d-2026` / `four-d-programmed-morphing` — PMID 42196067, 10.3390/gels12050382 — proof-of-concept 4D bioprinting: shape-morphing encoded during fabrication by layer-by-layer crosslink-density variation in GelMA; controlled bending on swelling.
+
+**Method catalog** (`SCAFFOLD_METHODS`, 8 entries; maturity mirrors the owner's words "established/experimental/theoretical"): `{ id, label, maturity: 'established'|'experimental'|'theoretical', whatItDoes, limits, anchorClaimIds }` (anchors may resolve into the new scaffold catalog or existing catalogs — extrusion multimaterial re-anchors the existing Kolesky claim, resolved at implementation time by listing the cell-evidence catalog ids, not guessed here):
+
+1. `extrusion-multimaterial` (established) — the 0.9-era foundation; anchors the existing Kolesky multimaterial claim.
+2. `embedded-support-bath` (established) — FRESH and gel baths hold soft inks during printing; limits: bath mechanics and ink diffusion; anchors [fresh-collagen-isoforms].
+3. `sacrificial-biofabrication` (experimental) — print the negative space, wash it out; limits: template removal completeness, endothelialization, anastomosis; anchors [coaxial-sacrificial-vessels, sacrificial-biofabrication-family].
+4. `dlp-photocuring` (established) — light-patterned crosslinking; limits: phototoxicity, depth, bioink photochemistry; anchors [dlp-bioink-landscape].
+5. `volumetric-tomographic` (experimental) — whole-volume light-field curing in seconds plus post-printing light control; limits: optics, cell density, opacity; anchors [volumetric-post-print-stimulation].
+6. `cell-only-support-bath` (experimental) — cells as the ink, bath as the mold; limits: fusion time, mechanics, scale; anchors [cell-only-ink-alignment].
+7. `in-situ-printing` (experimental) — print directly in the wound; limits: hostile environments, deformation, regulation; anchors [in-situ-design-rules].
+8. `factor-gradient-conduits` (established, material-side) — reversible growth-factor gradients in synthetic conduits; limits: factor stability, single-factor bias; anchors [gradient-nerve-conduits].
+9. `four-d-shape-morphing` (theoretical/proof-of-concept) — print today's crosslink density to command tomorrow's shape; limits: hydrogel-only demos, no tissue application reviewed; anchors [four-d-programmed-morphing].
+
+**Second ideas-desk record** (`MYONUCLEAR_MEMORY_IDEA`, non-interactive): steps — overload adds myonuclei before hypertrophy (verdict `measured-in-mice`, anchor `myonuclei-retained-through-atrophy` — new tissue-evidence claim from PMID 20713720, 10.1073/pnas.0913935107, Gundersen 2010 PNAS: in-vivo imaging shows new myonuclei added before major size increase and retained through denervation atrophy; species `mouse`); retention through detraining (same anchor); transfer to elite-athlete muscle printing in humans (verdict `theory`, no reviewed method; cross-references the existing aspiration entry and the myonuclei-pipeline anchor). Notices: no training advice, nothing performed. This adds ONE new claim to the tissue-evidence catalog (13 claims total there).
+
+**Companion snapshot type** (`docs/base-editing-snapshot.json`): `{ schema, source: { repo: 'base-editing-evidence', commit: '4d49f75', studiesJsonSha256: '50893e27…', snapshotDate: '2026-11-02', note: 'read-only mirror; source tree carried an uncommitted review-doc modification not reflected here; data file matches the committed state' }, cards: [{ id, title, stage, intervention_class, source_url }], stageCounts: { human_cells: 7, animal: 7, plant: 3, human_cohort: 2, human_case: 1, human_trial: 3 } }` — no limits text copied wholesale, no outcome claims imported (NEIGHBORS.md compliance: the snapshot backs the genome-restore idea's LIMITS statements, it does not import sibling results as evidence).
+
+No scenario-schema change: **`/9` stays**; the methods survey and second idea are reference content with no learning record, no UI selection state.
+
+[Files]
+
+New (bioprinting-workbench):
+
+- `src/scaffold-evidence.js` — 9 sources + 9 claims, validator mirroring the other evidence catalogs with collision checks against all five existing claim-id sets.
+- `src/scaffold-methods.js` — `SCAFFOLD_METHODS` (9 entries above), notices, `getScaffoldMethods`, `validateScaffoldMethods` (maturity enum, anchors resolve across all six catalogs, whatItDoes/limits required, at least one method per maturity tier), `evaluateScaffoldMethods` — no-op-free reference summary (strongest maturity present, no human-outcome inference).
+- `docs/scaffold-evidence-audit.json` — verbatim quotes + sentence-precise locators for the 9 claims.
+- `docs/base-editing-snapshot.json` — the companion snapshot described in [Types].
+- `docs/SCAFFOLD_METHODS.md` — the methods write-up: the three-maturity taxonomy, each method's what/limits/anchor, the vascularization thread (sacrificial family → co-SWIFT → in-situ), the biochemical gradient thread, and the honest "what this survey does not establish" close.
+- `tests/scaffold-evidence.test.js`, `tests/scaffold-methods.test.js`, `tests/base-editing-snapshot.test.js`.
+
+Modified (bioprinting-workbench):
+
+- `src/tissue-evidence.js` — add ONE claim (`myonuclei-retained-through-atrophy`, mouse, PMID 20713720) + its source; 13 claims total.
+- `docs/tissue-evidence-audit.json` — add the quote for the new claim.
+- `src/tissue-atlas.js` — add `MYONUCLEAR_MEMORY_IDEA`, `getMyonuclearMemoryIdea()`, `getIdeasDesk()` (both ideas); genome-restore note for periodic-write-back gains a snapshot reference ("snapshot-pinned companion limits") instead of prose-only citation.
+- `src/tissue-atlas-ui.js` — render the methods sub-section (non-interactive cards under `#atlas-methods`) and the second ideas-desk card.
+- `index.html` — methods sub-section container inside the atlas panel; footer `v0.15.0-dev`.
+- `package.json` — `0.15.0-dev`.
+- `scripts/verify-release.mjs` — two checks: `scaffold-evidence contract`, `scaffold-methods contract`.
+- `assets/author_incubator.py` — add culture flasks and dishes on a shelf plus a wall-mounted CO₂ bottle (names: `Incubator_Flask_1..3`, `Incubator_Dish_1..2`, `Incubator_CO2Bottle`, `Incubator_CO2Regulator`).
+- `assets/author_perfusion_chamber.py` — add a media reservoir, bubble trap and Luer-style line fittings (names: `Chamber_Reservoir`, `Chamber_BubbleTrap`, `Chamber_LineFit_1..2` — the name guard `/printhead|nozzle|cartridge/i` is checked before commit).
+- `assets/author_microscope.py` — add a culture dish on the stage window and a slide box beside (names: `Microscope_Dish`, `Microscope_SlideBox`).
+- `assets/incubator.glb`, `assets/perfusion_chamber.glb`, `assets/microscope.glb` — regenerated via the Node GLB-binary surgery pattern (proven in 0.14): append `Incubator_`/`Chamber_`/`Microscope_`-prefixed nodes with indexed primitives reusing existing materials; `assets/manifest.json` re-pinned for all three (bytes, sha256, meshes, triangles; new required node each: `Incubator_Flask_1`, `Chamber_Reservoir`, `Microscope_Dish`).
+- `tests/assets.test.js` — pins update via the manifest (no hardcoded counts in the test file beyond the >=30/<=10000 budgets already present).
+- `docs/SOURCES.md` — 0.15 ledger (9 sources + the Gundersen addition to the 0.14 table region as a dated appendix row set).
+- `CHANGELOG.md`, `docs/ROADMAP.md`, `README.md`, `docs/VERIFICATION.md` — 0.15 sections; companion-repo decision record (why anagen and base-editing-evidence were reported-not-modified).
+- `implementation_plan.md` — this plan; 0.14 plan archived verbatim below the divider.
+
+Modified (companion, regen-workbench only — clean tree):
+
+- `studies/dental-regeneration-2026-10-09/README.md` — one short companion-reading paragraph pointing to the bioprinting-workbench tissue atlas (GitHub Pages URL + what it adds: printing-focused tiers), in the README's plain-prose style, no evidence claims added. Committed and pushed with that repo's own history; its untracked `data/iris-ip3r2-2026-10-17/` is left untouched.
+
+Explicitly NOT modified, with reasons recorded in VERIFICATION.md: `anagen` (uncommitted `docs/atlas.js` from prior work — not committed over), `base-editing-evidence` (uncommitted `ABE8E_Y149V_REVIEW.md`; additionally its append-only receipt tooling cannot run in this container — broken python stdlib, no workspace-control — so no honest tranche is possible from here), `artificial-womb-models` and all other workspace repos (not evidence sources for this catalog per its own NEIGHBORS.md; out of scope).
+
+[Functions]
+
+New: `getScaffoldEvidenceCatalog()`, `validateScaffoldEvidenceCatalog(raw)` (src/scaffold-evidence.js); `getScaffoldMethods()`, `validateScaffoldMethods(methods)`, `evaluateScaffoldMethods()` (src/scaffold-methods.js); `getMyonuclearMemoryIdea()`, `getIdeasDesk()` (src/tissue-atlas.js).
+
+Modified: `validateTissueEvidenceCatalog` (src/tissue-evidence.js — no signature change, one more claim); `createTissueAtlasUI` (src/tissue-atlas-ui.js — renders the two additions); `build_asset()` × 3 (assets/author_*.py — appended parts, no signature change); `verifyRelease` (scripts/verify-release.mjs — two check rows).
+
+[Classes]
+
+None — frozen catalogs and factory functions per house convention. The companion snapshot is a data file with a validating test, not a class.
+
+[Dependencies]
+
+None new. All nine new sources are static strings fetched from the Europe PMC REST API on 2026-11-02. The snapshot is generated from the sibling repo's committed `data/studies.json` (sha-pinned) with no runtime coupling. GLB updates use Node (built-in) on the existing GLB binaries; Blender is not required in this environment (the authoring scripts are updated in parallel so a future Blender session regenerates equivalently).
+
+[Testing]
+
+- `tests/scaffold-evidence.test.js` — catalog validates; species `'other'` for all (nothing becomes human); audit equality (ids, DOIs, sentence-precise locators, quotes > 60 chars); mutations reject (dangling source, bad species, upgraded status, id collisions with the other five catalogs, empty limitations).
+- `tests/scaffold-methods.test.js` — 9 methods; maturity enum; ≥1 per tier; anchors resolve across all six catalogs; extrusion re-anchors the existing Kolesky claim (id resolved at implementation time by listing the cell-evidence catalog); whatItDoes and limits ≥ 1 sentence each; evaluator summary names the strongest tier present without human-outcome inference; mutations reject (unknown maturity, dangling anchors, duplicate ids, missing tier).
+- `tests/base-editing-snapshot.test.js` — snapshot schema + provenance fields present; 23 cards; ids unique; stages ⊆ the six known stages; stageCounts match the card census and match the sibling repo's own stated counts (7/7/3/2/1/3); no card title duplicates another; the genome-restore idea's periodic-write-back note references the snapshot (string check); mutations of the committed file fail (wrong count, bad stage).
+- `tests/tissue-evidence.test.js` — updated to 13 claims incl. the new mouse claim with its verbatim quote in the audit.
+- `tests/tissue-atlas.test.js` — second idea asserted (3 steps, mouse anchor, theory transfer step, notices); `getIdeasDesk()` returns both.
+- `tests/tissue-atlas-ui.test.js` — methods sub-section renders (9 cards, maturity labels), second ideas card renders; existing aspiration/selectability assertions unchanged.
+- `tests/assets.test.js` — three re-pinned manifests pass (bytes/sha/triangles/meshes/requiredNodes).
+- Full suite + `npm run check` + `git diff --check` + `verify:release` (two new checks PASS) + connected-browser check (footer v0.15.0-dev, methods section, two idea cards, 0 console errors, GLBs load).
+- regen-workbench commit: its own README-prose change; no tests exist for that doc; pushed to its remote with a conventional message; the change is one paragraph, reviewed against the README's tone.
+
+[Implementation Order]
+
+1. `src/scaffold-evidence.js` + audit JSON + `tests/scaffold-evidence.test.js`; run.
+2. `src/scaffold-methods.js` + `tests/scaffold-methods.test.js` (resolve the extrusion anchor id by listing the cell-evidence catalog first); run.
+3. Add the Gundersen claim to `src/tissue-evidence.js` + audit; update its test to 13; run.
+4. `src/tissue-atlas.js` second idea + `getIdeasDesk`; update atlas + UI tests; extend `src/tissue-atlas-ui.js` with the methods sub-section and second idea card; add `#atlas-methods` to index.html; run.
+5. Snapshot: generate `docs/base-editing-snapshot.json` from the sibling's committed studies.json; write `tests/base-editing-snapshot.test.js`; wire the snapshot reference into the genome-restore step note; run.
+6. GLB updates ×3: extend the three author scripts; Node-surgery each GLB; re-pin the manifest ×3; run asset + release suites; verify no forbidden node names.
+7. `scripts/verify-release.mjs` + package.json version bump + index.html footer; full suite + verify:release.
+8. Docs: SCAFFOLD_METHODS.md, SOURCES 0.15 ledger, CHANGELOG, ROADMAP, README, VERIFICATION (incl. the companion-decision record); splice `implementation_plan.md`.
+9. Connected-browser verification; record in VERIFICATION.
+10. Commit bioprinting-workbench; push; verify live Pages (footer v0.15.0-dev, methods section, re-pinned manifests served).
+11. regen-workbench companion paragraph; commit + push that repo separately; verify its Pages still builds (its ResearchDesk is a static export — check the file is served if published, else note).
+12. Doc-only live-verification commit; push; report — including the two uncommitted sibling changes found and deliberately not touched.
+
+---
+
+# Archived plans
+
+## Archived 0.14.0-dev plan — implemented, committed 8426f5a + f05cd09 and pushed to main on 2026-11-02; preserved verbatim below
+
+# Implementation Plan
+
+[Overview]
+
 Add v0.14.0-dev: a **tissue-target atlas module** covering the owner's requested frontier targets — lung alveoli, gingiva, periodontal ligament complex, tooth/dental pulp, facial and deep dermal collagen, peripheral nerve, skeletal muscle, and the elite-athlete myonuclei/connective-architecture question — each entry anchored to freshly fetched 2024–2026 literature with an honest status tier, barriers and open question; an **ideas-desk section** giving the owner's genome-backup-and-restore concept the same honest per-step assessment (digital backup: real today; organic reserve: real today; periodic whole-genome write-back: theory with named unsolved steps, citing the sibling base-editing-evidence repo read-only for editing-rate and coverage limits and two new 2026 partial-reprogramming sources for the delivery realism); and a **3D refresh** of the bioprinter GLB adding the syringe-extruder toolhead the 0.13 parts list describes, regenerated through the connected Blender 5.1.2 and re-pinned in the manifest. Then publish: commit, push, live Pages verification, doc-only record.
 
 Owner authorization (2026-11-02): "How can we further improve this project/repo? Update our 3d versions of the physical setups? Update ourselves on the latest in bioprinting… dna editing (restore cell's dna back to original… recording the original dna on a computer… some dna editing possibly being useful for differentiation too), yamanaka factors, various established/experimental/theoretical methods… scaffolding and other related stuff such as vascularization… bioprinting of lung alveoli, gums (in mouth), teeth, facial and other bodily deep collagen…, nerves, muscle (and perhaps the myonuclei and organization unique to elite bodybuilders/powerlifters…)… I want you to plan/outline/theorize immensely/heavily/extensively, then act upon it." The applications ledger already covers ear/skin/breast/hair/constructs/drug-testing — the atlas complements it, cross-links it, and never duplicates. Mouse/in-vitro findings never become human outcomes; the elite-athlete architecture is rendered as an aspiration entry, shown honestly, never selectable as achieved.

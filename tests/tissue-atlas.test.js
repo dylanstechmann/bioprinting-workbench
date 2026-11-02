@@ -1,6 +1,20 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { getTissueTargets, getGenomeRestoreIdea, validateTissueTargets, defaultTissueAtlas, validateTissueAtlas, evaluateTissueAtlas, ATLAS_REGIONS, ATLAS_STATUSES } from '../src/tissue-atlas.js';
+import { getTissueTargets, getGenomeRestoreIdea, getMyonuclearMemoryIdea, getIdeasDesk, validateTissueTargets, defaultTissueAtlas, validateTissueAtlas, evaluateTissueAtlas, ATLAS_REGIONS, ATLAS_STATUSES } from '../src/tissue-atlas.js';
+test('myonuclear memory idea is assessed honestly with mouse anchors and a theory ceiling', () => {
+  const idea = getMyonuclearMemoryIdea();
+  assert.equal(idea.id, 'myonuclear-memory');
+  assert.equal(idea.steps.length, 3);
+  assert.deepEqual(idea.steps.map(s => s.verdict), ['measured-in-mice', 'measured-in-mice', 'theory']);
+  assert.ok(idea.steps[0].anchorClaimIds.includes('myonuclei-retained-through-atrophy'));
+  assert.ok(idea.steps[2].anchorClaimIds.includes('myonuclei-are-measurable'));
+  assert.ok(idea.notices.some(n => n.includes('never become human outcomes')));
+  const desk = getIdeasDesk();
+  assert.equal(desk.length, 2);
+  assert.equal(desk[0].id, 'genome-backup-restore');
+  assert.equal(desk[1].id, 'myonuclear-memory');
+});
+
 
 test('atlas targets anchor across all five catalogs with an unselectable honesty entry', () => {
   const targets = getTissueTargets();

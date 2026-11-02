@@ -1,0 +1,190 @@
+{
+  "schema": "bioprinting-workbench/base-editing-snapshot/1",
+  "provenance": {
+    "repo": "base-editing-evidence",
+    "repoCommit": "4d49f75",
+    "studiesJsonSha256": "50893e27d59cab600ddc23e5a7f89ef6d6fa5bb851bd55e49ededfe3fbdbc69d",
+    "snapshotDate": "2026-11-02",
+    "note": "Read-only mirror of the sibling catalog as of the listed commit. The sibling working tree carried an uncommitted review-doc modification at snapshot time; data/studies.json itself matched the committed state. The snapshot backs limit statements only; no sibling result is imported as an editing outcome (NEIGHBORS.md respected)."
+  },
+  "cardCount": 23,
+  "stages": [
+    "human_cells",
+    "human_case",
+    "animal",
+    "plant",
+    "human_cohort",
+    "human_trial"
+  ],
+  "stageCounts": {
+    "human_cells": 7,
+    "human_case": 1,
+    "animal": 7,
+    "plant": 3,
+    "human_cohort": 2,
+    "human_trial": 3
+  },
+  "cards": [
+    {
+      "id": "cbe-2016",
+      "title": "Programmable editing of a target base in genomic DNA without double-stranded DNA cleavage",
+      "stage": "human_cells",
+      "intervention_class": "Cytosine base editing",
+      "source_url": "https://www.nature.com/articles/nature17946"
+    },
+    {
+      "id": "abe-2017",
+      "title": "Programmable base editing of A•T to G•C in genomic DNA without DNA cleavage",
+      "stage": "human_cells",
+      "intervention_class": "Adenine base editing",
+      "source_url": "https://www.nature.com/articles/nature24644"
+    },
+    {
+      "id": "rna-offtargets-2019",
+      "title": "Transcriptome-wide off-target RNA editing induced by CRISPR-guided DNA base editors",
+      "stage": "human_cells",
+      "intervention_class": "DNA base editors with RNA outcome assessment",
+      "source_url": "https://www.nature.com/articles/s41586-019-1161-z"
+    },
+    {
+      "id": "prime-2019",
+      "title": "Search-and-replace genome editing without double-strand breaks or donor DNA",
+      "stage": "human_cells",
+      "intervention_class": "Prime editing, recorded separately from base editing",
+      "source_url": "https://www.nature.com/articles/s41586-019-1711-4"
+    },
+    {
+      "id": "cps1-case-2025",
+      "title": "Patient-Specific In Vivo Gene Editing to Treat a Rare Genetic Disease",
+      "stage": "human_case",
+      "intervention_class": "Patient-specific in vivo base editing",
+      "source_url": "https://pubmed.ncbi.nlm.nih.gov/40373211/"
+    },
+    {
+      "id": "progeria-mice-2021",
+      "title": "In vivo base editing rescues Hutchinson-Gilford progeria syndrome in mice",
+      "stage": "animal",
+      "intervention_class": "In vivo adenine base editing",
+      "source_url": "https://pubmed.ncbi.nlm.nih.gov/33408413/"
+    },
+    {
+      "id": "cbe-fidelity-2020",
+      "title": "Evaluation and Minimization of Cas9-Independent Off-Target DNA Editing by Cytosine Base Editors",
+      "stage": "human_cells",
+      "intervention_class": "Engineered cytosine base editors with narrowed or sequence-dependent activity",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7335424/"
+    },
+    {
+      "id": "col7a1-rdeb-2022",
+      "title": "ABE8e adenine base editor precisely and efficiently corrects a recurrent COL7A1 nonsense mutation",
+      "stage": "human_cells",
+      "intervention_class": "Adenine base editing of a disease-associated COL7A1 allele",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9666996/"
+    },
+    {
+      "id": "kcnj13-retina-2023",
+      "title": "Nonviral base editing of KCNJ13 mutation preserves vision in a model of inherited retinal channelopathy",
+      "stage": "animal",
+      "intervention_class": "ABE8e correction delivered with nonviral silica nanocapsules",
+      "source_url": "https://www.jci.org/articles/view/171356"
+    },
+    {
+      "id": "abe8e-y149v-2026",
+      "title": "Therapeutic adenine base editor with minimized off-target effects",
+      "stage": "animal",
+      "intervention_class": "Comparison of ABE8e with engineered high-precision adenine base editor variants including ABE8e-Y149V",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13225742/"
+    },
+    {
+      "id": "plant-cbe-2017",
+      "title": "Precise base editing in rice, wheat and maize with a Cas9-cytidine deaminase fusion",
+      "stage": "plant",
+      "intervention_class": "Cytosine base editing in crop plants",
+      "source_url": "https://www.nature.com/articles/nbt.3811"
+    },
+    {
+      "id": "plant-cbe-offtargets-2019",
+      "title": "Cytosine, but not adenine, base editors induce genome-wide off-target mutations in rice",
+      "stage": "plant",
+      "intervention_class": "Whole-genome off-target assessment of CBE and ABE platforms in plants",
+      "source_url": "https://pubmed.ncbi.nlm.nih.gov/30819931/"
+    },
+    {
+      "id": "cancer-be-screens-2026",
+      "title": "Inducible, split base editors for in vivo cancer functional genomics",
+      "stage": "animal",
+      "intervention_class": "Small-molecule-inducible split base editors used as research mutators",
+      "source_url": "https://www.nature.com/articles/s41587-026-03077-5"
+    },
+    {
+      "id": "car-t-pik3cd-2026",
+      "title": "CAR-adapted PIK3CD base editing enhances T cell anti-tumor potency",
+      "stage": "animal",
+      "intervention_class": "CAR-adapted base editing of PIK3CD for allelic reprogramming of T-cell signaling",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12948676/"
+    },
+    {
+      "id": "clonal-hematopoiesis-2014",
+      "title": "Age-related clonal hematopoiesis associated with adverse outcomes",
+      "stage": "human_cohort",
+      "intervention_class": "No editing intervention; observational somatic-mutation detection in human blood",
+      "source_url": "https://www.nejm.org/doi/full/10.1056/NEJMoa1408617"
+    },
+    {
+      "id": "stemcell-mutation-accumulation-2016",
+      "title": "Tissue-specific mutation accumulation in human adult stem cells during life",
+      "stage": "human_cohort",
+      "intervention_class": "No editing intervention; observational mutation-landscape measurement in human stem cells",
+      "source_url": "https://www.nature.com/articles/nature19768"
+    },
+    {
+      "id": "tyr-ipsc-correction-2025",
+      "title": "Genome editing of a low-penetrance albinism-associated variant in TYR in patient-derived pluripotent stem cells",
+      "stage": "human_cells",
+      "intervention_class": "CRISPR-Cas9 correction of a declared low-penetrance albinism-associated TYR variant in patient-derived iPSCs",
+      "source_url": "https://doi.org/10.1016/j.scr.2025.103855"
+    },
+    {
+      "id": "rice-seedcoat-cbe-2021",
+      "title": "Single Base Editing Using Cytidine Deaminase to Change Grain Size and Seed Coat Color in Rice",
+      "stage": "plant",
+      "intervention_class": "Cytosine base editing applied to rice appearance and agronomic trait loci",
+      "source_url": "https://doi.org/10.1007/978-1-0716-1068-8_9"
+    },
+    {
+      "id": "pcsk9-primates-2021",
+      "title": "In vivo CRISPR base editing of PCSK9 durably lowers cholesterol in primates",
+      "stage": "animal",
+      "intervention_class": "Lipid-nanoparticle-delivered in vivo CRISPR base editing of PCSK9",
+      "source_url": "https://www.nature.com/articles/s41586-021-03534-y"
+    },
+    {
+      "id": "pcsk9-macaques-2021",
+      "title": "In vivo adenine base editing of PCSK9 in macaques reduces LDL cholesterol levels",
+      "stage": "animal",
+      "intervention_class": "Lipid-nanoparticle in vivo adenine base editing of PCSK9 with efficacy and selected safety assessment",
+      "source_url": "https://www.nature.com/articles/s41587-021-00933-4"
+    },
+    {
+      "id": "pcsk9-vereve102-humans-2026",
+      "title": "In Vivo Base Editing of PCSK9 with VERVE-102 for Hypercholesterolemia",
+      "stage": "human_trial",
+      "intervention_class": "In vivo adenine base editing of PCSK9 delivered in GalNAc-targeted lipid nanoparticles",
+      "source_url": "https://www.nejm.org/doi/full/10.1056/NEJMoa2601283"
+    },
+    {
+      "id": "pcsk9-yolt101-humans-2026",
+      "title": "In vivo base editing gene therapy for heterozygous familial hypercholesterolemia: a phase 1 trial",
+      "stage": "human_trial",
+      "intervention_class": "In vivo adenine base editing of PCSK9 delivered in GalNAc-modified lipid nanoparticles",
+      "source_url": "https://www.nature.com/articles/s41591-026-04254-4"
+    },
+    {
+      "id": "sickle-beacon-risto-2026",
+      "title": "Base Editing of HBG1 and HBG2 Promoters for Sickle Cell Disease",
+      "stage": "human_trial",
+      "intervention_class": "Ex vivo base editing of autologous CD34+ hematopoietic stem and progenitor cells at the HBG1/HBG2 promoters",
+      "source_url": "https://www.nejm.org/doi/full/10.1056/NEJMoa2504835"
+    }
+  ]
+}

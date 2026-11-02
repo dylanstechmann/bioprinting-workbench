@@ -6,7 +6,7 @@ project (2026-11-02: "it would be nice to get some bioprinting of lung alveoli, 
 the myonuclei and organization unique to elite bodybuilders/powerlifters...)"). This is a
 **simulation-labeled teaching atlas**: each target's tier describes the strength of its
 reviewed evidence, never clinical readiness, and in-vitro/preclinical findings never
-become human outcomes. Twelve abstracts were fetched from the Europe PMC REST API on
+become human outcomes. Thirteen abstracts were fetched from the Europe PMC REST API on
 2026-11-02 and are verbatim-quoted in `docs/tissue-evidence-audit.json`; the dental
 entries additionally cite the regen-workbench dental track (read-only companion) for
 trial-level honesty, and the genome-restore section cites the base-editing-evidence repo
@@ -96,3 +96,12 @@ surgery on the Blender-authored asset (the connected Blender instance runs on a 
 Windows host that cannot see this workspace), with the authoring script updated to match
 so a future Blender session can regenerate equivalently; the manifest is re-pinned and
 the asset tests verify the result.
+
+## 0.15 companion additions
+
+The ideas desk gained a second entry — myonuclear muscle memory: mouse in-vivo imaging shows
+overload adds myonuclei before hypertrophy and that they survive atrophy (Gundersen 2010), while
+printing or editing elite human architecture stays theory. The methods toolbox behind every
+target is surveyed separately in [SCAFFOLD_METHODS.md](SCAFFOLD_METHODS.md), and the
+base-editing-evidence companion catalog is now mirrored as a provenance-pinned snapshot
+(`base-editing-snapshot.json`) that tests machine-check instead of prose citation.

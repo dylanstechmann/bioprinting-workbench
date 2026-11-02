@@ -1,4 +1,5 @@
-import { getTissueTargets, getGenomeRestoreIdea, evaluateTissueAtlas } from './tissue-atlas.js';
+import { getTissueTargets, getGenomeRestoreIdea, getMyonuclearMemoryIdea, evaluateTissueAtlas } from './tissue-atlas.js';
+import { getScaffoldMethods, evaluateScaffoldMethods } from './scaffold-methods.js';
 import { getEvidenceCatalog } from './cell-evidence.js';
 import { getAgingEvidenceCatalog } from './aging-evidence.js';
 import { getApplicationsEvidenceCatalog } from './applications-evidence.js';
@@ -43,6 +44,22 @@ export function createTissueAtlasUI({ elements: $, onStateChange }) {
   }
   ideaCard.append(element('small', idea.notices.join(' ')));
   box.append(ideaCard);
+  const secondIdea = getMyonuclearMemoryIdea();
+  const secondCard = document.createElement('article');
+  secondCard.append(element('h3', `Ideas desk — ${secondIdea.label}`));
+  for (const step of secondIdea.steps) {
+    secondCard.append(element('p', `${step.label} — verdict: ${step.verdict}. ${step.note}`));
+  }
+  secondCard.append(element('small', secondIdea.notices.join(' ')));
+  box.append(secondCard);
+  const methodsBox = $('atlas-methods');
+  for (const m of getScaffoldMethods()) {
+    const card = document.createElement('article');
+    card.append(element('h3', `${m.label} — ${m.maturity}`));
+    card.append(element('p', `${m.whatItDoes} Limits: ${m.limits}`));
+    methodsBox.append(card);
+  }
+  methodsBox.append(element('p', evaluateScaffoldMethods().summary));
   function proposeFromInputs() {
     if (disposed) return;
     const selectedTargetIds = [...checkboxes.entries()].filter(([, cb]) => cb.checked).map(([id]) => id);

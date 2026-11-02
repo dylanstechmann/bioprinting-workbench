@@ -28,7 +28,10 @@ test('tissue-atlas UI renders targets, keeps the aspiration unselectable and the
   const ui = createTissueAtlasUI({ elements: $, onStateChange: p => { patch = p; } });
   const state = defaultLearningState();
   ui.render(state);
-  assert.equal($('atlas-targets').children.length, 10);
+  assert.equal($('atlas-targets').children.length, 11);
+  assert.equal($('atlas-methods').children.length, 10);
+  assert.ok($('atlas-methods').children.some(c => c.children.some(x => (x.textContent || '').includes('established'))));
+  assert.ok($('atlas-methods').children.some(c => c.children.some(x => (x.textContent || '').includes('theoretical'))));
   assert.ok($('atlas-result').textContent.includes('select targets'));
   const aspiration = $('atlas-target-elite-muscle-architecture');
   assert.equal(aspiration.disabled, true);

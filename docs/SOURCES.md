@@ -156,3 +156,22 @@ editing-rate and coverage limits. Neither companion repo was modified.
 | Bioprinting vascularized skin analogs: a stepwise approach (2025) | 10.1093/burnst/tkaf018; PMID 40718701 | Modalities, inks and cell sourcing for vascularized skin | Clinically transplanted vascularized printed skin |
 | The epigenetic rejuvenation promise (2026) | 10.1016/j.arr.2026.103009; PMID 41490578 | Lineage-preserving partial-reprogramming map and translational checklist | Any established human partial-reprogramming therapy |
 | circRNA platform for safe partial reprogramming (2026) | 10.1186/s13287-026-05193-0; PMID 42907856 | Transient, non-integrating OSK expression rejuvenating senescent MSCs in vitro | Human dosing, schedules or in-vivo rejuvenation |
+
+## 0.15.0-dev scaffold-evidence ledger (agent-run, November 2, 2026)
+
+Ten abstracts fetched from the Europe PMC REST API on 2026-11-02; verbatim quotes and locators in
+docs/scaffold-evidence-audit.json. The myonuclear-memory anchor for the second ideas-desk entry is
+recorded in the 0.14 tissue-evidence table's companion source (Gundersen 2010, PMID 20713720).
+
+| Source | Identifier | Supported scope | Not inferred |
+| --- | --- | --- | --- |
+| 3D bioprinting of thick vascularized tissues (2016) | 10.1073/pnas.1521342113; PMID 26951646 | Multimaterial extrusion, >1 cm constructs perfused on chip >6 wk | Implanted, anastomosed or human-transplanted tissue |
+| Embedding biomimetic vascular networks via co-SWIFT (2024) | 10.1002/adma.202401528; PMID 39092638 | Coaxial sacrificial writing of branching multilayered vessels | Implanted, anastomosed or human vascular result |
+| Sacrificial biofabrication for vascularization review (2026) | 10.1002/adma.202507747; PMID 40922624 | Concept, materials and technology taxonomy | Functional human vasculature |
+| FRESH 3D bioprinting of collagen I, II, III (2025) | 10.1021/acsbiomaterials.4c01826; PMID 39622052 | Collagen-isoform FRESH scaffolds, in vitro | Tissue function, implantation or human result |
+| Embedded cell-only bioprinting, meniscal fibrocartilage (2026) | 10.1016/j.mtbio.2026.103308; PMID 42326069 | MSC-only inks in support baths; confinement-directed alignment | Implanted graft or human result |
+| Volumetric bioprinting optogenetics (2026) | 10.1002/adma.74563; PMID 42573182 | Tomographic printing + post-printing light control | Therapeutic or human application |
+| DLP bioprinting bioink review (2026) | 10.1186/s13036-026-00718-w; PMID 42436547 | Resolution/speed/bioink landscape review | Clinically transplanted DLP-printed tissue |
+| In-situ bioprinting design-rule framework (2026) | 10.1177/08853282261503314; PMID 42956823 | Point-of-care design rules mini-review | Bedside-printed human graft result |
+| PEG-heparin-laminin GDNF gradient conduits (2015) | 10.1016/j.biomaterials.2015.08.054; PMID 26352518 | Reversible growth-factor gradients in synthetic nerve conduits | Restored human nerve function |
+| 4D shape-morphing via vat photopolymerization (2026) | 10.3390/gels12050382; PMID 42196067 | Proof-of-concept programmed morphing in GelMA | Tissue-level or in-vivo application |

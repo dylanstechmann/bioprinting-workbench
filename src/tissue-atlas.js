@@ -25,7 +25,7 @@ const GENOME_RESTORE_IDEA = {
   steps: [
     { id: 'digital-backup', label: 'Record the original genome digitally (SSD/HDD)', verdict: 'real-today', anchorClaimIds: [], note: 'Sequencing a genome and storing it on a computer is ordinary computing; the stored string is real and durable. The catch: there is no write-path from the SSD back into living chromatin — storage solves nothing by itself.' },
     { id: 'organic-reserve', label: 'Keep original cells stored organically', verdict: 'real-today', anchorClaimIds: [], note: 'Cell banking exists and works for some cell types; the honest limits are that reserves also age, drift and lose viability, and banking is best-established for early-passage and stem-like cells, not whole tissues.' },
-    { id: 'periodic-write-back', label: 'Fetch the stored DNA periodically and put it back into dividing cells', verdict: 'theory', anchorClaimIds: ['lineage-preserving-reprogramming-checklist', 'transient-nonintegrating-reprogramming'], note: 'The unsolved step. Editing is locus-by-locus, not wholesale; the companion base-editing-evidence repo (read-only) documents measured conditional editing and intended-only coverage far below whole-tissue repair. Somatic mosaicism means there is no single original to restore; delivery to most cells of a living tissue is unsolved; and nothing reviewed writes a pristine genome back into dividing cells.' },
+    { id: 'periodic-write-back', label: 'Fetch the stored DNA periodically and put it back into dividing cells', verdict: 'theory', anchorClaimIds: ['lineage-preserving-reprogramming-checklist', 'transient-nonintegrating-reprogramming'], note: 'The unsolved step. Editing is locus-by-locus, not wholesale; the companion base-editing-evidence repo (read-only, snapshot-pinned in docs/base-editing-snapshot.json) documents measured conditional editing and intended-only coverage far below whole-tissue repair. Somatic mosaicism means there is no single original to restore; delivery to most cells of a living tissue is unsolved; and nothing reviewed writes a pristine genome back into dividing cells.' },
     { id: 'differentiation-editing', label: 'Use DNA editing to steer differentiation', verdict: 'theory', anchorClaimIds: ['reprogramming-in-vivo-mouse', 'reprogramming-in-vitro-age'], note: 'Editing is not a differentiation program. Yamanaka-class partial reprogramming resets epigenetic age in mouse and in-vitro systems — the reviewed anchors — and lineage-preserving schedules with delivery and safety checklists are the honest research direction, not a procedure. No human application is reviewed as established.' },
   ],
   notices: [
@@ -34,12 +34,27 @@ const GENOME_RESTORE_IDEA = {
     'Species separation holds: mouse and in-vitro reprogramming findings never become human outcomes.',
   ],
 };
+const MYONUCLEAR_MEMORY_IDEA = {
+  id: 'myonuclear-memory',
+  label: 'Myonuclear muscle memory (the elite-lifter question, assessed honestly)',
+  steps: [
+    { id: 'overload-adds-nuclei', label: 'Overload exercise adds myonuclei before major size gain', verdict: 'measured-in-mice', anchorClaimIds: ['myonuclei-retained-through-atrophy'], note: 'In-vivo imaging in mouse muscle shows new myonuclei arrive before any major increase in size during overload - the nuclei are the first responders, not the after-effect.' },
+    { id: 'nuclei-survive-atrophy', label: 'Acquired myonuclei survive detraining and severe atrophy', verdict: 'measured-in-mice', anchorClaimIds: ['myonuclei-retained-through-atrophy'], note: 'The same imaging shows old and newly acquired nuclei retained through denervation-driven atrophy lasting a considerable period of the animal lifespan, protected from the apoptosis of inactive muscle. A local memory mechanism in the tissue itself - in mice.' },
+    { id: 'print-elite-architecture', label: 'Print or edit elite myonuclear architecture into new muscle', verdict: 'theory', anchorClaimIds: ['myonuclei-are-measurable'], note: 'Measuring myonuclear number, position and orientation in human fibers is real; nothing reviewed produces or edits that architecture, and no reviewed source transfers the mouse retention finding into a human guarantee. This is the honest ceiling of the elite-athlete wish - the same ceiling the aspiration entry states.' },
+  ],
+  notices: [
+    'Ideas-desk assessment only: no training advice, no procedure, nothing performed, and the mouse findings never become human outcomes.',
+    'Species separation holds: the retention evidence is mouse in-vivo imaging; the human transfer stays theory until something reviewed says otherwise.',
+  ],
+};
 const NOTICES = [
   'Simulation-labeled teaching atlas: tiers describe the strength of reviewed evidence for each target, never a clinical readiness claim.',
   'In-vitro and preclinical findings never become human outcomes; the aspiration entry is rendered and never selectable.',
   'The dental entries cite the regen-workbench dental track (read-only companion) for trial-level honesty; this atlas adds printing-focused evidence on top.',
 ];
 export function defaultTissueAtlas() { return { selectedTargetIds: [] }; }
+export function getMyonuclearMemoryIdea() { return structuredClone(MYONUCLEAR_MEMORY_IDEA); }
+export function getIdeasDesk() { return [getGenomeRestoreIdea(), structuredClone(MYONUCLEAR_MEMORY_IDEA)]; }
 export function validateTissueAtlas(raw) {
   assertAllowedKeys(raw, ['selectedTargetIds'], 'tissueAtlas');
   const ids = raw.selectedTargetIds;

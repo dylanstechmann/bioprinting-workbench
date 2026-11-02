@@ -27,6 +27,8 @@ def build_asset(output_path=None):
         cylinder(scene, f'Microscope_Focus_{x}', .16, .16, (x * 3, .35, .7), dark, axis='X')
     for x in [-.6, .6]:
         cylinder(scene, f'Microscope_Foot_{x}', .09, .06, (x, .45, -.03), dark)
+    cylinder(scene, 'Microscope_Dish', .16, .035, (0, -.3, 1.19), glass)
+    box(scene, 'Microscope_SlideBox', (.22, .16, .05), (.45, .15, 1.175), dark, .005)
     export_owned_scene(scene, output_path or Path(__file__).with_name('microscope.glb'))
     return scene
 

@@ -29,6 +29,12 @@ def build_asset(output_path=None):
     for x in [-.85, .85]:
         for y in [-.65, .65]:
             cylinder(scene, f'Incubator_Foot_{x}_{y}', .09, .08, (x, y, -.04), dark)
+    for i, (x, y) in enumerate([(-.5, -.1), (.05, .25), (.55, -.25)]):
+        box(scene, f'Incubator_Flask_{i+1}', (.3, .16, .08), (x, y, .565), glass, .005)
+    for i, x in enumerate((.7, -.7)):
+        cylinder(scene, f'Incubator_Dish_{i+1}', .09, .04, (x, .5, .545), glass)
+    cylinder(scene, 'Incubator_CO2Bottle', .11, 1.1, (.75, .55, .73), metal)
+    box(scene, 'Incubator_CO2Regulator', (.16, .12, .1), (.75, .55, 1.34), dark, .01)
     export_owned_scene(scene, output_path or Path(__file__).with_name('incubator.glb'))
     return scene
 

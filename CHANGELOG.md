@@ -3,7 +3,28 @@
 Personal hobby and learning project, AI-assisted. Agent-run software/source checks are
 not biological validation or independent scientific review.
 
-## 0.14.0-dev — local, uncommitted and unpublished
+## 0.15.0-dev — local, uncommitted and unpublished
+
+- Add the scaffold-methods survey: nine methods across established, experimental and theoretical
+tiers (extrusion, FRESH support baths, sacrificial vascular writing, DLP, volumetric printing,
+cell-only inks, in-situ printing, factor gradients, 4D shape-morphing), anchored to ten freshly
+fetched sources incl. the foundational Kolesky 2016; verbatim quotes in
+  docs/scaffold-evidence-audit.json; reference panel added to the atlas (no scenario change).
+- Add the second ideas-desk entry: myonuclear muscle memory — overload adds myonuclei before
+  hypertrophy and they survive atrophy in mouse in-vivo imaging (Gundersen 2010, new 13th tissue
+  claim), with the human elite-athlete transfer kept theory.
+- Vendor docs/base-editing-snapshot.json: a provenance-pinned read-only mirror of the sibling
+  base-editing-evidence catalog (23 cards, sha256 of its studies.json recorded), machine-checked
+  by tests; the genome-restore step notes now cite the snapshot, not just prose.
+- Refresh the remaining three GLBs — incubator (culture flasks, dishes, CO2 bottle and regulator),
+  perfusion chamber (reservoir, bubble trap, line fittings) and microscope (culture dish, slide
+  box) — via the Node GLB-surgery pattern with authoring scripts updated to match and the manifest
+  re-pinned for all three.
+- Companion-repo decision: regen-workbench receives a reciprocal cross-reference (its tree is
+  clean); anagen and base-editing-evidence carry uncommitted prior work and are reported, not
+  modified; no sibling result is imported as evidence (NEIGHBORS.md respected).
+
+## 0.14.0-dev — committed and pushed to main on 2026-11-02
 
 - Add the frontier-target tissue atlas: nine targets (lung alveoli, gingiva, periodontal
   complex, tooth pulp-dentin, facial deep collagen, peripheral nerve, skeletal muscle, the

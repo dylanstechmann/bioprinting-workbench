@@ -16,6 +16,8 @@ import { getProgramNodes, validateProgramNodes } from '../src/research-program.j
 import { getHardwareCatalog, validateHardwareCatalog } from '../src/hardware-costs.js';
 import { getTissueEvidenceCatalog, validateTissueEvidenceCatalog } from '../src/tissue-evidence.js';
 import { getTissueTargets, validateTissueTargets } from '../src/tissue-atlas.js';
+import { getScaffoldEvidenceCatalog, validateScaffoldEvidenceCatalog } from '../src/scaffold-evidence.js';
+import { getScaffoldMethods, validateScaffoldMethods } from '../src/scaffold-methods.js';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 /** An allowlisted candidate inventory, NOT an instruction to publish the repo root. */
@@ -50,6 +52,8 @@ export function verifyRelease(directory = root, { targetVersion = JSON.parse(rea
   check('research-program contract', 'validateProgramNodes', () => validateProgramNodes(getProgramNodes()));
   check('hardware-cost contract', 'validateHardwareCatalog', () => validateHardwareCatalog(getHardwareCatalog()));
   check('tissue-evidence contract', 'validateTissueEvidenceCatalog', () => validateTissueEvidenceCatalog(getTissueEvidenceCatalog()));
+  check('scaffold-evidence contract', 'validateScaffoldEvidenceCatalog', () => validateScaffoldEvidenceCatalog(getScaffoldEvidenceCatalog()));
+  check('scaffold-methods contract', 'validateScaffoldMethods', () => validateScaffoldMethods(getScaffoldMethods()));
   check('tissue-atlas contract', 'validateTissueTargets', () => validateTissueTargets(getTissueTargets().map(t => ({ ...t, relatedIds: {} }))));
   check('asset hashes', 'verify-release asset hash check', () => {
     for (const asset of JSON.parse(readFileSync(resolve(directory,'assets/manifest.json'),'utf8')).assets) {

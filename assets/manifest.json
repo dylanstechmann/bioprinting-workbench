@@ -39,13 +39,14 @@
       "nodePrefix": "Incubator_",
       "requiredNodes": [
         "Incubator_Base",
-        "Incubator_Glass_Door"
+        "Incubator_Glass_Door",
+        "Incubator_Flask_1"
       ],
-      "bytes": 92852,
-      "sha256": "cbde6dce0d521a48a26c446966939058ba1e9a16de73c1017e1458a6125aa9fd",
-      "meshes": 19,
+      "bytes": 111316,
+      "sha256": "2be7644a389c4b878280ae994d6b459618b54c6e9a512dc9e6a91f8209f749e3",
+      "meshes": 26,
       "materials": 5,
-      "triangles": 1796,
+      "triangles": 2216,
       "blenderBounds": [
         [
           -1.1050000190734863,
@@ -67,13 +68,14 @@
       "requiredNodes": [
         "Microscope_Base",
         "Microscope_Stage",
-        "Microscope_Objective_1"
+        "Microscope_Objective_1",
+        "Microscope_Dish"
       ],
-      "bytes": 79192,
-      "sha256": "1c8f69d12e6bd3051e6082eae62bf028e7cc4b437c66981c11841e622a070a36",
-      "meshes": 18,
+      "bytes": 84924,
+      "sha256": "2b50bea16cf50fbf414ce61b358579f7a5d0797aa60cc7bed89d289a24e84552",
+      "meshes": 20,
       "materials": 4,
-      "triangles": 2072,
+      "triangles": 2208,
       "blenderBounds": [
         [
           -0.8500000238418579,
@@ -94,13 +96,14 @@
       "nodePrefix": "Chamber_",
       "requiredNodes": [
         "Chamber_Base",
-        "Chamber_Glass_Lid"
+        "Chamber_Glass_Lid",
+        "Chamber_Reservoir"
       ],
-      "bytes": 52860,
-      "sha256": "abf383609c9da34a27276025623bb8ac23b375a623b4f641564b9e7aea44e724",
-      "meshes": 14,
+      "bytes": 70544,
+      "sha256": "a88e56ec373c84d835a10d7280c1c66af54a4d070366293fdd333c1b639b2326",
+      "meshes": 18,
       "materials": 4,
-      "triangles": 1160,
+      "triangles": 1656,
       "blenderBounds": [
         [
           -1.2719999551773071,

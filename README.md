@@ -90,6 +90,7 @@ equipment, patient records or experimental measurements are connected.
   rig — 22 parts, authored-estimate prices with provenance, one-time and recurring kept
   separate, and a live SVG cost chart (see
   [parts write-up](docs/HARDWARE_COSTS.md)).
+- `src/scaffold-methods.js`: scaffold-methods survey — nine methods across established, experimental and theoretical tiers, anchored to ten fetched sources (see [methods write-up](docs/SCAFFOLD_METHODS.md)).
 - `src/tissue-atlas.js`: frontier-target atlas — lung alveoli, gingiva, periodontal
   complex, tooth pulp, facial deep collagen, nerve, skeletal muscle, plus the
   elite-athlete architecture aspiration (rendered, never selectable) and the

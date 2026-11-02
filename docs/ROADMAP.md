@@ -105,7 +105,7 @@ strict provenance validation, an evaluator that never sums one-time and recurrin
 stacked-bar chart in the panel. No purchase is recommended; no parts total buys any
 biological outcome. See docs/HARDWARE_COSTS.md.
 
-## Local 0.14.0-dev follow-on — owner-authorized speculative teaching content
+## Local 0.14.0-dev follow-on — pushed to main on 2026-11-02 (no tagged version)
 
 Owner instruction (2026-11-02): "Update our 3d versions of the physical setups? Update
 ourselves on the latest in bioprinting... dna editing (restore cell's dna back to
@@ -117,3 +117,12 @@ an unselectable aspiration entry), the genome-backup ideas desk (two real steps,
 theory steps, companion repos cited read-only), and the bioprinter GLB syringe-toolhead
 refresh. No clinical readiness claim, no human-outcome inference, no procedure; see
 docs/ATLAS.md.
+
+## Local 0.15.0-dev follow-on — owner-authorized speculative teaching content
+
+Owner follow-up (2026-11-02): "Do you think you could have done more... could you have made more use
+of my other projects/repos and maybe even have updated them some as well?" Delivered as the honest
+gap-closing milestone: the scaffold-methods survey (the methods landscape the original prompt asked
+for), the myonuclear-memory ideas entry, the machine-checked base-editing-evidence snapshot, the
+remaining three GLB refreshes, and a reciprocal cross-reference into regen-workbench. anagen and
+base-editing-evidence carry uncommitted prior work and were reported, not modified.

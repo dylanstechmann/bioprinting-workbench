@@ -22,6 +22,10 @@ def build_asset(output_path=None):
         cylinder(scene, f'Chamber_Port_{x}', .1, .3, (x * 1.1, 0, .45), metal, axis='X')
         for y in [-1.02, 1.02]:
             cylinder(scene, f'Chamber_Fastener_{x}_{y}', .055, .12, (x, y, .88), metal)
+    cylinder(scene, 'Chamber_Reservoir', .13, .34, (-.72, .72, .36), metal)
+    cylinder(scene, 'Chamber_BubbleTrap', .05, .18, (.72, -.7, .45), metal)
+    for i, x in enumerate((-1.18, 1.18)):
+        cylinder(scene, f'Chamber_LineFit_{i+1}', .03, .12, (x, 0, .45), metal)
     export_owned_scene(scene, output_path or Path(__file__).with_name('perfusion_chamber.glb'))
     return scene
 
