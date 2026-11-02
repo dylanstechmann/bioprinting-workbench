@@ -509,4 +509,14 @@ Actual verification results:
   abstract verbatim in the shipped audit (tested), species separation is enforced by the
   catalog validator, dependency cycles are rejected by the node validator (tested), and
   all program prose is labeled study-planning simulation.
-- **Not performed:** laboratory execution, independent scientific review.
+- **Live Pages verification (after commit `82d9b2b` was pushed):** fetching
+  https://dylanstechmann.github.io/bioprinting-workbench/ returned the updated page with
+  footer "Bioprinting Workbench / v0.12.0-dev", the HYPOTHETICAL RESEARCH PROGRAM panel with
+  its thirteen-node description and "Version 7 restores ... research-program selection"
+  restore note; `/src/research-program.js` (14,539 bytes, thirteen nodes, cycle-checked
+  validator and evaluator), `/src/geroscience-evidence.js` and
+  `/docs/RESEARCH_PROGRAM.md` (full BUILD/STACK/INFER framework) are all served.
+  Deployment propagated within minutes of the push.
+- **Not performed:** laboratory execution, independent scientific review. Commit `82d9b2b`
+  was pushed to `main` under the owner's 2026-11-02 "then act upon it" authorization; Pages
+  published it automatically. No tag or release object was created.
