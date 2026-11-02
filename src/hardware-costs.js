@@ -3,7 +3,7 @@ import { assertAllowedKeys, text } from './validation.js';
 /** Reference-only indicative hardware costs for a hobby benchtop bioprinting setup. Prices are authored estimates, not quotes, not current, and no purchase is recommended. In-silico work precedes the physical rig, where more is at stake. */
 export const HARDWARE_COST_SCHEMA = 'bioprinting-workbench/hardware-cost/1';
 export const HARDWARE_CATEGORIES = ['motion-platform', 'extrusion-toolhead', 'bioink-materials', 'sterile-culture', 'measurement-qc', 'consumables-recurring'];
-const CATEGORY_LABELS = { 'motion-platform': 'Motion platform (the printer that moves)', 'extrusion-toolhead': 'Extrusion toolhead (sringe pump and mounts)', 'bioink-materials': 'Bioink materials (practice hydrogels, culture reagents)', 'sterile-culture': 'Sterile-culture infrastructure (hood, incubator, microscope)', 'measurement-qc': 'Measurement and QC (scale, pH, temperature)', 'consumables-recurring': 'Recurring consumables (syringes, dishes, filters, gloves)' };
+const CATEGORY_LABELS = { 'motion-platform': 'Motion platform (the printer that moves)', 'extrusion-toolhead': 'Extrusion toolhead (syringe pump and mounts)', 'bioink-materials': 'Bioink materials (practice hydrogels, culture reagents)', 'sterile-culture': 'Sterile-culture infrastructure (hood, incubator, microscope)', 'measurement-qc': 'Measurement and QC (scale, pH, temperature)', 'consumables-recurring': 'Recurring consumables (syringes, dishes, filters, gloves)' };
 function part(id, label, category, referencePriceUSD, sourceUrl, note, recurring = false, optional = false) {
   return { id, label, category, referencePriceUSD, priceBasis: 'authored-estimate', sourceUrl, note, recurring, optional, fetchDate: null };
 }

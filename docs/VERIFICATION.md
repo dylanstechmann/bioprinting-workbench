@@ -566,5 +566,18 @@ Actual verification results:
   section). Compensating mechanical checks: prices are labeled authored-estimate by the
   catalog validator (tested), fetch-date requirements are enforced for any future
   fetched-list-price entry (tested), and all cost prose is labeled reference-only.
+- **Live Pages verification (after commit `7b13247` was pushed):** fetching
+  https://dylanstechmann.github.io/bioprinting-workbench/ returned the updated page with
+  footer "Bioprinting Workbench / v0.13.0-dev", the REFERENCE HARDWARE COSTS panel with its
+  22-part description and "Version 8 restores ... hardware-budget reference selection"
+  restore note; `/src/hardware-costs.js` (12,732 bytes, 22-part catalog, provenance
+  validator and evaluator) and `/docs/HARDWARE_COSTS.md` (full parts write-up with the
+  never-summed rule and both entry paths) are all served. Deployment propagated within
+  minutes of the push.
+- **Post-live follow-up:** a one-character category-label typo ("sringe" → "syringe")
+  noticed while reading the served module was fixed locally with the affected suites
+  re-run green (4/4); it ships with this doc commit. Commit `7b13247` was pushed under
+  the owner's 2026-11-02 "keep rolling" authorization; Pages published it automatically.
+  No tag or release object was created.
 - **Not performed:** laboratory execution, independent scientific review, or any
   purchase.
