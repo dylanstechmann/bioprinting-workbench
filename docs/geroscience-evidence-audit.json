@@ -1,0 +1,34 @@
+{
+  "schema": "bioprinting-workbench/geroscience-evidence-audit/1",
+  "fetchedFrom": "https://www.ebi.ac.uk/europepmc/webservices/rest/search (Europe PMC REST API, resultType=core, field abstractText)",
+  "fetchDate": "2026-11-02",
+  "agentReadingKind": "agent-source-reading (abstracts only; no figures, protocols or datasets reproduced)",
+  "sources": [
+    { "id": "senolytic-review-2026", "pmid": "42775553", "doi": "10.1080/14728222.2026.2738910", "title": "Senolytics for cancer treatment: complexities and opportunities.", "journalYear": 2026, "url": "https://europepmc.org/article/MED/42775553" },
+    { "id": "rapamycin-2009", "pmid": "19587680", "doi": "10.1038/nature08221", "title": "Rapamycin fed late in life extends lifespan in genetically heterogeneous mice.", "journalYear": 2009, "url": "https://europepmc.org/article/MED/19587680" },
+    { "id": "nad-review-2026", "pmid": "42669985", "doi": "10.2174/0113895575469704260805105227", "title": "Nicotinamide Adenine Dinucleotide and Its Anti-aging Effects in the Context of Longevity and Menopause.", "journalYear": 2026, "url": "https://europepmc.org/article/MED/42669985" },
+    { "id": "horvath-clock-2013", "pmid": "24138928", "doi": "10.1186/gb-2013-14-10-r115", "title": "DNA methylation age of human tissues and cell types.", "journalYear": 2013, "url": "https://europepmc.org/article/MED/24138928" }
+  ],
+  "claims": [
+    {
+      "id": "senolytics-translation-limits",
+      "locator": "Abstract, Introduction and Expert opinion",
+      "verbatimQuote": "First, these compounds show different outcomes in aging and tumor cell models. Second, they exhibit variable efficacy in eliminating senescent tumor cells based on tumor background. Third, efficacious agents do not necessarily eliminate the risk of proliferative recovery that could reflect disease recurrence. Fourth, several of the compounds that demonstrate the highest efficacy against senescent tumor cells are associated with established or potential adverse effects that would limit their translation. Senolytic translation is constrained by Therapy-induced Senescence (TIS) heterogeneity generating resistant subpopulations, potential proliferative recovery, senolytic-associated adverse effects, risk for targeting beneficial senescent cells, and absence of validated clinical trial designs."
+    },
+    {
+      "id": "rapamycin-lifespan-mice",
+      "locator": "Abstract, sentences 2–4 and 7",
+      "verbatimQuote": "Here we report that rapamycin, an inhibitor of the mTOR pathway, extends median and maximal lifespan of both male and female mice when fed beginning at 600 days of age. On the basis of age at 90% mortality, rapamycin led to an increase of 14% for females and 9% for males. The effect was seen at three independent test sites in genetically heterogeneous mice, chosen to avoid genotype-specific effects on disease susceptibility. Rapamycin may extend lifespan by postponing death from cancer, by retarding mechanisms of ageing, or both."
+    },
+    {
+      "id": "nad-precursor-limits",
+      "locator": "Abstract, sentences 6–7",
+      "verbatimQuote": "According to the evidence currently available, depletion of intracellular NAD+ levels during aging may contribute to mitochondrial dysfunction, impaired metabolic regulation, chronic inflammatory signaling, and neurodegenerative alterations. Although NAD+ precursors such as NMN and NR have shown promising biological effects in experimental studies, some limitations are still evident when these findings are translated to humans, including pharmacokinetic instability, tissue-specific bioavailability, and variability in clinical responses."
+    },
+    {
+      "id": "methylation-age-clock",
+      "locator": "Abstract, Background, Results and Conclusions",
+      "verbatimQuote": "I developed a multi-tissue predictor of age that allows one to estimate the DNA methylation age of most tissues and cell types. I found that DNA methylation age has the following properties: first, it is close to zero for embryonic and induced pluripotent stem cells; second, it correlates with cell passage number; third, it gives rise to a highly heritable measure of age acceleration; and, fourth, it is applicable to chimpanzee tissues. I propose that DNA methylation age measures the cumulative effect of an epigenetic maintenance system."
+    }
+  ]
+}

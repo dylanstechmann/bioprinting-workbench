@@ -104,3 +104,15 @@ locators in `docs/applications-evidence-audit.json`.
 | 3D bioprinting of prefabricated artificial skin (nude mice) | 10.7150/thno.104854; PMID 40083946 | Skin plus appendage regeneration in mouse wounds | Any human result |
 | Towards establishing human body-on-a-chip systems | 10.1186/s13287-022-03130-5; PMID 35987699 | Multi-organ chip research directions | A validated drug-testing replacement |
 | DLP bioprinting of auricular constructs (rat cells, nude mice) | 10.1186/s13287-026-05156-5; PMID 42399996 | Full-scale printed ears with cartilage-like matrix in animals | Any human auricular result |
+
+## 0.12.0-dev geroscience ledger (agent-run, November 2, 2026)
+
+Four abstracts fetched from the Europe PMC REST API on 2026-11-02; verbatim quotes and
+locators in `docs/geroscience-evidence-audit.json`.
+
+| Source | Identifier | Supported scope | Not inferred |
+| --- | --- | --- | --- |
+| Senolytics for cancer treatment: complexities and opportunities (2026) | 10.1080/14728222.2026.2738910; PMID 42775553 | Senolytic translation constraints, adverse effects, targeting-risk caveats | Any dosing, aging-intervention use or safety claim |
+| Harrison et al. (2009), Rapamycin fed late in life extends lifespan in genetically heterogeneous mice | 10.1038/nature08221; PMID 19587680 | Mouse lifespan extension (three sites, 600-day start) | Human outcomes or anti-aging-versus-cancer attribution |
+| NAD+ and its anti-aging effects in the context of longevity and menopause (2026) | 10.2174/0113895575469704260805105227; PMID 42669985 | NAD+ decline framing; NMN/NR translation limits | Supplementation recommendation or human efficacy |
+| Horvath (2013), DNA methylation age of human tissues and cell types | 10.1186/gb-2013-14-10-r115; PMID 24138928 | Multi-tissue methylation clock properties | That changing the clock changes aging |

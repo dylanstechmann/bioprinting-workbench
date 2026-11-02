@@ -82,6 +82,10 @@ equipment, patient records or experimental measurements are connected.
   adverse records, and the excluded unregulated-injectables lever (see
   [applications write-up](docs/APPLICATIONS.md) and
   [why organs are not chips](docs/FABRICATION_ANALOGY.md)).
+- `src/research-program.js`: simulation-labeled BUILD/STACK/INFER research-program framework
+  — thirteen literature-anchored nodes with cycle-checked dependencies, first-order
+  inferences and an honest evidence floor, aligned with the regen-workbench desk method (see
+  [program write-up](docs/RESEARCH_PROGRAM.md)).
 - `tests/model.test.js`: Node's built-in test runner; no package installation required.
 - `vendor/three/`: pinned Three.js 0.187.0 runtime and OrbitControls, MIT license retained.
 

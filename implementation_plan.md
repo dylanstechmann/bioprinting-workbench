@@ -2,6 +2,125 @@
 
 [Overview]
 
+Add v0.12.0-dev: a simulation-labeled **research program framework module** that turns the owner's request — "lay out a research program/framework based off public literature... mechanisms that I could guess were relevant/influential. Building/stacking/inference" — into an interactive, literature-anchored program designer: a catalog of research nodes (aging-mechanism levers, printing capabilities, and measurement tools) whose evidence tiers, adverse anchors, open questions and dependencies are drawn from the four accumulated evidence catalogs plus four newly fetched geroscience sources; the evaluator implements **BUILD** (select nodes), **STACK** (dependency closure with prerequisites auto-identified, cycle-checked), and **INFER** (first-order theory inferences per node, never cross-node effect multiplication), and reports the program's honest evidence floor. The framework aligns with the owner's regen-workbench research desk (read-only reference: its question→alternatives→data→frozen-plan→runs→review method and its "clocks support narrower questions, not every outcome domain" caveat are cited as companion method) and ships as `docs/RESEARCH_PROGRAM.md` plus a workbench panel. Then publish: commit, push, live Pages verification.
+
+Owner authorization (2026-11-02): "Can you lay out a research program/framework based off public literature?... Building/stacking/inference... You're welcome to make use of the regen-workbench research desk and other projects/repos... I want you to outline/plan in immense detail, then act upon it." Interpretation: the program is a study-planning simulation for a personal learning project — uncensored about the levers (senolytics, rapamycin/mTOR, NAD+ precursors, partial reprogramming, systemic factors, clocks, stem-cell supply, vascularization) and equally uncensored about their measured limits (senolytic translation constraints incl. targeting beneficial senescent cells; rapamycin's "postponing cancer vs retarding aging" ambiguity; NAD+ pharmacokinetic limits; mouse-only reprogramming and parabiosis; no human printed-tissue result). No treatment, dosing, protocol, timeline or funding claim; mouse/animal findings never become human outcomes; regen-workbench is referenced read-only (its own AGENTS.md and history are untouched).
+
+[Types]
+
+**Program node record** (`PROGRAM_NODES` entries): `{ id, label, layer: 'aging-mechanism'|'printing-capability'|'measurement', tier: 'human-measured'|'mouse-measured'|'animal-or-in-vitro'|'review-supported'|'theory', anchorClaimIds, adverseClaimIds, openQuestions: string[], inference, dependencyIds }`. Anchor/adverse ids resolve against the union of FOUR catalogs: cell-evidence, aging-evidence, applications-evidence and the new geroscience-evidence claims.
+
+**New evidence claims** (`GEROSCIENCE_EVIDENCE_SCHEMA = 'bioprinting-workbench/geroscience-evidence/1'`, 4 sources / 4 claims, species-separated):
+
+- `senolytic-review-2026` / `senolytics-translation-limits` (other, review of senolytic translation in cancer-treatment senescence) — PMID 42775540? No: PMID 42775553, DOI 10.1080/14728222.2026.2738910 — variable efficacy, proliferative-recovery risk, adverse effects limiting translation, risk of targeting beneficial senescent cells, absence of validated trial designs.
+- `rapamycin-2009` / `rapamycin-lifespan-mice` (mouse) — PMID 19587680, DOI 10.1038/nature08221, Nature 2009 — rapamycin from 600 days extended median and maximal lifespan in genetically heterogeneous mice at three sites (14% females, 9% males at 90% mortality); mechanism may be postponing cancer, retarding aging, or both.
+- `nad-review-2026` / `nad-precursor-limits` (other, narrative review) — PMID 42669985, DOI 10.2174/0113895575469704260805105227 — NAD+ decline implicated in mitochondrial dysfunction, inflammation and metabolic aging; NMN/NR promising experimentally but human translation limited by pharmacokinetic instability and tissue-specific bioavailability.
+- `horvath-clock-2013` / `methylation-age-clock` (human) — PMID 24138928, DOI 10.1186/gb-2013-14-10-r115, Genome Biology 2013 — multi-tissue DNA methylation age predictor (8,000 samples, 51 tissues, 353 CpGs); near-zero in iPSCs, correlates with passage number, heritable age acceleration, applicable to chimpanzee; author proposes it measures the cumulative effect of an epigenetic maintenance system.
+
+**Program-node catalog (13 nodes, layer/tier/anchors)** — anchors from all four catalogs (existing claim ids reused):
+
+1. `hallmark-mapping` (aging-mechanism, review-supported) — anchors [aging-nine-hallmarks-2013, aging-twelve-hallmarks-2023]; the map for hypotheses, not an intervention list; deps [].
+2. `aging-biomarkers` (measurement, human-measured) — anchors [methylation-age-clock]; openQ: causality vs correlation, which endpoint a clock proxies; inference: an intervention can move a clock without moving healthspan — clocks support narrower questions, not every outcome domain; deps [].
+3. `senescent-burden-clearance` (aging-mechanism, review-supported) — anchors+adverse [senolytics-translation-limits]; deps [aging-biomarkers].
+4. `mtor-pathway-modulation` (aging-mechanism, mouse-measured) — anchors+adverse [rapamycin-lifespan-mice]; deps [aging-biomarkers].
+5. `nad-precursor-restoration` (aging-mechanism, review-supported) — anchors+adverse [nad-precursor-limits]; deps [aging-biomarkers].
+6. `partial-reprogramming` (aging-mechanism, mouse-measured) — anchors [reprogramming-in-vivo-mouse], adverse [reprogramming-in-vitro-age]; deps [aging-biomarkers].
+7. `systemic-youth-factors` (aging-mechanism, mouse-measured) — anchors [parabiosis-systemic-factors]; deps [aging-biomarkers].
+8. `genome-stability-gate` (printing-capability, human-measured in culture) — anchors [culture-selection], adverse [culture-selection, kurashima-fork-acceleration]; deps [].
+9. `stem-cell-supply` (printing-capability, human-measured in culture) — anchors [halliwell-survival, msc-variability, pluripotent-cycle], adverse [fibroblast-senescence, kurashima-miscoordination]; deps [genome-stability-gate].
+10. `vascularized-volume-printing` (printing-capability, animal-or-in-vitro) — anchors [itop-human-scale-constructs, printed-adipose-neovessels], adverse [printed-adipose-neovessels]; deps [stem-cell-supply].
+11. `functional-tissue-verification` (printing-capability, human-measured benchmark via flaps) — anchors+adverse [diep-flap-profile]; deps [vascularized-volume-printing].
+12. `host-integration` (printing-capability, theory) — anchors [diep-flap-profile]; deps [functional-tissue-verification].
+13. `organ-chip-testing` (measurement, review-supported) — anchors [body-on-chip-drug-testing, printed-mature-adipocytes]; deps [].
+
+**Evaluator result** (`evaluateResearchProgram`): `{ status: 'unconfigured'|'designed', assumptionOrigin: 'user-hypothetical-simulation', selected: [{ id, label, tier, relation: 'selected' }], prerequisites: [{ id, label, tier, relation: 'prerequisite', requiredBy: string[] }], programFloor: tier, openQuestions: [{ id, question }], inferences: [{ id, inference }], notices }`. Tier floor = the weakest-strongest tier present in the closure, ranked human-measured < mouse-measured < animal-or-in-vitro < review-supported < theory.
+
+**`learning.researchProgram`** (new `/7` key): `{ selectedNodeIds: string[] }` — unique, subset of node ids, empty allowed.
+
+[Files]
+
+New:
+
+- `src/geroscience-evidence.js` — 4 sources + 4 species-separated claims; validator mirrors the other evidence catalogs plus collision checks against all three existing claim-id sets.
+- `src/research-program.js` — `PROGRAM_NODES` (13), `NOTICES`, `defaultResearchProgram`, `validateResearchProgram`, `getProgramNodes`, `validateProgramNodes` (incl. DFS cycle detection mirroring `validateOrganBarriers`), `evaluateResearchProgram` (BUILD/STACK/INFER).
+- `src/research-program-ui.js` — `createResearchProgramUI` (layer-grouped node cards, disabled theory-tier framing where applicable, closure/floor/inference result rendering, dispose).
+- `docs/RESEARCH_PROGRAM.md` — the full framework in prose: the six-step desk-aligned method, phased program logic, the build/stack/inference definitions, every node's tier and open question, all measured anchors quoted with PMIDs, and an explicit read-only reference to the regen-workbench research desk.
+- `docs/geroscience-evidence-audit.json` — verbatim abstract quotes + locators (audit↔runtime equality tested).
+- `tests/geroscience-evidence.test.js`, `tests/research-program.test.js`, `tests/research-program-ui.test.js`.
+- `tests/fixtures/scenario-v7.json` — native `/7` fixture with a populated researchProgram selection.
+
+Modified:
+
+- `src/cell-division.js` — import + `defaultLearningState()` adds `researchProgram`; `validateLearningState` accepts it.
+- `src/cell-learning-ui.js` — instantiate/render/dispose `createResearchProgramUI`.
+- `src/scenario.js` — `SCENARIO_SCHEMA = 'bioprinting-workbench/7'`; new `migrateScenarioV6`; `/5` and `/4` and `/3` migration patches add the researchProgram default; `parseScenario` dispatches `/6`.
+- `index.html` — research-program panel (after the breast-comparison panel); Version 7 restore note; footer `v0.12.0-dev`.
+- `package.json` — `0.12.0-dev`.
+- `scripts/verify-release.mjs` — new checks `geroscience-evidence contract` and `research-program contract`.
+- `tests/release.test.js` — both new contract validations asserted.
+- `tests/cell-division.test.js` — researchProgram default asserts + rejection patches.
+- `tests/scenario.test.js` — v6→v7 renames; new v6-migration test; fixture loop gains `scenario-v7.json` (native) and `scenario-v6.json` (migrates from /6); invalid-schema case becomes `bioprinting-workbench/8`; researchProgram fields in round-trip/rejection tests; export purity (no `programFloor`/`prerequisites` in export).
+- `docs/SOURCES.md` — 0.12 geroscience ledger (4 sources, same table format).
+- `docs/SCENARIOS.md` — Version 7 header/list + Version 6 migration section.
+- `CHANGELOG.md` — 0.12.0-dev section; 0.11.0-dev relabeled as pushed.
+- `docs/ROADMAP.md` — 0.12 follow-on section; 0.11 relabeled as pushed.
+- `README.md` — feature bullet for `src/research-program.js`.
+- `docs/VERIFICATION.md` — 0.12 section with executed checks; live-check paragraph after push (doc-only commit).
+- `implementation_plan.md` — this plan; the prior 0.11 plan preserved verbatim below the archive divider.
+
+[Functions]
+
+New:
+
+- `src/geroscience-evidence.js`: `getGeroscienceEvidenceCatalog()`, `validateGeroscienceEvidenceCatalog(raw)`.
+- `src/research-program.js`: `getProgramNodes()`, `validateProgramNodes(nodes, catalogs)`, `defaultResearchProgram()`, `validateResearchProgram(raw)`, `evaluateResearchProgram(settings)`.
+- `src/research-program-ui.js`: `createResearchProgramUI({ elements, onStateChange })` → `{ render, dispose }`.
+
+Modified:
+
+- `defaultLearningState()` / `validateLearningState()` (src/cell-division.js) — add the researchProgram key.
+- `migrateScenarioV3` / `migrateScenarioV4` / `migrateScenarioV5` (src/scenario.js) — add `researchProgram: defaultResearchProgram()` to the defaulted learning patches (with truthful warning updates).
+- `parseScenario` (src/scenario.js) — `/6` branch → `migrateScenarioV6`.
+- `verifyRelease` (scripts/verify-release.mjs) — two new contract rows.
+
+[Classes]
+
+None — module-level factories and frozen catalogs only, per house convention. The dependency-graph cycle check mirrors the existing DFS in `src/organ-research.js`.
+
+[Dependencies]
+
+None. No packages, no runtime network. The only new inputs are the four fetched bibliographic records (PMIDs 42775553, 19587680, 42669985, 24138928) stored as static strings, plus read-only reference text from the local regen-workbench research-desk documents (cited, not copied at length).
+
+[Testing]
+
+- `tests/geroscience-evidence.test.js`: catalog validates; species separation; audit equality (ids, locators, DOIs, quotes >60 chars); mutations reject (dangling source, species, upgraded status, id collisions with all three prior catalogs, empty limitations).
+- `tests/research-program.test.js`: node catalog contract — 13 nodes, layers/tiers enums, anchors resolve across all four catalogs, dangling/cyclic dependencies reject (cycle test mutates two nodes into a cycle), each node carries ≥1 open question and 1 inference; evaluator — unconfigured on empty selection, BUILD returns selected, STACK auto-adds prerequisites with requiredBy labels (selecting host-integration pulls functional-tissue-verification, vascularized-volume-printing, stem-cell-supply, genome-stability-gate), INFER returns per-node inferences, programFloor ranks the weakest tier honestly, notices include simulation-only and desk-method caveats; validation rejections (unknown id, duplicates, non-array).
+- `tests/research-program-ui.test.js`: harness mirror — 13 node cards grouped by layer, selection proposes a patch accepted by `validateLearningState`, result lists selected + prerequisites + floor + open questions, no derived keys in accepted state, dispose, missing callback throws.
+- Existing suites updated as listed; expected total ≈ 112 (104 + 8).
+- Release verification: full suite, `npm run check`, `npm run verify:release` (both new checks PASS), `git diff --check`, connected-browser check (node static server): footer v0.12.0-dev, panel renders 13 cards, selecting host-integration pulls the four prerequisites, 0 console errors. Claims scanner remains not-run (documented); compensating checks continue.
+
+[Implementation Order]
+
+1. Write `src/geroscience-evidence.js` + `docs/geroscience-evidence-audit.json` + `tests/geroscience-evidence.test.js`; run.
+2. Write `src/research-program.js` + `tests/research-program.test.js`; run.
+3. Write `src/research-program-ui.js` + `tests/research-program-ui.test.js`; extend `src/cell-division.js` + `tests/cell-division.test.js`; run.
+4. Add the index.html panel + Version-7 note + footer bump; wire `src/cell-learning-ui.js`.
+5. Bump `src/scenario.js` to `/7` with `migrateScenarioV6` and chain updates; update `tests/scenario.test.js`; generate `tests/fixtures/scenario-v7.json`; run.
+6. Update `scripts/verify-release.mjs` + `tests/release.test.js` + `package.json` (0.12.0-dev).
+7. Docs: RESEARCH_PROGRAM.md, SOURCES.md, CHANGELOG, ROADMAP, SCENARIOS, README; run the full suite + verify:release.
+8. Connected-browser verification; record in `docs/VERIFICATION.md`.
+9. Commit, push `main` (gh credential helper), verify live Pages serves v0.12.0-dev, append live-check paragraph, doc-only commit, push again.
+
+---
+
+# Archived plans
+
+## Archived 0.11.0-dev plan — implemented and pushed as commits 8d9a565 + b301531 on 2026-11-02; preserved verbatim below
+
+# Implementation Plan
+
+[Overview]
+
 Add v0.11.0-dev: a simulation-labeled **applications & breast soft-tissue comparison module** answering the owner's request — "bioprinting for boob jobs versus silicone bags", "not censoring and implement/act after planning and get this sophisticated/advanced/research/cuttingEdge" (2026-11-02). Three deliverables: (1) an **applications ledger** — cosmetic/functional/research entries (ear reconstruction, skin/wound printing, breast soft tissue, hair follicles, human-scale constructs, drug-testing tissues) anchored to twelve newly fetched Europe PMC abstracts; (2) a **hypothetical breast soft-tissue comparison** — silicone implants vs autologous fat grafting vs autologous (DIEP-style) flaps vs hypothetical printed adipose, each with its measured adverse record beside the benefit framing (BIA-ALCL and textured implants; the 74,756-discharge revision study; 12-month fat retention 76.4–84.0% in a small cell-enriched cohort; flap complication ranges), transparent intervention-count arithmetic on user-hypothetical inputs, and the **excluded lever: unregulated injectable fillers** (a measured 10-patient complication series — shown, never selectable); (3) **docs** — `docs/APPLICATIONS.md` (measured/preclinical/research-stage/theory tagged) and `docs/FABRICATION_ANALOGY.md` (the "why organs aren't chips" inversions essay, tagged textbook/theory). Then publish: commit, push, live Pages verification.
 
 Interpretation (same as the 0.9/0.10 rulings): uncensored means the full clinical reality is shown — including the adverse records that marketing omits (BIA-ALCL, revision burden, filler catastrophes, fat necrosis, irradiated-breast retention loss) and the honest absence (no reviewed source demonstrates a bioprinted breast graft in a living human). Clinical language throughout (breast augmentation / reconstruction); augmentation in healthy tissue vs reconstruction after cancer are distinct risk contexts and the module computes neither; no recommendation, no surgical or medical instruction, nothing directed at any person; every measured claim verbatim-quoted in `docs/applications-evidence-audit.json` (tested against the runtime catalog); mouse/animal findings never become human outcomes.

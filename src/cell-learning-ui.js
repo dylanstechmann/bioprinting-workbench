@@ -7,6 +7,7 @@ import { createMethodRecipesUI } from './method-recipes-ui.js';
 import { createExpansionTheoryUI } from './acceleration-theory-ui.js';
 import { createLongevityTheoryUI } from './longevity-theory-ui.js';
 import { createApplicationsUI } from './applications-ui.js';
+import { createResearchProgramUI } from './research-program-ui.js';
 
 /** Single state owner: coordinates division arithmetic, research comparison and recipe subcontrollers. */
 export function createCellLearningUI({ elements: $, onStateChange = () => {} }) {
@@ -21,6 +22,7 @@ export function createCellLearningUI({ elements: $, onStateChange = () => {} }) 
   const expansionUI = createExpansionTheoryUI({ elements: $, onStateChange: patch => propose(patch) });
   const longevityUI = createLongevityTheoryUI({ elements: $, onStateChange: patch => propose(patch) });
   const applicationsUI = createApplicationsUI({ elements: $, onStateChange: patch => propose(patch) });
+  const programUI = createResearchProgramUI({ elements: $, onStateChange: patch => propose(patch) });
   function render() {
     const p = getCellProfile(state.selectedCellType), result = evaluateRelativeDivision(state.division);
     select.value = p.id;
@@ -47,6 +49,7 @@ export function createCellLearningUI({ elements: $, onStateChange = () => {} }) 
     expansionUI.render(state);
     longevityUI.render(state);
     applicationsUI.render(state);
+    programUI.render(state);
   }
   function listen(id, event, handler) { const el = $(id); el.addEventListener(event, handler); listeners.push(() => el.removeEventListener(event, handler)); }
   function propose(patch) {
@@ -72,5 +75,5 @@ export function createCellLearningUI({ elements: $, onStateChange = () => {} }) 
   $('organ-barriers').replaceChildren(element('p', organ.notice));
   for (const b of organ.barriers) { const card = document.createElement('article'); card.append(element('h3', b.label), element('p', b.missingEvidence.join(' ')), element('small', `Not modeled · depends on: ${b.dependencyIds.join(', ') || 'independent evidence'}. Dependency map is an authored teaching organization, not a proven fabrication order.`)); $('organ-barriers').append(card); }
   render();
-  return { getState: () => structuredClone(state), setState(next) { if (disposed) throw new Error('Learning controller disposed'); state = validateLearningState(next); render(); }, diagnostics: () => ({ ...structuredClone(state), arithmetic: evaluateRelativeDivision(state.division) }), dispose() { if (!disposed) { disposed = true; listeners.forEach(remove => remove()); researchUI.dispose(); recipesUI.dispose(); expansionUI.dispose(); longevityUI.dispose(); applicationsUI.dispose(); } } };
+  return { getState: () => structuredClone(state), setState(next) { if (disposed) throw new Error('Learning controller disposed'); state = validateLearningState(next); render(); }, diagnostics: () => ({ ...structuredClone(state), arithmetic: evaluateRelativeDivision(state.division) }), dispose() { if (!disposed) { disposed = true; listeners.forEach(remove => remove()); researchUI.dispose(); recipesUI.dispose(); expansionUI.dispose(); longevityUI.dispose(); applicationsUI.dispose(); programUI.dispose(); } } };
 }

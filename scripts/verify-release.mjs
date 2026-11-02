@@ -11,6 +11,8 @@ import { getAgingEvidenceCatalog, validateAgingEvidenceCatalog } from '../src/ag
 import { getBarrierCatalog, validateBarrierCatalog } from '../src/longevity-theory.js';
 import { getApplicationsEvidenceCatalog, validateApplicationsEvidenceCatalog } from '../src/applications-evidence.js';
 import { getApplicationsLedger, getApproachCatalog, validateApplicationsCatalog } from '../src/applications.js';
+import { getGeroscienceEvidenceCatalog, validateGeroscienceEvidenceCatalog } from '../src/geroscience-evidence.js';
+import { getProgramNodes, validateProgramNodes } from '../src/research-program.js';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 /** An allowlisted candidate inventory, NOT an instruction to publish the repo root. */
@@ -41,6 +43,8 @@ export function verifyRelease(directory = root, { targetVersion = JSON.parse(rea
   check('longevity-theory contract', 'validateBarrierCatalog', () => validateBarrierCatalog(getBarrierCatalog(), getEvidenceCatalog(), getAgingEvidenceCatalog()));
   check('applications-evidence contract', 'validateApplicationsEvidenceCatalog', () => validateApplicationsEvidenceCatalog(getApplicationsEvidenceCatalog()));
   check('applications catalog contract', 'validateApplicationsCatalog', () => validateApplicationsCatalog(getApplicationsLedger(), getApproachCatalog(), getApplicationsEvidenceCatalog()));
+  check('geroscience-evidence contract', 'validateGeroscienceEvidenceCatalog', () => validateGeroscienceEvidenceCatalog(getGeroscienceEvidenceCatalog()));
+  check('research-program contract', 'validateProgramNodes', () => validateProgramNodes(getProgramNodes()));
   check('asset hashes', 'verify-release asset hash check', () => {
     for (const asset of JSON.parse(readFileSync(resolve(directory,'assets/manifest.json'),'utf8')).assets) {
       if (!/^assets\/[a-z_]+\.glb$/.test(asset.file)) throw Error('Invalid manifest path');

@@ -464,3 +464,49 @@ Actual verification results:
 - **Not performed:** laboratory execution, independent scientific review. Commit `8d9a565`
   was pushed to `main` under the owner's 2026-11-02 "implement/act after planning"
   authorization; Pages published it automatically. No tag or release object was created.
+
+## 0.12.0-dev local follow-on (agent-run, November 2, 2026)
+
+Owner authorization: "Can you lay out a research program/framework based off public
+literature? … mechanisms that I could guess were relevant/influencial.
+Building/stacking/inference… You're welcome to make use of the regen-workbench research
+desk and other projects/repos … outline/plan in immense detail, then act upon it."
+(2026-11-02) — delivered as a study-planning simulation: BUILD/STACK/INFER over a
+thirteen-node literature-anchored catalog. The regen-workbench research desk is cited
+read-only as companion method (its six-step question workflow and separate-outcome-domains
+rule); that repository was not modified. Four new abstracts were fetched from the Europe
+PMC REST API on 2026-11-02 and are verbatim-quoted in docs/geroscience-evidence-audit.json
+(tested against the runtime catalog). Stacking is dependency ordering, never effect
+multiplication; mouse/review-tier anchors never become human outcomes; no funded program,
+protocol, timeline, youth score or treatment claim is made.
+
+Delivered: the research-program framework (src/geroscience-evidence.js,
+src/research-program.js, src/research-program-ui.js, docs/RESEARCH_PROGRAM.md,
+docs/geroscience-evidence-audit.json), scenario /7 with the researchProgram learning record
+(the /6 shape was published, so a strict /6-to-/7 migration ships with truthful warnings;
+/5, /4 and /3 chain through it), and the version bump to 0.12.0-dev.
+
+Actual verification results:
+
+- **Unit tests:** `node --test tests/*.test.js` — **112 passed, 0 failed** (up from 104;
+  +8 geroscience/research-program contracts; all prior contracts unchanged).
+- **Syntax:** `npm run check` — project modules syntax-checked; `git diff --check` clean.
+- **Release contract:** `npm run verify:release` — all PASS including the two new checks
+  (geroscience-evidence contract, research-program contract); allowlisted inventory
+  87 files.
+- **Browser (connected Playwright at 127.0.0.1:8096, node static server):** footer reads
+  v0.12.0-dev; the HYPOTHETICAL RESEARCH PROGRAM panel renders thirteen node cards with
+  evidence tiers, dependencies and anchors; selecting host-integration plus mTOR modulation
+  produced the live decomposition ("BUILD — selected: mTOR-pathway modulation
+  (rapamycin-class) (mouse-measured); Host integration (theory). STACK — prerequisites your
+  selection pulls in: Aging biomarkers …; Functional-tissue verification …; Vascularized-
+  volume printing …; Stem-cell supply …; Genome-stability gate … Program evidence floor:
+  theory — the weakest-strongest tier in your stack …"); 0 console errors.
+- **Export purity:** covered by unit tests — the serialized /7 state carries the
+  researchProgram selection and no derived outputs (no programFloor, no prerequisites).
+- **Claims scanner: still not-run** (container Python stdlib incomplete; see the 0.8
+  section). Compensating mechanical checks: every geroscience claim quotes the fetched
+  abstract verbatim in the shipped audit (tested), species separation is enforced by the
+  catalog validator, dependency cycles are rejected by the node validator (tested), and
+  all program prose is labeled study-planning simulation.
+- **Not performed:** laboratory execution, independent scientific review.

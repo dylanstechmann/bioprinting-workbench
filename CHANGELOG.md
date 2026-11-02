@@ -3,7 +3,19 @@
 Personal hobby and learning project, AI-assisted. Agent-run software/source checks are
 not biological validation or independent scientific review.
 
-## 0.11.0-dev — local, uncommitted and unpublished
+## 0.12.0-dev — local, uncommitted and unpublished
+
+- Add the simulation-labeled research-program framework: a thirteen-node BUILD/STACK/INFER
+  catalog (aging mechanisms, printing capabilities, measurement tools) anchored across all
+  four evidence catalogs plus four newly fetched geroscience abstracts (senolytic
+  translation limits, rapamycin mouse lifespan, NAD+ precursor limits, methylation clock),
+  with cycle-checked dependencies, first-order inferences and an honest program evidence
+  floor. Aligned read-only with the regen-workbench research desk method.
+- Extend the scenario to /7 with the researchProgram learning record; /6, /5, /4 and /3
+  migrations default it with truthful warnings.
+- Add docs/RESEARCH_PROGRAM.md and docs/geroscience-evidence-audit.json.
+
+## 0.11.0-dev — committed and pushed to main on 2026-11-02
 
 - Add the simulation-labeled applications & breast soft-tissue comparison module: a
   six-entry applications ledger (ear, skin, breast soft tissue, hair, human-scale

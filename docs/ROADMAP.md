@@ -69,7 +69,7 @@ whole-body-including-brain lever shown and never selectable. No eternal-youth,
 life-extension or treatment claim is made; the four aging sources are verbatim-quoted in the
 shipped audit. See docs/LONGEVITY_THEORY.md and docs/aging-evidence-audit.json.
 
-## Local 0.11.0-dev follow-on — owner-authorized speculative teaching content
+## Local 0.11.0-dev follow-on — pushed to main on 2026-11-02 (no tagged version)
 
 Owner instruction (2026-11-02): "bioprinting for boob jobs versus silicone bags ... not
 censoring and implement/act after planning and get this sophisticated/advanced/research/
@@ -80,3 +80,14 @@ six-entry applications ledger, the chip-fabrication inversions essay, and scenar
 safety comparison, recommendation or treatment claim is made; no human printed breast
 result exists in the reviewed sources and the module says so. See docs/APPLICATIONS.md,
 docs/FABRICATION_ANALOGY.md and docs/applications-evidence-audit.json.
+
+## Local 0.12.0-dev follow-on — owner-authorized speculative teaching content
+
+Owner instruction (2026-11-02): "Can you lay out a research program/framework based off
+public literature? … Building/stacking/inference … make use of the regen-workbench research
+desk … outline/plan in immense detail, then act upon it." Delivered as the research-program
+framework: a thirteen-node catalog with BUILD/STACK/INFER semantics, cycle-checked
+dependencies, per-node first-order inferences and an honest evidence floor; the regen-workbench
+desk is cited read-only as companion method. No funded program, protocol, timeline, youth
+score or treatment claim is made; mouse/review-tier anchors never become human outcomes. See
+docs/RESEARCH_PROGRAM.md and docs/geroscience-evidence-audit.json.
