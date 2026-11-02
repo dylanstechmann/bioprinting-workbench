@@ -3,7 +3,7 @@
 Personal hobby and learning project, AI-assisted. Agent-run software/source checks are
 not biological validation or independent scientific review.
 
-## 0.20.0-dev - local, uncommitted and unpublished
+## 0.20.0-dev - committed and pushed to main on 2026-11-02
 
 - The peristaltic perfusion-pump circuit joined the shipped assets as a genuine Blender-authored
   GLB (25 meshes, 6 materials, 2,876 triangles), authored in the owner's live Blender 5.1.2 via

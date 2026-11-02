@@ -927,3 +927,9 @@ docs/blender-isolation-run-2026-11-02-pump.json with the export stats and hashes
   v0.20.0-dev.
 - Not performed: any change to the owner's scene or its unsaved work; any new scientific,
   clinical or species claim; any flow-rate model of the pump.
+- **Live Pages verification (after commit 66ad767 was pushed):** fetching
+  https://dylanstechmann.github.io/bioprinting-workbench/ returned the page with footer
+  "v0.20.0-dev"; /assets/perfusion_pump.glb served live at HTTP 200 at exactly 108,588 bytes
+  (the genuine Blender export); /docs/blender-isolation-run-2026-11-02-pump.json served live at
+  HTTP 200; the live manifest.json lists the perfusion-pump entry. The connected-browser check
+  fetched all five GLBs at HTTP 200 and rendered the pump on the bench with 0 console errors.
