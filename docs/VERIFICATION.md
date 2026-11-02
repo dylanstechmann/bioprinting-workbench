@@ -787,3 +787,18 @@ Actual verification results:
   stack table (did not list this project).
 - **Not performed:** laboratory execution; saving or modifying the owner's open .blend (never
   touched); any biological calibration.
+
+- **Live Pages verification (after commit e5650ce was pushed):** fetching
+  https://dylanstechmann.github.io/bioprinting-workbench/ returned the updated page with footer
+  "v0.17.0-dev"; /assets/bioprinter.glb served at HTTP 200 with 176,096 bytes (the genuine
+  Blender 5.1.2 export); /docs/blender-isolation-run-2026-11-02.json served live with verdict
+  "pass" and blenderVersion "Blender 5.1.2". Deployment propagated within minutes of the push.
+- **GitHub side (agent-run, owner-authorized by the "Update the github?" instruction):** repo
+  homepage set to the live Pages URL (was null despite the site being live); six topics set
+  (bioprinting, tissue-engineering, simulation, education, browser, vanilla-javascript); first
+  release object created (tag v0.17.0-dev with honest notes: AI-assisted personal learning
+  project, teaching simulation only, not biologically calibrated, no laboratory work); regen-workbench
+  homepage set to its live research-desk Pages URL. The owner's profile README was meanwhile
+  deliberately simplified on GitHub by the owner (stack table removed, AGENTS.md deleted); the
+  locally drafted stack-table row for this project was discarded to respect that edit - nothing
+  was pushed to the profile repo.
