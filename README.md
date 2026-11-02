@@ -86,6 +86,10 @@ equipment, patient records or experimental measurements are connected.
   — thirteen literature-anchored nodes with cycle-checked dependencies, first-order
   inferences and an honest evidence floor, aligned with the regen-workbench desk method (see
   [program write-up](docs/RESEARCH_PROGRAM.md)).
+- `src/hardware-costs.js`: reference hardware cost ledger for a hobby benchtop bioprinting
+  rig — 22 parts, authored-estimate prices with provenance, one-time and recurring kept
+  separate, and a live SVG cost chart (see
+  [parts write-up](docs/HARDWARE_COSTS.md)).
 - `tests/model.test.js`: Node's built-in test runner; no package installation required.
 - `vendor/three/`: pinned Three.js 0.187.0 runtime and OrbitControls, MIT license retained.
 

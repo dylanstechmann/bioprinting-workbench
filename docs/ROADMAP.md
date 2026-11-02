@@ -81,7 +81,7 @@ safety comparison, recommendation or treatment claim is made; no human printed b
 result exists in the reviewed sources and the module says so. See docs/APPLICATIONS.md,
 docs/FABRICATION_ANALOGY.md and docs/applications-evidence-audit.json.
 
-## Local 0.12.0-dev follow-on — owner-authorized speculative teaching content
+## Local 0.12.0-dev follow-on — pushed to main on 2026-11-02 (no tagged version)
 
 Owner instruction (2026-11-02): "Can you lay out a research program/framework based off
 public literature? … Building/stacking/inference … make use of the regen-workbench research
@@ -91,3 +91,16 @@ dependencies, per-node first-order inferences and an honest evidence floor; the 
 desk is cited read-only as companion method. No funded program, protocol, timeline, youth
 score or treatment claim is made; mouse/review-tier anchors never become human outcomes. See
 docs/RESEARCH_PROGRAM.md and docs/geroscience-evidence-audit.json.
+
+## Local 0.13.0-dev follow-on — owner-authorized speculative teaching content
+
+Owner instruction (2026-11-02): "Push the bounds? Go through the parts list for the
+bioprinting and the cost for each and make visualizations that will display in a browser?
+The parts list and prices are for reference … figuring stuff out on the computer prior to
+the physical in which more is at stake." Delivered as the reference hardware cost ledger:
+22 parts across six categories with authored-estimate reference prices (vendor pages
+timed out for anchoring, so no price claims to be current; fetched-price path reserved),
+strict provenance validation, an evaluator that never sums one-time and recurring costs
+($5,615 + $525/mo cell-capable; $725 + $185/mo acellular), and a live hand-rolled SVG
+stacked-bar chart in the panel. No purchase is recommended; no parts total buys any
+biological outcome. See docs/HARDWARE_COSTS.md.

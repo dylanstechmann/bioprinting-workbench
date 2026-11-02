@@ -3,7 +3,23 @@
 Personal hobby and learning project, AI-assisted. Agent-run software/source checks are
 not biological validation or independent scientific review.
 
-## 0.12.0-dev — local, uncommitted and unpublished
+## 0.13.0-dev — local, uncommitted and unpublished
+
+- Add the reference hardware cost ledger with browser visualizations: a 22-part parts list
+  across six categories (motion platform, extrusion toolhead, bioink materials,
+  sterile-culture infrastructure, measurement/QC, recurring consumables), each price an
+  authored indicative estimate with a provenance basis and honesty note; vendor pages
+  were attempted for anchoring on 2026-11-02 and timed out, so no price claims to be
+  current, and the validator keeps a fetched-list-price path for future anchored numbers.
+- The evaluator keeps one-time and recurring costs separate ($5,615 once + $525/month
+  cell-capable; $725 + $185/month acellular practice) and the hand-rolled SVG chart redraws
+  live as parts are included or excluded; the printed syringe carriage cites the
+  open-perfusion-rig companion project.
+- Extend the scenario to /8 with the hardwareBudget learning record; /7, /6, /5, /4 and /3
+  migrations default it with truthful warnings.
+- Add docs/HARDWARE_COSTS.md (full parts write-up and the in-silico-first argument).
+
+## 0.12.0-dev — committed and pushed to main on 2026-11-02
 
 - Add the simulation-labeled research-program framework: a thirteen-node BUILD/STACK/INFER
   catalog (aging mechanisms, printing capabilities, measurement tools) anchored across all

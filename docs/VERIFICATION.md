@@ -520,3 +520,51 @@ Actual verification results:
 - **Not performed:** laboratory execution, independent scientific review. Commit `82d9b2b`
   was pushed to `main` under the owner's 2026-11-02 "then act upon it" authorization; Pages
   published it automatically. No tag or release object was created.
+
+## 0.13.0-dev local follow-on (agent-run, November 2, 2026)
+
+Owner authorization: "Push the bounds? Go through the parts list for the bioprinting and
+the cost for each and make visualizations that will display in a browser? The parts list
+and prices are for reference. Getting eternal youth / lack of any bodily damage (ie.
+from aging)... figuring stuff out on the computer prior to in the physical in which more
+is at stake -- okay" (2026-11-02) — delivered as a reference-only hardware cost ledger with
+a live SVG chart. No parts list with prices existed anywhere in the workspace, so the
+22-part list was authored here (interpretation recorded in implementation_plan.md); the
+open-perfusion-rig parametric syringe carriage is cited as the extruder's physical
+companion. Public vendor pages (Adafruit, Creality) were attempted for price anchoring
+on 2026-11-02 and timed out, so every price carries priceBasis 'authored-estimate' with
+the attempts documented; the validator keeps a fetched-list-price path (source URL +
+fetch date required) for future anchored numbers. One-time and recurring costs are never
+summed; no purchase is recommended; no parts total buys any biological outcome.
+
+Delivered: the hardware cost module (src/hardware-costs.js, src/hardware-costs-ui.js,
+docs/HARDWARE_COSTS.md), scenario /8 with the hardwareBudget learning record (the /7
+shape was published, so a strict /7-to-/8 migration ships with truthful warnings; /6, /5,
+/4 and /3 chain through it), and the version bump to 0.13.0-dev.
+
+Actual verification results:
+
+- **Unit tests:** `node --test tests/*.test.js` — **117 passed, 0 failed** (up from 112;
+  +5 hardware-cost contracts; all prior contracts unchanged).
+- **Syntax:** `npm run check` — project modules syntax-checked; `git diff --check` clean.
+- **Release contract:** `npm run verify:release` — all PASS including the new
+  hardware-cost contract check; allowlisted inventory 90 files.
+- **Browser (connected Playwright at 127.0.0.1:8096, node static server):** footer reads
+  v0.13.0-dev; the REFERENCE HARDWARE COSTS panel renders 22 part cards and the SVG
+  chart (14 rect nodes, 10 text nodes: one-time and recurring bars, category segments,
+  legend); the default result reports "Reference bench, 22 parts included. One-time:
+  $5615. Recurring: about $525 per month. The two are never summed..."; unchecking the
+  laminar-flow hood updated it live to "21 parts included. One-time: $3715."; 0 console
+  errors.
+- **Arithmetic pinned by tests:** full one-time $5,615 and recurring $525/month;
+  acellular-practice subset (the six optional parts excluded) $725 one-time and
+  $185/month; sterile-culture category $4,890 one-time. One-time and recurring are
+  never combined into a single number (tested).
+- **Export purity:** covered by unit tests — the serialized /8 state carries the
+  hardwareBudget selection and no derived outputs (no oneTimeTotalUSD in exports).
+- **Claims scanner: still not-run** (container Python stdlib incomplete; see the 0.8
+  section). Compensating mechanical checks: prices are labeled authored-estimate by the
+  catalog validator (tested), fetch-date requirements are enforced for any future
+  fetched-list-price entry (tested), and all cost prose is labeled reference-only.
+- **Not performed:** laboratory execution, independent scientific review, or any
+  purchase.

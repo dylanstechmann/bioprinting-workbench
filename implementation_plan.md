@@ -2,6 +2,97 @@
 
 [Overview]
 
+Add v0.13.0-dev: a **reference hardware cost ledger with browser visualizations** for a hobby benchtop bioprinting setup — a 22-part reference parts list across six categories (motion platform, extrusion toolhead, bioink materials, sterile-culture infrastructure, measurement/QC, recurring consumables), each with an indicative reference price, provenance basis, honesty note and recurring/optional flags; an evaluator computing per-category subtotals, one-time total and recurring monthly total; and a hand-rolled SVG visualization (house precedent: the flow-network SVG and canvas heatmap in `src/analysis-ui.js`) rendering a category-stacked cost bar that updates live as parts are included/excluded. This is the "figuring stuff out on the computer prior to in the physical" milestone: the workbench stays the $0 in-silico entry point, and the parts list shows honestly where the money goes when the physical rig — where more is at stake — begins. The visualization makes the cost dominance explicit (sterile-culture infrastructure dwarfs the printer itself), and the module teaches the acellular-practice rig (~$800) versus cell-culture-capable bench (~$5.6K + ~$525/month) split. Published as a simulation-labeled reference panel; prices are reference estimates, not quotes, not current, and no purchase is recommended anywhere.
+
+Owner authorization (2026-11-02): "Push the bounds? Go through the parts list for the bioprinting and the cost for each and make visualizations that will display in a browser? The parts list and prices are for reference. Getting eternal youth / lack of any bodily damage (ie. from aging)... figuring stuff out on the computer prior to in the physical in which more is at stake -- okay" + "plan out what to do and then act on it." Interpretation recorded in the plan and commit: no parts list with prices exists anywhere in the workspace (open-perfusion-rig holds math/firmware/SCAD only), so the reference list is **authored here**; open-perfusion-rig's parametric syringe carriage is cited as the physical-companion project for the extruder's printed part. Public vendor pages (Adafruit, Creality) were attempted for price anchoring on 2026-11-02 and timed out from this environment, so every price carries `priceBasis: 'authored-estimate'` with the attempt documented — the validator keeps a `fetched-list-price` path for future fetched anchors and requires sourceUrl+fetchDate for it. "Eternal youth / lack of any bodily damage" remains the aspiration framing only: the module states plainly that no parts total buys any outcome, that the research-program module's evidence floor still applies, and that cells, sterility and money are the physical stakes the in-silico workbench exists to respect.
+
+[Types]
+
+**Hardware part record** (catalog entries): `{ id, label, category, referencePriceUSD: int, priceBasis: 'fetched-list-price'|'authored-estimate', sourceUrl: https URL, note, recurring: bool, optional: bool }`. Categories enum: `['motion-platform','extrusion-toolhead','bioink-materials','sterile-culture','measurement-qc','consumables-recurring']`. Price bounds: integer 1..50000 USD. Every part: `note` ≥ 40 chars (purpose + honesty), `priceBasis` 'authored-estimate' today (validator requires fetched basis to carry fetch evidence), `sourceUrl` points at a representative vendor/product category page with no price claim.
+
+**Catalog (22 parts)** — one-time: used FDM printer base $180; spare NEMA17 steppers ×3 $60; GRBL/RAMPS-class controller $50; 12 V enclosed PSU $35 (motion-platform); DIY syringe-pump extruder hardware $90; carriage-print filament $25 (extrusion-toolhead, cites open-perfusion-rig syringe_carriage.scad); sodium alginate 100 g $45; gelatin 500 g $20; calcium chloride 100 g $15 (bioink-materials); stovetop pressure sterilizer $90; hobby laminar-flow hood $1,900; used CO2 incubator $2,500; basic microscope $400 (sterile-culture, optional=true — acellular practice can skip); milligram scale $70; bench pH meter $90; USB temp logger $45 (measurement-qc). Recurring (~monthly): culture medium 500 mL $90; FBS 100 mL $250 (bioink-materials, recurring, optional); sterile syringes/needles $40; culture dishes/flasks $55; 0.22 µm sterile filters $60; gloves/disinfectant $30 (consumables-recurring). Totals the evaluator must reproduce: full one-time $5,615; recurring $525/month; acellular practice subset (sterile-culture + FBS/medium excluded) = $725 one-time + $185/month.
+
+**Evaluator result** (`evaluateHardwareBudget`): `{ status: 'unconfigured'|'costed', assumptionOrigin: 'reference-hypothetical', parts: [...], categories: [{ id, label, subtotalUSD }], oneTimeTotalUSD, recurringMonthlyUSD, notices }` — one-time and recurring never summed into one number; notices carry reference-only/no-quote/no-purchase/in-silico-first statements.
+
+**`learning.hardwareBudget`** (new `/8` key): `{ includedPartIds: string[] }` — default = all 22 catalog ids; unique, subset of catalog, empty allowed (unconfigured).
+
+[Files]
+
+New:
+
+- `src/hardware-costs.js` — catalog + `HARDWARE_COST_SCHEMA`, `validateHardwareCatalog`, `getHardwareCatalog`, `defaultHardwareBudget`, `validateHardwareBudget`, `evaluateHardwareBudget`, category constants.
+- `src/hardware-costs-ui.js` — `createHardwareCostsUI` (part cards with checkboxes and price chips, live SVG stacked-bar chart per `buildCostChart`, totals and notices, dispose).
+- `docs/HARDWARE_COSTS.md` — full parts table with prices and provenance, acellular-vs-cell-capable comparison, in-silico-first essay, failed price-fetch documentation, disclaimers.
+- `tests/hardware-costs.test.js`, `tests/hardware-costs-ui.test.js`.
+- `tests/fixtures/scenario-v8.json` — native `/8` fixture with a populated hardwareBudget.
+
+Modified:
+
+- `src/cell-division.js` — import + `defaultLearningState()` adds `hardwareBudget`; `validateLearningState` accepts it.
+- `src/cell-learning-ui.js` — instantiate/render/dispose `createHardwareCostsUI`.
+- `src/scenario.js` — `SCENARIO_SCHEMA` → `/8`; new `migrateScenarioV7`; `/6`–`/3` migration patches add the hardwareBudget default; `parseScenario` dispatches `/7`.
+- `index.html` — hardware-cost panel (after the research-program panel) with `<svg id="hardware-cost-chart">`; Version 8 restore note; footer `v0.13.0-dev`.
+- `package.json` — `0.13.0-dev`.
+- `scripts/verify-release.mjs` — new check `hardware-cost contract`.
+- `tests/release.test.js` — hardware-cost contract asserted.
+- `tests/cell-division.test.js` — hardwareBudget default asserts + rejection patches.
+- `tests/scenario.test.js` — v7→v8 renames; new v7-migration test; fixture loop gains `scenario-v8.json` (native) and `scenario-v7.json` (migrates from /7); invalid-schema case becomes `bioprinting-workbench/9`; hardwareBudget fields in round-trip/rejection tests; export purity (no `oneTimeTotalUSD` in export).
+- `docs/SOURCES.md` — 0.13 hardware-reference ledger (authored estimates; fetch attempts documented as timed out).
+- `docs/SCENARIOS.md` — Version 8 header/list + Version 7 migration section.
+- `CHANGELOG.md`, `docs/ROADMAP.md`, `README.md` — 0.13 sections; 0.12 relabeled as pushed.
+- `docs/VERIFICATION.md` — 0.13 section with executed checks; live-check paragraph after push (doc-only commit).
+- `implementation_plan.md` — this plan; the 0.12 plan preserved verbatim below the archive divider.
+
+[Functions]
+
+New:
+
+- `src/hardware-costs.js`: `getHardwareCategories()`, `getHardwareCatalog()`, `validateHardwareCatalog(raw)`, `defaultHardwareBudget()`, `validateHardwareBudget(raw)`, `evaluateHardwareBudget(settings)`.
+- `src/hardware-costs-ui.js`: `createHardwareCostsUI({ elements, onStateChange })` → `{ render, dispose }` (internal `buildCostChart(result)` builds the SVG via `document.createElementNS`).
+
+Modified:
+
+- `defaultLearningState()` / `validateLearningState()` (src/cell-division.js) — add the hardwareBudget key.
+- `migrateScenarioV3`…`migrateScenarioV6` (src/scenario.js) — add `hardwareBudget: defaultHardwareBudget()` to the defaulted learning patches (warning text extended truthfully).
+- `parseScenario` (src/scenario.js) — `/7` branch → `migrateScenarioV7`.
+- `verifyRelease` (scripts/verify-release.mjs) — `hardware-cost contract` row.
+
+[Classes]
+
+None — module-level factories and frozen catalogs per house convention.
+
+[Dependencies]
+
+None: no packages, no runtime network, no chart library — the SVG chart is hand-rolled to match the zero-dependency rule and the existing `src/analysis-ui.js` SVG/canvas precedent. All prices are static authored strings; the only external references are source URLs displayed as links.
+
+[Testing]
+
+- `tests/hardware-costs.test.js`: catalog contract — 22 parts, all six categories populated, every entry authored-estimate with note ≥40 chars and https sourceUrl, prices in bounds, recurring/optional flags; validator rejections (bad basis, http url, duplicate ids, unknown category, price 0/50001, note too short, fetched basis without... fetched WITH url is the future path — forged 'fetched-list-price' with url passes; so the rejection matrix covers enum/bounds/shape, and a test pins today's all-estimate state); evaluator — default full budget returns status 'costed', oneTimeTotalUSD 5615, recurringMonthlyUSD 525, category subtotals (sterile-culture 4890 largest), acellular subset math (~805/155), empty selection → 'unconfigured', notices include reference-only and in-silico-first; budget validation rejections (unknown id, duplicates, non-array).
+- `tests/hardware-costs-ui.test.js`: harness mirror — 22 part cards render, default chart SVG contains six category segments and both totals, unchecking the hood updates the patch and rerender drops the sterile-culture subtotal, accepted state carries no derived keys, dispose, missing callback throws.
+- Existing suites updated as listed; expected total ≈ 117 (112 + 5).
+- Release verification: full suite, `npm run check`, `npm run verify:release` (new check PASS), `git diff --check`, connected-browser check: footer v0.13.0-dev, 22 cards, SVG chart renders with category labels, unchecking a part updates totals, 0 console errors. Claims scanner remains not-run (documented).
+
+[Implementation Order]
+
+1. Write `src/hardware-costs.js` + `tests/hardware-costs.test.js`; run.
+2. Write `src/hardware-costs-ui.js` + `tests/hardware-costs-ui.test.js`; extend `src/cell-division.js` + `tests/cell-division.test.js`; run.
+3. Add the index.html panel + Version-8 note + footer bump; wire `src/cell-learning-ui.js`.
+4. Bump `src/scenario.js` to `/8` with `migrateScenarioV7` and chain updates; update `tests/scenario.test.js`; generate `tests/fixtures/scenario-v8.json`; run.
+5. Update `scripts/verify-release.mjs` + `tests/release.test.js` + `package.json` (0.13.0-dev).
+6. Docs: HARDWARE_COSTS.md, SOURCES.md, CHANGELOG, ROADMAP, SCENARIOS, README; full suite + verify:release.
+7. Connected-browser verification; record in `docs/VERIFICATION.md`.
+8. Commit, push `main`, verify live Pages serves v0.13.0-dev (footer, panel, served modules, HARDWARE_COSTS.md), append live-check paragraph, doc-only commit, push again.
+
+---
+
+# Archived plans
+
+## Archived 0.12.0-dev plan — implemented and pushed as commits 82d9b2b + 2977e86 on 2026-11-02; preserved verbatim below
+
+# Implementation Plan
+
+[Overview]
+
 Add v0.12.0-dev: a simulation-labeled **research program framework module** that turns the owner's request — "lay out a research program/framework based off public literature... mechanisms that I could guess were relevant/influential. Building/stacking/inference" — into an interactive, literature-anchored program designer: a catalog of research nodes (aging-mechanism levers, printing capabilities, and measurement tools) whose evidence tiers, adverse anchors, open questions and dependencies are drawn from the four accumulated evidence catalogs plus four newly fetched geroscience sources; the evaluator implements **BUILD** (select nodes), **STACK** (dependency closure with prerequisites auto-identified, cycle-checked), and **INFER** (first-order theory inferences per node, never cross-node effect multiplication), and reports the program's honest evidence floor. The framework aligns with the owner's regen-workbench research desk (read-only reference: its question→alternatives→data→frozen-plan→runs→review method and its "clocks support narrower questions, not every outcome domain" caveat are cited as companion method) and ships as `docs/RESEARCH_PROGRAM.md` plus a workbench panel. Then publish: commit, push, live Pages verification.
 
 Owner authorization (2026-11-02): "Can you lay out a research program/framework based off public literature?... Building/stacking/inference... You're welcome to make use of the regen-workbench research desk and other projects/repos... I want you to outline/plan in immense detail, then act upon it." Interpretation: the program is a study-planning simulation for a personal learning project — uncensored about the levers (senolytics, rapamycin/mTOR, NAD+ precursors, partial reprogramming, systemic factors, clocks, stem-cell supply, vascularization) and equally uncensored about their measured limits (senolytic translation constraints incl. targeting beneficial senescent cells; rapamycin's "postponing cancer vs retarding aging" ambiguity; NAD+ pharmacokinetic limits; mouse-only reprogramming and parabiosis; no human printed-tissue result). No treatment, dosing, protocol, timeline or funding claim; mouse/animal findings never become human outcomes; regen-workbench is referenced read-only (its own AGENTS.md and history are untouched).

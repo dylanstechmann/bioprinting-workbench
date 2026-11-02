@@ -116,3 +116,20 @@ locators in `docs/geroscience-evidence-audit.json`.
 | Harrison et al. (2009), Rapamycin fed late in life extends lifespan in genetically heterogeneous mice | 10.1038/nature08221; PMID 19587680 | Mouse lifespan extension (three sites, 600-day start) | Human outcomes or anti-aging-versus-cancer attribution |
 | NAD+ and its anti-aging effects in the context of longevity and menopause (2026) | 10.2174/0113895575469704260805105227; PMID 42669985 | NAD+ decline framing; NMN/NR translation limits | Supplementation recommendation or human efficacy |
 | Horvath (2013), DNA methylation age of human tissues and cell types | 10.1186/gb-2013-14-10-r115; PMID 24138928 | Multi-tissue methylation clock properties | That changing the clock changes aging |
+
+## 0.13.0-dev hardware-reference ledger (agent-run, November 2, 2026)
+
+Reference prices are **authored indicative estimates**, not quotes and not current. Public
+vendor pages (Adafruit, Creality, Fisher, Sigma-Aldrich, Thermo Fisher) were attempted
+for price anchoring on 2026-11-02 and timed out from this environment; the validator keeps
+a fetched-list-price path (source URL + fetch date required) for future anchored numbers,
+and none are present today. Full list and disclaimers in `docs/HARDWARE_COSTS.md`.
+
+| Category | Parts | Basis | Not claimed |
+| --- | --- | --- | --- |
+| Motion platform | FDM printer base, NEMA17 spares, GRBL/RAMPS-class controller, 12 V PSU | Authored estimate bands; representative vendor category URLs | Any current price, quote, or purchase recommendation |
+| Extrusion toolhead | Syringe-pump extruder hardware; carriage filament (open-perfusion-rig companion) | Authored estimate bands | Any current price; the printed carriage is not a sterile fluid path |
+| Bioink materials | Alginate, gelatin, CaCl2 one-time; medium and FBS recurring | Authored estimate bands | Any current price, recipe validity, or culture instruction |
+| Sterile culture (optional) | Pressure sterilizer, laminar hood, used CO2 incubator, microscope | Authored estimate bands | Any current price; sterilization or contamination control guarantee |
+| Measurement/QC | Milligram scale, pH meter, USB temp logger | Authored estimate bands | Any current price; measurement certification |
+| Consumables (recurring) | Syringes/needles, dishes/flasks, 0.22 µm filters, gloves/disinfectant | Authored estimate bands | Any current price; sterility guarantee |
