@@ -340,6 +340,15 @@ Actual verification results:
   in tests; all theory prose is labeled hypothetical/simulation; adverse evidence
   remains beside benefit framing; no treatment instruction for any person or animal
   was added.
-- **Not performed:** laboratory execution, independent scientific review. Commit 2
-  and the second push were executed under the same owner authorization as commit 1;
-  live Pages verification for v0.9.0-dev is recorded below.
+- **Live Pages verification (after commit `a58062d` was pushed):** fetching
+  https://dylanstechmann.github.io/bioprinting-workbench/ returned the updated page
+  with footer "Bioprinting Workbench / v0.9.0-dev", the HYPOTHETICAL EXPANSION THEORY
+  panel with all nine inputs, the mechanism-card container, and the
+  `docs/ACCELERATION_THEORY.md` link; `/src/acceleration-theory.js` (13,560 bytes,
+  six mechanisms including the excluded lever) and
+  `/docs/ACCELERATION_THEORY.md` (with [measured]/[theory] tags) are both served.
+  Deployment propagated within minutes of the push.
+- **Not performed:** laboratory execution, independent scientific review. Commits
+  `3e58f62` (0.7/0.8) and `a58062d` (0.9) were pushed to `main` under the owner's
+  2026-11-01 repo-update authorization; Pages published both automatically. No tag or
+  release object was created.
