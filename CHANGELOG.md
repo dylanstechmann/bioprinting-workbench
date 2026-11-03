@@ -3,6 +3,16 @@
 Personal hobby and learning project, AI-assisted. Agent-run software/source checks are
 not biological validation or independent scientific review.
 
+## 0.22.0-dev - local, uncommitted and unpublished
+
+- The cross-reference view: storyboard knobs projected through user-guessed hypothetical scales
+  into the audited nozzle-shear and Krogh evaluators, with identity (outputs equal direct
+  evaluator calls) and non-mutation (records untouched) pinned by tests; upstream validation
+  errors propagate instead of being clamped; the dimensionless models are deliberately not
+  mapped; disabled by default because independence is the default state.
+- Scenario /13 (analyses.crossReference); migrateScenarioV12 plus extended older warnings;
+  fixture scenario-v13.json; tests 158 -> 162.
+
 ## 0.21.0-dev - committed and pushed to main on 2026-11-02
 
 - The Krogh oxygen-supply reference (the 200-micron wall): idealized steady cylinder, zero-order

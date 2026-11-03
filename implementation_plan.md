@@ -2,6 +2,58 @@
 
 [Overview]
 
+Deliver **v0.22.0-dev "The cross-reference"**: close the repo's last self-declared models gap - the deliberate uncoupling between the storyboard knobs and the physics references - with an honest teaching juxtaposition: a cross-reference view where user-supplied hypothetical mapping scales translate the storyboard's dimensionless knobs (perfusion drive, filament spacing, relative cell population, layer count) into physical inputs for the existing nozzle-shear and Krogh evaluators, so the user can see what their scenario would imply under their own guessed scales, while the underlying records stay byte-identical and every output stays labeled hypothetical. Plus milestone housekeeping: the v0.19.0-dev and v0.20.0-dev GitHub releases.
+
+[Context]
+
+The v0.18 summary named the shear model's uncoupling as the standing gap; the Krogh module (0.21) made the gap richer: the workbench now has two physical-unit references (wall shear; oxygen-supply distance) and a dimensionless storyboard (spacing 0.24-0.6, layers 3-9, population 0.1-1, perfusion 0-1, channels bool, recipient enum). The honest closure is NOT a physical coupling - it is a read-only juxtaposition: evaluateCrossReference re-parameterizes COPIES of the two audited evaluators with mapped settings and must produce outputs bit-identical to calling those evaluators directly (pinned by identity tests), while the persisted nozzleShear and vascularSupply records are never touched (pinned by non-mutation tests). The dimensionless slab/oxygen3d/flow models are deliberately not mapped and the panel says why: they take owner measurements, not invented scales. No new scientific claims are made, so no new evidence catalog is needed - the claims-language discipline carries via notices and tests.
+
+[Types]
+
+- New record (src/cross-reference.js): { enabled: boolean, parameterOrigin: 'hypothetical-controls', settings: { flowScaleMm3PerS (perfusion unit -> mm3/s; 0.001..100), radiusScaleUm (spacing unit -> um channel diameter; 10..2000), consumptionScaleMolPerM3S (population unit -> mol/(m3 s); 1e-6..1e-1), layerScaleUm (one layer -> um thickness; 1..500) } }. Default: disabled with scales flow 10, radius 500, consumption 1e-2, layer 100.
+- Result: { status: 'disabled' | 'mapped', mapped: { flowMm3PerS, channelRadiusUm, consumptionMolPerM3S, constructThicknessUm }, shear: <nozzle evaluator result summary>, supply: <krogh evaluator result summary>, teaching: { thicknessVsPlanarUm, thicknessVsKroghUm, verdicts: [...] }, notices }.
+- Scenario: analyses.crossReference under bioprinting-workbench/13.
+
+[Files]
+
+New: src/cross-reference.js; src/cross-reference-ui.js; tests/cross-reference.test.js; tests/fixtures/scenario-v13.json; docs/CROSS_REFERENCE.md.
+Modified: src/scenario.js (schema /13, defaultAnalyses + analyses allowlist + normalize validation, migrateScenarioV12 with truthful warning, older migrations default the key via the shared analyses spread, dispatch /12); src/app.js (createCrossReferenceUI wiring with a getStoryboard callback, export/import of the record); tests/scenario.test.js (/13 round-trip, v12 migration, fixture v13, reject /14, forge cases); index.html (cross-reference panel after the vascular panel, scenario-status Version 13 prose, footer v0.22.0-dev); package.json (0.22.0-dev); docs/SCENARIOS.md, docs/VERIFICATION.md, docs/ROADMAP.md, docs/NOZZLE_SHEAR.md + docs/VASCULAR_SUPPLY.md (each gains a pointer that the cross-reference view can re-parameterize them), CHANGELOG.md, README.md; implementation_plan.md (this plan; 0.21 archived).
+
+[Functions]
+
+New: validateCrossReferenceSettings(raw), defaultCrossReference(), validateCrossReferenceRecord(raw), evaluateCrossReference(record, nozzleShearRecord, vascularSupplyRecord, storyboard) in src/cross-reference.js - the evaluator imports evaluateNozzleShear and evaluateVascularSupply, builds mapped settings copies, and returns their result summaries plus arithmetic teaching comparisons; createCrossReferenceUI({ elements, onStateChange, getStoryboard }) in src/cross-reference-ui.js.
+Modified: defaultAnalyses(), normalize(), migrateScenarioV12, parseScenario dispatch in src/scenario.js; the app.js state export/import lines.
+
+[Classes]
+
+None.
+
+[Dependencies]
+
+None. No new packages; one-directional imports (cross-reference -> the two evaluators, no cycles).
+
+[Testing]
+
+- tests/cross-reference.test.js: (1) identity - for several storyboard/scale combinations, the returned shear tauPa equals evaluateNozzleShear with the mapped flow and the returned supply radius equals evaluateVascularSupply with mapped radius/consumption, exactly; (2) non-mutation - the passed nozzleShear and vascularSupply records deep-equal before and after, and the returned mapped settings differ from the originals; (3) disabled status returns no mapped values; (4) validators reject out-of-range scales, unknown origins, extra keys; (5) teaching arithmetic - thicknessVsPlanar equals layers*layerScale minus planarLimitUm for a not-limiting Krogh case and is null when the Krogh radius is null, with the verdict text never containing guarantee/will/predict/safe/approved language; (6) boundary sanity - mapped flow respects the storyboard perfusion bounds and scale bounds product stays inside the shear evaluator's flow range (or the evaluator's own validation error is surfaced, not swallowed).
+- tests/scenario.test.js: /13 round-trip, v12 fixture migrates with crossReference defaulted and warned, v13 fixture carries an enabled record, reject unknown /14.
+- Full battery: node --test tests/*.test.js (158 + new), npm run check, git diff --check, verify:release detached, connected-browser check (mappings recompute live, storyboard knob changes propagate, 0 console errors), commit + push, live Pages verification, guarded doc-only record commit. Then gh release create for v0.19.0-dev and v0.20.0-dev with honest notes.
+
+[Implementation Order]
+
+1. Author src/cross-reference.js (validators, default, evaluator with identity-preserving re-parameterization), tests/cross-reference.test.js, run green.
+2. Scenario /13: schema bump, defaultAnalyses, normalize, migrateScenarioV12 + older-migration defaulting, dispatch, fixtures/scenario-v13.json, tests/scenario.test.js updates; run green.
+3. UI: src/cross-reference-ui.js (mapping inputs, juxtaposition table, notices), app.js wiring with getStoryboard, index.html panel + Version 13 prose + footer 0.22.0-dev; package.json bump; browser check.
+4. Docs: CROSS_REFERENCE.md, SCENARIOS.md, NOZZLE_SHEAR.md + VASCULAR_SUPPLY.md pointers, VERIFICATION.md, ROADMAP.md, CHANGELOG.md, README.md (one paragraph, no duplicates - verify counts).
+5. Full battery, push, live Pages verification, guarded record commit.
+6. gh release create v0.19.0-dev and v0.20.0-dev (honest notes, target main), verify the release list.
+7. Report: the identity and non-mutation proofs, what the view shows, and what still is not claimed.
+
+---
+
+# Implementation Plan
+
+[Overview]
+
 Deliver **v0.21.0-dev "The 200-micron wall"**: the workbench's second physics-anchored teaching model after nozzle shear - an idealized Krogh-cylinder oxygen-supply reference that answers the vascularization question every frontier target raises (how close must perfused channels be?) in physical units with hypothetical inputs, plus a four-source open-access evidence layer on the oxygen diffusion limit, printed microvascularization and host anastomosis, wired as a new analysis panel with scenario schema /12 and the same honesty discipline as the shear module.
 
 [Context]

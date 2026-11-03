@@ -1,10 +1,10 @@
 # Local scenario import/export
 
-Version 12 exports **inputs**, not trusted model outcomes. Files stay in memory;
+Version 13 exports **inputs**, not trusted model outcomes. Files stay in memory;
 nothing is uploaded, persisted or fetched from source citations. Personal learning
 project with AI assistance; restored progress is self-reported, not scientific QC.
 
-`bioprinting-workbench/12` includes:
+`bioprinting-workbench/13` includes:
 - fixed storyboard model and seed 42;
 - validated parameters/time;
 - procedure mode and unique known completed check IDs;
@@ -21,13 +21,13 @@ project with AI assistance; restored progress is self-reported, not scientific Q
   the research-program selection (chosen program nodes; empty until selected) and
   the hardware-budget selection (reference parts included in the cost view; defaults to
   the full 22-part list) and the tissue-atlas selection (chosen frontier targets; the
-  aspiration entry is rendered and never selectable); and the genome-restore idea selection (which steps of the backup-and-restore wish are being explored); and the vascular-supply design inputs (diffusivity, consumption, inlet oxygen, channel radius; hypothetical-controls); all nullable; null fields remain
+  aspiration entry is rendered and never selectable); and the genome-restore idea selection (which steps of the backup-and-restore wish are being explored); and the vascular-supply design inputs (diffusivity, consumption, inlet oxygen, channel radius; hypothetical-controls); and the cross-reference mapping scales (perfusion-to-flow, spacing-to-diameter, population-to-consumption, layers-to-thickness; disabled by default); all nullable; null fields remain
   unknown, not zero;
 - application-authored limitations.
 
-See `tests/fixtures/scenario-v12.json` for a complete synthetic fixture. The v2, v3, v4,
-v5, v6, v7, v8, v9, v10 and v11 fixtures remain as migration evidence; v11 and older files restore
-with the vascular-supply design inputs initialized to defaults and a warning that says so. Evidence prose, source-review status, recipe
+See `tests/fixtures/scenario-v13.json` for a complete synthetic fixture. The v2 through v12
+fixtures remain as migration evidence; v12 and older files restore with the cross-reference
+mapping initialized to defaults and a warning that says so. Evidence prose, source-review status, recipe
 cards, arithmetic outcomes, cancer scores and organ-completion estimates are not
 export fields. Fields are validated explicitly; unknown structural keys, unsupported
 versions, nonfinite/out-of-range values, contradictory flow controls, unknown checks,

@@ -977,3 +977,29 @@ Actual verification results:
   289.2 um at defaults), recomputed live when the channel radius changed 100 -> 250 um
   (455.5 um), rendered all ten evidence quotes and the SVG profile, exported the record in
   the scenario JSON, and reported 0 console errors.
+
+## 0.22.0-dev live follow-on (agent-run, November 2, 2026)
+
+The last self-declared models gap - the deliberate uncoupling between the storyboard knobs and
+the physical-unit references - closed as a read-only cross-reference view with user-supplied
+hypothetical mapping scales.
+
+Actual verification results:
+
+- **Identity, proven:** across three scale combinations the view's shear tauPa, Reynolds,
+  laminar flag, Krogh critical radius, planar limit and band equal direct calls to the two
+  audited evaluators with the mapped inputs, exactly (tests/cross-reference.test.js).
+- **Non-mutation, proven:** the passed nozzle-shear and vascular-supply records deep-equal
+  their pre-call copies; the view only re-parameterizes copies.
+- **Errors propagate, never patched:** mapped inputs outside a reference validator surface the
+  upstream error (a forge case maps the channel radius below the Krogh minimum and the
+  assertion pins the throw). The view has no clamps or fallbacks of its own.
+- **Not mapped, on purpose:** the dimensionless slab/oxygen3d/flow models stay out - the notices
+  say why, and the disabled default is the independence statement itself.
+- **Scenario chain:** schema /13 with analyses.crossReference (disabled default,
+  hypothetical-controls); migrateScenarioV12 warns and defaults; v3-v11 migrations gained the
+  same defaulting; fixture scenario-v13.json; unknown /14 rejected. Unit tests: **162 passed,
+  0 failed** (up from 158), npm run check, git diff --check clean.
+- **Not performed:** any physical coupling between models; any viability, damage or outcome
+  claim at any mapped value; any change to the storyboard, oxygen, flow, nozzle-shear or
+  vascular-supply records when the view runs.

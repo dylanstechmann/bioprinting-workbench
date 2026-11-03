@@ -191,3 +191,10 @@ in physical units with hypothetical inputs, the cited 100-200 um band as context
 verbatim anchors or the validator refuses the band), and the printed-channel reality quoted
 beside it (extrusion reaches 100-300 um channels, capillaries 10-50 um poorly; anastomosis
 mechanisms uncertain). Scenario /12; 158 tests.
+
+## Local 0.22.0-dev follow-on - the cross-reference
+
+The storyboard-vs-references uncoupling closed as an identity-preserving, non-mutating,
+off-by-default juxtaposition view with four user-supplied hypothetical scales (perfusion to
+flow, spacing to channel diameter, population to consumption, layers to thickness). The
+dimensionless models stay unmapped on purpose. Scenario /13; 162 tests.

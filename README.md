@@ -198,3 +198,9 @@ New primary research context is credited in [cell division](docs/CELL_DIVISION.m
 [genome stability](docs/GENOME_STABILITY.md), [organ research](docs/ORGAN_RESEARCH.md) and
 the [source ledger](docs/SOURCES.md). Agent-run source review is not independent domain
 review, and no real dataset, biological experiment or functional organ was produced.
+
+**Cross-reference view** ([guide](docs/CROSS_REFERENCE.md)): off by default, because model
+independence is the design. Enable it to project the storyboard's perfusion, spacing, population
+and layer knobs through your own hypothetical scales into the audited shear and Krogh
+references - identity-pinned (outputs equal direct evaluator calls) and non-mutating (records
+untouched). Teaching juxtaposition, never coupling, never an outcome claim.
