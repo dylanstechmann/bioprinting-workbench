@@ -1003,3 +1003,12 @@ Actual verification results:
 - **Not performed:** any physical coupling between models; any viability, damage or outcome
   claim at any mapped value; any change to the storyboard, oxygen, flow, nozzle-shear or
   vascular-supply records when the view runs.
+- **Live Pages verification (after commit dceaca9 was pushed):** fetching
+  https://dylanstechmann.github.io/bioprinting-workbench/ returned the page with footer
+  "v0.22.0-dev" and the cross-reference panel present; /src/cross-reference.js served live at
+  HTTP 200 (6,014 bytes); /docs/CROSS_REFERENCE.md served live with the identity contract. The
+  connected-browser check showed the off-state independence row, the enabled juxtaposition
+  (mapped flow 6 mm3/s -> 421 Pa with the laminar idealization holding; mapped radius 90 um ->
+  Krogh 325 um; two teaching verdicts), a live scale change recomputing through the cited
+  power-law fit (24 mm3/s -> 561.7 Pa), the mapping exported in the scenario JSON, the
+  nozzle-shear record untouched at its own flow setting, and 0 console errors.

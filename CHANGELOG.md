@@ -3,7 +3,7 @@
 Personal hobby and learning project, AI-assisted. Agent-run software/source checks are
 not biological validation or independent scientific review.
 
-## 0.22.0-dev - local, uncommitted and unpublished
+## 0.22.0-dev - committed and pushed to main on 2026-11-02
 
 - The cross-reference view: storyboard knobs projected through user-guessed hypothetical scales
   into the audited nozzle-shear and Krogh evaluators, with identity (outputs equal direct
