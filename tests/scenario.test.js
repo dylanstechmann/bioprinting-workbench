@@ -128,6 +128,11 @@ test('shipped migration fixtures restore to the current schema',()=>{
   for(const [file,from] of [['scenario-v2.json','bioprinting-workbench/2'],['scenario-v3.json','bioprinting-workbench/3'],['scenario-v4.json','bioprinting-workbench/4'],['scenario-v5.json','bioprinting-workbench/5'],['scenario-v6.json','bioprinting-workbench/6'],['scenario-v7.json','bioprinting-workbench/7'],['scenario-v8.json','bioprinting-workbench/8'],['scenario-v9.json','bioprinting-workbench/9'],['scenario-v10.json','bioprinting-workbench/10'],['scenario-v11.json','bioprinting-workbench/11'],['scenario-v12.json','bioprinting-workbench/12'],['scenario-v13.json',null]]){
     const r=parseScenario(readFileSync(new URL(`./fixtures/${file}`,import.meta.url),'utf8'));
     assert.equal(r.scenario.schema,'bioprinting-workbench/13');assert.equal(r.migratedFrom,from);
+    if(from){
+      const version=Number(from.split('/').at(-1));
+      if(version<=11)assert.ok(r.warnings.some(w=>w.includes('vascular-supply')),`${from} must disclose vascular defaults`);
+      if(version<=12)assert.ok(r.warnings.some(w=>w.includes('cross-reference')),`${from} must disclose cross-reference defaults`);
+    }else assert.deepEqual(r.warnings,[]);
   }
   const v4=parseScenario(readFileSync(new URL('./fixtures/scenario-v4.json',import.meta.url),'utf8')).scenario;
   assert.equal(v4.view.environment,'treedome');assert.equal(v4.learning.selectedCellSystemId,'mouse-esc');

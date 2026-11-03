@@ -5,12 +5,14 @@ import { evaluateCrossReference, defaultCrossReference, validateCrossReferenceRe
 export function createCrossReferenceUI({ elements: $, onStateChange = () => {}, getStoryboard, getNozzle, getVascular }) {
   if (typeof getStoryboard !== 'function' || typeof getNozzle !== 'function' || typeof getVascular !== 'function') throw new TypeError('The cross-reference needs storyboard and reference getters');
   let state = defaultCrossReference();
+  let disposed = false;
   const element = (tag, text) => { const e = document.createElement(tag); e.textContent = text; return e; };
   const inputs = {
     enabled: $('crossref-enabled'), flow: $('crossref-flow-scale'), radius: $('crossref-radius-scale'),
     consumption: $('crossref-consumption-scale'), layer: $('crossref-layer-scale'),
   };
   function propose() {
+    if (disposed) return;
     try {
       state = validateCrossReferenceRecord({ enabled: inputs.enabled.checked, parameterOrigin: 'hypothetical-controls', settings: { flowScaleMm3PerS: Number(inputs.flow.value), radiusScaleUm: Number(inputs.radius.value), consumptionScaleMolPerM3S: Number(inputs.consumption.value), layerScaleUm: Number(inputs.layer.value) } });
       $('crossref-status').textContent = 'Mapping recomputed from your scales. Teaching juxtaposition only; nothing else in the workbench changed.';
@@ -21,6 +23,7 @@ export function createCrossReferenceUI({ elements: $, onStateChange = () => {}, 
   }
   for (const input of Object.values(inputs)) input.addEventListener('change', propose);
   function render() {
+    if (disposed) return;
     inputs.enabled.checked = state.enabled;
     inputs.flow.value = state.settings.flowScaleMm3PerS;
     inputs.radius.value = state.settings.radiusScaleUm;
@@ -34,6 +37,7 @@ export function createCrossReferenceUI({ elements: $, onStateChange = () => {}, 
       return;
     }
     let result;
+    $('crossref-notice').replaceChildren(...CROSS_REFERENCE_NOTICES.map(n => element('p', n)));
     try {
       result = evaluateCrossReference(state, getNozzle(), getVascular(), getStoryboard());
     } catch (error) {
@@ -52,5 +56,10 @@ export function createCrossReferenceUI({ elements: $, onStateChange = () => {}, 
     $('crossref-notice').replaceChildren(...result.notices.map(n => element('p', n)));
   }
   render();
-  return { getState: () => structuredClone(state), setState(next) { state = validateCrossReferenceRecord(next); render(); } };
+  return {
+    getState: () => structuredClone(state),
+    setState(next) { if (disposed) return; state = validateCrossReferenceRecord(next); render(); },
+    refresh: render,
+    dispose() { disposed = true; for (const input of Object.values(inputs)) input.removeEventListener('change', propose); },
+  };
 }

@@ -1,0 +1,499 @@
+{
+  "schema": "bioprinting-workbench/resource-matrix/1",
+  "date": "2026-11-03",
+  "cycles": 10,
+  "configurationsPerCycle": 6,
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "appState": "studio stage 0; presentation scale laboratory; overlays inactive; cutaway off; GLB assets loaded",
+  "runnerRuns": "five bounded 2-cycle runs (m1..m5) through the Playwright code runner; the 60 s per-run cap rules out larger halves",
+  "settledCriterion": "two identical consecutive resource samples 250 ms apart",
+  "stableAcrossCycles": true,
+  "stabilityDetail": "Counts are deterministic per position-in-run: the cold series (first sampled cycle after a fresh load) and the warm series (second cycle) each reproduce exactly across all five runs (cycles 0,2,4,6,8 identical; 1,3,5,7,9 identical). The cold-to-warm delta is cache warm-up only: lab/low textures 15->16, treedome/balanced geometries 290->291 and calls 613->614.",
+  "warmupDelta": "lab/low textures +1; treedome/balanced geometries +1, calls +1; all other configurations unchanged",
+  "matrix": [
+    {
+      "cycle": 0,
+      "environment": "lab",
+      "quality": "low",
+      "geometries": 264,
+      "textures": 15,
+      "calls": 406
+    },
+    {
+      "cycle": 0,
+      "environment": "lab",
+      "quality": "balanced",
+      "geometries": 264,
+      "textures": 18,
+      "calls": 584
+    },
+    {
+      "cycle": 0,
+      "environment": "lab",
+      "quality": "high",
+      "geometries": 264,
+      "textures": 18,
+      "calls": 584
+    },
+    {
+      "cycle": 0,
+      "environment": "treedome",
+      "quality": "low",
+      "geometries": 277,
+      "textures": 14,
+      "calls": 429
+    },
+    {
+      "cycle": 0,
+      "environment": "treedome",
+      "quality": "balanced",
+      "geometries": 290,
+      "textures": 16,
+      "calls": 613
+    },
+    {
+      "cycle": 0,
+      "environment": "treedome",
+      "quality": "high",
+      "geometries": 291,
+      "textures": 16,
+      "calls": 614
+    },
+    {
+      "cycle": 1,
+      "environment": "lab",
+      "quality": "low",
+      "geometries": 264,
+      "textures": 16,
+      "calls": 406
+    },
+    {
+      "cycle": 1,
+      "environment": "lab",
+      "quality": "balanced",
+      "geometries": 264,
+      "textures": 18,
+      "calls": 584
+    },
+    {
+      "cycle": 1,
+      "environment": "lab",
+      "quality": "high",
+      "geometries": 264,
+      "textures": 18,
+      "calls": 584
+    },
+    {
+      "cycle": 1,
+      "environment": "treedome",
+      "quality": "low",
+      "geometries": 277,
+      "textures": 14,
+      "calls": 429
+    },
+    {
+      "cycle": 1,
+      "environment": "treedome",
+      "quality": "balanced",
+      "geometries": 291,
+      "textures": 16,
+      "calls": 614
+    },
+    {
+      "cycle": 1,
+      "environment": "treedome",
+      "quality": "high",
+      "geometries": 291,
+      "textures": 16,
+      "calls": 614
+    },
+    {
+      "cycle": 2,
+      "environment": "lab",
+      "quality": "low",
+      "geometries": 264,
+      "textures": 15,
+      "calls": 406
+    },
+    {
+      "cycle": 2,
+      "environment": "lab",
+      "quality": "balanced",
+      "geometries": 264,
+      "textures": 18,
+      "calls": 584
+    },
+    {
+      "cycle": 2,
+      "environment": "lab",
+      "quality": "high",
+      "geometries": 264,
+      "textures": 18,
+      "calls": 584
+    },
+    {
+      "cycle": 2,
+      "environment": "treedome",
+      "quality": "low",
+      "geometries": 277,
+      "textures": 14,
+      "calls": 429
+    },
+    {
+      "cycle": 2,
+      "environment": "treedome",
+      "quality": "balanced",
+      "geometries": 290,
+      "textures": 16,
+      "calls": 613
+    },
+    {
+      "cycle": 2,
+      "environment": "treedome",
+      "quality": "high",
+      "geometries": 291,
+      "textures": 16,
+      "calls": 614
+    },
+    {
+      "cycle": 3,
+      "environment": "lab",
+      "quality": "low",
+      "geometries": 264,
+      "textures": 16,
+      "calls": 406
+    },
+    {
+      "cycle": 3,
+      "environment": "lab",
+      "quality": "balanced",
+      "geometries": 264,
+      "textures": 18,
+      "calls": 584
+    },
+    {
+      "cycle": 3,
+      "environment": "lab",
+      "quality": "high",
+      "geometries": 264,
+      "textures": 18,
+      "calls": 584
+    },
+    {
+      "cycle": 3,
+      "environment": "treedome",
+      "quality": "low",
+      "geometries": 277,
+      "textures": 14,
+      "calls": 429
+    },
+    {
+      "cycle": 3,
+      "environment": "treedome",
+      "quality": "balanced",
+      "geometries": 291,
+      "textures": 16,
+      "calls": 614
+    },
+    {
+      "cycle": 3,
+      "environment": "treedome",
+      "quality": "high",
+      "geometries": 291,
+      "textures": 16,
+      "calls": 614
+    },
+    {
+      "cycle": 4,
+      "environment": "lab",
+      "quality": "low",
+      "geometries": 264,
+      "textures": 15,
+      "calls": 406
+    },
+    {
+      "cycle": 4,
+      "environment": "lab",
+      "quality": "balanced",
+      "geometries": 264,
+      "textures": 18,
+      "calls": 584
+    },
+    {
+      "cycle": 4,
+      "environment": "lab",
+      "quality": "high",
+      "geometries": 264,
+      "textures": 18,
+      "calls": 584
+    },
+    {
+      "cycle": 4,
+      "environment": "treedome",
+      "quality": "low",
+      "geometries": 277,
+      "textures": 14,
+      "calls": 429
+    },
+    {
+      "cycle": 4,
+      "environment": "treedome",
+      "quality": "balanced",
+      "geometries": 290,
+      "textures": 16,
+      "calls": 613
+    },
+    {
+      "cycle": 4,
+      "environment": "treedome",
+      "quality": "high",
+      "geometries": 291,
+      "textures": 16,
+      "calls": 614
+    },
+    {
+      "cycle": 5,
+      "environment": "lab",
+      "quality": "low",
+      "geometries": 264,
+      "textures": 16,
+      "calls": 406
+    },
+    {
+      "cycle": 5,
+      "environment": "lab",
+      "quality": "balanced",
+      "geometries": 264,
+      "textures": 18,
+      "calls": 584
+    },
+    {
+      "cycle": 5,
+      "environment": "lab",
+      "quality": "high",
+      "geometries": 264,
+      "textures": 18,
+      "calls": 584
+    },
+    {
+      "cycle": 5,
+      "environment": "treedome",
+      "quality": "low",
+      "geometries": 277,
+      "textures": 14,
+      "calls": 429
+    },
+    {
+      "cycle": 5,
+      "environment": "treedome",
+      "quality": "balanced",
+      "geometries": 291,
+      "textures": 16,
+      "calls": 614
+    },
+    {
+      "cycle": 5,
+      "environment": "treedome",
+      "quality": "high",
+      "geometries": 291,
+      "textures": 16,
+      "calls": 614
+    },
+    {
+      "cycle": 6,
+      "environment": "lab",
+      "quality": "low",
+      "geometries": 264,
+      "textures": 15,
+      "calls": 406
+    },
+    {
+      "cycle": 6,
+      "environment": "lab",
+      "quality": "balanced",
+      "geometries": 264,
+      "textures": 18,
+      "calls": 584
+    },
+    {
+      "cycle": 6,
+      "environment": "lab",
+      "quality": "high",
+      "geometries": 264,
+      "textures": 18,
+      "calls": 584
+    },
+    {
+      "cycle": 6,
+      "environment": "treedome",
+      "quality": "low",
+      "geometries": 277,
+      "textures": 14,
+      "calls": 429
+    },
+    {
+      "cycle": 6,
+      "environment": "treedome",
+      "quality": "balanced",
+      "geometries": 290,
+      "textures": 16,
+      "calls": 613
+    },
+    {
+      "cycle": 6,
+      "environment": "treedome",
+      "quality": "high",
+      "geometries": 291,
+      "textures": 16,
+      "calls": 614
+    },
+    {
+      "cycle": 7,
+      "environment": "lab",
+      "quality": "low",
+      "geometries": 264,
+      "textures": 16,
+      "calls": 406
+    },
+    {
+      "cycle": 7,
+      "environment": "lab",
+      "quality": "balanced",
+      "geometries": 264,
+      "textures": 18,
+      "calls": 584
+    },
+    {
+      "cycle": 7,
+      "environment": "lab",
+      "quality": "high",
+      "geometries": 264,
+      "textures": 18,
+      "calls": 584
+    },
+    {
+      "cycle": 7,
+      "environment": "treedome",
+      "quality": "low",
+      "geometries": 277,
+      "textures": 14,
+      "calls": 429
+    },
+    {
+      "cycle": 7,
+      "environment": "treedome",
+      "quality": "balanced",
+      "geometries": 291,
+      "textures": 16,
+      "calls": 614
+    },
+    {
+      "cycle": 7,
+      "environment": "treedome",
+      "quality": "high",
+      "geometries": 291,
+      "textures": 16,
+      "calls": 614
+    },
+    {
+      "cycle": 8,
+      "environment": "lab",
+      "quality": "low",
+      "geometries": 264,
+      "textures": 15,
+      "calls": 406
+    },
+    {
+      "cycle": 8,
+      "environment": "lab",
+      "quality": "balanced",
+      "geometries": 264,
+      "textures": 18,
+      "calls": 584
+    },
+    {
+      "cycle": 8,
+      "environment": "lab",
+      "quality": "high",
+      "geometries": 264,
+      "textures": 18,
+      "calls": 584
+    },
+    {
+      "cycle": 8,
+      "environment": "treedome",
+      "quality": "low",
+      "geometries": 277,
+      "textures": 14,
+      "calls": 429
+    },
+    {
+      "cycle": 8,
+      "environment": "treedome",
+      "quality": "balanced",
+      "geometries": 290,
+      "textures": 16,
+      "calls": 613
+    },
+    {
+      "cycle": 8,
+      "environment": "treedome",
+      "quality": "high",
+      "geometries": 291,
+      "textures": 16,
+      "calls": 614
+    },
+    {
+      "cycle": 9,
+      "environment": "lab",
+      "quality": "low",
+      "geometries": 264,
+      "textures": 16,
+      "calls": 406
+    },
+    {
+      "cycle": 9,
+      "environment": "lab",
+      "quality": "balanced",
+      "geometries": 264,
+      "textures": 18,
+      "calls": 584
+    },
+    {
+      "cycle": 9,
+      "environment": "lab",
+      "quality": "high",
+      "geometries": 264,
+      "textures": 18,
+      "calls": 584
+    },
+    {
+      "cycle": 9,
+      "environment": "treedome",
+      "quality": "low",
+      "geometries": 277,
+      "textures": 14,
+      "calls": 429
+    },
+    {
+      "cycle": 9,
+      "environment": "treedome",
+      "quality": "balanced",
+      "geometries": 291,
+      "textures": 16,
+      "calls": 614
+    },
+    {
+      "cycle": 9,
+      "environment": "treedome",
+      "quality": "high",
+      "geometries": 291,
+      "textures": 16,
+      "calls": 614
+    }
+  ],
+  "notes": "Settled-cycle counts only, explicitly not a GPU-leak certificate and not an FPS or performance claim. Draw calls may vary by +/-1 between frames with animated tracer visibility. Counts are app-state dependent (overlay proxy geometry and asset loading change allocations); these rows were measured with overlays inactive, and earlier Phase-A-era figures (316 geometries / 19 textures / 584 calls at lab/balanced) were taken in a different app state and are not directly comparable."
+}

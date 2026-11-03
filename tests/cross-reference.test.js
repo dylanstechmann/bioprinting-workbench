@@ -25,6 +25,8 @@ test('the view is an identity re-parameterization of the two audited evaluators'
     const directShear = evaluateNozzleShear({ ...nozzle.settings, flowMm3PerS: flow });
     const directSupply = evaluateVascularSupply({ settings: { ...vascular.settings, channelRadiusUm: radius, consumptionM_molPerM3S: consumption }, parameterOrigin: 'hypothetical-controls' });
     assert.equal(r.status, 'mapped');
+    for (const value of [r.shear.tauPa, r.shear.reynolds, r.supply.kroghCriticalRadiusUm, r.supply.planarLimitUm]) assert.ok(Number.isFinite(value));
+    assert.equal(typeof r.shear.laminar, 'boolean');
     assert.equal(r.shear.tauPa, directShear.wallShearStressPa);
     assert.equal(r.shear.reynolds, directShear.reynoldsNumber);
     assert.equal(r.shear.laminar, directShear.laminarAssumptionHolds);
@@ -56,12 +58,14 @@ test('teaching arithmetic and not-limiting honesty', () => {
   assert.ok(Math.abs(r.teaching.thicknessVsKroghUm - (r.mapped.constructThicknessUm - r.supply.kroghCriticalRadiusUm)) < 1e-9);
   assert.equal(r.teaching.verdicts.length, 2);
   for (const forbidden of ['guarantee', 'will survive', 'safe for', 'approved', 'predict']) assert.ok(!r.teaching.verdicts.join(' ').includes(forbidden));
-  const sparse = evaluateCrossReference(enabledRecord({ consumptionScaleMolPerM3S: 1e-5 }), nozzle, vascular, { ...storyboard, population: 0.1 });
-  if (sparse.supply.kroghCriticalRadiusUm === null) {
-    assert.equal(sparse.teaching.thicknessVsPlanarUm, null);
-    assert.equal(sparse.teaching.thicknessVsKroghUm, null);
-    assert.ok(sparse.teaching.verdicts.some(v => v.includes('not supply-limited')));
-  }
+  const sparse = evaluateCrossReference(enabledRecord({ consumptionScaleMolPerM3S: 1e-5 }), nozzle,
+    { ...vascular, settings: { ...vascular.settings, diffusivityD_m2PerS: 1e-8, inletC0_molPerM3: 0.5 } },
+    { ...storyboard, population: 0.1 });
+  assert.equal(sparse.supply.kroghCriticalRadiusUm, null);
+  assert.ok(Number.isFinite(sparse.supply.planarLimitUm));
+  assert.equal(sparse.teaching.thicknessVsPlanarUm, null);
+  assert.equal(sparse.teaching.thicknessVsKroghUm, null);
+  assert.ok(sparse.teaching.verdicts.some(v => v.includes('not supply-limited')));
 });
 
 test('validators reject forged records, scales, origins and storyboards', () => {

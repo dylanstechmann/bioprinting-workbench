@@ -3,6 +3,43 @@
 Personal hobby and learning project, AI-assisted. Agent-run software/source checks are
 not biological validation or independent scientific review.
 
+## Local 0.24.0-dev - verification close-out + magnified viewport (committed 2026-11-03 on owner instruction; not deployed)
+
+- Cross-language golden fixture digests pinned byte-identically on both exchange-adapter
+  sides (4 bundle canonical sha256s, 1 exact-byte artifact sha256, 1 canonical vector).
+- Magnified construct inset (single WebGL context, presentation-only) and three explanatory
+  vascular cross-sections with quoted resolution bands and the connection gap explicit.
+- Browser checks for the C/D/E UI passed in bounded halves; the >=10-cycle settled resource
+  matrix is recorded (deterministic per position-in-run; settled counts only, not a GPU-leak
+  certificate). Workbench 273 tests / 156 modules; exchange suite 11/11.
+- Evaluator/scenario files byte-identical. Owner visual review, citation/scientific review,
+  live-provider demo and deployment remain separate not-run gates.
+
+## Uncommitted working copy — Phases B-G (2026-11-03, not committed)
+
+- Domain/unit/quantity registry over the seven independent evaluators with exact direct-call
+  identity tests; canonical-JSON/SHA-256 run provenance (golden vectors, ModelRun lifecycle)
+  and a fail-closed implementation-dependency manifest. Multiscale presentation views
+  (laboratory/construct/cell/tissue-context; cell scale explicitly unknown) with <=4 bounded
+  proxy overlays and legends. Bounded worker sweeps (explicit cancel, ranges/slopes only).
+  Research cockpit with 2-8 competing alternatives and preview-first exchange bundles.
+  ResearchDesk adapter (`regen-workbench`): Python mirror, atomic import with rollback, zero
+  job execution on import, verbatim receipt statuses, notes-excluding result export.
+- Workbench tests 184 -> 263; modules 121 -> 150. ResearchDesk exchange tests 10/10 (3
+  pre-existing `test_regen_desk` failures reproduce on clean HEAD and are untouched).
+  Evaluator/scenario files byte-identical; /13 unchanged; /14 still rejected.
+
+## Uncommitted working copy — focused instrument Phase A (2026-11-03, not committed)
+
+- Bounds-fitted lab camera (corner-projection frustum fit, resize/equipment-ready refit,
+  adaptive orbit ceiling), extracted frame policy with a renderedFrames counter, and
+  transactional scenario application whose failure path now distinguishes restored vs
+  unrestorable state. Gate chips deduplicated into one status row; compacted first-viewport
+  layout (400 px viewer top at 1280x720); darker lab palette with seeded deterministic
+  environment textures; area-aware browser smoke for the four-area workspace.
+- Tests 173 -> 184; modules 117 -> 121. Scenario /13 and all scientific evaluators
+  unchanged; /14 still rejected. Owner Gate A visual review pending.
+
 ## 0.22.0-dev - committed and pushed to main on 2026-11-02
 
 - The cross-reference view: storyboard knobs projected through user-guessed hypothetical scales

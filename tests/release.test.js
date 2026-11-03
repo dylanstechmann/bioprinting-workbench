@@ -11,6 +11,13 @@ test('candidate inventory excludes private/authoring/git/test files and includes
   for(const row of inventory){assert.ok(!row.path.startsWith('/'));assert.ok(!/(^|\/)(\.git|\.env|tests|scripts|node_modules|__pycache__)(\/|$)/.test(row.path));assert.ok(!row.path.endsWith('.py'));assert.match(row.sha256,/^[a-f0-9]{64}$/);}
   assert.ok(inventory.some(r=>r.path==='LICENSE'));assert.ok(inventory.some(r=>r.path==='vendor/three/LICENSE'));
 });
+test('planning archives stay out of the release inventory while runtime provenance stays in',()=>{
+  const inventory=collectReleaseInventory();
+  const paths=inventory.map(r=>r.path);
+  for(const archive of ['docs/IMPLEMENTATION_HISTORY_2026-11-03.md','docs/IMPLEMENTATION_PHASES_A_G_2026-11-03.md','docs/IMPLEMENTATION_PHASE_B_ONLY_2026-11-03.md']) assert.ok(!paths.includes(archive),archive);
+  assert.ok(paths.includes('assets/model-provenance.json'));
+  assert.ok(paths.includes('docs/DOMAIN_MODELS.md'));
+});
 test('development version is consistent without representing publication',()=>{
   const version=JSON.parse(readFileSync(new URL('../package.json',import.meta.url),'utf8')).version;
   assert.match(version,/-dev$/);assert.ok(readFileSync(new URL('../index.html',import.meta.url),'utf8').includes(`v${version}`));

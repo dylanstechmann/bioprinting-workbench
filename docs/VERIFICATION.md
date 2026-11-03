@@ -1,4 +1,103 @@
+# Agent-run verification - November 3, 2026 (verification close-out + magnified viewport)
+
+Agent-run software checks, not scientific validation. Workbench: `npm test` 273 passed /
+0 failed (263 at the B-G close, 184 at the Phase A baseline), `npm run check` 156 modules,
+`npm run provenance:check` fresh, `git diff --check` clean, `npm run verify:release`
+automated checks pass. ResearchDesk: `test_bioprint_exchange.py` 11/11, now including
+cross-language golden fixture digests pinned byte-identically on both sides (4 bundle
+canonical sha256s, 1 exact-byte artifact sha256, 1 canonical vector);
+`test_regen_desk.py` unchanged at 30 run with the same 3 failures that reproduce on a clean
+HEAD worktree. Evaluator and scenario /13 files byte-identical (pre/post SHA-256); /14 stays
+rejected.
+
+Browser verification ran in bounded halves through the Playwright code runner (60 s per-run
+cap; `scripts/browser-smoke-phases-cde.js`): half c-d passed all 7 checks (scale switching
+with the explicit scale-unknown label; overlay cap 4 with complete legends and 5th-overlay
+rejection; magnified inset toggle visible in diagnostics; WebGL health and fallback-banner
+state; sweep completion with ranges/slopes-only summary; sweep cancel delivering zero rows
+while retaining the last summary, with zero scenario writes; keyboard activation
+equivalence). Half e passed all 3 checks (import preview inert with scenario bytes unchanged;
+hostile title rendering as raw text after explicit apply; export/reimport idempotent
+round-trip with exports staying not-approved; three cross-sections with quoted bands and
+disclaimers). Both halves: no horizontal overflow at 390 px in all four areas, zero page
+errors. The Phase A harness `scripts/browser-smoke.js` was verified earlier this session and
+was not re-run in this cycle.
+
+The >=10-cycle settled resource matrix (`docs/resource-matrix-run-2026-11-03.json`) ran as
+five bounded 2-cycle runs (recorded deviation: the planned two-half split exceeded the
+runner cap): 60 samples across lab/treedome x low/balanced/high at 1440x1000, settled = two
+identical consecutive samples 250 ms apart. Counts are deterministic per position-in-run
+(cold first cycle and warm second cycle series each reproduce exactly across all five runs;
+warm-up delta is cache-only). Settled-cycle counts only - not a GPU-leak certificate, no FPS
+claims; counts are app-state dependent (the earlier 316/19/584 figure was measured in a
+different app state and is not directly comparable).
+
+New this cycle: `src/magnified-viewport.js` (single-WebGL-context scissored inset, narrowed
+22-degree FOV, unit-tested fitting/scissor-restore/degenerate-bounds guard) and
+`src/vascular-cross-sections.js` (three schematic cross-sections quoting the 100-300 um and
+10-50 um bands and keeping the connection gap explicit; textContent-only rendering tested
+against XSS-style strings). Cross-language golden digests: `golden-digests.json` byte-copy
+in both fixture directories, asserted by both test suites.
+
+Standing not-run gates: owner visual review (evidence produced here for that review),
+citation/scientific review, live-provider demonstration (owner credentials), deployment.
+
 # Agent-run verification — 2026-11-01
+
+## Phases B-G (domain registry, multiscale, exploration, cockpit, ResearchDesk) — November 3, 2026 (uncommitted)
+
+Agent-run software checks, not scientific validation. Workbench: `npm test` 263 passed / 0
+failed (from 184), `npm run check` 150 modules, `npm run provenance:check` fresh, `git diff
+--check` clean, `npm run verify:release` automated checks pass. Sibling ResearchDesk
+(`/workspace/regen-workbench`, tree verified idle first): `test_bioprint_exchange.py` 10/10,
+`test_public_desk.py` 4/4; `test_regen_desk.py` 30 run with the same 3 failures that reproduce
+on a clean HEAD worktree (pre-existing campaign/validation issues, untouched by this work).
+
+B: seven-model registry with unit/quantity contracts, exact direct-call identity tests,
+canonical-bytes/SHA-256 provenance with golden vectors, ModelRun lifecycle, dependency
+manifest (`assets/model-provenance.json`) with fail-closed staleness check; evaluator and
+scenario files byte-identical (pre/post hashes compared). C: pure presentation state,
+discrete multiscale views (cell view labelled scale-unknown), <=4 bounded overlays on proxy
+geometry with legends, `getFieldSnapshot` cloning; invalid CSS `padding-block` fixed. D:
+bounded sweeps (<=100 points; box-oxygen <=17 resolution / 25 points) in a dedicated worker
+with explicit cancel and stale-generation suppression; summaries are ranges/slopes only. E:
+hypothesis cards with 2-8 competing alternatives, exchange bundles (preview-first, idempotent
+duplicates, conflict-blocking, stale rejection), XSS-inert cockpit rendering, fixtures
+minimal/roundtrip/conflicts/invalid. F/G: Python mirror adapter with identical bounds,
+atomic Desk import with rollback (save-failure injection restores exact store), zero `submit`
+calls during import (call counter test), 5 MiB exchange routes beside the untouched 64 KB
+general cap, receipt statuses preserved verbatim (partial/interrupted/submission-unknown
+never relabelled), selected-result export excluding notes.
+
+Standing not-run gates: browser smoke for the new C/D/E UI (harness 60 s cap; unit-level DOM
+stub tests pass), the >=10-cycle resource matrix and owner visual review (Phase A gaps),
+citation/scientific review, live-provider demonstration (needs owner credentials),
+deployment. Cross-language golden digest pinned on both sides for portable values; artifact
+integrity hashes exact producer bytes. No commits, pushes or publication performed.
+
+## Phase A instrument hardening — November 3, 2026 (uncommitted; owner Gate A pending)
+
+Agent-run software checks, not scientific validation. Node v24.18.1: `npm test` 184
+passed, 0 failed/skipped (up from 173); `npm run check` 121 modules; `git diff --check`
+clean; `npm run verify:release` automated checks pass. New pure modules frame-policy.js
+and scenario-application.js with tests; camera-rig bounds fitting with corner-projection
+tests; browser evidence (layout 400 px viewer top / 320 px scene at 1280x720, 3-cycle
+resource stability 316/19/584, measured frame suspension/resume, keyboard/deep-link/WebGL
+fallback/reduced-motion checks, decoded-screenshot contrast numbers) is recorded in
+`VISUAL_DESIGN.md`. Scenario /13, scientific evaluators and migration contracts are
+unchanged; /14 remains rejected. The smoke script was executed as two sequential halves
+because the local MCP runner caps a single run at 60 s; both halves passed all assertions.
+No owner acceptance, publication, commit or biological validation is implied.
+
+## Focused instrument follow-on — November 3, 2026
+
+Local uncommitted candidate; agent-run software checks, not scientific validation.
+Node v24.18.1: 173 tests passed, 0 failed/skipped; 117 modules syntax checked;
+whitespace and automated release verification passed. Browser evidence, screenshots,
+resource counts and remaining limitations are in `VISUAL_DESIGN.md`. This supersedes
+that document's earlier browser-blocked record, not the historical checks below.
+Scenario /13 retained; older migration notices repaired; /14 rejected. No owner
+acceptance or publication implied.
 
 ## Local 0.7.0-dev follow-on — uncommitted and unpublished
 

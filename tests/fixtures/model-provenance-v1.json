@@ -1,0 +1,24 @@
+{
+  "schema": "bioprinting-workbench/test-golden-canonical/1",
+  "note": "Synthetic serialization vectors for software tests; no research content. Hashes are SHA-256 of the exact UTF-8 canonical bytes.",
+  "vectors": [
+    {
+      "name": "sorted-keys",
+      "input": { "b": 2, "a": 1 },
+      "canonicalText": "{\"a\":1,\"b\":2}\n",
+      "sha256": "e8d38819d39f705646bfb643368eca78f7db476c16471dbc33b941b27326410d"
+    },
+    {
+      "name": "nested-sort",
+      "input": { "z": { "y": 2, "x": 1 }, "a": [3, 2, 1] },
+      "canonicalText": "{\"a\":[3,2,1],\"z\":{\"x\":1,\"y\":2}}\n",
+      "sha256": "c0ae328b46816ea148c510b35e6fa6e82ca11e431404d61a2ae0a8417b4f6134"
+    },
+    {
+      "name": "mixed-leaves",
+      "input": [true, null, -0, 1.5, "\u00e9"],
+      "canonicalText": "[true,null,0,1.5,\"\u00e9\"]\n",
+      "sha256": "69eecc8b9ed7804b952ec91598e09de78208e9cfa8e8615ffc602c7db99760ae"
+    }
+  ]
+}

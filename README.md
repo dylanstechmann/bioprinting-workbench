@@ -11,13 +11,14 @@ inspectable scaffold-to-graft storyboard. Agent-built; not independently scienti
 From `/workspace/bioprinting-workbench`:
 
 ```sh
-python3 -B -m http.server 8096 --bind 127.0.0.1
+npm start
 ```
 
 Open **http://localhost:8096** in a modern WebGL2-capable browser. No install, build,
 API key, account or external asset service is needed. Do not open `index.html` through
-`file://`: browser module security requires an HTTP server. Python is only a static
-file server, not a simulation backend. The app can also be hosted at a subdirectory.
+`file://`: browser module security requires an HTTP server. The Node command is only a static
+file server, not a simulation backend; use `npm start -- --host 127.0.0.1 --port 8097` to choose
+another address. The app can also be hosted at a subdirectory.
 
 ## Explore
 
@@ -204,3 +205,10 @@ independence is the design. Enable it to project the storyboard's perfusion, spa
 and layer knobs through your own hypothetical scales into the audited shear and Krogh
 references - identity-pinned (outputs equal direct evaluator calls) and non-mutating (records
 untouched). Teaching juxtaposition, never coupling, never an outcome claim.
+
+Multiscale presentation views, bounded model exploration, a research cockpit and a
+provenance-preserving local ResearchDesk exchange are implemented locally
+(committed 2026-11-03 on owner instruction; not deployed) (see `docs/DOMAIN_MODELS.md`, `docs/MULTISCALE_VIEWS.md`,
+`docs/MODEL_EXPLORATION.md`, `docs/RESEARCH_COCKPIT.md`, `docs/RESEARCH_EXCHANGE.md`).
+Agent-developed on a personal hobby/learning project; software checks are not scientific
+validation.

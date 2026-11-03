@@ -1,3 +1,5 @@
+import { random } from './model.js';
+
 /** Original procedural environments. The fictional theme is fan-inspired and unofficial; no third-party or show assets are used. */
 export const ENVIRONMENT_IDS = ['lab', 'treedome'];
 const FICTION_ATTRIBUTION = 'Original fan-inspired artwork. The Treedome theme references the fictional Sandy Cheeks setting from SpongeBob SquarePants (Nickelodeon). Unofficial, not affiliated with or endorsed by the creators; no show frames, models, music or logos are used; the theme supplies no biological parameters.';
@@ -42,27 +44,29 @@ export function createEnvironment({ THREE, scene, reducedMotion = false }) {
   // Extracted from the pre-0.8 scene room; identical geometry, materials and layout for lab parity.
   function buildLabContext(parent) {
     const floorTex = canvasTexture(ctx => {
-      ctx.fillStyle = '#dce4dc'; ctx.fillRect(0, 0, 256, 256); ctx.strokeStyle = 'rgba(116,132,120,.4)'; ctx.lineWidth = 1.5;
+      ctx.fillStyle = '#9fb0a9'; ctx.fillRect(0, 0, 256, 256); ctx.strokeStyle = 'rgba(52,66,58,.5)'; ctx.lineWidth = 1.5;
       for (let i = 0; i <= 256; i += 64) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, 256); ctx.stroke(); ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(256, i); ctx.stroke(); }
     });
     if (floorTex) floorTex.repeat.set(24, 24);
     const speckleTex = canvasTexture(ctx => {
+      const rng = random(131);
       ctx.fillStyle = '#f0f2ea'; ctx.fillRect(0, 0, 256, 256);
-      for (let i = 0; i < 1100; i++) { ctx.fillStyle = `rgba(${130 + Math.random() * 50 | 0},${145 + Math.random() * 35 | 0},${130 + Math.random() * 35 | 0},${.04 + Math.random() * .09})`; ctx.beginPath(); ctx.arc(Math.random() * 256, Math.random() * 256, .4 + Math.random() * 1.7, 0, 7); ctx.fill(); }
+      for (let i = 0; i < 1100; i++) { ctx.fillStyle = `rgba(${130 + rng() * 50 | 0},${145 + rng() * 35 | 0},${130 + rng() * 35 | 0},${.04 + rng() * .09})`; ctx.beginPath(); ctx.arc(rng() * 256, rng() * 256, .4 + rng() * 1.7, 0, 7); ctx.fill(); }
     });
     if (speckleTex) speckleTex.repeat.set(5, 2.5);
     const brushedTex = canvasTexture(ctx => {
+      const rng = random(132);
       ctx.fillStyle = '#c3ccc7'; ctx.fillRect(0, 0, 256, 256);
-      for (let i = 0; i < 260; i++) { const y = Math.random() * 256; ctx.strokeStyle = `rgba(255,255,255,${Math.random() * .08})`; ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(256, y); ctx.stroke(); ctx.strokeStyle = `rgba(55,66,60,${Math.random() * .06})`; ctx.beginPath(); ctx.moveTo(0, y + .7); ctx.lineTo(256, y + .7); ctx.stroke(); }
+      for (let i = 0; i < 260; i++) { const y = rng() * 256; ctx.strokeStyle = `rgba(255,255,255,${rng() * .08})`; ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(256, y); ctx.stroke(); ctx.strokeStyle = `rgba(55,66,60,${rng() * .06})`; ctx.beginPath(); ctx.moveTo(0, y + .7); ctx.lineTo(256, y + .7); ctx.stroke(); }
     });
     const white = physical('#eef0e9', { metalness: .08, clearcoat: .4, clearcoatRoughness: .3 });
     const metal = physical('#b6c1bb', { metalness: .8, roughness: .3, map: brushedTex });
     const mat = (color, metalness = 0, roughness = .45, opacity = 1) => standard(color, { metalness, roughness, opacity });
-    boxMesh([60, .15, 60], [0, -2.1, 0], physical('#eef2ec', { map: floorTex, roughness: .85, metalness: .02 }));
-    boxMesh([16, .25, 7], [0, -.3, 0], physical('#c8d0ca', { roughness: .6, metalness: .15, clearcoat: .2 }));
+    boxMesh([60, .15, 60], [0, -2.1, 0], physical('#a9b6b0', { map: floorTex, roughness: .85, metalness: .02 }));
+    boxMesh([16, .25, 7], [0, -.3, 0], physical('#7f9189', { roughness: .6, metalness: .15, clearcoat: .2 }));
     boxMesh([16.1, .08, 7.1], [0, -.13, 0], physical('#f4f6ef', { map: speckleTex, roughness: .5, metalness: .05, clearcoat: .18 }));
     for (const x of [-7, 0, 7]) for (const z of [-2.7, 2.7]) boxMesh([.16, 1.65, .16], [x, -1.2, z], metal);
-    boxMesh([16, 4, .15], [0, 1.7, -3.6], mat('#d8e2d8'));
+    boxMesh([16, 4, .15], [0, 1.7, -3.6], mat('#a9bcb2'));
     boxMesh([16, .08, .7], [0, 3.3, -3.35], white);
     for (let x = -7; x <= 7; x += 2) boxMesh([1.6, .02, .1], [x, 3.24, -3], mat('#faffea'));
     boxMesh([15.9, .08, .12], [0, .1, -3.35], metal);
@@ -74,13 +78,14 @@ export function createEnvironment({ THREE, scene, reducedMotion = false }) {
       boxMesh([.55, .42, .05], [x, .65, -3.48], white);
       for (const dx of [-.14, .14]) boxMesh([.08, .12, .02], [x + dx, .65, -3.44], mat('#344b49', .35));
     }
-    return { background: '#e0e8e3', fog: ['#e0e8e3', 22, 55] };
+    return { background: '#c7d4cd', fog: ['#c7d4cd', 22, 55] };
   }
   // Original fan-inspired Treedome: deterministic procedural geometry only, no show assets.
   function buildTreedomeContext(parent) {
     const sandTex = canvasTexture(ctx => {
+      const rng = random(133);
       ctx.fillStyle = '#e8d9b0'; ctx.fillRect(0, 0, 256, 256);
-      for (let i = 0; i < 1600; i++) { ctx.fillStyle = `rgba(${190 + Math.random() * 50 | 0},${170 + Math.random() * 40 | 0},${120 + Math.random() * 40 | 0},${.06 + Math.random() * .12})`; ctx.beginPath(); ctx.arc(Math.random() * 256, Math.random() * 256, .4 + Math.random() * 1.4, 0, 7); ctx.fill(); }
+      for (let i = 0; i < 1600; i++) { ctx.fillStyle = `rgba(${190 + rng() * 50 | 0},${170 + rng() * 40 | 0},${120 + rng() * 40 | 0},${.06 + rng() * .12})`; ctx.beginPath(); ctx.arc(rng() * 256, rng() * 256, .4 + rng() * 1.4, 0, 7); ctx.fill(); }
     });
     if (sandTex) sandTex.repeat.set(18, 18);
     const glass = physical('#bfe8f2', { opacity: .16, roughness: .05, metalness: 0 });
@@ -144,5 +149,5 @@ export function createEnvironment({ THREE, scene, reducedMotion = false }) {
   }
   function diagnostics() { return { id: current, ownedObjects: objects.length, ownedGeometries: geometries.length, ownedMaterials: materials.length, ownedTextures: textures.length, reducedMotion: !!reducedMotion, fictional: current === 'treedome' }; }
   function dispose() { if (!disposed) { disposeOwnedResources(); scene.background = null; scene.fog = null; current = null; disposed = true; } }
-  return { setEnvironment, update, diagnostics, dispose };
+  return { setEnvironment, update, diagnostics, dispose, root: () => group };
 }

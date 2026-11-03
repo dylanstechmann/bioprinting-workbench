@@ -1,16 +1,25 @@
 import { DEFAULTS, STAGES, sample, snapshot } from './model.js';
 import { createLab } from './scene.js';
-import { oxygenProfile } from './oxygen.js';
 import { PROCEDURE_STEPS, createProcedureState, toggleCheck, stepProgress, isStageUnlocked, unlockedStages, clampTime, setMode, procedureSummary, nextGate } from './procedure.js';
 import { NO_CALIBRATION, parseCalibrationInput, fitSlabDemand, calibrationExample } from './calibration.js';
 import { createAnalysisUI } from './analysis-ui.js';
+import { createScientificViewUI } from './scientific-view-ui.js';
+import { createModelExplorationUI } from './model-exploration-ui.js';
+import { createExplorationClient } from './exploration-client.js';
+import { createResearchCockpitUI } from './research-cockpit-ui.js';
+import { oxygenProfile } from './oxygen.js';
+import { createTeachingNetwork } from './flow.js';
 import { createNozzleShearUI } from './nozzle-shear-ui.js';
 import { createVascularSupplyUI } from './vascular-supply-ui.js';
+import { renderCrossSections } from './vascular-cross-sections.js';
 import { createCrossReferenceUI } from './cross-reference-ui.js';
 import { serializeScenario, parseScenario, defaultAnalyses } from './scenario.js';
 import { SCENARIO_BYTES, MEASUREMENT_BYTES } from './validation.js';
 import { createCellLearningUI } from './cell-learning-ui.js';
 import { getEnvironmentSpecs } from './environment.js';
+import { createWorkspaceShell } from './workspace-shell.js';
+import { shouldAdvanceFrame, shouldDrawFrame } from './frame-policy.js';
+import { applyScenarioTransaction } from './scenario-application.js';
 
 const $ = id => document.getElementById(id);
 let parameters = { ...DEFAULTS }, time = 0, playing = false, last = 0, lab = null;
@@ -19,6 +28,7 @@ let procedureState = createProcedureState();
 let calibration = { ...NO_CALIBRATION };
 let cameraView = 'lab', environmentTheme = 'lab', analysisUI = null;
 let importGeneration = 0, calibrationGeneration = 0;
+let crossRefUI = null, activeWorkspaceArea = 'studio', workspaceShell = null;
 const learningUI = createCellLearningUI({ elements: $ });
 function drawOxygen() {
   const result = oxygenProfile(Number($('demand').value));
@@ -37,9 +47,51 @@ const stageButtons = STAGES.map((stage, index) => {
 function pause() { playing = false; $('play').textContent = 'Play sequence'; }
 try { lab = createLab($('scene')); }
 catch (error) { $('webgl-error').hidden = false; $('webgl-error').textContent = `3D rendering is unavailable (${error.message}). You can still explore every stage, adjust the synthetic model and export a scenario. Try a WebGL2-capable browser with hardware acceleration.`; }
+const qualitySelect = $('render-quality');
+qualitySelect.disabled = !lab;
+qualitySelect.addEventListener('change', () => lab?.setQuality(qualitySelect.value));
+if (lab) {
+  createScientificViewUI({
+    elements: $,
+    onStateChange: state => {
+      try {
+        lab.presentation.setScale(state.scale);
+        lab.setQuality(state.quality);
+        lab.presentation.clearOverlays();
+        for (const id of state.overlayIds) {
+          const fieldSnapshot = analysisUI?.getFieldSnapshot?.();
+          if (id === 'box-oxygen-slice' && fieldSnapshot?.snapshot) {
+            const n = fieldSnapshot.snapshot.settings.resolution, k = Math.floor(n / 2);
+            const values = Float64Array.from({ length: n * n }, (_, i) => fieldSnapshot.snapshot.values[i + n * n * k]);
+            lab.presentation.setOverlay(id, { values, width: n, height: n });
+          } else if (id === 'slab-profile') {
+            const profile = oxygenProfile(Number($('demand').value), 33).profile.map(point => point.concentration);
+            lab.presentation.setOverlay(id, { values: Float64Array.from(profile), width: 33, height: 1 });
+          } else if (id === 'flow-network') {
+            const net = createTeachingNetwork(analysisUI?.getState?.().flow ?? { enabled: true, pressureDrive: .6, branchResistances: [1, 1, 1] });
+            const byId = new Map(net.nodes.map(node => [node.id, node.position]));
+            lab.presentation.setOverlay(id, { edges: net.edges.map(edge => ({ from: byId.get(edge.from), to: byId.get(edge.to) })) });
+          } else {
+            lab.presentation.setOverlay(id, { marker: true });
+          }
+        }
+        $('presentation-selection').textContent = state.overlayIds.length ? `Overlays active: ${state.overlayIds.join(', ')}. Legends state each layer's limits.` : '';
+      } catch (error) {
+        $('presentation-selection').textContent = error.message;
+      }
+    },
+  });
+}
+createModelExplorationUI({
+  elements: $,
+  client: createExplorationClient(),
+  getInputs: () => ({ modelId: 'slab-oxygen', baseInputs: { demand: Number($('demand').value), points: 21 } }),
+});
+createResearchCockpitUI({ elements: $ });
 for (const key of ['spacing', 'layers', 'population', 'perfusion', 'channels', 'recipient']) {
   $(key).addEventListener('input', () => {
     parameters[key] = key === 'channels' ? $(key).checked : key === 'recipient' ? $(key).value : Number($(key).value);
+    crossRefUI?.refresh();
     render();
   });
 }
@@ -47,10 +99,16 @@ $('timeline').addEventListener('input', () => { time = clampTime(procedureState,
 $('play').addEventListener('click', () => { if (time >= 4.999) time = 0; playing = !playing; $('play').textContent = playing ? 'Pause sequence' : 'Play sequence'; });
 $('reset').addEventListener('click', () => { time = 0; pause(); render(); });
 $('cutaway').addEventListener('change', render);
-document.querySelectorAll('[data-camera]').forEach(b => b.addEventListener('click', () => { cameraView = b.dataset.camera; lab?.view(cameraView); $('view-label').textContent = `${b.textContent.toUpperCase()} VIEW`; }));
+function updateCameraButtons() {
+  document.querySelectorAll('[data-camera]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.camera === cameraView)));
+}
+document.querySelectorAll('[data-camera]').forEach(b => b.addEventListener('click', () => { cameraView = b.dataset.camera; lab?.view(cameraView); $('view-label').textContent = b.textContent.toUpperCase(); updateCameraButtons(); }));
+updateCameraButtons();
 const environmentAttribution = id => getEnvironmentSpecs().find(s => s.id === id)?.attribution || '';
 $('environment').addEventListener('change', event => { environmentTheme = event.target.value; lab?.setEnvironment(environmentTheme); $('environment-attribution').textContent = environmentAttribution(environmentTheme); });
 $('environment-attribution').textContent = environmentAttribution('lab');
+$('magnify-construct').addEventListener('change', event => { lab?.setMagnified(event.target.checked); $('magnifier-frame').hidden = !event.target.checked || !lab; });
+renderCrossSections($('vascular-cross-sections'));
 function scenarioState() {
   const analysis = analysisUI?.getState();
   return { parameters, time, procedure: procedureState, view: { camera: cameraView, reveal: $('cutaway').checked, environment: environmentTheme }, analyses: { ...(analysis ? { oxygen3d: analysis.oxygen3d, flow: { ...analysis.flow, enabled: parameters.channels, pressureDrive: parameters.perfusion } } : defaultAnalyses(parameters)), nozzleShear: nozzleUI.getState(), vascularSupply: vascularUI.getState(), crossReference: crossRefUI.getState(), slab: { demand: Number($('demand').value) } }, datasets: { slab: calibration.status === 'loaded' ? calibration.input : null, oxygen3d: analysis?.dataset || null }, learning: learningUI.getState() };
@@ -61,7 +119,6 @@ $('export').addEventListener('click', () => {
   const a = document.createElement('a'); a.href = exportUrl; a.download = 'bioprinting-scenario.json'; a.click();
 });
 // ---- Procedure walkthrough, gated progression and local calibration import ----
-const gateChips = STAGES.map((stage, index) => { const chip = document.createElement('span'); chip.className = 'gate-chip'; chip.title = stage.title; $('gate-strip').append(chip); return chip; });
 const gateMessage = document.createElement('span'); gateMessage.className = 'gate-message'; $('gate-strip').append(gateMessage);
 const gateControls = document.createElement('span'); gateControls.className = 'gate-controls';
 gateControls.innerHTML = '<label class="gate-toggle"><input id="free-exploration" type="checkbox"> Free exploration</label>';
@@ -106,7 +163,6 @@ function updateWalkthrough() {
   });
   const summary = procedureSummary(procedureState);
   $('procedure-progress').textContent = `${summary.checksComplete}/${summary.checks} checkpoints · ${summary.stepsComplete}/${summary.steps} steps`;
-  gateChips.forEach((chip, i) => { const open = unlocked[i]; chip.className = `gate-chip ${open ? 'unlocked' : 'locked'}`; chip.textContent = `${open ? '✓' : '🔒'} ${STAGES[i].short}`; });
   const gate = nextGate(procedureState);
   gateMessage.textContent = procedureState.mode === 'free' ? 'Free exploration: all stages unlocked.' : gate ? `Complete ${gate.remainingChecks.length} checkpoint${gate.remainingChecks.length === 1 ? '' : 's'} in "${STAGES[gate.stage - 1].short}" to unlock "${STAGES[gate.stage].short}".` : 'All stages unlocked.';
   $('free-exploration').checked = procedureState.mode === 'free';
@@ -137,9 +193,10 @@ $('load-example').addEventListener('click', () => { calibrationGeneration++; con
 $('clear-calibration').addEventListener('click', () => { calibrationGeneration++; calibration = { ...NO_CALIBRATION }; showCalibration(); });
 showCalibration();
 analysisUI = createAnalysisUI({ elements: $, onFlow: result => lab?.setFlowResult(result) });
-const nozzleUI = createNozzleShearUI({ elements: $, onStateChange: () => {} });
-const vascularUI = createVascularSupplyUI({ elements: $, onStateChange: () => {} });
-const crossRefUI = createCrossReferenceUI({ elements: $, onStateChange: () => {}, getStoryboard: () => ({ ...parameters }), getNozzle: () => nozzleUI.getState(), getVascular: () => vascularUI.getState() });
+const nozzleUI = createNozzleShearUI({ elements: $, onStateChange: () => crossRefUI?.refresh() });
+const vascularUI = createVascularSupplyUI({ elements: $, onStateChange: () => crossRefUI?.refresh() });
+crossRefUI = createCrossReferenceUI({ elements: $, onStateChange: () => {}, getStoryboard: () => ({ ...parameters }), getNozzle: () => nozzleUI.getState(), getVascular: () => vascularUI.getState() });
+workspaceShell = createWorkspaceShell({ root: document, onAreaChange: area => { activeWorkspaceArea = area; if (area !== 'studio' && playing) pause(); } });
 analysisUI.setState({ ...defaultAnalyses(parameters), dataset: null });
 function prepareScenarioApplication(raw) {
   const scenario = parseScenario(JSON.stringify(raw)).scenario;
@@ -151,15 +208,17 @@ function commitScenarioApplication({ scenario, nextCalibration }) {
   for (const key of Object.keys(parameters)) { if (key === 'channels') $(key).checked = parameters[key]; else $(key).value = parameters[key]; }
   $('demand').value = scenario.analyses.slab.demand; drawOxygen();
   $('cutaway').checked = scenario.view.reveal; cameraView = scenario.view.camera; lab?.view(cameraView); $('view-label').textContent = `${cameraView.toUpperCase()} VIEW`;
+  updateCameraButtons();
   environmentTheme = scenario.view.environment; $('environment').value = environmentTheme; lab?.setEnvironment(environmentTheme); $('environment-attribution').textContent = environmentAttribution(environmentTheme);
   learningUI.setState(scenario.learning);
   analysisUI.setState({ ...scenario.analyses, dataset: scenario.datasets.oxygen3d }); nozzleUI.setState(scenario.analyses.nozzleShear); vascularUI.setState(scenario.analyses.vascularSupply); crossRefUI.setState(scenario.analyses.crossReference); showCalibration(); render();
 }
 function applyScenario(scenario) {
-  const prepared = prepareScenarioApplication(scenario);
-  const previous = prepareScenarioApplication(JSON.parse(serializeScenario(scenarioState())));
-  try { commitScenarioApplication(prepared); }
-  catch (error) { commitScenarioApplication(previous); throw error; }
+  return applyScenarioTransaction(scenario, {
+    snapshot: () => JSON.parse(serializeScenario(scenarioState())),
+    prepare: prepareScenarioApplication,
+    commit: commitScenarioApplication,
+  });
 }
 async function importScenarioFile(file) {
   const current = ++importGeneration;
@@ -170,13 +229,27 @@ async function importScenarioFile(file) {
     // Validate derived slab arithmetic before committing any UI state.
     if (imported.scenario.datasets.slab) fitSlabDemand(imported.scenario.datasets.slab);
     applyScenario(imported.scenario);
-    $('scenario-status').textContent = imported.warnings.join(' ') || 'Version 4 inputs, learning selections and self-reported walkthrough progress restored. Derived analyses recomputed; provenance remains unverified.';
-  } catch (error) { if (current === importGeneration) $('scenario-status').textContent = `Not imported; previous state retained. ${error.message}`; }
+    $('scenario-status').textContent = imported.warnings.join(' ') || 'Scenario inputs, learning selections and self-reported walkthrough progress restored. Derived analyses recomputed; provenance remains unverified.';
+  } catch (error) {
+    if (current !== importGeneration) return;
+    $('scenario-status').textContent = error.rollbackFailed
+      ? `Import failed and the previous state could not be fully restored. Reload to recover a consistent state. ${error.message}`
+      : `Not imported; previous state retained. ${error.message}`;
+  }
 }
 $('scenario-file').addEventListener('change', event => { const file = event.target.files[0]; if (file) importScenarioFile(file); event.target.value = ''; });
-function render(clock = 0) {
-  // Event objects are not animation times.
-  if (typeof clock !== 'number') clock = 0;
+let sceneClock = 0;
+function updateScene(clock = sceneClock) {
+  sceneClock = clock;
+  const s = sample(time, parameters);
+  $('filaments').textContent = lab ? lab.update(s, parameters, $('cutaway').checked, clock) : '—';
+  return s;
+}
+function updateTimeDisplay(s) {
+  $('timeline').value = time;
+  $('phase').textContent = `0${s.stage + 1} / 05`;
+}
+function render() {
   const s = sample(time, parameters), stage = STAGES[s.stage];
   analysisUI?.setFlowControls(parameters.channels, parameters.perfusion);
   for (const key of ['spacing', 'layers', 'population', 'perfusion']) $('' + key + '-value').textContent = key === 'layers' ? parameters[key] : parameters[key].toFixed(2);
@@ -186,16 +259,29 @@ function render(clock = 0) {
   $('timeline').max = String(highestUnlocked + .999);
   updateWalkthrough();
   $('scene-title').textContent = stage.title; $('stage-title').textContent = stage.title; $('description').textContent = stage.description; $('equipment').textContent = stage.equipment;
-  $('timeline').value = time; $('phase').textContent = `0${s.stage + 1} / 05`;
+  updateTimeDisplay(s);
   $('occupancy').textContent = `${Math.round(s.occupancy * 100)}%`;
   $('warning').textContent = s.stage === 4 ? `${parameters.recipient === 'human' ? 'Human' : 'Animal'} context only. Integration is not simulated or established.` : s.stage === 3 ? parameters.channels ? 'Designed channels ≠ functional blood vessels.' : 'Channels disabled: no illustrative perfusion.' : 'Synthetic progression · no biological timescale.';
-  $('filaments').textContent = lab ? lab.update(s, parameters, $('cutaway').checked, clock) : '—';
+  updateScene();
 }
 document.addEventListener('visibilitychange', () => { last = 0; });
 function frame(now) {
   const dt = last ? Math.min((now - last) / 1000, .1) : 0; last = now;
-  if (playing && !document.hidden) { const next = clampTime(procedureState, time + dt / 9); if (next <= time + 1e-9) pause(); time = next; }
-  render(now / 1000); lab?.draw(); requestAnimationFrame(frame);
+  const frameState = { playing, documentHidden: document.hidden, activeArea: activeWorkspaceArea, webglAvailable: !!lab };
+  const previousStage = Math.floor(time);
+  if (shouldAdvanceFrame(frameState)) {
+    const next = clampTime(procedureState, time + dt / 9);
+    if (next <= time + 1e-9) pause();
+    time = next;
+  }
+  const currentStage = Math.floor(time);
+  if (currentStage !== previousStage) render();
+  else {
+    if (playing) updateTimeDisplay(sample(time, parameters));
+    if (shouldDrawFrame(frameState)) updateScene(now / 1000);
+  }
+  if (shouldDrawFrame(frameState)) lab?.draw();
+  requestAnimationFrame(frame);
 }
-globalThis.bioprintingWorkbench = { exportScenario: () => JSON.parse(serializeScenario(scenarioState())), diagnostics: () => ({ ...snapshot(time, parameters), playing, procedure: procedureSummary(procedureState), calibration: calibration.status === 'loaded' ? { status: 'loaded', q: calibration.fit.q, n: calibration.fit.n } : { status: calibration.status }, analyses: analysisUI?.diagnostics(), learning: learningUI.diagnostics(), graphics: lab?.diagnostics() ?? { webgl: false, environment: environmentTheme } }) };
+globalThis.bioprintingWorkbench = { exportScenario: () => JSON.parse(serializeScenario(scenarioState())), diagnostics: () => ({ ...snapshot(time, parameters), playing, workspace: workspaceShell?.getState() ?? { activeArea: 'studio', activeResearchCardId: null }, procedure: procedureSummary(procedureState), calibration: calibration.status === 'loaded' ? { status: 'loaded', q: calibration.fit.q, n: calibration.fit.n } : { status: calibration.status }, analyses: analysisUI?.diagnostics(), learning: learningUI.diagnostics(), graphics: lab?.diagnostics() ?? { webgl: false, environment: environmentTheme } }) };
 render(); requestAnimationFrame(frame);

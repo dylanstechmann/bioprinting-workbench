@@ -104,6 +104,20 @@ export function createAnalysisUI({ elements: $, client = createAnalysisClient(),
       for(let i=0;i<3;i++)$(`flow-r${i}`).value=flow.branchResistances[i];
       invalidateFit();drawFlow();solve();if(input)runFit();
     },
+    getFieldSnapshot() {
+      if (!result) return { snapshot: null, reason: 'No solved box field yet. Solve the normalized box first.' };
+      return {
+        reason: null,
+        snapshot: {
+          modelId: 'box-oxygen',
+          settings: { ...settings },
+          parameterOrigin,
+          generation,
+          values: Float64Array.from(result.values),
+          diagnostics: { converged: result.converged, inDomain: result.inDomain, min: result.min, max: result.max },
+        },
+      };
+    },
     setFlowControls(enabled,pressureDrive){if(flow.enabled!==enabled||flow.pressureDrive!==pressureDrive){flow={...flow,enabled,pressureDrive};drawFlow();}},
     getState:()=>({oxygen3d:{settings:{...settings},parameterOrigin},flow:{...flow,branchResistances:[...flow.branchResistances]},dataset:input}),
     diagnostics:()=>({oxygen3d:result?{converged:result.converged,center:result.center,residual:result.residualInfinity,balanceError:result.balanceError}:null,fit:fit?{q:fit.q,identifiable:fit.identifiable,inDomain:fit.inDomain,dataKind:fit.dataKind}:null,flow:flowResult}),

@@ -1,9 +1,7 @@
-.gate-strip{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:14px 0 0;padding:12px 14px;background:#fff;border:1px solid #dce4df;border-radius:8px;font-size:11px}
-.gate-chip{padding:6px 10px;border-radius:14px;background:#eef3ee;color:#5b6f66;white-space:nowrap}
-.gate-chip.unlocked{background:#267b72;color:#fff}
-.gate-chip.locked{background:#eef0ea;color:#98a39a;border:1px dashed #c4cdc5}
+.gate-strip{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:6px 0 0;padding:5px 10px;background:#fff;border:1px solid #dce4df;border-radius:8px;font-size:11px}
 .gate-message{flex:1;min-width:220px;color:#4d6058}
 .gate-controls{display:flex;align-items:center;gap:12px}
+.gate-strip button{min-height:30px;padding:4px 10px}
 .gate-toggle{display:flex;align-items:center;gap:6px;color:#5b6f66;cursor:pointer}
 #restart-walkthrough{font-size:10px;padding:7px 10px}
 .stages button.locked{opacity:.45}

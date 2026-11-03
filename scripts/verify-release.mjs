@@ -22,10 +22,14 @@ import { scanClaims } from './scan-claims.mjs';
 import { checkAuthoringIsolation } from './check-authoring-isolation.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
+// Development-history planning archives are not public runtime artifacts.
+const PLANNING_ARCHIVES = new Set(['docs/IMPLEMENTATION_HISTORY_2026-11-03.md','docs/IMPLEMENTATION_PHASES_A_G_2026-11-03.md','docs/IMPLEMENTATION_PHASE_B_ONLY_2026-11-03.md']);
 /** An allowlisted candidate inventory, NOT an instruction to publish the repo root. */
 export function collectReleaseInventory(directory = root) {
   const files = [];
   function visit(path) {
+    const rel = relative(directory, path).split(String.fromCharCode(92)).join('/');
+    if (PLANNING_ARCHIVES.has(rel)) return;
     if (statSync(path).isDirectory()) { for (const name of readdirSync(path).sort()) if (!name.startsWith('.') && !['__pycache__','node_modules'].includes(name)) visit(resolve(path, name)); }
     else if (/\.(?:html|css|js|json|glb|png|md)$/.test(path) || /\/LICENSE(?:\.txt)?$/.test(path)) { const data = readFileSync(path); files.push({ path: relative(directory, path).replaceAll('\\','/'), bytes: data.length, sha256: createHash('sha256').update(data).digest('hex') }); }
   }
@@ -57,6 +61,7 @@ export function verifyRelease(directory = root, { targetVersion = JSON.parse(rea
   check('scaffold-evidence contract', 'validateScaffoldEvidenceCatalog', () => validateScaffoldEvidenceCatalog(getScaffoldEvidenceCatalog()));
   check('scaffold-methods contract', 'validateScaffoldMethods', () => validateScaffoldMethods(getScaffoldMethods()));
   check('tissue-atlas contract', 'validateTissueTargets', () => validateTissueTargets(getTissueTargets().map(t => ({ ...t, relatedIds: {} }))));
+  check('model provenance manifest', 'node scripts/build-model-provenance.mjs --check', () => execFileSync(process.execPath, ['scripts/build-model-provenance.mjs', '--check'], { cwd: directory, stdio: 'pipe' }));
   check('asset hashes', 'verify-release asset hash check', () => {
     for (const asset of JSON.parse(readFileSync(resolve(directory,'assets/manifest.json'),'utf8')).assets) {
       if (!/^assets\/[a-z_]+\.glb$/.test(asset.file)) throw Error('Invalid manifest path');

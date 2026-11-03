@@ -198,3 +198,27 @@ The storyboard-vs-references uncoupling closed as an identity-preserving, non-mu
 off-by-default juxtaposition view with four user-supplied hypothetical scales (perfusion to
 flow, spacing to channel diameter, population to consumption, layers to thickness). The
 dimensionless models stay unmapped on purpose. Scenario /13; 162 tests.
+
+## Local 0.23.0-dev follow-on - the research registry and desk exchange
+
+Owner-restored full roadmap scope (2026-11-03, after a plan audit found the A-G roadmap had
+been narrowed to Phase B alone): the seven-model domain/unit/quantity registry with exact
+direct-call identity tests and canonical-JSON/SHA-256 run provenance; discrete multiscale
+presentation views (the cell view is explicitly scale-unknown) with bounded proxy overlays;
+worker-executed bounded sweeps that never write scenario state; a research cockpit with 2-8
+competing alternatives; and a preview-first file exchange with the sibling ResearchDesk
+(regen-workbench), whose import path is atomic, rollback-safe and never runs jobs.
+AI-assisted on a personal hobby/learning project; software checks only, not scientific
+validation.
+
+## Local 0.24.0-dev follow-on - verification close-out and the magnified viewport
+
+The pending verification landed in bounded browser runs (multiscale/overlay/sweep-cancel/
+exchange checks all passed with scenario bytes invariant), the standing >=10-cycle settled
+resource matrix is recorded (deterministic per position-in-run; settled counts only, not a
+GPU-leak certificate), and cross-language golden fixture digests are pinned byte-identically
+on both exchange-adapter sides. New teaching views: a magnified construct inset (single
+WebGL-context presentation pass) and three explanatory vascular cross-sections with quoted
+resolution bands (extrusion 100-300 um; capillaries 10-50 um) and the connection gap kept
+explicit. Committed on owner instruction 2026-11-03; not deployed. Owner visual review,
+citation/scientific review and any live-provider demonstration remain separate not-run gates.
