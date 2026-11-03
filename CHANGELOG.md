@@ -3,6 +3,17 @@
 Personal hobby and learning project, AI-assisted. Agent-run software/source checks are
 not biological validation or independent scientific review.
 
+## 0.21.0-dev - local, uncommitted and unpublished
+
+- The Krogh oxygen-supply reference (the 200-micron wall): idealized steady cylinder, zero-order
+  consumption, hypothetical physical inputs, computed supply-limiting radius with planar
+  comparison, channel spacing and density, and the cited 100-200 um band shown as context.
+- Ten verbatim quotes across four fetched open-access sources, mirrored in
+  docs/vascular-supply-audit.json and test-pinned; the band requires two agreeing anchors or
+  validation fails; anastomosis and endothelialization limits are quoted beside results.
+- Scenario /12 (analyses.vascularSupply); migrateScenarioV11 and extended older warnings;
+  fixture scenario-v12.json; tests 152 -> 158.
+
 ## 0.20.0-dev - committed and pushed to main on 2026-11-02
 
 - The peristaltic perfusion-pump circuit joined the shipped assets as a genuine Blender-authored

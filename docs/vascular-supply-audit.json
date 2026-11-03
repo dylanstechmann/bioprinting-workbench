@@ -1,0 +1,119 @@
+{
+  "schema": "bioprinting-workbench/vascular-supply-audit/1",
+  "fetchDate": "2026-11-02",
+  "transcriptionNote": "Quotes transcribed from the PMC reading views of the four open-access sources on 2026-11-02; citation markers are transcribed in linear form as they appear in the text layer.",
+  "sources": [
+    {
+      "id": "mansouri-2021",
+      "doi": "10.1063/5.0048837",
+      "journalYear": "Biophys Rev (Melville) 2021",
+      "fullTextUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10903443/",
+      "license": "CC-BY 4.0",
+      "citation": "Mansouri M, Leipzig ND. Advances in removing mass transport limitations for more physiologically relevant in vitro 3D cell constructs. Biophys Rev (Melville). 2021;2(2):021305. doi:10.1063/5.0048837"
+    },
+    {
+      "id": "seymour-2022",
+      "doi": "10.1088/1758-5090/ac4fb5",
+      "journalYear": "Biofabrication 2022",
+      "fullTextUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8988885/",
+      "license": "author manuscript (PMC open access)",
+      "citation": "Seymour AJ, Westerfield AD, Cornelius VC, Skylar-Scott MA, Heilshorn SC. Bioprinted microvasculature: progressing from structure to function. Biofabrication. 2022;14(2):022001. doi:10.1088/1758-5090/ac4fb5"
+    },
+    {
+      "id": "yeo-2023",
+      "doi": "10.1088/1758-5090/ad0b3f",
+      "journalYear": "Biofabrication 2023",
+      "fullTextUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10658349/",
+      "license": "CC-BY 4.0",
+      "citation": "Yeo M, Sarkar A, Singh YP, Derman ID, Datta P, Ozbolat IT. Synergistic coupling between 3D bioprinting and vascularization strategies. Biofabrication. 2023;16(1):012003. doi:10.1088/1758-5090/ad0b3f"
+    },
+    {
+      "id": "zhang-2025",
+      "doi": "10.1016/j.actbio.2025.06.006",
+      "journalYear": "Acta Biomater 2025",
+      "fullTextUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12277018/",
+      "license": "author manuscript (PMC open access)",
+      "citation": "Zhang IW, Choi LS, Friend NE, McCoy AJ, Midekssa FS, Hu MM, Alsberg E, Lesher-Perez SC, Stegemann JP, Baker BM, Putnam AJ. Clickable PEG-norbornene microgels support suspension bioprinting and microvascular assembly. Acta Biomater. 2025;201:283-296. doi:10.1016/j.actbio.2025.06.006"
+    }
+  ],
+  "claims": [
+    {
+      "id": "vascular-supply-fick-constitutive",
+      "sourceId": "mansouri-2021",
+      "topic": "model-family",
+      "verbatimQuote": "Oxygen diffusion limitations can be further explained by a constitutive relationship, Fick's first law of diffusion, J = D × ΔC/Δx.",
+      "locator": "Section II, oxygen transport"
+    },
+    {
+      "id": "vascular-supply-necrotic-core",
+      "sourceId": "mansouri-2021",
+      "topic": "model-family",
+      "verbatimQuote": "An important finding from the modeling of oxygen and glucose transport concludes that if avascular constructs grow beyond the limits of both oxygen diffusion and metabolic consumption, a central necrotic core will be formed within the cultured spheroids.76",
+      "locator": "Section II, modeling of transport"
+    },
+    {
+      "id": "vascular-supply-ec-functionality-gap",
+      "sourceId": "mansouri-2021",
+      "topic": "host-connection",
+      "verbatimQuote": "Taken together, considerable progress has been made to remove mass transport limitations by using ECs as a common strategy for promoting vascularization; however, significant progress is still required to demonstrate functionality, including the ability to flow media (or blood) and recapitulate in vivo functions.3.",
+      "locator": "Section on vascularization strategies"
+    },
+    {
+      "id": "vascular-supply-printed-resolution-gap",
+      "sourceId": "seymour-2022",
+      "topic": "printed-resolution",
+      "verbatimQuote": "Because of this, extrusion-based bioprinting is well-equipped to rapidly generate vessel-like structures with diameters similar to arterioles and post-capillary venules (fabricated diameters of 100–300 μm), but struggles to create capillary-like structures (10–50 μm in diameter) [15,16].",
+      "locator": "Section 3, printed channel scales"
+    },
+    {
+      "id": "vascular-supply-hierarchy-hard",
+      "sourceId": "seymour-2022",
+      "topic": "printed-resolution",
+      "verbatimQuote": "Even within the narrower scope of microvasculature (10–300 μm in diameter), creating a similarly hierarchical network is rarely possible using a single biofabrication technique.",
+      "locator": "Section 3, hierarchy discussion"
+    },
+    {
+      "id": "vascular-supply-function-requirements",
+      "sourceId": "seymour-2022",
+      "topic": "host-connection",
+      "verbatimQuote": "Specifically, three characteristics that allow vascular networks to function in vivo include (1) a hollow, endothelialized lumen; (2) a highly organized and hierarchical network structure; and (3) a complex signaling environment that dynamically regulates and drives vascular function (figure 1(A–C)).",
+      "locator": "Section 2, functional requirements"
+    },
+    {
+      "id": "vascular-supply-diffusion-band-y",
+      "sourceId": "yeo-2023",
+      "topic": "diffusion-band",
+      "bandUm": [
+        100,
+        200
+      ],
+      "verbatimQuote": "Cells die for lack of oxygen and nutrients if they are more than 100–200 µm from the closest blood vessel [93].",
+      "locator": "Introduction, diffusion limit"
+    },
+    {
+      "id": "vascular-supply-anastomosis-uncertain",
+      "sourceId": "yeo-2023",
+      "topic": "host-connection",
+      "verbatimQuote": "Further, a clear understanding of anastomoses mechanism is absent, so it remains uncertain whether host vasculature remodeled vascular network or the implanted HUVECs get involved to the angiogenic development and connected with the host vasculature.",
+      "locator": "Discussion, anastomosis"
+    },
+    {
+      "id": "vascular-supply-diffusion-band-z",
+      "sourceId": "zhang-2025",
+      "topic": "diffusion-band",
+      "bandUm": [
+        100,
+        200
+      ],
+      "verbatimQuote": "In the absence of functional vasculature, tissue constructs containing metabolically-active cells are limited by the diffusion limits of oxygen to thicknesses of ~100–200 μm [2]; as a consequence, successful clinical translation of engineered tissues over the past 25 years has largely been restricted to either avascular (e.g., cartilage) or relatively thin tissues (e.g., skin grafts, bladder).",
+      "locator": "Introduction, diffusion limit"
+    },
+    {
+      "id": "vascular-supply-mesoscale-demo",
+      "sourceId": "zhang-2025",
+      "topic": "study-demo",
+      "verbatimQuote": "Printed structures and subsequent patterned evacuated void spaces measured at diameters ranging between 600 μm to 1 mm, which is within the range of mesoscale vascular formations (50 – 1000 μm) [3].",
+      "locator": "Results, printed channels"
+    }
+  ]
+}

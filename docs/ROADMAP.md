@@ -175,3 +175,19 @@ triangles), exported from the owner's live Blender 5.1.2 with all ten authoring-
 passed and the owner's own scene untouched and unsaved. The fifth asset mounts at the procedural
 pump's bench position with the procedural pump as its fallback; the dated evidence file
 pins the run, and the asset tests cover five GLBs. No scenario schema change.
+
+## Local 0.21.0-dev follow-on - the 200-micron wall
+
+The second physics-anchored teaching model: an idealized Krogh-cylinder oxygen-supply reference
+in physical units with hypothetical inputs, the cited 100-200 um band as context (two agreeing
+verbatim anchors or the validator refuses the band), and the printed-channel reality quoted
+beside it (extrusion reaches 100-300 um channels, capillaries 10-50 um poorly; anastomosis
+mechanisms uncertain). Scenario /12; 158 tests.
+
+## Local 0.21.0-dev follow-on - the 200-micron wall
+
+The second physics-anchored teaching model: an idealized Krogh-cylinder oxygen-supply reference
+in physical units with hypothetical inputs, the cited 100-200 um band as context (two agreeing
+verbatim anchors or the validator refuses the band), and the printed-channel reality quoted
+beside it (extrusion reaches 100-300 um channels, capillaries 10-50 um poorly; anastomosis
+mechanisms uncertain). Scenario /12; 158 tests.

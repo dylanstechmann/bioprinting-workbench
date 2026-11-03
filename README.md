@@ -45,13 +45,13 @@ lab protocol, and directs nothing at any person or animal. The optional
 owner-supplied pairs with a source citation. Nothing is calibrated by default, and any
 fit remains bound to the slab assumptions rather than being tissue validation.
 
-**Genome backup and restore, assessed** ([guide](docs/GENOME_RESTORE.md)): the wish to
-record an original genome to disk, bank original cells and periodically write the stored DNA
-back into fast-dividing cells, decomposed into four selectable steps with computed verdicts
-from four fetched open-access sources. Digital backup and cell banking are established
-practice; the periodic whole-genome write-back and edit-steered differentiation are theory -
-CRISPR recording writes bits of cell history into barcodes, not genomes back into chromatin,
-and somatic mosaicism means there is no single original genome to restore.
+**Krogh oxygen-supply reference** ([guide](docs/VASCULAR_SUPPLY.md)): the 200-micron wall as an
+idealized Krogh-cylinder computation - how far tissue can sit from a perfused channel in this
+idealization, from hypothetical physical inputs (diffusivity, zero-order consumption, inlet
+oxygen, channel radius). The cited 100-200 micrometer teaching band shows beside the result as
+context from two agreeing verbatim anchors, along with the printed-channel reality: extrusion
+reaches 100-300 micrometer channels well and capillaries 10-50 poorly, and host-anastomosis
+mechanisms remain uncertain. Model output, never a viability prediction.
 
 **Genome backup and restore, assessed** ([guide](docs/GENOME_RESTORE.md)): the wish to
 record an original genome to disk, bank original cells and periodically write the stored DNA

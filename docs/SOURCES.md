@@ -228,3 +228,31 @@ validator-enforced research-context limitations.
 | Waldvogel et al., Nat Rev Genet 2024 | 10.1038/s41576-024-00715-z; PMC11408116, fetched 2026-11-02 | Somatic mosaicism: no single original genome; clone expansion with age | Any restore or editing feasibility claim |
 | Zhang et al., GPB 2025 | 10.1093/gpbjnl/qzaf034; PMC12449060, fetched 2026-11-02 | Editing landscape: locus-by-locus systems, off-target limits, preclinical status | Any whole-genome write path or safety claim |
 | Alvarez-Palomo et al., Stem Cell Res Ther 2022 | 10.1186/s13287-022-02961-6; PMC9372949, fetched 2026-11-02 | Cord-blood banking as real screened starting material; iPSC trials context | Any product efficacy or personal therapy claim |
+
+## 0.21.0-dev vascular-supply evidence (agent-run, November 2, 2026)
+
+Four open-access sources fetched once and quoted verbatim (10 quotes with locators, source ids
+and topics, mirrored in docs/vascular-supply-audit.json and tested for equality with the runtime
+catalog). The 100-200 um teaching band ships as claim data requiring two agreeing independent
+anchors; all claims carry limitations.
+
+| Source | Identifier | Supported scope | Not inferred |
+| --- | --- | --- | --- |
+| Mansouri & Leipzig, Biophys Rev 2021 | 10.1063/5.0048837; PMC10903443, fetched 2026-11-02 | Fickian transport basis; necrotic-core modeling conclusion; EC strategy progress | Any viability threshold for printed constructs |
+| Seymour et al., Biofabrication 2022 | 10.1088/1758-5090/ac4fb5; PMC8988885, fetched 2026-11-02 | Printed resolution gap (100-300 um vs 10-50 um); in-vivo function requirements | Any claim a printed network meets them |
+| Yeo et al., Biofabrication 2023 | 10.1088/1758-5090/ad0b3f; PMC10658349, fetched 2026-11-02 | 100-200 um band restated verbatim; anastomosis uncertainty | Band as a threshold; any anastomosis mechanism |
+| Zhang et al., Acta Biomater 2025 | 10.1016/j.actbio.2025.06.006; PMC12277018, fetched 2026-11-02 | Second band restatement; mesoscale printing demonstration | Vascularized-tissue or human outcome |
+
+## 0.21.0-dev vascular-supply evidence (agent-run, November 2, 2026)
+
+Four open-access sources fetched once and quoted verbatim (10 quotes with locators, source ids
+and topics, mirrored in docs/vascular-supply-audit.json and tested for equality with the runtime
+catalog). The 100-200 um teaching band ships as claim data requiring two agreeing independent
+anchors; all claims carry limitations.
+
+| Source | Identifier | Supported scope | Not inferred |
+| --- | --- | --- | --- |
+| Mansouri & Leipzig, Biophys Rev 2021 | 10.1063/5.0048837; PMC10903443, fetched 2026-11-02 | Fickian transport basis; necrotic-core modeling conclusion; EC strategy progress | Any viability threshold for printed constructs |
+| Seymour et al., Biofabrication 2022 | 10.1088/1758-5090/ac4fb5; PMC8988885, fetched 2026-11-02 | Printed resolution gap (100-300 um vs 10-50 um); in-vivo function requirements | Any claim a printed network meets them |
+| Yeo et al., Biofabrication 2023 | 10.1088/1758-5090/ad0b3f; PMC10658349, fetched 2026-11-02 | 100-200 um band restated verbatim; anastomosis uncertainty | Band as a threshold; any anastomosis mechanism |
+| Zhang et al., Acta Biomater 2025 | 10.1016/j.actbio.2025.06.006; PMC12277018, fetched 2026-11-02 | Second band restatement; mesoscale printing demonstration | Vascularized-tissue or human outcome |

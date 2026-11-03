@@ -2,6 +2,112 @@
 
 [Overview]
 
+Deliver **v0.21.0-dev "The 200-micron wall"**: the workbench's second physics-anchored teaching model after nozzle shear - an idealized Krogh-cylinder oxygen-supply reference that answers the vascularization question every frontier target raises (how close must perfused channels be?) in physical units with hypothetical inputs, plus a four-source open-access evidence layer on the oxygen diffusion limit, printed microvascularization and host anastomosis, wired as a new analysis panel with scenario schema /12 and the same honesty discipline as the shear module.
+
+[Context]
+
+The existing transport models are deliberately dimensionless: oxygen.js is a normalized 1D slab (c'' = demand), oxygen3d takes owner-supplied measurements, and flow.js is a dimensionless linear resistance network with a PCG solver. Nothing computes a physical-units oxygen-supply distance. Every frontier atlas entry names perfusion as its barrier (alveolar gas exchange, deep dermis, gingival prevascularization), and the roadmap's declared intention is to teach endothelial lining and host-vessel connection as evidence gaps. The module mirrors the v0.18 pattern: an idealized model with hypothetical-controls inputs, computed-not-persisted results, a cited band shown as context rather than a viability prediction, and verbatim-quoted open-access evidence with secondhand-restatement discipline. Anchors confirmed available: Mansouri & Leipzig 2021 Biophys Rev (PMC10903443, mass transport limitations), Seymour et al. 2022 Biofabrication (PMC8988885, bioprinted microvasculature structure-to-function), Yeo et al. 2023 Biofabrication (PMC10658349, coupling printing and vascularization), Zhang et al. 2025 Acta Biomater (PMC12277018, perfusable multiscale networks).
+
+[Types]
+
+- Model (src/vascular-supply.js): settings { diffusivityD_m2PerS (1e-10..1e-8), consumptionM_molPerM3S (1e-6..1e-1), inletC0_molPerM3 (0.001..0.5), channelRadiusUm (10..500) }, all hypothetical-constant; parameterOrigin enum 'hypothetical-controls' only in v1.
+- Krogh solution: C(r) = C0 + M/(4D)*(r^2 - r0^2) - (M*R^2/(2D))*ln(r/r0) on [r0, R], with C(r0)=C0 and C'(R)=0; critical radius R_crit solving C(R)=0, i.e. R^2*(1 - 2 ln(R/r0)) = r0^2 - 4 D C0 / M, solved by bisection; planar comparison thickness L = sqrt(2 D C0 / M); idealized minimum channel surface density 1/(pi R_crit^2) in channels/mm^2 and center-to-center spacing 2 R_crit. If no root exists within 10 mm the result says supply is not limiting at that scale in this idealization.
+- Result: { status, computed: { kroghCriticalRadiusUm, planarLimitUm, channelSpacingUm, channelDensityPerMm2, profile: [{ rUm, cOverC0 }] }, bandContext: { bandUm: [100, 200], label: 'cited teaching band, not a prediction' }, notices }. Computed results are never persisted; scenario stores settings only (the nozzle-shear record shape).
+- Evidence (same file): VASCULAR_SUPPLY_SCHEMA 'bioprinting-workbench/vascular-supply-evidence/1'; sources[] and claims[] (id prefix 'vascular-supply-', statement, verbatimQuote, locator, supportStatus 'reviewed', basis 'primary-text'|'secondhand-restatement', sourceId, limitations[]); the cited diffusion band lives as claim data, not a hardcoded constant.
+- Scenario: analyses.vascularSupply { settings, parameterOrigin } under bioprinting-workbench/12.
+
+[Files]
+
+New: src/vascular-supply.js (model + catalog + validators); src/vascular-supply-ui.js (panel with inputs, computed readout, SVG concentration profile, evidence list); tests/vascular-supply.test.js; tests/fixtures/scenario-v12.json; docs/VASCULAR_SUPPLY.md; docs/vascular-supply-audit.json (verbatim quotes, locators, fetchDate).
+Modified: src/scenario.js (schema /12, defaultAnalyses + analyses allowlist gains vascularSupply, normalize validates settings/origin, migrateScenarioV11 with truthful warning, older migration allowlists stay as their incoming shapes, parseScenario dispatch /11); src/app.js (createVascularSupplyUI wiring + state export/import, mirroring the nozzle-shear wiring); tests/scenario.test.js (/12 assertions, fixture list + v12, forge cases); index.html (analysis-section panel + scenario-status Version 12 prose + footer v0.21.0-dev); package.json (0.21.0-dev); docs/SCENARIOS.md, docs/SOURCES.md, docs/VERIFICATION.md, docs/ROADMAP.md, docs/ATLAS.md (barrier section links the estimator), CHANGELOG.md, README.md (model paragraph); implementation_plan.md (this plan; 0.20 archived).
+
+[Functions]
+
+New: validateVascularSupplySettings(raw), defaultVascularSupply(), validateVascularSupplyRecord(raw), evaluateVascularSupply(settings), getVascularSupplyCatalog(), validateVascularSupplyCatalog(raw) in src/vascular-supply.js; createVascularSupplyUI({ elements, onStateChange }) with getState/setState/diagnostics mirroring createNozzleShearUI in src/nozzle-shear-ui.js.
+Modified: defaultAnalyses() and normalize() in src/scenario.js (vascularSupply record + allowlist), parseScenario dispatch and migrateScenarioV11.
+
+[Classes]
+
+None (module-function style per repo convention).
+
+[Dependencies]
+
+None. No new packages; no runtime network; evidence fetched once during development with curl and quoted verbatim.
+
+[Testing]
+
+- tests/vascular-supply.test.js: planar identity L = sqrt(2 D C0 / M) exactly; the Krogh profile satisfies C(r0)=C0 and zero slope at R within tolerance; the bisection root satisfies C(R_crit)=0 within 1e-9 relative; a pinned worked example (D=1e-9, C0=0.13, M=1e-2 gives a planar limit near 161 um, inside the cited 100-200 um band) and a case where the critical radius is not limiting within 10 mm; band placement is context-only with forbidden prediction language; forge rejections (out-of-bounds inputs, negative consumption, zero channel radius, unknown origin, mis-banded or secondhand-without-limitations claims, unknown sourceId); audit-verbatim equality with docs/vascular-supply-audit.json.
+- tests/scenario.test.js: /12 round-trip, v11 migration defaults vascularSupply with truthful warning, fixture v12, reject unknown /13.
+- Full battery: node --test tests/*.test.js (152 + new), npm run check, git diff --check, verify:release detached, connected-browser check (panel computes, profile renders, 0 console errors), commit + push, live Pages verification, doc-only record commit.
+
+[Implementation Order]
+
+1. Fetch the four sources and extract verbatim diffusion-limit, printed-microvascularization and anastomosis sentences with the established extractor pattern; store quotes.
+2. Author src/vascular-supply.js (model first, then catalog with injected quotes), generate docs/vascular-supply-audit.json from the runtime catalog, write tests/vascular-supply.test.js, run green.
+3. Scenario /12: scenario.js schema bump + defaultAnalyses + normalize + migrateScenarioV11 + dispatch, tests/scenario.test.js updates, fixtures/scenario-v12.json; run the scenario suite.
+4. UI: src/vascular-supply-ui.js, app.js wiring, index.html panel + Version 12 prose + footer 0.21.0-dev; package.json bump; local browser check of computation and profile.
+5. Docs: VASCULAR_SUPPLY.md, SOURCES.md, SCENARIOS.md, VERIFICATION.md, ROADMAP.md, ATLAS.md pointer, CHANGELOG.md, README.md.
+6. Full battery, push, live Pages verification, doc-only record commit; report the model's idealization and the non-coupling boundary explicitly.
+
+---
+
+# Implementation Plan
+
+[Overview]
+
+Deliver **v0.21.0-dev "The 200-micron wall"**: the workbench's second physics-anchored teaching model after nozzle shear - an idealized Krogh-cylinder oxygen-supply reference that answers the vascularization question every frontier target raises (how close must perfused channels be?) in physical units with hypothetical inputs, plus a four-source open-access evidence layer on the oxygen diffusion limit, printed microvascularization and host anastomosis, wired as a new analysis panel with scenario schema /12 and the same honesty discipline as the shear module.
+
+[Context]
+
+The existing transport models are deliberately dimensionless: oxygen.js is a normalized 1D slab (c'' = demand), oxygen3d takes owner-supplied measurements, and flow.js is a dimensionless linear resistance network with a PCG solver. Nothing computes a physical-units oxygen-supply distance. Every frontier atlas entry names perfusion as its barrier (alveolar gas exchange, deep dermis, gingival prevascularization), and the roadmap's declared intention is to teach endothelial lining and host-vessel connection as evidence gaps. The module mirrors the v0.18 pattern: an idealized model with hypothetical-controls inputs, computed-not-persisted results, a cited band shown as context rather than a viability prediction, and verbatim-quoted open-access evidence with secondhand-restatement discipline. Anchors confirmed available: Mansouri & Leipzig 2021 Biophys Rev (PMC10903443, mass transport limitations), Seymour et al. 2022 Biofabrication (PMC8988885, bioprinted microvasculature structure-to-function), Yeo et al. 2023 Biofabrication (PMC10658349, coupling printing and vascularization), Zhang et al. 2025 Acta Biomater (PMC12277018, perfusable multiscale networks).
+
+[Types]
+
+- Model (src/vascular-supply.js): settings { diffusivityD_m2PerS (1e-10..1e-8), consumptionM_molPerM3S (1e-6..1e-1), inletC0_molPerM3 (0.001..0.5), channelRadiusUm (10..500) }, all hypothetical-constant; parameterOrigin enum 'hypothetical-controls' only in v1.
+- Krogh solution: C(r) = C0 + M/(4D)*(r^2 - r0^2) - (M*R^2/(2D))*ln(r/r0) on [r0, R], with C(r0)=C0 and C'(R)=0; critical radius R_crit solving C(R)=0, i.e. R^2*(1 - 2 ln(R/r0)) = r0^2 - 4 D C0 / M, solved by bisection; planar comparison thickness L = sqrt(2 D C0 / M); idealized minimum channel surface density 1/(pi R_crit^2) in channels/mm^2 and center-to-center spacing 2 R_crit. If no root exists within 10 mm the result says supply is not limiting at that scale in this idealization.
+- Result: { status, computed: { kroghCriticalRadiusUm, planarLimitUm, channelSpacingUm, channelDensityPerMm2, profile: [{ rUm, cOverC0 }] }, bandContext: { bandUm: [100, 200], label: 'cited teaching band, not a prediction' }, notices }. Computed results are never persisted; scenario stores settings only (the nozzle-shear record shape).
+- Evidence (same file): VASCULAR_SUPPLY_SCHEMA 'bioprinting-workbench/vascular-supply-evidence/1'; sources[] and claims[] (id prefix 'vascular-supply-', statement, verbatimQuote, locator, supportStatus 'reviewed', basis 'primary-text'|'secondhand-restatement', sourceId, limitations[]); the cited diffusion band lives as claim data, not a hardcoded constant.
+- Scenario: analyses.vascularSupply { settings, parameterOrigin } under bioprinting-workbench/12.
+
+[Files]
+
+New: src/vascular-supply.js (model + catalog + validators); src/vascular-supply-ui.js (panel with inputs, computed readout, SVG concentration profile, evidence list); tests/vascular-supply.test.js; tests/fixtures/scenario-v12.json; docs/VASCULAR_SUPPLY.md; docs/vascular-supply-audit.json (verbatim quotes, locators, fetchDate).
+Modified: src/scenario.js (schema /12, defaultAnalyses + analyses allowlist gains vascularSupply, normalize validates settings/origin, migrateScenarioV11 with truthful warning, older migration allowlists stay as their incoming shapes, parseScenario dispatch /11); src/app.js (createVascularSupplyUI wiring + state export/import, mirroring the nozzle-shear wiring); tests/scenario.test.js (/12 assertions, fixture list + v12, forge cases); index.html (analysis-section panel + scenario-status Version 12 prose + footer v0.21.0-dev); package.json (0.21.0-dev); docs/SCENARIOS.md, docs/SOURCES.md, docs/VERIFICATION.md, docs/ROADMAP.md, docs/ATLAS.md (barrier section links the estimator), CHANGELOG.md, README.md (model paragraph); implementation_plan.md (this plan; 0.20 archived).
+
+[Functions]
+
+New: validateVascularSupplySettings(raw), defaultVascularSupply(), validateVascularSupplyRecord(raw), evaluateVascularSupply(settings), getVascularSupplyCatalog(), validateVascularSupplyCatalog(raw) in src/vascular-supply.js; createVascularSupplyUI({ elements, onStateChange }) with getState/setState/diagnostics mirroring createNozzleShearUI in src/nozzle-shear-ui.js.
+Modified: defaultAnalyses() and normalize() in src/scenario.js (vascularSupply record + allowlist), parseScenario dispatch and migrateScenarioV11.
+
+[Classes]
+
+None (module-function style per repo convention).
+
+[Dependencies]
+
+None. No new packages; no runtime network; evidence fetched once during development with curl and quoted verbatim.
+
+[Testing]
+
+- tests/vascular-supply.test.js: planar identity L = sqrt(2 D C0 / M) exactly; the Krogh profile satisfies C(r0)=C0 and zero slope at R within tolerance; the bisection root satisfies C(R_crit)=0 within 1e-9 relative; a pinned worked example (D=1e-9, C0=0.13, M=1e-2 gives a planar limit near 161 um, inside the cited 100-200 um band) and a case where the critical radius is not limiting within 10 mm; band placement is context-only with forbidden prediction language; forge rejections (out-of-bounds inputs, negative consumption, zero channel radius, unknown origin, mis-banded or secondhand-without-limitations claims, unknown sourceId); audit-verbatim equality with docs/vascular-supply-audit.json.
+- tests/scenario.test.js: /12 round-trip, v11 migration defaults vascularSupply with truthful warning, fixture v12, reject unknown /13.
+- Full battery: node --test tests/*.test.js (152 + new), npm run check, git diff --check, verify:release detached, connected-browser check (panel computes, profile renders, 0 console errors), commit + push, live Pages verification, doc-only record commit.
+
+[Implementation Order]
+
+1. Fetch the four sources and extract verbatim diffusion-limit, printed-microvascularization and anastomosis sentences with the established extractor pattern; store quotes.
+2. Author src/vascular-supply.js (model first, then catalog with injected quotes), generate docs/vascular-supply-audit.json from the runtime catalog, write tests/vascular-supply.test.js, run green.
+3. Scenario /12: scenario.js schema bump + defaultAnalyses + normalize + migrateScenarioV11 + dispatch, tests/scenario.test.js updates, fixtures/scenario-v12.json; run the scenario suite.
+4. UI: src/vascular-supply-ui.js, app.js wiring, index.html panel + Version 12 prose + footer 0.21.0-dev; package.json bump; local browser check of computation and profile.
+5. Docs: VASCULAR_SUPPLY.md, SOURCES.md, SCENARIOS.md, VERIFICATION.md, ROADMAP.md, ATLAS.md pointer, CHANGELOG.md, README.md.
+6. Full battery, push, live Pages verification, doc-only record commit; report the model's idealization and the non-coupling boundary explicitly.
+
+---
+
+# Implementation Plan
+
+[Overview]
+
 Deliver **v0.20.0-dev "The physical setups"**: author the missing peristaltic perfusion-pump circuit (the fourth physical-setup piece stage 4's equipment line names: "perfusion chamber · reservoir · peristaltic pump · tubing") as a genuine Blender-authored GLB, in the owner's live Blender 5.1.2 via MCP for Blender, with the same provenance discipline as the 2026-11-02 four-asset run: owner-scene fingerprint untouched, fresh owned scene, export without saving any .blend, sha-verified transfer, dated isolation evidence, and a manifest re-pin. Wire the asset into the scene with a procedural fallback, extend the asset/evidence tests, and ship through the full battery with live Pages verification. This is the fast-follow explicitly recorded in the 0.19 milestone.
 
 [Context]

@@ -933,3 +933,38 @@ docs/blender-isolation-run-2026-11-02-pump.json with the export stats and hashes
   (the genuine Blender export); /docs/blender-isolation-run-2026-11-02-pump.json served live at
   HTTP 200; the live manifest.json lists the perfusion-pump entry. The connected-browser check
   fetched all five GLBs at HTTP 200 and rendered the pump on the bench with 0 console errors.
+
+## 0.21.0-dev live follow-on (agent-run, November 2, 2026)
+
+The second physics-anchored teaching model after nozzle shear: an idealized Krogh-cylinder
+oxygen-supply reference (the 200-micron wall) that computes the supply-limiting distance from a
+perfused channel in physical units from hypothetical inputs (tissue diffusivity, zero-order
+consumption, inlet oxygen, channel radius), with the cited 100-200 um band shown as context.
+
+Actual verification results:
+
+- **Model:** planar identity L = sqrt(2 D C0 / M) tested exactly; Krogh profile boundary
+  conditions (C(r0) = C0, zero slope at R) and the bisection root tested numerically (edge
+  concentration zero within 1e-9 relative); pinned worked example D=1e-9, C0=0.13, M=1e-2 gives
+  L = 161 um inside the cited band; a not-limiting case returns status
+  not-limiting-at-scale instead of inventing a number; channel spacing and density derive from
+  the critical radius and are tested for consistency.
+- **Evidence layer:** four open-access sources fetched 2026-11-02 (PMC10903443, PMC8988885,
+  PMC10658349, PMC12277018); 10 verbatim quotes with locators, source ids and topics mirrored in
+  docs/vascular-supply-audit.json and tested for equality; the 100-200 um band is claim data
+  requiring two agreeing anchors (validator refuses an unstable band); band anchors carry
+  restatement limitations; all claims carry limitations; notices are tested to exclude
+  guarantee/survival/approval language.
+- **Forge discipline:** 13 catalog mutations rejected (bad schema, foreign ids, unknown
+  sources/topics, secondhand basis, short quotes, empty limitations, disagreeing bands, band
+  data on non-band claims, removed coverage, duplicate ids, malformed DOI); settings validators
+  reject out-of-bounds diffusivity, negative consumption, oversized inlet, tiny channel radius
+  and unknown parameter origins; scenario records reject the cited-fit origin.
+- **Scenario chain:** schema /12 with analyses.vascularSupply; migrateScenarioV11 warns and
+  defaults; the v3-v10 migrations default the new key with extended truthful warnings; fixture
+  scenario-v12.json added with a custom vascular-supply record; v11 fixture migrates with
+  from-annotated provenance; unknown /13 rejected. Unit tests: **158 passed, 0 failed** (up from
+  152), npm run check over 100 modules, git diff --check clean.
+- **Not performed:** any flow, pressure, shear or resistance modeling; any cell-type, species or
+  tissue specificity; any viability, survival or damage claim at any distance; any coupling to
+  the storyboard, oxygen, flow or nozzle-shear models.
