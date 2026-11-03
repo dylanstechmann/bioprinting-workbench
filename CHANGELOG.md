@@ -3,7 +3,7 @@
 Personal hobby and learning project, AI-assisted. Agent-run software/source checks are
 not biological validation or independent scientific review.
 
-## 0.21.0-dev - local, uncommitted and unpublished
+## 0.21.0-dev - committed and pushed to main on 2026-11-02
 
 - The Krogh oxygen-supply reference (the 200-micron wall): idealized steady cylinder, zero-order
   consumption, hypothetical physical inputs, computed supply-limiting radius with planar

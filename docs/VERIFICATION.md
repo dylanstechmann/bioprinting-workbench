@@ -968,3 +968,12 @@ Actual verification results:
 - **Not performed:** any flow, pressure, shear or resistance modeling; any cell-type, species or
   tissue specificity; any viability, survival or damage claim at any distance; any coupling to
   the storyboard, oxygen, flow or nozzle-shear models.
+- **Live Pages verification (after commit 14191c1 was pushed):** fetching
+  https://dylanstechmann.github.io/bioprinting-workbench/ returned the page with footer
+  "v0.21.0-dev" and the vascular-supply panel present; /src/vascular-supply.js served live at
+  HTTP 200 (17,570 bytes); /docs/vascular-supply-audit.json served live at HTTP 200 (6,884
+  bytes); /docs/VASCULAR_SUPPLY.md served live with the 200-micron-wall write-up; the live
+  README carries the Krogh paragraph. The connected-browser check rendered the panel (Krogh
+  289.2 um at defaults), recomputed live when the channel radius changed 100 -> 250 um
+  (455.5 um), rendered all ten evidence quotes and the SVG profile, exported the record in
+  the scenario JSON, and reported 0 console errors.
