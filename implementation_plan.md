@@ -1,260 +1,118 @@
 # Implementation Plan
 
-## Execution checkpoint — November 3, 2026 (plan below executed through step 9)
-
-Verification close-out landed — cross-language golden digests pinned both sides (JS 7/7 +
-Python 11/11), browser halves for the C/D/E UI passed (7 + 3 checks, scenario bytes
-invariant, 390 px clean, zero page errors), the >=10-cycle settled resource matrix is
-recorded (`docs/resource-matrix-run-2026-11-03.json`, deterministic per position-in-run;
-settled counts only, not a GPU-leak certificate), and the magnified construct inset +
-explanatory vascular cross-sections shipped with unit tests. Workbench 273 tests / 156
-modules; provenance fresh; verify:release automated checks pass. The planned two-half matrix
-split became five bounded 2-cycle runs (60 s runner cap) — recorded as a deviation. Commits
-made in both repos on explicit owner instruction ("all of it"); no push or deployment.
-Remaining not-run gates: owner visual review, citation/scientific review, live-provider demo
-(owner credentials), deployment.
-
 [Overview]
 
-Close out and finish the uncommitted B–G body of work on the Bioprinting Workbench and its
-sibling ResearchDesk adapter: run the pending browser verification for the Phase C/D/E UI,
-execute the standing ≥10-cycle settled resource matrix, add the missing cross-language golden
-fixture test, deliver the next bounded ROADMAP milestone (a separate magnified construct
-viewport and explanatory vascular cross-sections), record everything honestly, and then
-commit the finished work in both repositories on explicit owner instruction ("all of it",
-2026-11-03). Owner-confirmed scope of this cycle: pending verification + close-out AND the
-next ROADMAP feature milestone AND commits at the end. No push, publication or deployment is
-authorized by this plan.
+Complete and demonstrate the remaining Workbench exploration, provenance, presentation and ResearchDesk exchange workflows, then prepare an evidence-backed unpublished release candidate without committing or publishing.
 
-Context and constraints carried forward unchanged: this is a personal hobby/learning project
-with AI-assisted development kept visible; no person/animal-directed treatment instructions,
-transplant-readiness scores or biological-validation claims; no secrets/credentials in either
-repository; scientific evaluators and their equations are not altered; scenario /13
-round-trips unchanged and /14 stays rejected; the ResearchDesk import path never calls
-`Desk.submit()`. The previous plan (`docs/IMPLEMENTATION_PLAN_B_G_2026-11-03.md`, archived
-byte copy) is fully executed: Workbench 263 tests / 150 modules, ResearchDesk exchange suite
-10/10, evaluators and scenario /13 byte-identical, nothing committed. Standing owner gates
-that remain not-run regardless of this cycle: citation/scientific review, live-provider demo
-(owner credentials), deployment, and owner visual review of the visuals (this cycle produces
-the evidence for that review; the review itself is the owner's).
+Planning date: November 4, 2026. The previous active plan is preserved byte-for-byte at `/workspace/bioprinting-workbench/docs/IMPLEMENTATION_PLAN_CONTINUATION_ARCHIVE_2026-11-04.md`, SHA-256 `82ce536b08c4d99582a0c97767911b90b3739c14297b5ecef28045042fd40c3c`. That plan and earlier archived phases remain scope requirements: no roadmap feature is silently dropped. This turn authorizes planning documents only; implementation requires explicit confirmation. The earlier ambiguous “sure” is not commit authorization.
 
-Approach: pure test work first (cross-language golden digests), then presentation-only
-feature work (magnified viewport + cross-sections; zero evaluator or scenario-schema
-changes), then bounded browser verification of the C/D/E UI plus the new panels and the
-≥10-cycle resource matrix measured on the final UI, then close-out docs and the full local
-batteries in both repos, and only then the two commits. Browser work runs through the
-existing Playwright code-runner in bounded halves (this environment caps a single run at
-60 s), against the dependency-free Node preview server (`npm start`, scripts/serve.mjs).
+Both repositories have substantial uncommitted changes based on Workbench `689200d` and Desk `2b95b71`. Preserve them; do not pull, reset, stash, stage or commit. Previously reported 314 Workbench tests, 177 modules, 16 parity cases and 25 Desk exchange tests are historical checkpoints, not newly measured results. Previous completion claims were premature: the adapter has incorrect ZIP extraction, no established mocked provider, empty return selection and unreliable status assertions; browser feature parts and source audit remain missing.
+
+Architecture: dependency-free native JavaScript ES modules, vendored Three.js, factory-function DOM controllers and Node built-in tests; Python Desk owns an RLock, persistent store and single-worker ThreadPoolExecutor. Preserve scenario `/13` byte stability, `/14` rejection, the existing nine evaluator/numerics/scenario hashes and Desk `data/iris-*`. No evaluator/numerics/scenario changes to make integration pass. Preserve hobby/learning and AI-assistance disclosures, synthetic labels, research credits, uncertainties and exploratory scope. No biological validation claim, treatment guidance, credentials, live-provider calls, new dependencies, commits, tags, pushes, deployment or Pages changes.
+
+The user confirmed no other agent is editing these repositories. Managed reservations still require verification before implementation: `workspace-control` was not found here. Follow `/workspace/.agent-containers/README.md`; do not bypass unavailable infrastructure or start unrestricted agents. Finish/save/inspect each repository before switching its reservation. Test Desk only with temporary stores. Unavailable execution must be recorded as blocked, never passed.
 
 [Types]
 
-No TypeScript and no schema-library dependency; all contracts stay plain objects with
-explicit allowlisted fields and runtime validation, matching the codebase's factory-function
-style. New or pinned data shapes:
+Keep plain-object/JSDoc JavaScript contracts, existing Python records, exchange schema and status vocabulary; no TypeScript migration.
 
-- Golden digest map (new file, byte-identical copy in both repos):
-  `tests/fixtures/research-exchange/golden-digests.json`
-  `{ "canonicalizer": "sorted-json-lf/1", "vector": { "input": { "b": 2, "a": 1 }, "canonical": "{\"a\":1,\"b\":2}\n" }, "fixtures": { "minimal.json": "<sha256 hex>", "roundtrip.json": "...", "conflicts.json": "...", "invalid.json": "...", "synthetic.json": "..." } }`
-  where each digest is sha256 over the canonical bytes of the parsed fixture content produced
-  by `canonicalJsonBytes` (JS, `src/model-provenance.js`) / `canonical_json_bytes` (Python,
-  `tools/bioprint_exchange.py`) — both sorted-key compact JSON plus one trailing LF.
-- Magnified-viewport state (ephemeral presentation state, never serialized into scenario
-  bytes): `{ enabled: boolean }` plus an internal second `THREE.PerspectiveCamera` whose pose
-  is derived per frame from the construct bounds via `fitCameraToBounds` with a narrowed
-  field of view. Diagnostics addition: `magnified: { enabled, cameraPosition, cameraTarget, fovDegrees }`.
-- Cross-section spec (static frozen constant in `src/vascular-cross-sections.js`):
-  `CROSS_SECTIONS: ReadonlyArray<{ id, title, scaleNote, labels: string[], evidenceAnchor, disclaimer }>` — 3 schematic sections (printed channel, capillary scale, connection gap) whose strings are evidence-anchored explanatory text only; each carries the standing schematic/not-to-scale disclaimer.
-- Resource-matrix evidence file `docs/resource-matrix-run-2026-11-03.json`:
-  `{ date, cycles: 10, matrix: [{ cycle, environment, quality, geometries, textures, calls }], stableAcrossCycles: boolean, notes: string }` — settled-cycle counts only, explicitly not a GPU-leak certificate.
+- `RoundtripCheckpoint`: `{schema:'bioprinting-workbench/roundtrip-checkpoint/1',sessionId:string,workbenchOrigin:string,deskOrigin:string,phase:string,bundleText:string,hypothesisIds:string[],queryIds:string[],modelRunIds:string[],evidenceIds:string[],deskRunIds:string[],expectedScenarioSha256:string,expectedRunStatuses:{id:string,status:string}[],artifactExpectations:{filename:string,bytes:number,sha256:string}[]}`. Validate session/origin/IDs/hashes; explicit shared browser context; test-owned storage only, cleared on teardown. No private research in application localStorage.
+- `ArchiveEntry`: `{filename:string,bytes:Uint8Array,compressionMethod:0|8,expectedBytes:number}`. Bounded archive/entry/count/expanded sizes using existing exchange/export caps; reject duplicate/traversal names, encryption, unsupported methods/ZIP64, truncation and invalid offsets. Manifest byte counts and SHA-256 must match extracted artifacts.
+- `BrowserCheckEvidence`: retain current schema/part/URL/viewport/timestamps/checks/errors; add `status:'pass'|'fail'|'blocked'|'not-run'`, expected/observed values, fixture identity and timeout diagnostics. A blocked/failing check cannot yield overall pass. Distinguish expected injected failures from unexpected page/network errors.
+- `StudyHistoryEntry` remains `{id:string,artifact:StudyArtifact}` with maximum 20 entries. Selected history controls rows/notices/download, never scenario/model settings. Cancelled or stale results never enter history.
+- Cockpit `refreshRuns()` updates native run choices without discarding imported state, checkbox selection, file attachments, pending previews or valid downloads. Prefer narrow controller API, not a new event bus.
+- Draft `loadCard(id:string)` populates complete existing record/alternatives without mutating workspace. Save uses existing immutable revision/validation semantics; retains unrelated fields and lineage; never upgrades authorship/review status. Changed reviewed content must not misleadingly retain prior review.
+- `SourceAuditRow`: `{claimId:string,file:string,locator:string,displayedClaim:string,sourceId:string,sourceURL:string,accessedAt:string|null,primarySourceLocator:string|null,status:'supported'|'qualified'|'contradicted'|'unavailable'|'not-reviewed',notes:string}`.
+- Resource evidence records viewport/view/overlay, distinct main/inset passes, cycle, settled counters, fresh-page baseline, timing distribution and disposal. Ten settled repetitions per existing planned matrix case; no single-frame memory conclusions.
 
 [Files]
 
-Archived this cycle: `implementation_plan.md` (executed B–G plan) →
-`docs/IMPLEMENTATION_PLAN_B_G_2026-11-03.md` (byte copy, done before this plan was written).
+All paths below are absolute. New files:
+- `/workspace/bioprinting-workbench/scripts/browser-roundtrip-archive.js`: bounded extraction and artifact verification helper, no runtime dependency.
+- `/workspace/bioprinting-workbench/tests/browser-roundtrip.test.js`: phase/checkpoint/selection/status/timeout regressions.
+- `/workspace/bioprinting-workbench/tests/browser-roundtrip-archive.test.js`: stored/deflated and malformed archive fixtures.
+- `/workspace/regen-workbench/tests/browser_exchange_server.py`: temporary loopback Desk fixture, deterministic mocked provider boundary, actual queue/executor and outbound guard.
+- `/workspace/bioprinting-workbench/docs/RESEARCH_SOURCES_AUDIT_2026-11-04.md`: opened primary sources, exact locators and unresolved claims.
+- `/workspace/bioprinting-workbench/docs/browser-roundtrip-2026-11-04.json`, `/workspace/bioprinting-workbench/docs/browser-controls-2026-11-04.json`, `/workspace/bioprinting-workbench/docs/resource-matrix-2026-11-04.json`: actual measured evidence, including blockers. Add bounded desktop/mobile screenshots only from actual runs without private data.
 
-New files (all under `/workspace/bioprinting-workbench` unless noted):
+Existing Workbench changes:
+- `/workspace/bioprinting-workbench/scripts/browser-roundtrip.js`: correct selectors/response assertions, shared context, bounded phases/checkpoints, exact job polling, explicit export IDs, archive helper, returned artifact selection, status/idempotence/scenario checks.
+- `/workspace/bioprinting-workbench/scripts/browser-verification-suite.js`: implement currently absent `exploration`, `drafts`, `presentation` parts while preserving existing three parts.
+- `/workspace/bioprinting-workbench/scripts/browser-smoke.js` and `/workspace/bioprinting-workbench/scripts/browser-smoke-phases-cde.js`: reconcile selectors and collect existing diagnostics/resource matrix without weakening assertions.
+- `/workspace/bioprinting-workbench/src/convergence-study-ui.js`: history-selected rendering and bounded Blob URL lifecycle.
+- `/workspace/bioprinting-workbench/src/research-cockpit-ui.js`: non-destructive native-run refresh and explicit imported-card edit handoff.
+- `/workspace/bioprinting-workbench/src/research-draft-ui.js`: visible existing-card load/edit, full field/alternative roundtrip, safe revision/review handling and listener cleanup.
+- `/workspace/bioprinting-workbench/src/app.js`: refresh cockpit after capture; synchronize import/workspace/draft views without loops or scenario writes; guard initialization order and dispose controllers/listeners.
+- `/workspace/bioprinting-workbench/index.html` and `/workspace/bioprinting-workbench/src/instrument.css`: accessible edit labels and mobile layout only as needed.
+- `/workspace/bioprinting-workbench/tests/convergence-study-ui.test.js`, `/workspace/bioprinting-workbench/tests/research-cockpit-ui.test.js`, `/workspace/bioprinting-workbench/tests/research-draft-ui.test.js`, `/workspace/bioprinting-workbench/tests/research-selection.test.js`: failing-first UI/selection regressions.
+- `/workspace/bioprinting-workbench/scripts/verify-release.mjs` and `/workspace/bioprinting-workbench/tests/release.test.js`: all planning archive exclusions, including this new archive; package/footer/current RELEASE coherence; retain runtime provenance/licenses and explicit external gates.
+- `/workspace/bioprinting-workbench/package.json`, `/workspace/bioprinting-workbench/docs/RELEASE.md`, `/workspace/bioprinting-workbench/docs/ROADMAP.md`: retain already synchronized `0.25.0-dev`; correct premature readiness language. Historical version sections are not coherence errors.
+- `/workspace/bioprinting-workbench/docs/RESEARCH_EXCHANGE.md` and `/workspace/bioprinting-workbench/docs/RESEARCH_COCKPIT.md`: tested review/submit/import behavior and native `unidentifiable` to envelope `unsupported-foreign` mapping with preserved native artifact status.
+- `/workspace/bioprinting-workbench/docs/VERIFICATION.md` and `/workspace/bioprinting-workbench/docs/IMPLEMENTATION_PROGRESS_2026-11-04.md`: fresh measurements, commands, counts and truthful outstanding gates.
+- `/workspace/bioprinting-workbench/assets/model-provenance.json`: regenerate only if hashed computation closure genuinely changes; protected computation/scenario hashes remain unchanged.
 
-- `tests/fixtures/research-exchange/golden-digests.json` — pinned cross-language golden map
-  (shape under [Types]); generated once from the JS canonicalizer and verified against the
-  Python one before pinning.
-- `/workspace/regen-workbench/tests/fixtures/bioprint_exchange/golden-digests.json` — byte
-  copy of the same file (the fixture directories already share the five bundle files).
-- `src/magnified-viewport.js` — `createMagnifiedViewport({ THREE, renderer, scene, getBounds,
-  getQuality })` factory: owns one secondary `THREE.PerspectiveCamera` and a
-  `renderInset({ width, height })` scissored second pass (bottom-right framed inset on the
-  existing single canvas/WebGL context — the project's single-WebGL-owner rule from
-  `scientific-views.js` is preserved), `setEnabled(boolean)`, `diagnostics()`, `dispose()`.
-  It renders no content of its own beyond the scene from the fitted construct pose.
-- `src/vascular-cross-sections.js` — `CROSS_SECTIONS` frozen spec (3 sections) plus
-  `renderCrossSections(container)` building SVG/DOM with `textContent` only (XSS-inert like
-  the cockpit), each section carrying a scale note, an evidence anchor string and the
-  schematic disclaimer.
-- `tests/magnified-viewport.test.js`, `tests/vascular-cross-sections.test.js` — unit tests
-  (details under [Testing]).
-- `scripts/browser-smoke-phases-cde.js` — Playwright code-runner script (`async page => …`,
-  same shape as `scripts/browser-smoke.js`) exercising the Phase C/D/E UI; runnable in two
-  bounded halves via a `part` constant (`'c-d'` / `'e'`) to respect the 60 s cap.
-- `scripts/browser-resource-matrix.js` — code-runner script taking a `startCycle`/`cycles`
-  window (default 5) so the 10-cycle matrix runs as two bounded halves and merges results
-  into `docs/resource-matrix-run-2026-11-03.json`.
+Existing Desk changes, only under its reservation:
+- `/workspace/regen-workbench/tests/test_bioprint_exchange_http.py`: real queue mocked-provider, stale/duplicate review, selected archive and HTTP failure regressions.
+- `/workspace/regen-workbench/tests/test_bioprint_exchange.py`: archive/status/dependency regressions found during execution.
+- `/workspace/regen-workbench/tools/desk/app.js`, `/workspace/regen-workbench/tools/desk/index.html`: browser-observed response/selection/review/download defects only; no production fake-success path.
+- `/workspace/regen-workbench/tools/regen_desk.py`: narrow regression-backed fixes, preserving RLock, persisted ambiguity receipt, queue, authorization and bounds.
+- `/workspace/regen-workbench/BIOPRINT_EXCHANGE.md`: tested exchange/status mapping and imported-artifact-byte limitation.
 
-Existing files to modify:
-
-- `tests/research-exchange.test.js` — add golden-map tests: the `{"b":2,"a":1}` vector's
-  canonical bytes equal the pinned literal, and `sha256Canonical` of each of the five parsed
-  fixtures matches `golden-digests.json`.
-- `/workspace/regen-workbench/tests/test_bioprint_exchange.py` — add
-  `test_fixture_golden_digests` (and keep `test_cross_language_golden_bytes`): for each
-  fixture, `sha256(bx.canonical_json_bytes(parsed))` matches the same map.
-- `src/scene.js` — wire `createMagnifiedViewport` into the existing draw loop after the main
-  pass (inset only while enabled and only in Studio; respects render suspension outside
-  Studio and reduced-motion/quality settings), expose `magnified` in `diagnostics()` and a
-  `setMagnified(enabled)` handle alongside `setQuality`/`setEnvironment`.
-- `src/app.js` — toggle wiring (`#magnify-construct` checkbox → `lab.setMagnified`), extend
-  `globalThis.bioprintingWorkbench.diagnostics()` with the `magnified` entry.
-- `index.html` — magnify toggle in the existing `.view-tools` control group; new
-  `EXPLANATORY CROSS-SECTIONS` panel (id `vascular-cross-sections`) with the standing
-  evidence/limits framing near the vascular panel.
-- `src/styles.css` and/or `src/instrument.css` — inset frame styling (accessible label,
-  contrast-checked) and cross-section panel/SVG styling; no layout regressions at 390 px.
-- `docs/VISUAL_DESIGN.md` — record the ≥10-cycle matrix evidence and the new viewport/cross-
-  section visuals with the same measured-tone as existing entries.
-- `docs/VERIFICATION.md`, `docs/ROADMAP.md`, `CHANGELOG.md`, `README.md`,
-  `CONTEXT_STATE.md`, `implementation_plan.md` (checkpoint) — close-out records with
-  measured counts and remaining not-run gates (details under [Testing]).
-
-Files deliberately untouched: every evaluator (`src/model.js`, `oxygen.js`, `oxygen3d.js`,
-`flow.js`, `nozzle-shear.js`, `vascular-supply.js`, `cell-division.js`, `numerics.js`,
-`validation.js`, `cross-reference.js`, `scenario.js`), evidence catalogs, scenario schema /13,
-`tools/regen_desk.py` exchange routes, and the untracked owner `data/iris-*` directories in
-`/workspace/regen-workbench` (excluded from the commit).
+No source deletion/movement, deployment/configuration changes or dependency updates. Prior plan archive is documentation preservation only. Do not edit credentials, Desk real data, vendored libraries or protected evaluator/scenario modules. Source audit corrections elsewhere require a specific opened-source locator and minimal documented change, not broad scientific rewriting.
 
 [Functions]
 
 New functions:
-
-- `createMagnifiedViewport({ THREE, renderer, scene, getBounds, getQuality })` in
-  `src/magnified-viewport.js`. Returns `{ setEnabled(on: boolean): void, renderInset(): void,
-  diagnostics(): { enabled, cameraPosition, cameraTarget, fovDegrees }, dispose(): void }`.
-  `renderInset()` (called from the scene draw loop after the main pass) fits the secondary
-  camera to `getBounds()` via `fitCameraToBounds` (`src/camera-rig.js`) at a narrowed
-  `fovDegrees` (magnification), then renders a scissored bottom-right inset sized ~28% of the
-  canvas with `renderer.setScissorTest(true)` and an explicit frame border drawn by CSS on a
-  positioned overlay. No second WebGL context; no new scene content.
-- `CROSS_SECTIONS` + `renderCrossSections(container)` in `src/vascular-cross-sections.js`.
-  Three frozen specs: `printed-channel` (extrusion-scale context, 100–300 µm quoted band),
-  `capillary-scale` (10–50 µm quoted band beside the cited 100–200 µm diffusion context),
-  `connection-gap` (anastomosis/connection mechanisms uncertain — an explicit evidence gap
-  panel). `renderCrossSections` builds SVG circles/annuli + text nodes with `textContent`
-  only and returns a cleanup function.
-- `sha256` helper already exists both sides (`sha256Canonical` JS; `hashlib.sha256` Python) —
-  reused, not duplicated.
+- `extractRoundtripArchive(buffer:ArrayBuffer, limits:{maxEntries:number,maxArchiveBytes:number,maxEntryBytes:number,maxTotalBytes:number}):Promise<Map<string,Uint8Array>>`, `/workspace/bioprinting-workbench/scripts/browser-roundtrip-archive.js`: validate EOCD/central directory, follow local-header offsets and calculate payload starts from local name/extra lengths. Advance central entries by 46 + name + extra + comment lengths, not compressed payload size. Support methods 0 and 8 explicitly, reject unsupported/encrypted/ZIP64 entries and out-of-bounds/oversized expansion. Derive defaults from existing exchange/export validators, not arbitrary enlarged limits.
+- `verifyRoundtripArtifacts(bundle:Object, entries:Map<string,Uint8Array>):Promise<Array<{filename:string,bytes:number,sha256:string}>>`, same file: require exact manifest artifact counts/hashes using existing browser crypto; never execute bytes.
+- `renderStudy(artifact:StudyArtifact):void`, local to `/workspace/bioprinting-workbench/src/convergence-study-ui.js`: single renderer for live completion and selected history.
+- `refreshRuns():void`, returned controller method from `createResearchCockpitUI`, `/workspace/bioprinting-workbench/src/research-cockpit-ui.js`: non-destructive choice refresh including eviction handling.
+- `loadCard(id:string):void`, returned controller method from `createResearchDraftUI`, `/workspace/bioprinting-workbench/src/research-draft-ui.js`: populate fields/rows with validated existing card and retain safe edit baseline.
+- `mock_search_provider(provider, query, limit)` and `main()`, `/workspace/regen-workbench/tests/browser_exchange_server.py`: deterministic labeled synthetic response for allowlisted fixture requests; temporary store/cache/provenance, loopback ephemeral port, hard outbound guard, readiness output, complete executor/server cleanup. Patch only external boundary; do not stub queue, submit, execute or stored job results.
 
 Modified functions:
+- `createBrowserRoundtripSuite`, `runDeskPart`, `runReturnPart`, `runDeskControlsPart`, `/workspace/bioprinting-workbench/scripts/browser-roundtrip.js`: preserve original part compatibility while splitting import, review-submit, interval-poll, explicit export and return into bounded calls. Use supplied shared context rather than isolated `browser.newPage()` contexts when checkpoint storage is required. Assert apply response `applied:true`, not assumed prose. Submission may return queued; poll `/api/runs` for exact receipt `deskRunId`. Failed/partial/ambiguous outcomes are not a successful mocked run. Export selected dependencies and exact completed run IDs, never `{}`.
+- `createBrowserVerificationSuite`, `/workspace/bioprinting-workbench/scripts/browser-verification-suite.js`: allow/implement three missing parts, verify actual UI/state/download transitions, retain existing parts.
+- `createConvergenceStudyUI`: attach/remove history change listener, reuse selected-artifact renderer, preserve stale/cancelled generation guards, revoke superseded URLs safely.
+- `createResearchDraftUI` and its `renderCards`, `collectCard`, `save`: visible existing-card editing, safe revision handling, full field retention and no automatic review/authorship upgrade; dynamic row/listener disposal.
+- `captureRun(partial)`, `/workspace/bioprinting-workbench/src/app.js`: refresh initialized cockpit after successful capture without temporal-dead-zone failures or swallowed exceptions.
+- `collectReleaseInventory(directory)` and `verifyRelease(directory,options)`, `/workspace/bioprinting-workbench/scripts/verify-release.mjs`: complete archive exclusions and current-version checks; external approval remains separate. Avoid recursive `npm test` through release unit tests.
+- Conditional regression-backed fixes only: `Desk.preview_bioprint_submission`, `Desk.submit_bioprint_query`, `Desk.export_bioprint_archive`, `make_handler`, `/workspace/regen-workbench/tools/regen_desk.py`. Preserve review-token deduplication, submission-unknown persistence, locks, size/hash checks and fsync/rename hygiene.
 
-- Scene draw loop in `src/scene.js` (`update`/`draw` closure): after the main render, call
-  `magnifiedViewport.renderInset()` only when enabled, in Studio, and drawing is not
-  suspended; restore `setScissorTest(false)` and viewport after the inset pass.
-- `diagnostics()` in `src/scene.js`: add the `magnified` entry (see [Types]).
-- `createApp` wiring in `src/app.js`: bind `#magnify-construct` change → `lab.setMagnified`;
-  extend the exported `diagnostics()` with `magnified: lab diagnostics entry`.
-- `renderCrossSections` panel bootstrap (called from `src/app.js` next to the existing
-  vascular panel bootstrap).
-
-Removed functions: none.
+No removed functions. Maintain adapter compatibility while migrating callers.
 
 [Classes]
 
-None. The codebase is factory-function modules over plain objects; this cycle adds no
-classes and no inheritance. The two new modules follow the existing
-`createX({ deps }) -> { …api, dispose }` pattern (`scientific-views.js`,
-`model-exploration-ui.js`).
+No new production classes or inheritance. Continue JavaScript factory controllers with explicit disposers. Existing Python `Desk` keeps ownership of store/RLock/executor; compose fixture server around it rather than substituting a fake class. Extend `ExchangeHttpTests` in `/workspace/regen-workbench/tests/test_bioprint_exchange_http.py` and existing unittest classes in `/workspace/regen-workbench/tests/test_bioprint_exchange.py`. No generic command runner/service class or execution endpoint.
 
 [Dependencies]
 
-None new. No npm packages (the repo has none), no new Python requirements (stdlib only),
-reusing the vendored Three.js, Node built-in `node:test`, and the existing Playwright MCP
-code-runner for browser evidence. `assets/model-provenance.json` needs no rebuild: no file
-in the model closure (`model-adapters.js` + evaluators + `domain-models.js`,
-`model-provenance.js`, `validation.js`, catalogs) is modified by this plan — `provenance:check`
-must still pass at close-out as evidence.
+No new npm/Python packages or vendored upgrades. Use Node built-ins, browser File/Blob/WebCrypto/DecompressionStream, vendored Three.js, Python stdlib/unittest/zipfile and available external Playwright tools. Verify deflate-raw support in actual browser; unavailable support is a blocker or use fixture-side Python stdlib extraction for transport with browser-side byte verification, not a new package. No installation into mounted repositories. Use `/home/vscode/.local/bin/python3.12` when available and record versions. Follow managed project environments; no nested Docker/socket mounts or assumed host capability.
 
 [Testing]
 
-Unit (Node built-in `node:test`, run via `npm test`):
-
-- `tests/research-exchange.test.js` additions: golden vector literal bytes; per-fixture
-  canonical sha256 equality against `golden-digests.json`; map regeneration mismatch fails.
-- `tests/magnified-viewport.test.js`: with a stubbed `renderer`/`THREE`, `setEnabled(true)`
-  produces a fitted secondary-camera pose within `CAMERA_LIMITS`; inset pass leaves scissor
-  test disabled afterwards (restore assertion); `diagnostics()` shape; disabled state renders
-  nothing; `dispose()` idempotent.
-- `tests/vascular-cross-sections.test.js`: 3 sections rendered; every section node carries
-  the disclaimer text; hostile strings in specs render inert (textContent, no `innerHTML`);
-  cleanup empties the container.
-- `tests/scientific-views.test.js` / `tests/visual-quality.test.js` untouched; existing
-  263 tests keep passing (263 + ~12 new ≈ 275 expected — exact count recorded at close-out).
-
-Python (in `/workspace/regen-workbench`, `/home/vscode/.local/bin/python3.12 -B -m unittest …`):
-
-- `test_bioprint_exchange.py`: `test_fixture_golden_digests` (5 fixtures × identical digests
-  as the JS side) + retained byte-vector test. Target 12 tests, all passing; full affected
-  suites re-run (`test_regen_desk.py` expected unchanged: 30 run, same 3 pre-existing
-  failures that reproduce at clean HEAD — not ours).
-
-Browser (Playwright code-runner, bounded halves, evidence to `/tmp` + summarized in docs):
-
-- `scripts/browser-smoke.js` still green (regression).
-- `scripts/browser-smoke-phases-cde.js` half `c-d`: `#presentation-scale` cycles all four
-  scales (cell shows the scale-unknown label in `#view-label`/panel copy), overlay legend
-  entries complete and ≤4 active, `exportScenario()` bytes identical before/after all
-  presentation changes, keyboard selection equivalence, WebGL-fallback banner behavior
-  unchanged, `#sweep-run` then `#sweep-cancel` ends with "Sweep cancelled. No scenario values
-  were changed." and scenario bytes unchanged; magnify toggle shows/labels the inset and
-  `diagnostics().magnified.enabled` flips.
-- half `e`: cockpit preview is inert (bundle selected → preview shown, `exportScenario()`
-  unchanged, `#cockpit-apply` stays disabled until a valid preview), XSS-style fixture
-  strings render inert (no script execution, `pageerror` empty), apply then export → reimport
-  round-trips canonically, cross-section panel renders 3 sections with disclaimers.
-- `scripts/browser-resource-matrix.js`: 10 settled cycles across lab/treedome ×
-  low/balanced/high sampling `diagnostics().graphics.{geometries,textures,calls}` per cycle;
-  two bounded halves (cycles 0–4, 5–9) merged into
-  `docs/resource-matrix-run-2026-11-03.json`; `stableAcrossCycles` asserts identical counts
-  across cycles; wording everywhere: settled-cycle counts only, not a GPU-leak certificate,
-  no FPS claims.
-- Overflow check at 390 px for every area after the new panel.
-
-Close-out battery (both repos, in order): `npm test`, `npm run check`, `npm run
-provenance:check`, `git diff --check`, `npm run verify:release`; Python suites as above;
-evaluator + scenario /13 byte-hash comparison (before/after); then the two commits
-(`git status` audit that only intended files change; `data/iris-*` excluded). Docs record
-exact measured counts and keep the not-run gates (owner visual review, citation/scientific
-review, live-provider demo, deployment) visible.
+1. Record both worktrees/diffs, original nine protected hashes, `/13` fixture hash, versions and mirrored parity equality. Historical logs do not establish a fresh pass. Workbench: `npm test`, `npm run check`, `npm run provenance:check`, `PYTHON=/home/vscode/.local/bin/python3.12 npm run verify:exchange-parity`. Desk: `/home/vscode/.local/bin/python3.12 -B -m unittest discover -s tests -p 'test_bioprint_exchange*.py' -v`; run `test_regen_desk.py` separately and compare exact names/tracebacks of the three previously reported failures, without assuming their cause.
+2. Failing-first unit cases: stored/deflated ZIP, local offsets, central comments/extras, malformed/truncated/bomb/path/duplicate/encrypted/unsupported archives, exact bytes/hashes; nonempty selected job payload; wrong checkpoint session; queued receipt polling; history rendering/download identity; immediate native registry refresh without lost selections; existing-card load/edit fidelity and review safety; cancellation, URL/listener cleanup.
+3. HTTP integration: import never calls submit; review-confirm-submit uses real executor with only provider boundary mocked; duplicate/stale review cannot duplicate work; selected run/archive snapshots/status/hashes agree; same-origin/request-size protections intact. Outbound guard must fail unexpected real requests.
+4. Browser roundtrip at 1280x720 and width 390: visible export/import/review/submit, exact-job interval polling, explicit selected native/mock run export, ZIP artifact verification, Workbench manifest plus artifact-file selection, status/native payload preservation, scenario invariance and repeat import idempotence. Missing dependencies or failed jobs fail the check. Each runner call remains below 60 seconds with validated checkpoints and complete teardown.
+5. Feature browser checks: seven registered model options, two-axis bounds, retained comparisons including failed points/unit disagreement; convergence history/download; visible draft create/load/edit/query/export; representation/cut rollback/reduced-motion, keyboard navigation, mobile overflow and WebGL fallback. Assert actual displayed state, not existence or status text alone.
+6. Download matrix: unknown job, missing bytes, oversized file, hash mismatch, HTTP/network failure and successful exact-byte download. Corrupt only isolated fixture stores. Failed cases require bounded error, no successful download/partial publication, truthful status and cleanup.
+7. Resource evidence: reuse original matrix/diagnostics; ten settled repetitions plus fresh-page series for views/overlays/inset, cancellation/disposal and restoration at both viewports. Keep main/inset counters separate; record timings without invented universal thresholds. Investigate resource slope/restoration regressions.
+8. Source audit: enumerate displayed numeric/method claims; actually open each referenced primary source using research/browser tools and record access date, table/figure/section, units and context. Separate published evidence, synthetic constants and conceptual geometry. Unavailable source is not support; abstracts/secondary summaries do not prove detailed parameters. Make minimal supported corrections. Agent review is not owner or independent scientific approval.
+9. Extend release tests for every archive exclusion, retained licenses/provenance, coherent `0.25.0-dev` and external not-run gates. Run `npm run verify:release`, complete Workbench battery/parity, broad Desk battery, both `git diff --check` and protected hashes again. Capture command exit codes separately; trailing shell commands must not mask failure; independent jobs must not write the same log. Read final files/logs and inspect all changed/untracked files before proposing commits.
 
 [Implementation Order]
 
-1. Baseline: record current `npm test`/`npm run check` outputs; re-hash evaluator + scenario
-   files to `/tmp` for the final byte-identity comparison.
-2. Cross-language golden digests: generate `golden-digests.json` from the JS canonicalizer,
-   verify Python `canonical_json_bytes` reproduces every digest, pin byte-identical copies
-   in both fixture directories, add the JS and Python tests, run both affected suites.
-3. Magnified viewport: `src/magnified-viewport.js` + unit tests → `src/scene.js` draw-loop
-   and diagnostics wiring → `src/app.js` + `index.html` toggle + CSS → quick browser check
-   of the inset frame and suspension behavior.
-4. Explanatory cross-sections: `src/vascular-cross-sections.js` + unit tests →
-   `index.html` panel + `src/app.js` bootstrap + CSS → 390 px overflow check.
-5. Browser verification C/D/E: write `scripts/browser-smoke-phases-cde.js`, run half `c-d`
-   then half `e` via the Playwright code-runner against `npm start`; capture evidence.
-6. Resource matrix: write `scripts/browser-resource-matrix.js`, run cycles 0–4 and 5–9,
-   merge `docs/resource-matrix-run-2026-11-03.json`, assert `stableAcrossCycles`.
-7. Close-out docs: `docs/ROADMAP.md` 0.23/0.24 entries (B–G milestone + this cycle,
-   hobby/AI-assisted framing, no biological claims), `docs/VERIFICATION.md` measured entry,
-   `docs/VISUAL_DESIGN.md` matrix + visuals, `CHANGELOG.md`, `README.md`, `CONTEXT_STATE.md`,
-   `implementation_plan.md` checkpoint.
-8. Full batteries both repos (see [Testing]); rebuild the provenance manifest only if a
-   closure file unexpectedly changed; confirm `provenance:check` and `verify:release` pass.
-9. Commits (explicit owner authorization recorded in this plan): `/workspace/bioprinting-workbench`
-   — all intended working-tree changes including this plan and the archive; message discloses
-   AI assistance and hobby/learning status and lists the not-run gates. `/workspace/regen-workbench`
-   — exchange adapter files + tests + schema only; `data/iris-*` left untracked. No push, no
-   publication. Final summary lists what shipped and what remains owner-gated.
+1. Obtain explicit implementation confirmation; verify managed reservation/environment and preserve current diffs/hashes. Resolve unavailable controller access before affected edits. No commit authorization is inferred.
+2. Establish fresh tests/hashes, exact Desk failures and current hypothesis revision/validation semantics and archive bounds. Protect the original nine-file baseline rather than choosing a weaker subset.
+3. Implement failing-first Workbench history selection, non-destructive cockpit run refresh and visible full-fidelity existing-card editing. Run focused tests and full local battery.
+4. Implement/test bounded archive helper and checkpoint/selection contracts. Repair response assertions, shared-context handling, bounded adapter phases and interval job polling.
+5. Save/inspect Workbench; switch managed reservation to Desk. Add isolated loopback mocked-provider fixture and actual queue HTTP tests; repair demonstrated Desk bugs only. No real data/provider activity; verify cleanup.
+6. Switch back after Desk worktree inspection. Execute two-app roundtrip desktop/mobile from clean test-owned state; verify explicit run selection, bytes/statuses, duplicate import and scenario invariance. Fix observed issues with regressions.
+7. Implement/run missing feature browser parts, full download matrix, keyboard/mobile/WebGL fallback, and ten-cycle/fresh-page resources. Record blockers and continue independent checks; unavailable execution never passes.
+8. Finish release coherence/exclusions regressions. Correct premature readiness claims in progress/roadmap, retaining dated historical evidence.
+9. Complete opened-primary-source audit and minimal justified corrections; document status mapping/workflow and actual verification observations.
+10. Run full phase-close battery in both managed environments; compare protected hashes/corpus; verify final edited/new files/evidence and exact pass/fail/skip/not-run counts. Rebuild provenance only for legitimate closure changes.
+11. Present repository-separated final file/diff and prospective commit grouping, baselines, limitations and owner-review gates; stop without staging, committing, tagging, pushing, deploying, Pages changes or live-provider calls. Any commit needs a separate explicit authorization after evidence/file review.
+
+Acceptance requires functioning selected export/reimport with verified bytes, actual queued mocked execution and browser return with truthful statuses, working history/run-refresh/card-edit paths, real browser/resource evidence or explicit blockers, traceable source support, unchanged protected computations/scenario and coherent metadata. Owner visual review, independent scientific/citation review, live Blender checks and publication remain separate gates.

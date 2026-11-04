@@ -10,6 +10,36 @@ import { canonicalJsonBytes, sha256Canonical, CANONICALIZATION } from '../src/mo
 const fixture = name => JSON.parse(readFileSync(new URL(`./fixtures/research-exchange/${name}`, import.meta.url), 'utf8'));
 const artifactBytes = () => new Uint8Array(readFileSync(new URL('./fixtures/research-exchange/synthetic.json', import.meta.url)));
 
+test('shared ancestors form a valid diamond, not a cycle', () => {
+  const bundle = fixture('minimal.json');
+  const template = bundle.hypotheses[0];
+  bundle.hypotheses = ['root', 'left', 'right', 'leaf'].map(id => ({ ...structuredClone(template), id }));
+  bundle.hypotheses[1].parentHypothesisIds = ['root'];
+  bundle.hypotheses[2].parentHypothesisIds = ['root'];
+  bundle.hypotheses[3].parentHypothesisIds = ['left', 'right'];
+  assert.equal(validateResearchBundle(bundle).hypotheses.length, 4);
+  bundle.hypotheses[0].parentHypothesisIds = ['leaf'];
+  assert.throws(() => validateResearchBundle(bundle), /acyclic/);
+});
+
+test('duplicate record IDs are rejected in every exchange group', () => {
+  for (const group of ['queries', 'modelRuns', 'evidence']) {
+    const bundle = fixture('roundtrip.json');
+    assert.ok(bundle[group].length, group);
+    bundle[group].push(structuredClone(bundle[group][0]));
+    assert.throws(() => validateResearchBundle(bundle), /Duplicate/);
+  }
+});
+
+test('forged preview cannot suppress a real conflict', async () => {
+  const initial = fixture('minimal.json');
+  const empty = emptyExchangeState();
+  const state = await applyResearchImport(await previewResearchImport(initial, empty), empty, initial);
+  const conflict = fixture('conflicts.json');
+  const preview = await previewResearchImport(conflict, state);
+  await assert.rejects(() => applyResearchImport({ ...preview, conflicts: [] }, state, conflict), /conflicts/);
+});
+
 test('minimal and roundtrip fixtures validate; invalid schema fails closed', () => {
   const minimal = validateResearchBundle(fixture('minimal.json'));
   assert.equal(minimal.schema, EXCHANGE_SCHEMA);

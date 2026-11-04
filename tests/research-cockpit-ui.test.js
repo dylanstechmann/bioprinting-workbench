@@ -49,7 +49,7 @@ test('the cockpit previews inertly, applies on explicit action and renders XSS a
     const rendered = $('cockpit-cards').children.map(child => child.textContent).join(' ');
     assert.ok(rendered.includes('<img src=x onerror=alert(1)>'), 'markup renders as inert text');
     assert.equal($('cockpit-cards').children.every(row => row.children.length === 0), true, 'no markup nodes are ever created');
-    $('cockpit-export').listeners.get('click')();
+    await $('cockpit-export').listeners.get('click')();
     const exported = JSON.parse($('cockpit-export-output').value);
     assert.equal(exported.publicationReviewStatus, 'not-approved');
     ui.dispose();
@@ -71,4 +71,29 @@ test('the cockpit surfaces import errors without changing state', async () => {
   } finally {
     globalThis.document = original;
   }
+});
+
+test('newer imports, state replacement and disposal invalidate pending asynchronous reads', async () => {
+  const original = globalThis.document;
+  const { $ } = stubEnv();
+  globalThis.document = { createElement: () => stubEnv().$('row') };
+  try {
+    const ui = createResearchCockpitUI({ elements: $ });
+    const importFile = $('cockpit-import').listeners.get('change');
+    let finish;
+    const slow = importFile({ target: { files: [{ text: () => new Promise(resolve => { finish = resolve; }) }] } });
+    await importFile({ target: { files: [{ text: async () => minimalBundleText.replace('bundle-x', 'bundle-new') }] } });
+    finish(minimalBundleText);
+    await slow;
+    assert.match($('cockpit-status').textContent, /bundle-new/);
+    ui.setState(emptyExchangeState());
+    assert.equal($('cockpit-apply').disabled, true);
+    const after = importFile({ target: { files: [{ text: () => new Promise(resolve => { finish = resolve; }) }] } });
+    ui.dispose();
+    const status = $('cockpit-status').textContent;
+    finish(minimalBundleText);
+    await after;
+    assert.equal($('cockpit-status').textContent, status);
+    assert.deepEqual(ui.getState(), emptyExchangeState());
+  } finally { globalThis.document = original; }
 });

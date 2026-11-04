@@ -1,15 +1,21 @@
 import { createAnalysisClient } from './analysis-client.js';
 import { OXYGEN_DEFAULTS, extractOxygenSlice, validateOxygen3DSettings } from './oxygen3d.js';
-import { parseOxygen3DMeasurements, oxygen3DExample } from './calibration3d.js';
+import { oxygen3DExample } from './calibration3d.js';
 import { createTeachingNetwork, solveFlowNetwork, validateFlowSettings } from './flow.js';
 import { MEASUREMENT_BYTES } from './validation.js';
+import { createDatasetRecord, buildFitRun, recordFitApplication } from './measurement-provenance.js';
 
-export function createAnalysisUI({ elements: $, client = createAnalysisClient(), onStateChange = () => {}, onFlow = () => {} }) {
+export function createAnalysisUI({ elements: $, client = createAnalysisClient(), onStateChange = () => {}, onFlow = () => {}, onFieldChange = () => {}, onFitRun = () => {} }) {
   let settings = { ...OXYGEN_DEFAULTS }, parameterOrigin = 'synthetic-controls', input = null, result = null, fit = null, generation = 0, fileGeneration = 0;
   let flow = { enabled: true, pressureDrive: .6, branchResistances: [1,1,1] }, flowResult = null, fitGeneration = 0;
+  let datasetRecord = null, fitRun = null;
+  function renderProvenance() {
+    $('fit3d-provenance').textContent = JSON.stringify({ dataset: datasetRecord, fitRun,
+      notice: datasetRecord ? 'Exact imported-byte and normalized-content digests; declarations remain unverified. Implementation digest is explicitly unavailable.' : 'No original-byte provenance available (for example, a restored legacy scenario).' }, null, 2);
+  }
   const status = value => { $('oxygen3d-status').textContent = value; };
-  function invalidateFit() { fitGeneration++; client.invalidate('oxygen-fit'); fit = null; $('fit3d-apply').disabled = true; $('fit3d-result').textContent = input ? 'Dataset loaded; fit needs recomputation.' : 'No 3D dataset. Nothing is calibrated.'; }
-  function invalidateField() { generation++; client.invalidate('oxygen-solve'); result = null; $('oxygen3d-canvas').hidden = true; $('oxygen3d-values').textContent = ''; status('Settings changed. Solve the normalized box to refresh.'); }
+  function invalidateFit() { fitGeneration++; client.invalidate('oxygen-fit'); fit = null; fitRun = null; renderProvenance(); $('fit3d-apply').disabled = true; $('fit3d-result').textContent = input ? 'Dataset loaded; fit needs recomputation.' : 'No 3D dataset. Nothing is calibrated.'; }
+  function invalidateField() { generation++; client.invalidate('oxygen-solve'); result = null; $('oxygen3d-canvas').hidden = true; $('oxygen3d-values').textContent = ''; status('Settings changed. Solve the normalized box to refresh.'); onFieldChange(); }
   function notify() { onStateChange(); }
   function drawSlice() {
     if (!result) return;
@@ -24,6 +30,7 @@ export function createAnalysisUI({ elements: $, client = createAnalysisClient(),
   async function solve() {
     const current = ++generation;
     result = null; $('oxygen3d-canvas').hidden = true; $('oxygen3d-values').textContent = '';
+    onFieldChange();
     status('Solving synthetic normalized box in a worker…');
     try {
       const next = await client.request('oxygen-solve', { settings });
@@ -33,25 +40,39 @@ export function createAnalysisUI({ elements: $, client = createAnalysisClient(),
       $('oxygen3d-slice').value = Math.min(Number($('oxygen3d-slice').value), settings.resolution-1);
       status(`${next.converged ? 'Converged' : 'NOT converged'} · center ${next.center.toFixed(4)} · min/max ${next.min.toFixed(4)}/${next.max.toFixed(4)} · residual ${next.residualInfinity.toExponential(2)} · flux imbalance ${next.balanceError.toExponential(2)} · ${next.iterations} iterations. ${next.inDomain ? 'No modeled negative values.' : 'Outside nonnegative model domain; values are not clipped.'}`);
       drawSlice();
+      onFieldChange();
     } catch (error) { if (error.name !== 'AbortError' && current === generation) status(error.message); }
   }
   async function runFit() {
     if (!input) return;
     const current = ++fitGeneration;
+    const startedAt = new Date().toISOString();
+    const capturedDataset = datasetRecord;
+    const settingsSnapshot = { ...settings };
     fit = null;
+    fitRun = null;
+    renderProvenance();
     $('fit3d-apply').disabled = true;
     $('fit3d-result').textContent = 'Fitting scalar demand under fixed box assumptions…';
     try {
       const next = await client.request('oxygen-fit', structuredClone({ settings, input }));
       if (current !== fitGeneration) return;
+      const capturedRun = capturedDataset ? await buildFitRun({ id: `fit-${current}`, dataset: capturedDataset,
+        settingsSnapshot, implementationSha256: null, startedAt, finishedAt: new Date().toISOString() }, next) : null;
+      if (current !== fitGeneration) return;
+      fitRun = capturedRun;
+      if (capturedRun) onFitRun(capturedRun);
+      renderProvenance();
       fit = next;
       $('fit3d-result').textContent = `${next.dataKind} (unverified declaration) · n=${next.n} · q=${next.q === null ? 'unidentifiable' : next.q.toFixed(5)} · ratio RMSE=${next.residualRMSE.toExponential(3)} · sensitivity²=${next.sensitivityNormSquared.toExponential(3)}. ${next.assumptionNotice}${next.inDomain ? '' : ' Estimate cannot be applied: unidentifiable or outside [0,2].'}`;
       $('fit3d-apply').disabled = !next.identifiable || !next.inDomain || !next.converged;
     } catch (error) { if (error.name !== 'AbortError' && current === fitGeneration) $('fit3d-result').textContent = error.message; }
   }
-  function setInput(next) {
+  function setInput(next, provenance = null) {
     fileGeneration++;
     invalidateFit(); input = next;
+    datasetRecord = provenance;
+    renderProvenance();
     if (next) { settings.boundaryMode = next.domain.boundaryMode; $('oxygen3d-boundary').value = settings.boundaryMode; invalidateField(); runFit(); }
     else $('fit3d-result').textContent = 'No 3D dataset. Nothing is calibrated.';
     parameterOrigin = 'synthetic-controls'; notify();
@@ -72,7 +93,7 @@ export function createAnalysisUI({ elements: $, client = createAnalysisClient(),
     try { settings = validateOxygen3DSettings({ ...settings, demand: Number($('oxygen3d-demand').value), resolution: Number($('oxygen3d-resolution').value), boundaryMode: $('oxygen3d-boundary').value }); }
     catch (error) { $('oxygen3d-demand').value=settings.demand; status(error.message); return; }
     parameterOrigin = 'synthetic-controls'; invalidateField(); invalidateFit();
-    if (input && input.domain.boundaryMode !== settings.boundaryMode) { input = null; $('fit3d-result').textContent='Dataset cleared: boundary mode changed.'; }
+    if (input && input.domain.boundaryMode !== settings.boundaryMode) { input = null; datasetRecord = null; renderProvenance(); $('fit3d-result').textContent='Dataset cleared: boundary mode changed.'; }
     notify();
   });
   $('oxygen3d-solve').addEventListener('click', solve);
@@ -80,14 +101,33 @@ export function createAnalysisUI({ elements: $, client = createAnalysisClient(),
   $('fit3d-file').addEventListener('change', async event => {
     const file=event.target.files[0]; if(!file)return;
     const current = ++fileGeneration;
+    input = null; datasetRecord = null;
     invalidateFit();
-    try { if(file.size>MEASUREMENT_BYTES)throw new RangeError('Measurement file exceeds 256 KiB'); const parsed = parseOxygen3DMeasurements(await file.text()); if (current === fileGeneration) setInput(parsed); }
+    try {
+      if(file.size>MEASUREMENT_BYTES)throw new RangeError('Measurement file exceeds 256 KiB');
+      const bytes = new Uint8Array(await file.arrayBuffer());
+      const record = await createDatasetRecord({ id: `dataset-${current}`, rawBytes: bytes, modelId: 'box-oxygen', importedAt: new Date().toISOString() });
+      if (current === fileGeneration) setInput(record.normalizedInput, record);
+    }
     catch(error) { if (current === fileGeneration) $('fit3d-result').textContent=error.message; } finally { event.target.value=''; }
   });
-  $('fit3d-example').addEventListener('click',()=>setInput(parseOxygen3DMeasurements(oxygen3DExample())));
+  $('fit3d-example').addEventListener('click', async () => {
+    const current = ++fileGeneration;
+    input = null; datasetRecord = null; invalidateFit();
+    const bytes = new TextEncoder().encode(oxygen3DExample());
+    try {
+      const record = await createDatasetRecord({ id: `dataset-${current}`, rawBytes: bytes, modelId: 'box-oxygen', importedAt: new Date().toISOString() });
+      if (current === fileGeneration) setInput(record.normalizedInput, record);
+    } catch (error) { if (current === fileGeneration) $('fit3d-result').textContent = error.message; }
+  });
   $('fit3d-clear').addEventListener('click',()=>setInput(null));
   $('fit3d-run').addEventListener('click',runFit);
-  $('fit3d-apply').addEventListener('click',()=>{ if(!fit?.inDomain || !fit.identifiable || !fit.converged)return; settings.demand=fit.q; parameterOrigin='explicit-fit-application';$('oxygen3d-demand').value=fit.q;invalidateField();notify();solve(); });
+  $('fit3d-apply').addEventListener('click',()=>{
+    if(!fit?.inDomain || !fit.identifiable || !fit.converged)return;
+    if (fitRun) { fitRun = recordFitApplication(fitRun, { appliedAt: new Date().toISOString(), previousDemand: settings.demand, demand: fit.q }); onFitRun(fitRun); }
+    settings.demand=fit.q; parameterOrigin='explicit-fit-application';$('oxygen3d-demand').value=fit.q;
+    renderProvenance();invalidateField();notify();solve();
+  });
   for(let i=0;i<3;i++) $(`flow-r${i}`).addEventListener('change',()=>{
     try { const next=validateFlowSettings({...flow,branchResistances:[0,1,2].map(j=>Number($(`flow-r${j}`).value))});flow=next;drawFlow();notify(); }
     catch(error){$(`flow-r${i}`).value=flow.branchResistances[i];$('flow-status').textContent=error.message;}
@@ -96,6 +136,8 @@ export function createAnalysisUI({ elements: $, client = createAnalysisClient(),
     setState(state) {
       fileGeneration++;
       client.invalidate(); generation++; result=null;fit=null;
+      datasetRecord = null; fitRun = null;
+      renderProvenance();
       $('oxygen3d-canvas').hidden = true; $('oxygen3d-values').textContent = '';
       settings={...state.oxygen3d.settings};parameterOrigin=state.oxygen3d.parameterOrigin;input=state.dataset;
       flow=validateFlowSettings(state.flow);
@@ -118,9 +160,10 @@ export function createAnalysisUI({ elements: $, client = createAnalysisClient(),
         },
       };
     },
+    getMeasurementProvenance: () => structuredClone({ dataset: datasetRecord, fitRun }),
     setFlowControls(enabled,pressureDrive){if(flow.enabled!==enabled||flow.pressureDrive!==pressureDrive){flow={...flow,enabled,pressureDrive};drawFlow();}},
     getState:()=>({oxygen3d:{settings:{...settings},parameterOrigin},flow:{...flow,branchResistances:[...flow.branchResistances]},dataset:input}),
     diagnostics:()=>({oxygen3d:result?{converged:result.converged,center:result.center,residual:result.residualInfinity,balanceError:result.balanceError}:null,fit:fit?{q:fit.q,identifiable:fit.identifiable,inDomain:fit.inDomain,dataKind:fit.dataKind}:null,flow:flowResult}),
-    dispose(){client.dispose();},
+    dispose(){fileGeneration++; fitGeneration++; generation++; client.dispose();},
   };
 }

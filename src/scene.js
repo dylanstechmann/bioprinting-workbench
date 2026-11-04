@@ -45,6 +45,7 @@ export function createLab(canvas) {
   Object.assign(sun.shadow.camera, { left: -12, right: 12, top: 10, bottom: -10 });
   sun.shadow.bias = -.00025; sun.shadow.normalBias = .015; scene.add(sun);
   let quality = 'balanced', disposed = false, renderedFrames = 0;
+  let frameRenderStats = { mainCalls: 0, insetCalls: 0, totalCalls: 0, geometries: 0, textures: 0, insetRendered: false };
   function setQuality(id) {
     const preset = getQualityPreset(id);
     quality = preset.id;
@@ -265,7 +266,16 @@ export function createLab(canvas) {
     controls.maxDistance = Math.max(CAMERA_LIMITS.defaultMaxDistance, Math.hypot(...pose.offset) * 1.05);
     controls.update();
   }
+  let motionMode = 'system', frozenClock = null;
   function update(s, p, reveal, clock) {
+    if (motionMode === 'reduced') {
+      // Reduced motion freezes animated presentation at one clock instant without touching
+      // scenario time or any control value.
+      if (frozenClock === null) frozenClock = clock;
+      clock = frozenClock;
+    } else {
+      frozenClock = null;
+    }
     if (disposed) return 0;
     if (presentationScale !== 'laboratory') return 0;
     if (prefersReducedMotion) clock = 0;
@@ -334,7 +344,11 @@ export function createLab(canvas) {
     }
     hideLabForPresentation();
     controls.update(); renderer.render(scene, camera);
-    magnifiedViewport.renderInset();
+    const mainCalls = renderer.info.render.calls;
+    const insetRendered = magnifiedViewport.renderInset();
+    const insetCalls = insetRendered ? renderer.info.render.calls : 0;
+    frameRenderStats = { mainCalls, insetCalls, totalCalls: mainCalls + insetCalls,
+      geometries: renderer.info.memory.geometries, textures: renderer.info.memory.textures, insetRendered };
     renderedFrames++;
   }
   function dispose() {
@@ -355,7 +369,9 @@ export function createLab(canvas) {
     if (box.isEmpty()) return { min: [-1, 0, -1], max: [1, 1.2, 1] };
     return { min: box.min.toArray(), max: box.max.toArray() };
   };
-  const magnifiedViewport = createMagnifiedViewport({ THREE, renderer, scene, getBounds: constructBounds, getQuality: () => quality });
+  const magnifiedViewport = createMagnifiedViewport({ THREE, renderer, scene,
+    getBounds: () => presentationScale === 'laboratory' ? constructBounds() : presentation.bounds(),
+    getQuality: () => quality });
   let presentationScale = 'laboratory';
   const hiddenLabObjects = new Map();
   function hideLabForPresentation() {
@@ -384,5 +400,5 @@ export function createLab(canvas) {
     return spec;
   }
   view('lab');
-  return { update, draw, view, setQuality, presentation: { setScale: setPresentationScale, setOverlay: (id, data) => presentationOverlays.setOverlay(id, data), clearOverlays: () => presentationOverlays.clear(), legend: () => presentationOverlays.getLegend(), scale: () => presentationScale }, setEnvironment: id => environment.setEnvironment(id), setMagnified: on => magnifiedViewport.setEnabled(on), setFlowResult(result) { flowResult = result; }, dispose, diagnostics: () => ({ webgl: true, disposed, renderedFrames, quality, pixelRatio: renderer.getPixelRatio(), shadowMapSize: sun.shadow.mapSize.x, reducedMotion: prefersReducedMotion, stage: currentStage, cameraMode: currentView, cameraPosition: camera.position.toArray(), cameraTarget: controls.target.toArray(), presentationScale, activeOverlays: presentationOverlays.active(), instances: { constructCells: 360, dishCells: 140, tracers: tracers.length }, filamentCount: lineData.length, geometries: renderer.info.memory.geometries, calls: renderer.info.render.calls, environment: environment.diagnostics(), textures: renderer.info.memory.textures, printerAsset: ({ loading: 'procedural', loaded: 'glb-loaded', fallback: 'procedural-fallback' })[equipment.diagnostics().bioprinter.status], equipment: equipment.diagnostics(), printheadPosition: head.position.toArray(), tracerModel: flowResult ? 'network-relative-illustration' : 'scripted', magnified: magnifiedViewport.diagnostics() }) };
+  return { update, draw, view, setQuality, presentation: { setScale: setPresentationScale, setOverlay: (id, data) => presentationOverlays.setOverlay(id, data), clearOverlays: () => presentationOverlays.clear(), legend: () => presentationOverlays.getLegend(), scale: () => presentationScale, setRepresentation: rep => presentation.setRepresentation(rep), setCutPlane: plane => { const previousEnabled = renderer.localClippingEnabled; try { presentation.setCutPlane(plane); renderer.localClippingEnabled = plane !== null; } catch (error) { renderer.localClippingEnabled = previousEnabled; throw error; } }, setMotion: mode => { presentation.setMotion(mode); motionMode = mode; }, state: () => presentation.diagnostics() }, setEnvironment: id => environment.setEnvironment(id), setMagnified: on => magnifiedViewport.setEnabled(on), setFlowResult(result) { flowResult = result; }, dispose, diagnostics: () => ({ webgl: true, disposed, renderedFrames, quality, pixelRatio: renderer.getPixelRatio(), shadowMapSize: sun.shadow.mapSize.x, reducedMotion: prefersReducedMotion, stage: currentStage, cameraMode: currentView, cameraPosition: camera.position.toArray(), cameraTarget: controls.target.toArray(), presentationScale, presentationState: presentation.diagnostics(), activeOverlays: presentationOverlays.active(), instances: { constructCells: 360, dishCells: 140, tracers: tracers.length }, filamentCount: lineData.length, geometries: renderer.info.memory.geometries, calls: frameRenderStats.totalCalls, frameRenderStats: { ...frameRenderStats }, environment: environment.diagnostics(), textures: renderer.info.memory.textures, printerAsset: ({ loading: 'procedural', loaded: 'glb-loaded', fallback: 'procedural-fallback' })[equipment.diagnostics().bioprinter.status], equipment: equipment.diagnostics(), printheadPosition: head.position.toArray(), tracerModel: flowResult ? 'network-relative-illustration' : 'scripted', magnified: magnifiedViewport.diagnostics() }) };
 }

@@ -7,7 +7,7 @@ export function createAnalysisClient({ workerFactory = () => new Worker(new URL(
     worker = workerFactory();
     worker.onmessage = ({ data }) => {
       if (unavailable) return;
-      if (!data || !Number.isSafeInteger(data.requestId) || !['oxygen-solve','oxygen-fit'].includes(data.kind) || !['ok','error'].includes(data.status)) { fail(new Error('Malformed analysis worker reply')); return; }
+      if (!data || !Number.isSafeInteger(data.requestId) || !['oxygen-solve','oxygen-fit','oxygen-convergence'].includes(data.kind) || !['ok','error'].includes(data.status)) { fail(new Error('Malformed analysis worker reply')); return; }
       const job = pending.get(data.requestId);
       if (!job || data.kind !== job.kind) return;
       pending.delete(data.requestId); clearTimeout(job.timer);
@@ -21,7 +21,7 @@ export function createAnalysisClient({ workerFactory = () => new Worker(new URL(
   }
   return {
     request(kind, payload) {
-      if (!['oxygen-solve','oxygen-fit'].includes(kind)) return Promise.reject(new TypeError('Unsupported analysis kind'));
+      if (!['oxygen-solve','oxygen-fit','oxygen-convergence'].includes(kind)) return Promise.reject(new TypeError('Unsupported analysis kind'));
       if (unavailable) return Promise.reject(unavailable);
       invalidate(kind);
       return new Promise((resolve, reject) => {

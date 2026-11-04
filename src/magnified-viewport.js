@@ -30,18 +30,19 @@ export function createMagnifiedViewport({ THREE, renderer, scene, getBounds, get
   /** Render the inset pass. No-op unless enabled; never throws out of the draw loop:
    *  degenerate bounds skip the pass and surface in diagnostics(). */
   function renderInset() {
-    if (disposed || !enabled) return;
+    if (disposed || !enabled) return false;
     const w = renderer.domElement.clientWidth, h = renderer.domElement.clientHeight;
-    if (!w || !h) return;
-    const insetW = Math.round(w * INSET_FRACTION), insetH = Math.round(insetW / INSET_ASPECT);
-    if (insetW < 40 || insetH < 30) return;
+    if (!w || !h) return false;
+    const insetW = Math.floor(Math.min(w * INSET_FRACTION, w - 2 * INSET_MARGIN, (h - 2 * INSET_MARGIN) * INSET_ASPECT));
+    const insetH = Math.round(insetW / INSET_ASPECT);
+    if (insetW < 40 || insetH < 30) return false;
     const x = w - insetW - INSET_MARGIN, y = INSET_MARGIN; // GL viewport origin is bottom-left.
     let pose;
     try {
       pose = fitCameraToBounds(getBounds(), { aspect: insetW / insetH, fovDegrees: MAGNIFIED_FOV_DEGREES, padding: 1.12, direction: [3.5, 2.7, 4.1] });
     } catch (error) {
       lastError = error.message;
-      return;
+      return false;
     }
     lastError = null;
     lastPose = pose;
@@ -51,13 +52,29 @@ export function createMagnifiedViewport({ THREE, renderer, scene, getBounds, get
     insetCamera.lookAt(pose.target[0], pose.target[1], pose.target[2]);
     insetCamera.updateProjectionMatrix();
     const hadScissorTest = typeof renderer.getScissorTest === 'function' ? renderer.getScissorTest() : false;
-    renderer.setScissorTest(true);
-    renderer.setScissor(x, y, insetW, insetH);
-    renderer.setViewport(x, y, insetW, insetH);
-    renderer.render(scene, insetCamera);
-    renderer.setScissor(0, 0, w, h);
-    renderer.setViewport(0, 0, w, h);
-    renderer.setScissorTest(hadScissorTest);
+    const readRect = getter => {
+      // Three.js getters copy into a Vector4-like target; preserve logical pixels,
+      // not the DPR-scaled drawing-buffer rectangle.
+      const target = { x: 0, y: 0, z: w, w: h, copy(v) { Object.assign(this, v); return this; } };
+      const rect = typeof renderer[getter] === 'function' ? renderer[getter](target) : target;
+      return [rect.x, rect.y, rect.z, rect.w];
+    };
+    const scissor = readRect('getScissor'), viewport = readRect('getViewport');
+    let rendered = false;
+    try {
+      renderer.setScissorTest(true);
+      renderer.setScissor(x, y, insetW, insetH);
+      renderer.setViewport(x, y, insetW, insetH);
+      renderer.render(scene, insetCamera);
+      rendered = true;
+    } catch (error) {
+      lastError = error.message;
+    } finally {
+      renderer.setScissor(...scissor);
+      renderer.setViewport(...viewport);
+      renderer.setScissorTest(hadScissorTest);
+    }
+    return rendered;
   }
 
   function diagnostics() {

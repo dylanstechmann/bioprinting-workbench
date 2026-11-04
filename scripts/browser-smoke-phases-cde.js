@@ -13,7 +13,7 @@ async page => {
     }
     throw new Error(`timeout waiting for ${message}`);
   };
-  await page.goto('http://127.0.0.1:8096/');
+  await page.goto(globalThis.__BIOPRINT_BASE_URL || 'http://127.0.0.1:8096/');
   // Part selection: page localStorage survives reloads and runner-call boundaries.
   const part = (await page.evaluate(() => localStorage.getItem('bioprintSmokePart'))) || globalThis.__BIOPRINT_SMOKE_PART || 'c-d';
   await page.evaluate(() => localStorage.removeItem('bioprintSmokePart'));

@@ -3,6 +3,8 @@
 // geometry), network overlays carry the dimensionless notice, and shear/supply entries are
 // labelled reference panels, not calibrated tissue fields. Textures are bounded to 256x256,
 // at most four overlays are active, and every created resource is owned and disposed here.
+import { makeFieldRGBA } from './overlay-data.js';
+
 export const OVERLAY_DEFINITIONS = Object.freeze([
   Object.freeze({
     id: 'box-oxygen-slice', modelId: 'box-oxygen', representation: 'model-field', unit: '1',
@@ -72,24 +74,20 @@ export function createScientificOverlays({ THREE, parent, registry = OVERLAY_DEF
       if (!active.has(id) && active.size >= MAX_ACTIVE_OVERLAYS) throw new RangeError(`At most ${MAX_ACTIVE_OVERLAYS} overlays may be active`);
       const resources = [];
       let object;
-      if (definition.representation === 'model-field' && definition.coordinateSpace === 'normalized-box') {
+      try {
+      if (definition.representation === 'model-field') {
         const field = boundedTextureData(data.field || data);
-        const texture = new THREE.DataTexture(new Float64Array(field.values), field.width, field.height);
+        const pixels = makeFieldRGBA(field.values, data.range);
+        const texture = new THREE.DataTexture(pixels, field.width, field.height, THREE.RGBAFormat, THREE.UnsignedByteType);
         resources.push(texture);
-        const geometry = new THREE.PlaneGeometry(1.6, 1.6);
+        texture.needsUpdate = true;
+        const box = definition.coordinateSpace === 'normalized-box';
+        const geometry = new THREE.PlaneGeometry(box ? 1.6 : 1.8, box ? 1.6 : 0.9);
         resources.push(geometry);
         const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true, opacity: 0.85 });
         resources.push(material);
         object = new THREE.Mesh(geometry, material);
-        object.position.set(0, 1.2, 0);
-      } else if (definition.representation === 'model-field') {
-        const field = boundedTextureData(data.field || data);
-        const geometry = new THREE.PlaneGeometry(1.8, 0.9);
-        resources.push(geometry);
-        const material = new THREE.MeshBasicMaterial({ color: 0x267b72, transparent: true, opacity: 0.6 });
-        resources.push(material);
-        object = new THREE.Mesh(geometry, material);
-        object.position.set(0, 1.1, 0);
+        object.position.set(0, box ? 1.2 : 1.1, 0);
       } else if (definition.representation === 'network') {
         const edges = Array.isArray(data.edges) ? data.edges.slice(0, 256) : [];
         const points = [];
@@ -100,8 +98,8 @@ export function createScientificOverlays({ THREE, parent, registry = OVERLAY_DEF
           points.push(from[0], from[1], from[2], to[0], to[1], to[2]);
         }
         const geometry = new THREE.BufferGeometry();
-        geometry.setAttribute('position', new THREE.Float32BufferAttribute(points, 3));
         resources.push(geometry);
+        geometry.setAttribute('position', new THREE.Float32BufferAttribute(points, 3));
         const material = new THREE.LineBasicMaterial({ color: 0x2f7d8c });
         resources.push(material);
         object = new THREE.LineSegments(geometry, material);
@@ -115,6 +113,11 @@ export function createScientificOverlays({ THREE, parent, registry = OVERLAY_DEF
       }
       object.userData.overlayId = id;
       parent.add(object);
+      } catch (error) {
+        if (object) parent.remove(object);
+        for (const resource of new Set(resources)) resource?.dispose?.();
+        throw error;
+      }
       const previous = active.get(id);
       if (previous) destroy(previous);
       active.set(id, { definition, object, resources });

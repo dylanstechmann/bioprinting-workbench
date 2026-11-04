@@ -144,6 +144,11 @@ footer { font-size: 11px; color: #526a65; }
 .research-nav button { text-align: left; font-size: 12px; line-height: 1.35; padding: 10px 12px; border-color: transparent; background: transparent; }
 .research-nav button[aria-pressed=true] { color: #fff; background: #245e5b; border-color: #245e5b; }
 #workspace-panel-research .learning { display: block; margin: 0; }
+#workspace-panel-research > section:not(.learning):not(.area-heading) { grid-column: 1 / -1; min-width: 0; }
+#cockpit-selection { display: grid; gap: 6px; }
+#cockpit-selection label { display: flex; align-items: center; gap: 8px; }
+#cockpit-downloads { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0; }
+.table-scroll { overflow-x: auto; max-width: 100%; }
 #workspace-panel-research .learning > article { width: 100%; }
 #workspace-panel-research .learning h2 { font-size: 24px; color: #173f46; }
 #workspace-panel-research .learning p, #workspace-panel-research .learning li, #workspace-panel-research .learning table { font-size: 13px; }

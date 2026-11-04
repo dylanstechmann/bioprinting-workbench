@@ -20,7 +20,7 @@ function stubDocument() {
   return { createElement: tag => make(tag), createElementNS: (_ns, tag) => make(tag) };
 }
 const container = () => {
-  const node = { children: [], appendChild(child) { this.children.push(child); return child; }, replaceChildren(...nodes) { this.children = nodes; } };
+  const node = { children: [], appendChild(child) { this.children.push(child); return child; }, removeChild(child) { this.children = this.children.filter(node => node !== child); }, replaceChildren(...nodes) { this.children = nodes; } };
   return node;
 };
 const walk = (node, visit) => { visit(node); for (const child of node.children ?? []) walk(child, visit); };
@@ -43,7 +43,7 @@ test('three evidence-anchored sections render with disclaimers and quoted bands'
   assert.match(texts, /not modeled/, 'connection gap stays an explicit gap');
   assert.match(texts, /Schematic cross-sections, not to scale/);
   cleanup();
-  for (const figure of box.children) assert.equal(figure.children.length, 0, 'cleanup empties each figure');
+  assert.equal(box.children.length, 0, 'cleanup removes owned figures');
 });
 
 test('hostile strings render inert via textContent only', () => {
@@ -57,7 +57,7 @@ test('hostile strings render inert via textContent only', () => {
   assert.ok(texts.includes('"><svg onload=alert(2)>'), 'svg injection string kept as text');
   const seen = [];
   walk(box, node => { if (node.tag) seen.push(node.tag); });
-  const allowed = new Set(['figure', 'figcaption', 'strong', 'p', 'ul', 'li', 'svg', 'circle', 'text', 'line']);
+  const allowed = new Set(['figure', 'figcaption', 'strong', 'p', 'ul', 'li', 'svg', 'circle', 'text', 'line', 'title', 'desc']);
   assert.ok(seen.every(tag => allowed.has(tag)), `elements built via createElement/NS only: ${seen.join(',')}`);
   cleanup();
 });

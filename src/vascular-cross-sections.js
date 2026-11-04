@@ -1,6 +1,7 @@
 const DISCLAIMER = 'Schematic cross-sections, not to scale. Presentation geometry only: no fluid function, biological compatibility, healing, integration or vessel function is simulated.';
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const STRING_FIELDS = ['id', 'title', 'scaleNote', 'evidenceAnchor', 'disclaimer'];
+let renderSerial = 0;
 
 /** Explanatory vascular cross-sections: static, evidence-anchored schematics. Pure
  *  presentation content — every claim string is a quoted band or an explicit evidence gap
@@ -93,11 +94,26 @@ export function renderCrossSections(container, { sections = CROSS_SECTIONS, docu
   if (!doc || typeof doc.createElement !== 'function' || typeof doc.createElementNS !== 'function') throw new TypeError('renderCrossSections needs a document');
   if (!Array.isArray(sections) || sections.length < 1 || sections.length > 8) throw new TypeError('sections must be a bounded array');
   sections.forEach(validateSection);
+  if (new Set(sections.map(section => section.id)).size !== sections.length) throw new TypeError('Duplicate cross-section ids');
+  const instanceId = ++renderSerial;
   const created = [];
   for (const section of sections) {
     const figure = doc.createElement('figure');
     figure.className = 'cross-section';
-    figure.appendChild(diagramSVG(doc, section.diagram));
+    const svg = diagramSVG(doc, section.diagram);
+    const titleId = `cross-section-${instanceId}-${created.length}-title`;
+    const descriptionId = `cross-section-${instanceId}-${created.length}-description`;
+    const svgTitle = doc.createElementNS(SVG_NS, 'title');
+    svgTitle.setAttribute('id', titleId);
+    svgTitle.textContent = section.title;
+    const description = doc.createElementNS(SVG_NS, 'desc');
+    description.setAttribute('id', descriptionId);
+    description.textContent = `${section.scaleNote} ${section.disclaimer}`;
+    svg.appendChild(svgTitle);
+    svg.appendChild(description);
+    svg.setAttribute('aria-labelledby', titleId);
+    svg.setAttribute('aria-describedby', descriptionId);
+    figure.appendChild(svg);
     const caption = doc.createElement('figcaption');
     const title = doc.createElement('strong');
     title.textContent = section.title;
@@ -125,7 +141,7 @@ export function renderCrossSections(container, { sections = CROSS_SECTIONS, docu
     created.push(figure);
   }
   return () => {
-    for (const figure of created) figure.replaceChildren();
+    for (const figure of created) container.removeChild(figure);
     created.length = 0;
   };
 }

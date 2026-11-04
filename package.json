@@ -1,6 +1,6 @@
 {
   "name": "bioprinting-workbench",
-  "version": "0.22.0-dev",
+  "version": "0.25.0-dev",
   "private": true,
   "type": "module",
   "description": "An educational, synthetic browser-based tissue engineering workbench",
@@ -10,6 +10,7 @@
     "check": "node scripts/check-syntax.mjs",
     "provenance:build": "node scripts/build-model-provenance.mjs",
     "provenance:check": "node scripts/build-model-provenance.mjs --check",
-    "verify:release": "node scripts/verify-release.mjs"
+    "verify:release": "node scripts/verify-release.mjs",
+    "verify:exchange-parity": "node scripts/verify-exchange-parity.mjs"
   }
 }

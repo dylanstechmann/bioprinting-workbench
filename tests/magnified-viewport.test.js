@@ -51,7 +51,7 @@ test('enabled inset renders a fitted narrow-FOV pass and restores scissor state'
   assert.ok(camera instanceof FakeCamera);
   assert.equal(camera.fov, MAGNIFIED_FOV_DEGREES);
   assert.ok(camera.updated, 'projection matrix updated');
-  assert.ok(Math.abs(camera.aspect - (Math.round(800 * INSET_FRACTION) / Math.round(800 * INSET_FRACTION / (4 / 3)))) < 1e-6 || camera.aspect > 0, 'inset aspect is positive');
+  assert.ok(Math.abs(camera.aspect - (Math.floor(800 * INSET_FRACTION) / Math.round(Math.floor(800 * INSET_FRACTION) / (4 / 3)))) < 1e-6, 'inset aspect matches its pixel rectangle');
   const [, x, y, insetW, insetH] = renderer.calls.find(call => call[0] === 'viewport');
   assert.ok(insetW > 0 && insetH > 0 && x >= 0 && y >= 0, 'inset sits inside the canvas');
   assert.ok(x + insetW <= 800 && y + insetH <= 600, 'inset stays inside the canvas bounds');
@@ -75,6 +75,31 @@ test('fitted pose respects the minimum camera distance', () => {
   const { cameraPosition, cameraTarget } = viewport.diagnostics();
   const distance = Math.hypot(...cameraPosition.map((value, i) => value - cameraTarget[i]));
   assert.ok(distance >= CAMERA_LIMITS.minDistance - 1e-6, `distance ${distance} respects minDistance`);
+});
+
+test('render failure restores exact prior rectangles and reports diagnostics', () => {
+  const renderer = stubRenderer();
+  const priorViewport = [7, 9, 321, 123], priorScissor = [11, 13, 210, 110];
+  renderer.getViewport = target => target.copy({ x: 7, y: 9, z: 321, w: 123 });
+  renderer.getScissor = target => target.copy({ x: 11, y: 13, z: 210, w: 110 });
+  renderer.scissorTest = true;
+  renderer.render = () => { throw new Error('GPU failure'); };
+  const viewport = createMagnifiedViewport({ THREE: FakeTHREE, renderer, scene: {}, getBounds: bounds });
+  viewport.setEnabled(true);
+  assert.doesNotThrow(() => viewport.renderInset());
+  assert.deepEqual(renderer.calls.filter(c => c[0] === 'viewport').at(-1).slice(1), priorViewport);
+  assert.deepEqual(renderer.calls.filter(c => c[0] === 'scissor').at(-1).slice(1), priorScissor);
+  assert.equal(renderer.scissorTest, true);
+  assert.match(viewport.diagnostics().lastError, /GPU failure/);
+});
+
+test('short canvas constrains both inset dimensions', () => {
+  const renderer = stubRenderer(1440, 90);
+  const viewport = createMagnifiedViewport({ THREE: FakeTHREE, renderer, scene: {}, getBounds: bounds });
+  viewport.setEnabled(true);
+  viewport.renderInset();
+  const [, x, y, width, height] = renderer.calls.find(c => c[0] === 'viewport');
+  assert.ok(x >= 0 && y >= 0 && x + width <= 1440 && y + height <= 90);
 });
 
 test('degenerate bounds skip the inset without throwing and surface in diagnostics', () => {

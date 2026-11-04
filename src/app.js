@@ -1,7 +1,7 @@
 import { DEFAULTS, STAGES, sample, snapshot } from './model.js';
 import { createLab } from './scene.js';
 import { PROCEDURE_STEPS, createProcedureState, toggleCheck, stepProgress, isStageUnlocked, unlockedStages, clampTime, setMode, procedureSummary, nextGate } from './procedure.js';
-import { NO_CALIBRATION, parseCalibrationInput, fitSlabDemand, calibrationExample } from './calibration.js';
+import { NO_CALIBRATION, fitSlabDemand, calibrationExample } from './calibration.js';
 import { createAnalysisUI } from './analysis-ui.js';
 import { createScientificViewUI } from './scientific-view-ui.js';
 import { createModelExplorationUI } from './model-exploration-ui.js';
@@ -20,6 +20,13 @@ import { getEnvironmentSpecs } from './environment.js';
 import { createWorkspaceShell } from './workspace-shell.js';
 import { shouldAdvanceFrame, shouldDrawFrame } from './frame-policy.js';
 import { applyScenarioTransaction } from './scenario-application.js';
+import { createConvergenceStudyUI } from './convergence-study-ui.js';
+import { captureSlabMeasurement } from './slab-measurement.js';
+import { sweepBaseInputs } from './sweep-presets.js';
+import { createRunRegistry } from './run-records.js';
+import { serializeStudyArtifact } from './convergence-study.js';
+import { createHypothesisWorkspace } from './hypothesis-workspace.js';
+import { createResearchDraftUI } from './research-draft-ui.js';
 
 const $ = id => document.getElementById(id);
 let parameters = { ...DEFAULTS }, time = 0, playing = false, last = 0, lab = null;
@@ -29,13 +36,24 @@ let calibration = { ...NO_CALIBRATION };
 let cameraView = 'lab', environmentTheme = 'lab', analysisUI = null;
 let importGeneration = 0, calibrationGeneration = 0;
 let crossRefUI = null, activeWorkspaceArea = 'studio', workspaceShell = null;
+let presentationUI = null, refreshScientificOverlays = () => {};
 const learningUI = createCellLearningUI({ elements: $ });
+// Bounded in-memory capture of native fit/model/sweep/study work for inspectable history and
+// explicit exchange export. Nothing here is auto-applied, uploaded or validated scientifically.
+const runRegistry = createRunRegistry();
+let sweepRunCounter = 0, studyRunCounter = 0;
+function captureRun(partial) {
+  const { record, evicted } = runRegistry.add(partial);
+  if (evicted) console.info(`Run registry is bounded; ${evicted.id} aged out of the retained history.`);
+  return record;
+}
 function drawOxygen() {
   const result = oxygenProfile(Number($('demand').value));
   $('demand-value').textContent = result.demand.toFixed(2);
   $('oxygen-center').textContent = result.center.toFixed(2);
   $('oxygen-line').setAttribute('points', result.profile.map(p => `${20 + 360 * (p.x + 1) / 2},${110 - 90 * p.concentration}`).join(' '));
   $('oxygen-graph').setAttribute('aria-label', `Illustrative oxygen profile. Dimensionless center concentration ${result.center.toFixed(2)}, boundary concentration 1.`);
+  refreshScientificOverlays();
 }
 $('demand').addEventListener('input', drawOxygen);
 drawOxygen();
@@ -49,18 +67,26 @@ try { lab = createLab($('scene')); }
 catch (error) { $('webgl-error').hidden = false; $('webgl-error').textContent = `3D rendering is unavailable (${error.message}). You can still explore every stage, adjust the synthetic model and export a scenario. Try a WebGL2-capable browser with hardware acceleration.`; }
 const qualitySelect = $('render-quality');
 qualitySelect.disabled = !lab;
-qualitySelect.addEventListener('change', () => lab?.setQuality(qualitySelect.value));
+qualitySelect.addEventListener('change', () => {
+  lab?.setQuality(qualitySelect.value);
+  if (presentationUI) presentationUI.setState({ ...presentationUI.getState(), quality: qualitySelect.value });
+});
 if (lab) {
-  createScientificViewUI({
+  presentationUI = createScientificViewUI({
     elements: $,
     onStateChange: state => {
       try {
         lab.presentation.setScale(state.scale);
+        lab.presentation.setRepresentation(state.representation);
+        lab.presentation.setCutPlane(state.cutPlane);
+        lab.presentation.setMotion(state.motion);
         lab.setQuality(state.quality);
+        qualitySelect.value = state.quality;
         lab.presentation.clearOverlays();
         for (const id of state.overlayIds) {
           const fieldSnapshot = analysisUI?.getFieldSnapshot?.();
-          if (id === 'box-oxygen-slice' && fieldSnapshot?.snapshot) {
+          if (id === 'box-oxygen-slice') {
+            if (!fieldSnapshot?.snapshot) continue;
             const n = fieldSnapshot.snapshot.settings.resolution, k = Math.floor(n / 2);
             const values = Float64Array.from({ length: n * n }, (_, i) => fieldSnapshot.snapshot.values[i + n * n * k]);
             lab.presentation.setOverlay(id, { values, width: n, height: n });
@@ -81,13 +107,60 @@ if (lab) {
       }
     },
   });
+  refreshScientificOverlays = () => {
+    const state = presentationUI.getState();
+    for (const id of state.overlayIds) {
+      if (id === 'box-oxygen-slice') {
+        const snapshot = analysisUI?.getFieldSnapshot?.().snapshot;
+        if (!snapshot) { lab.presentation.setOverlay(id, null); continue; }
+        const n = snapshot.settings.resolution, k = Math.floor(n / 2);
+        lab.presentation.setOverlay(id, { values: snapshot.values.slice(n * n * k, n * n * (k + 1)), width: n, height: n });
+      } else if (id === 'slab-profile') {
+        lab.presentation.setOverlay(id, { values: oxygenProfile(Number($('demand').value), 33).profile.map(p => p.concentration), width: 33, height: 1 });
+      }
+    }
+  };
 }
 createModelExplorationUI({
   elements: $,
   client: createExplorationClient(),
-  getInputs: () => ({ modelId: 'slab-oxygen', baseInputs: { demand: Number($('demand').value), points: 21 } }),
+  getInputs: () => {
+    const modelId = $('sweep-model')?.value || 'slab-oxygen';
+    // The live demand slider stays the slab base value it always was; other models use only
+    // their synthetic presets. Axis values override base inputs per enumerated point.
+    return {
+      modelId,
+      baseInputs: sweepBaseInputs(modelId, modelId === 'slab-oxygen' ? { demand: Number($('demand').value) } : {}),
+    };
+  },
+  onRun: result => {
+    sweepRunCounter++;
+    captureRun({
+      id: `sweep-${result.spec.modelId}-${sweepRunCounter}`, kind: 'sweep-run', modelId: result.spec.modelId,
+      status: result.status, createdAt: new Date().toISOString(),
+      payload: { spec: result.spec, summary: result.summary, points: result.points },
+      artifactFileName: `sweep-${result.spec.modelId}-${sweepRunCounter}.json`,
+    });
+  },
 });
-createResearchCockpitUI({ elements: $ });
+const hypothesisWorkspace = createHypothesisWorkspace();
+const researchCockpit = createResearchCockpitUI({ elements: $, runRegistry, workspace: hypothesisWorkspace });
+createResearchDraftUI({
+  elements: $,
+  workspace: hypothesisWorkspace,
+  onChange: ({ hypotheses, queries }) => {
+    // Drafts replace same-id records; imported records are preserved beside them. Generated
+    // query plans replace same-id plans and never execute anything.
+    const current = researchCockpit.getState();
+    const draftIds = new Set(hypotheses.map(card => card.id));
+    const owned = new Set(queries.map(query => query.id));
+    researchCockpit.setState({
+      ...current,
+      hypotheses: [...hypotheses, ...current.hypotheses.filter(card => !draftIds.has(card.id))],
+      queries: [...current.queries.filter(query => !owned.has(query.id)), ...queries],
+    });
+  },
+});
 for (const key of ['spacing', 'layers', 'population', 'perfusion', 'channels', 'recipient']) {
   $(key).addEventListener('input', () => {
     parameters[key] = key === 'channels' ? $(key).checked : key === 'recipient' ? $(key).value : Number($(key).value);
@@ -168,6 +241,8 @@ function updateWalkthrough() {
   $('free-exploration').checked = procedureState.mode === 'free';
 }
 function showCalibration(errorMessage) {
+  $('calibration-provenance').textContent = JSON.stringify(calibration.provenance ?? {
+    dataset: null, fitRun: null, notice: 'No original-byte provenance captured; restored scenarios do not attest imported bytes.' }, null, 2);
   const box = $('calibration-result');
   box.replaceChildren();
   if (errorMessage) { box.className = 'calibration-result error'; box.textContent = errorMessage; return; }
@@ -185,14 +260,54 @@ function showCalibration(errorMessage) {
 $('calibration-file').addEventListener('change', async event => {
   const file = event.target.files[0]; if (!file) return;
   const current = ++calibrationGeneration;
-  try { if (file.size > MEASUREMENT_BYTES) throw new RangeError('Measurement file exceeds 256 KiB'); const input = parseCalibrationInput(await file.text()); if (current !== calibrationGeneration) return; calibration = { status: 'loaded', input, fit: fitSlabDemand(input) }; showCalibration(); }
+  calibration = { ...NO_CALIBRATION }; showCalibration();
+  const demand = Number($('demand').value), importedAt = new Date().toISOString();
+  try {
+    if (file.size > MEASUREMENT_BYTES) throw new RangeError('Measurement file exceeds 256 KiB');
+    const next = await captureSlabMeasurement({ rawBytes: new Uint8Array(await file.arrayBuffer()), id: `slab-${current}`, demand, importedAt });
+    if (current !== calibrationGeneration) return;
+    calibration = next; showCalibration();
+    if (next.provenance?.fitRun) {
+      captureRun({ id: `slab-fit-${current}`, kind: 'fit-run', modelId: 'slab-oxygen', status: next.provenance.fitRun.status,
+        createdAt: next.provenance.fitRun.finishedAt, payload: next.provenance.fitRun, datasetRecordId: next.provenance.fitRun.datasetId });
+    }
+  }
   catch (error) { if (current === calibrationGeneration) showCalibration(error.message); }
   event.target.value = ''; render();
 });
-$('load-example').addEventListener('click', () => { calibrationGeneration++; const input = parseCalibrationInput(calibrationExample()); calibration = { status: 'loaded', input, fit: fitSlabDemand(input) }; showCalibration(); });
+$('load-example').addEventListener('click', async () => {
+  const current = ++calibrationGeneration;
+  calibration = { ...NO_CALIBRATION }; showCalibration();
+  try {
+    const next = await captureSlabMeasurement({ rawBytes: new TextEncoder().encode(calibrationExample()), id: `slab-${current}`,
+      demand: Number($('demand').value), importedAt: new Date().toISOString() });
+    if (current === calibrationGeneration) {
+      calibration = next; showCalibration();
+      if (next.provenance?.fitRun) {
+        captureRun({ id: `slab-fit-${current}`, kind: 'fit-run', modelId: 'slab-oxygen', status: next.provenance.fitRun.status,
+          createdAt: next.provenance.fitRun.finishedAt, payload: next.provenance.fitRun, datasetRecordId: next.provenance.fitRun.datasetId });
+      }
+    }
+  } catch (error) { if (current === calibrationGeneration) showCalibration(error.message); }
+});
 $('clear-calibration').addEventListener('click', () => { calibrationGeneration++; calibration = { ...NO_CALIBRATION }; showCalibration(); });
 showCalibration();
-analysisUI = createAnalysisUI({ elements: $, onFlow: result => lab?.setFlowResult(result) });
+analysisUI = createAnalysisUI({ elements: $, onFlow: result => lab?.setFlowResult(result), onFieldChange: () => refreshScientificOverlays(),
+  onFitRun: record => captureRun({
+    id: `box-${record.id}${record.application ? '-applied' : ''}`, kind: 'fit-run', modelId: 'box-oxygen', status: record.status,
+    createdAt: record.application ? record.application.appliedAt : record.finishedAt,
+    payload: record, datasetRecordId: record.datasetId,
+  }) });
+createConvergenceStudyUI({ elements: $, getSettings: () => analysisUI.getState().oxygen3d.settings,
+  onRun: result => {
+    studyRunCounter++;
+    const createdAt = new Date().toISOString();
+    captureRun({
+      id: `study-box-oxygen-${studyRunCounter}`, kind: 'study-run', modelId: 'box-oxygen', status: result.status,
+      createdAt, payload: serializeStudyArtifact(result, { createdAt }),
+      artifactFileName: `study-box-oxygen-${studyRunCounter}.json`,
+    });
+  } });
 const nozzleUI = createNozzleShearUI({ elements: $, onStateChange: () => crossRefUI?.refresh() });
 const vascularUI = createVascularSupplyUI({ elements: $, onStateChange: () => crossRefUI?.refresh() });
 crossRefUI = createCrossReferenceUI({ elements: $, onStateChange: () => {}, getStoryboard: () => ({ ...parameters }), getNozzle: () => nozzleUI.getState(), getVascular: () => vascularUI.getState() });

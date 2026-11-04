@@ -150,3 +150,52 @@ export function summarizeSensitivity(run) {
   }
   return { ranges, sensitivities, notice: 'Ranges and finite-difference slopes of same-unit model outputs over the enumerated points only. No probability, causal effect, viability or efficacy claim.' };
 }
+
+export const MAX_COMPARISON_ROWS = 1000;
+
+/** Pure, bounded side-by-side comparison of two completed sweep runs of the same model with
+ * identical axis specs and aligned point values. Deltas are same-unit only: a delta is null
+ * wherever a value is missing/failed or the two units disagree. Nothing is converted,
+ * interpolated, ranked or dropped; every aligned point keeps its row. */
+export function compareSweepRuns(runA, runB, { idA = 'run-a', idB = 'run-b' } = {}) {
+  assertPlain(runA, 'comparison.runA');
+  assertPlain(runB, 'comparison.runB');
+  if (!runA.spec || !runB.spec || runA.spec.modelId !== runB.spec.modelId) throw new RangeError('Comparison requires runs of the same model');
+  if (JSON.stringify(runA.spec.axes) !== JSON.stringify(runB.spec.axes)
+    || JSON.stringify(runA.spec.baseInputs ?? null) !== JSON.stringify(runB.spec.baseInputs ?? null)) {
+    throw new RangeError('Comparison requires identical axis specs');
+  }
+  const pointsA = runA.points, pointsB = runB.points;
+  if (!Array.isArray(pointsA) || !Array.isArray(pointsB) || pointsA.length !== pointsB.length || pointsA.length > MAX_SWEEP_POINTS) {
+    throw new RangeError('Comparison requires aligned bounded point lists');
+  }
+  for (let i = 0; i < pointsA.length; i++) {
+    if (JSON.stringify(pointsA[i]?.values ?? null) !== JSON.stringify(pointsB[i]?.values ?? null)) {
+      throw new RangeError('Comparison points are not aligned');
+    }
+  }
+  const paths = [...new Set([...pointsA, ...pointsB].flatMap(p => Object.keys(p?.run?.quantities ?? {})))].sort();
+  const deltas = [];
+  for (const path of paths) {
+    let rowsForPath = 0;
+    for (let index = 0; index < pointsA.length; index++) {
+      if (rowsForPath >= MAX_SWEEP_POINTS) break;
+      const quantityA = pointsA[index]?.run?.quantities?.[path] ?? null;
+      const quantityB = pointsB[index]?.run?.quantities?.[path] ?? null;
+      const a = quantityA && typeof quantityA.value === 'number' && Number.isFinite(quantityA.value) ? quantityA.value : null;
+      const b = quantityB && typeof quantityB.value === 'number' && Number.isFinite(quantityB.value) ? quantityB.value : null;
+      const unitA = quantityA?.unit ?? null, unitB = quantityB?.unit ?? null;
+      const sameUnit = a !== null && b !== null && unitA === unitB;
+      deltas.push({
+        path, index,
+        values: structuredClone(pointsA[index]?.values ?? null),
+        unit: unitA ?? unitB,
+        a, b,
+        delta: sameUnit ? a - b : null,
+      });
+      rowsForPath++;
+    }
+  }
+  if (deltas.length > MAX_COMPARISON_ROWS) throw new RangeError(`Comparison exceeds the bounded row limit (${MAX_COMPARISON_ROWS})`);
+  return { modelId: runA.spec.modelId, runIds: [idA, idB], deltas };
+}

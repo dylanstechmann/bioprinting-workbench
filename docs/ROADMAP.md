@@ -211,6 +211,17 @@ competing alternatives; and a preview-first file exchange with the sibling Resea
 AI-assisted on a personal hobby/learning project; software checks only, not scientific
 validation.
 
+## Local 0.25.0-dev follow-on — not released
+
+Registered-model sweeps with a bounded same-unit side-by-side comparison; native fit/model/sweep/
+convergence-study run records with inspectable downloadable artifacts; hypothesis/query draft
+editing that never upgrades review status; presentation representation/cut-plane/motion wiring;
+strict cross-language ISO-instant parity with an extended shared corpus; durable fsync-then-rename
+export publication with a hostile-writer regression; bounded download-failure messages; and the
+two-application browser roundtrip adapter. AI-assisted on a personal hobby/learning project;
+software checks only, not scientific validation. Not committed, pushed or published by this
+continuation; see RELEASE.md.
+
 ## Local 0.24.0-dev follow-on - verification close-out and the magnified viewport
 
 The pending verification landed in bounded browser runs (multiscale/overlay/sweep-cancel/

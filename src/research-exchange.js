@@ -37,7 +37,11 @@ function idList(value, max, path) {
   });
 }
 function isoInstant(value, path) {
-  if (typeof value !== 'string' || !Number.isFinite(Date.parse(value))) throw new TypeError(`${path} must be an ISO instant`);
+  // Strict UTC instant, identical to the Python validator: YYYY-MM-DDTHH:MM:SS[.sss]Z with a
+  // real calendar date. Offset forms and loose date strings are rejected on both sides.
+  if (typeof value !== 'string' || !/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d{1,3})?Z$/.test(value) || !Number.isFinite(Date.parse(value))) {
+    throw new TypeError(`${path} must be an ISO instant`);
+  }
   return value;
 }
 
@@ -151,6 +155,9 @@ export function validateResearchBundle(raw) {
     const list = raw[name];
     if (!Array.isArray(list) || list.length > max) throw new TypeError(`bundle.${name} must be an array (max ${max})`);
     bundle[name] = list.map((item, i) => validate(item, `bundle.${name}[${i}]`));
+    if (new Set(bundle[name].map(record => record.id)).size !== bundle[name].length) {
+      throw new RangeError(`Duplicate ${name} ids in bundle`);
+    }
   }
   const hypoIds = bundle.hypotheses.map(h => h.id);
   if (new Set(hypoIds).size !== hypoIds.length) throw new RangeError('Duplicate hypothesis ids in bundle');
@@ -160,16 +167,16 @@ export function validateResearchBundle(raw) {
     for (const parent of card.parentHypothesisIds) if (!knownHypo.has(parent)) throw new RangeError(`Hypothesis ${card.id} references unknown parent ${parent}`);
   }
   const parents = new Map(bundle.hypotheses.map(h => [h.id, h.parentHypothesisIds]));
-  for (const start of parents.keys()) {
-    const seen = new Set([start]);
-    let frontier = [...(parents.get(start) || [])];
-    while (frontier.length) {
-      const next = frontier.pop();
-      if (seen.has(next)) throw new RangeError('Hypothesis ancestry must be acyclic');
-      seen.add(next);
-      frontier.push(...(parents.get(next) || []));
-    }
+  const active = new Set(), complete = new Set();
+  function visit(id) {
+    if (active.has(id)) throw new RangeError('Hypothesis ancestry must be acyclic');
+    if (complete.has(id)) return;
+    active.add(id);
+    for (const parent of parents.get(id) || []) visit(parent);
+    active.delete(id);
+    complete.add(id);
   }
+  for (const id of parents.keys()) visit(id);
   const artifactIds = bundle.artifacts.map(a => a.id);
   if (new Set(artifactIds).size !== artifactIds.length) throw new RangeError('Duplicate artifact ids in bundle');
   return bundle;
@@ -244,7 +251,8 @@ export async function applyResearchImport(preview, currentState, bundle) {
   if (storeHash !== preview.expectedStoreSha256) throw new RangeError('Import preview is stale: the workspace changed since preview');
   const bundleHash = await sha256Canonical(validated);
   if (bundleHash !== preview.bundleSha256) throw new RangeError('Import preview is stale: bundle bytes differ');
-  if (preview.conflicts.length) throw new RangeError('Import has unresolved id conflicts; apply refused');
+  const trusted = await previewResearchImport(validated, state);
+  if (trusted.conflicts.length) throw new RangeError('Import has unresolved id conflicts; apply refused');
   const next = {
     hypotheses: [...state.hypotheses], queries: [...state.queries], modelRuns: [...state.modelRuns],
     evidence: [...state.evidence], artifacts: [...state.artifacts], receipts: [...state.receipts],

@@ -1,6 +1,6 @@
 # Local candidate review and publication boundaries
 
-Current development version: **0.8.0-dev**, unpublished. This personal learning project is
+Current development version: **0.25.0-dev**, unpublished. This personal learning project is
 AI-assisted; software verification is agent-run and does not establish biological validation.
 
 ## Authorization

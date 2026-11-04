@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   validateSweepSpec, enumerateSweepPoints, runParameterSweep, summarizeSensitivity,
-  MAX_SWEEP_POINTS,
+  compareSweepRuns, MAX_SWEEP_POINTS,
 } from '../src/model-exploration.js';
 import { evaluateDomainModel } from '../src/model-adapters.js';
 
@@ -81,6 +81,66 @@ test('the runner retains per-point failures, honors cancellation and reports pro
   const cancelled = await cancelling;
   assert.equal(cancelled.status, 'cancelled');
   assert.equal(cancelled.points.length, 1);
+});
+
+test('compareSweepRuns aligns equal specs and reports same-unit numeric deltas', async () => {
+  const evaluate = inputs => evaluateDomainModel('slab-oxygen', inputs);
+  const a = await runParameterSweep(slabSpec([0, 1, 2]), { evaluate });
+  const b = await runParameterSweep(slabSpec([0, 1, 2]), { evaluate });
+  const comparison = compareSweepRuns(a, b, { idA: 'a', idB: 'b' });
+  assert.equal(comparison.modelId, 'slab-oxygen');
+  assert.deepEqual(comparison.runIds, ['a', 'b']);
+  const centerRows = comparison.deltas.filter(r => r.path === 'center');
+  assert.equal(centerRows.length, 3);
+  for (const row of centerRows) {
+    assert.equal(row.delta, 0);
+    assert.ok(Number.isFinite(row.a) && Number.isFinite(row.b));
+    assert.equal(row.unit, '1');
+    assert.ok(row.values && typeof row.values === 'object');
+  }
+});
+
+test('compareSweepRuns rejects misaligned runs and keeps failed points as null rows', async () => {
+  const evaluate = inputs => evaluateDomainModel('slab-oxygen', inputs);
+  const a = await runParameterSweep(slabSpec([0, 1, 2]), { evaluate });
+  const otherAxis = await runParameterSweep({ ...slabSpec([0, 1, 2]), axes: [{ path: 'points', values: [21, 41, 61] }] }, { evaluate });
+  assert.throws(() => compareSweepRuns(a, otherAxis), RangeError);
+  assert.throws(() => compareSweepRuns(a, { ...otherAxis, spec: { ...otherAxis.spec, axes: a.spec.axes, modelId: 'storyboard' } }), RangeError);
+  assert.throws(() => compareSweepRuns(a, { ...otherAxis, spec: { ...otherAxis.spec, axes: a.spec.axes }, points: otherAxis.points.slice(0, 1) }), RangeError);
+  // Units that disagree are never converted: the delta is null while both values stay visible.
+  const forged = structuredClone(a);
+  forged.points[0].run.quantities.center = { value: 0.25, unit: 'count' };
+  const mismatched = compareSweepRuns(a, forged);
+  const row = mismatched.deltas.find(r => r.path === 'center' && r.index === 0);
+  assert.equal(row.delta, null);
+  assert.equal(row.b, 0.25);
+  assert.ok(Number.isFinite(row.a));
+  // A failed point on one side yields null for that side and a null delta, never a dropped row.
+  const partial = structuredClone(a);
+  partial.points[1] = { ...partial.points[1], status: 'failed', run: null, error: 'injected failure' };
+  const cmp = compareSweepRuns(a, partial);
+  const failedRow = cmp.deltas.find(r => r.path === 'center' && r.index === 1);
+  assert.ok(Number.isFinite(failedRow.a));
+  assert.equal(failedRow.b, null);
+  assert.equal(failedRow.delta, null);
+});
+
+test('comparison rows are deterministic, sorted and bounded', () => {
+  const makeRun = () => ({
+    spec: slabSpec([0, 1]), status: 'done', summary: null,
+    points: [0, 1].map(i => ({
+      index: i, values: { demand: i }, status: 'succeeded', error: null,
+      run: { status: 'succeeded', quantities: Object.fromEntries(Array.from({ length: 30 }, (_, k) => [`q${String(k).padStart(2, '0')}`, { value: i + k, unit: '1' }])) },
+    })),
+  });
+  const comparison = compareSweepRuns(makeRun(), makeRun());
+  assert.equal(comparison.deltas.length, 60); // 30 outputs x 2 points
+  assert.deepEqual(comparison.deltas.slice(0, 4).map(r => [r.path, r.index]), [['q00', 0], ['q00', 1], ['q01', 0], ['q01', 1]]);
+  const oversized = makeRun();
+  oversized.points[0].run.quantities = Object.fromEntries(Array.from({ length: 600 }, (_, k) => [`o${k}`, { value: 1, unit: '1' }]));
+  const alsoOversized = makeRun();
+  alsoOversized.points[0].run.quantities = structuredClone(oversized.points[0].run.quantities);
+  assert.throws(() => compareSweepRuns(oversized, alsoOversized), /bounded|rows/i);
 });
 
 test('identical inputs give identical outputs and summaries carry no ranking claims', async () => {

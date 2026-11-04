@@ -69,6 +69,30 @@ export function createScientificViewUI({ elements: $, onStateChange = () => {}, 
       $('presentation-selection').textContent = error.message;
     }
   });
+  function updateCutPlane() {
+    try {
+      const axis = $('presentation-cut-axis').value;
+      const fraction = Number($('presentation-cut-fraction').value);
+      const plane = axis === 'off' ? null : { axis, fraction };
+      state = reduceScientificViewState(state, { type: 'setCutPlane', plane });
+      emit();
+    } catch (error) {
+      $('presentation-cut-axis').value = state.cutPlane?.axis ?? 'off';
+      $('presentation-cut-fraction').value = state.cutPlane?.fraction ?? 0.5;
+      $('presentation-selection').textContent = error.message;
+    }
+  }
+  on($('presentation-cut-axis'), 'change', updateCutPlane);
+  on($('presentation-cut-fraction'), 'input', updateCutPlane);
+  on($('presentation-motion'), 'change', () => {
+    try {
+      state = reduceScientificViewState(state, { type: 'setMotion', motion: $('presentation-motion').value });
+      emit();
+    } catch (error) {
+      $('presentation-motion').value = state.motion;
+      $('presentation-selection').textContent = error.message;
+    }
+  });
   buildOverlayControls();
   renderNotice();
   renderLegend();
@@ -79,6 +103,9 @@ export function createScientificViewUI({ elements: $, onStateChange = () => {}, 
       state = validateScientificViewState(next);
       $('presentation-scale').value = state.scale;
       $('presentation-representation').value = state.representation;
+      $('presentation-cut-axis').value = state.cutPlane?.axis ?? 'off';
+      $('presentation-cut-fraction').value = state.cutPlane?.fraction ?? 0.5;
+      $('presentation-motion').value = state.motion;
       buildOverlayControls();
       renderNotice();
       renderLegend();

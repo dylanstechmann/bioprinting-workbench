@@ -58,6 +58,80 @@ test('the exploration UI runs, cancels and keeps the last result separate from p
   }
 });
 
+test('the exploration UI drives registered models, two axes and bounded comparison', async () => {
+  const original = globalThis.document;
+  const { $ } = stubEnv();
+  globalThis.document = { createElement: () => ({ children: [], textContent: '', value: '', append(...n) { this.children.push(...n); }, replaceChildren(...n) { this.children = n; } }) };
+  const calls = { runs: [] };
+  const makeResult = (demandOffset, status = 'succeeded') => ({
+    status: 'succeeded',
+    points: [
+      { index: 0, values: { demand: 0 }, status, run: { quantities: { center: { value: 1 + demandOffset, unit: '1' } } }, error: null },
+      { index: 1, values: { demand: 1 }, status, run: { quantities: { center: { value: 0.5 + demandOffset, unit: '1' } } }, error: null },
+    ],
+    summary: { ranges: [{ path: 'center', unit: '1', min: 0.5, max: 1, count: 2 }], sensitivities: [], notice: 'No probability, causal effect, viability or efficacy claim.' },
+  });
+  const client = {
+    async run(spec) {
+      calls.runs.push(spec);
+      return { spec, ...makeResult(calls.runs.length === 1 ? 0 : 0.1) };
+    },
+    cancel() {},
+  };
+  try {
+    $('sweep-model').value = 'slab-oxygen';
+    $('sweep-axis').value = 'demand';
+    $('sweep-values').value = '0, 1';
+    const ui = createModelExplorationUI({
+      elements: $,
+      client,
+      getInputs: () => ({ modelId: $('sweep-model').value, baseInputs: { demand: 1, points: 21 } }),
+    });
+    // Registered models populate the model selector; numeric axes populate both axis selectors.
+    assert.equal($('sweep-model').children.length, 7);
+    assert.ok($('sweep-axis').children.length >= 2);
+    assert.ok($('sweep-axis2').children.length >= 1);
+    await $('sweep-run').listeners.get('click')();
+    assert.deepEqual(calls.runs[0].axes, [{ path: 'demand', values: [0, 1] }]);
+    // Two-axis specs assemble when the second axis is selected.
+    $('sweep-axis2').value = 'points';
+    $('sweep-values2').value = '21, 41';
+    await $('sweep-run').listeners.get('click')();
+    assert.deepEqual(calls.runs[1].axes, [{ path: 'demand', values: [0, 1] }, { path: 'points', values: [21, 41] }]);
+    await $('sweep-run').listeners.get('click')();
+    assert.deepEqual(calls.runs[2].axes, [{ path: 'demand', values: [0, 1] }, { path: 'points', values: [21, 41] }]);
+    // Retained runs compare side by side without touching scenario state.
+    assert.equal($('sweep-compare-a').children.length, 3);
+    assert.equal($('sweep-compare-b').children.length, 3);
+    await $('sweep-compare-run').listeners.get('click')();
+    assert.match($('sweep-status').textContent, /same-unit rows/);
+    assert.ok($('sweep-compare').children.length > 0);
+    ui.dispose();
+  } finally {
+    globalThis.document = original;
+  }
+});
+
+test('the exploration UI reports models without numeric axes instead of inventing them', async () => {
+  const original = globalThis.document;
+  const { $ } = stubEnv();
+  globalThis.document = { createElement: () => ({ children: [], textContent: '', value: '', append(...n) { this.children.push(...n); }, replaceChildren(...n) { this.children = n; } }) };
+  try {
+    $('sweep-model').value = 'flow-resistance';
+    const ui = createModelExplorationUI({
+      elements: $,
+      client: { async run() { throw new Error('should not run'); }, cancel() {} },
+      getInputs: () => ({ modelId: $('sweep-model').value, baseInputs: { network: { model: 'dimensionless-linear-resistance-network', nodes: [], edges: [] } } }),
+    });
+    $('sweep-model').listeners.get('change')();
+    assert.equal($('sweep-axis').children.length, 0);
+    assert.match($('sweep-status').textContent, /no registered numeric axes/i);
+    ui.dispose();
+  } finally {
+    globalThis.document = original;
+  }
+});
+
 test('the exploration UI surfaces spec errors without touching results', async () => {
   const original = globalThis.document;
   const { $ } = stubEnv();

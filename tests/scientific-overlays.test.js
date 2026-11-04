@@ -99,3 +99,32 @@ test('replacing an overlay disposes the previous resources and rejects unknown i
   assert.throws(() => overlays.setOverlay('box-oxygen-slice'), TypeError);
   overlays.dispose();
 });
+
+test('both field overlays encode samples and request texture upload', () => {
+  const parent = new FakeTHREE.Group();
+  const overlays = createScientificOverlays({ THREE: FakeTHREE, parent });
+  for (const id of ['box-oxygen-slice', 'slab-profile']) {
+    overlays.setOverlay(id, { width: 2, height: 1, values: [0, 1] });
+    const texture = parent.children.at(-1).material.map;
+    assert.ok(texture.image.data instanceof Uint8Array);
+    assert.deepEqual([...texture.image.data], [0, 0, 255, 255, 255, 0, 0, 255]);
+    assert.equal(texture.needsUpdate, true);
+    assert.throws(() => overlays.setOverlay(id, { width: 1, height: 1, values: [NaN] }), /finite/);
+  }
+});
+
+test('failed replacement cleans allocations while preserving the previous overlay', () => {
+  const parent = new FakeTHREE.Group();
+  let allocated;
+  const THREE = { ...FakeTHREE, DataTexture: class extends FakeTHREE.DataTexture {
+    constructor(...args) { super(...args); allocated = this; }
+  } };
+  const overlays = createScientificOverlays({ THREE, parent });
+  overlays.setOverlay('box-oxygen-slice', field(2, 2));
+  const previous = parent.children[0];
+  THREE.PlaneGeometry = class { constructor() { throw new Error('allocation failed'); } };
+  assert.throws(() => overlays.setOverlay('box-oxygen-slice', field(4, 4)), /allocation failed/);
+  assert.equal(allocated.disposed, true);
+  assert.deepEqual(parent.children, [previous]);
+  assert.equal(previous.material.disposed, false);
+});
