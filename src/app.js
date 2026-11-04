@@ -42,9 +42,13 @@ const learningUI = createCellLearningUI({ elements: $ });
 // explicit exchange export. Nothing here is auto-applied, uploaded or validated scientifically.
 const runRegistry = createRunRegistry();
 let sweepRunCounter = 0, studyRunCounter = 0;
+// Assigned once the cockpit exists; captureRun is only invoked after module initialization,
+// but a plain binding keeps the call site free of temporal-dead-zone hazards.
+let cockpitForRuns = null;
 function captureRun(partial) {
   const { record, evicted } = runRegistry.add(partial);
   if (evicted) console.info(`Run registry is bounded; ${evicted.id} aged out of the retained history.`);
+  cockpitForRuns?.refreshRuns?.();
   return record;
 }
 function drawOxygen() {
@@ -145,6 +149,7 @@ createModelExplorationUI({
 });
 const hypothesisWorkspace = createHypothesisWorkspace();
 const researchCockpit = createResearchCockpitUI({ elements: $, runRegistry, workspace: hypothesisWorkspace });
+cockpitForRuns = researchCockpit;
 createResearchDraftUI({
   elements: $,
   workspace: hypothesisWorkspace,

@@ -107,4 +107,40 @@ test('dynamic text stays inert text and query plans are generated explicitly', (
     assert.match(last.queries[0].disclosure, /local until explicitly selected/i);
     ui.dispose();
   } finally { globalThis.document = original; }
+
+test('loadCard round-trips an existing draft and review state stays truthful', () => {
+  const original = globalThis.document;
+  const { $, make } = stubEnv();
+  globalThis.document = { createElement: make };
+  try {
+    const workspace = createHypothesisWorkspace();
+    const ui = createResearchDraftUI({ elements: $, workspace });
+    fill(ui);
+    ui.save();
+    const saved = workspace.list()[0];
+    workspace.update(saved.id, { ...saved, reviewStatus: 'owner-reviewed', authorship: { ...saved.authorship, reviewedBy: 'owner' } });
+    assert.throws(() => ui.loadCard('missing-card'), RangeError);
+    ui.loadCard('draft-one');
+    assert.deepEqual(ui.getAlternativeRows(), [
+      { id: 'alt-a', prediction: 'pattern weakens', falsifier: 'pattern persists' },
+      { id: 'alt-b', prediction: 'pattern follows assumptions', falsifier: 'pattern independent of assumptions' },
+    ]);
+    ui.save();
+    let card = workspace.get('draft-one');
+    assert.equal(card.reviewStatus, 'owner-reviewed', 'unchanged save preserves existing owner review');
+    assert.equal(card.authorship.reviewedBy, 'owner');
+    ui.setField('title', 'A changed question');
+    ui.save();
+    card = workspace.get('draft-one');
+    assert.equal(card.reviewStatus, 'unreviewed', 'changed content clears the stale review');
+    assert.equal(card.authorship.reviewedBy, null);
+    assert.equal(card.authorship.createdBy, 'agent', 'the original creator is preserved');
+    ui.addAlternative();
+    assert.equal(ui.getAlternativeRows().length, 3);
+    ui.loadCard('draft-one');
+    assert.equal(ui.getAlternativeRows().length, 2, 'loading trims alternative rows to the stored record');
+    ui.dispose();
+  } finally { globalThis.document = original; }
+});
+
 });

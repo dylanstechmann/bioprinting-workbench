@@ -204,6 +204,14 @@ export function createResearchCockpitUI({ elements: $, workspace = null, onChang
       renderSelection();
       renderPreview();
     },
+    /** Non-destructive refresh after a native run capture: new registry runs appear as
+     * unselected options while imported state, selections, attached files and downloads stay. */
+    refreshRuns() {
+      if (disposed) return;
+      renderCards();
+      renderSelection();
+      renderPreview();
+    },
     dispose() {
       disposed = true;
       generation++;

@@ -85,4 +85,29 @@ test('cancel and dispose terminate the study and ignore stale completion', async
   assert.equal(disposed, 1);
   assert.equal(ui.getLastResult(), null);
   ui.dispose();
+
+test('history selection renders the retained study rows and notice', async () => {
+  const { $, make } = environment();
+  const original = globalThis.document;
+  globalThis.document = { createElement: make };
+  const results = [
+    { status: 'succeeded', spec: { modelId: 'box-oxygen', settings: { boundaryMode: 'all-faces' }, resolutions: [9, 17, 33] }, samples: [{ resolution: 9, center: 0.1, residualInfinity: 1, balanceError: 2, errorInfinity: null, converged: true }], comparisons: [], notices: ['first'] },
+    { status: 'succeeded', spec: { modelId: 'box-oxygen', settings: { boundaryMode: 'all-faces' }, resolutions: [9, 17, 33] }, samples: [{ resolution: 9, center: 0.9, residualInfinity: 3, balanceError: 4, errorInfinity: 5, converged: false }], comparisons: [], notices: ['second'] },
+  ];
+  let call = 0;
+  try {
+    const ui = createConvergenceStudyUI({ elements: $, getSettings: () => ({}), clientFactory: () => ({ async request() { return results[call++]; }, dispose() {} }) });
+    await $('convergence-run').listeners.get('click')();
+    await $('convergence-run').listeners.get('click')();
+    $('convergence-history').value = 'study 1';
+    $('convergence-history').listeners.get('change')();
+    assert.deepEqual($('convergence-results').children[0].children.map(cell => cell.textContent), ['9', '0.1', '1', '2', 'No analytic reference', 'yes']);
+    assert.match($('convergence-status').textContent, /Showing retained study 1/);
+    $('convergence-history').value = 'study 2';
+    $('convergence-history').listeners.get('change')();
+    assert.deepEqual($('convergence-results').children[0].children.map(cell => cell.textContent), ['9', '0.9', '3', '4', '5', 'no']);
+    ui.dispose();
+  } finally { globalThis.document = original; }
+});
+
 });

@@ -23,7 +23,7 @@ import { checkAuthoringIsolation } from './check-authoring-isolation.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 // Development-history planning archives are not public runtime artifacts.
-const PLANNING_ARCHIVES = new Set(['docs/IMPLEMENTATION_HISTORY_2026-11-03.md','docs/IMPLEMENTATION_PHASES_A_G_2026-11-03.md','docs/IMPLEMENTATION_PHASE_B_ONLY_2026-11-03.md','docs/IMPLEMENTATION_PLAN_ARCHIVE_2026-11-04.md','docs/IMPLEMENTATION_VERIFICATION_CLOSEOUT_2026-11-03.md','docs/IMPLEMENTATION_PROGRESS_2026-11-03.md','docs/IMPLEMENTATION_PROGRESS_2026-11-04.md']);
+const PLANNING_ARCHIVES = new Set(['docs/IMPLEMENTATION_HISTORY_2026-11-03.md','docs/IMPLEMENTATION_PHASES_A_G_2026-11-03.md','docs/IMPLEMENTATION_PHASE_B_ONLY_2026-11-03.md','docs/IMPLEMENTATION_PLAN_ARCHIVE_2026-11-04.md','docs/IMPLEMENTATION_PLAN_CONTINUATION_ARCHIVE_2026-11-04.md','docs/IMPLEMENTATION_VERIFICATION_CLOSEOUT_2026-11-03.md','docs/IMPLEMENTATION_PROGRESS_2026-11-03.md','docs/IMPLEMENTATION_PROGRESS_2026-11-04.md']);
 /** An allowlisted candidate inventory, NOT an instruction to publish the repo root. */
 export function collectReleaseInventory(directory = root) {
   const files = [];

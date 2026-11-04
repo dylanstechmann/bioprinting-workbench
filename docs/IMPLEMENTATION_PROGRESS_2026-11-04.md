@@ -96,4 +96,60 @@ Browser adapters: `scripts/browser-verification-suite.js` (parts `convergence`, 
 `desk-controls`); both take an injected Playwright page/browser and add no application dependency.
 
 No runtime packages, commits, pushes, deployments or live/paid provider calls were made.
+
+## Continuation round · deep gaps and live two-application roundtrip (2026-11-04, later)
+
+Scope executed from the continuation `implementation_plan.md` under owner instruction to also
+update GitHub for versioning history. This was AI-assisted development on the personal
+hobby/learning project; all live runs used the local mocked-provider fixture only.
+
+**Versioning:** pre-implementation snapshots of both working trees were committed and pushed to
+the `continuation/2026-11-04-versioning` branch of each repository (Workbench `aaa46c0`, regen
+`f399620`) before any code changed. `main` was not touched, so Pages did not publish.
+
+**Defects found and fixed (each with regressions):**
+- `scripts/browser-roundtrip-archive.js` (new): bounded ZIP extraction via EOCD + central
+  directory walked by structural lengths, local-header payload offsets, stored/deflate,
+  7 fixture tests covering traversal/duplicates/encryption/ZIP64/corruption/limits.
+- Empty `{}` Desk/return exports replaced by explicit checkpoint selections;
+  `deskExportBody` refuses empty selections (5 adapter contract tests).
+- Adapter Desk selectors were wrong end to end (nonexistent ids, statuses and download link);
+  rebuilt against the real `desk/app.js` contract (`bioprint-file`/preview/apply,
+  `bioprint-query` + `bioprint-blueprint` selects, `bioprint-review-query`/`bioprint-submit-query`,
+  comma-separated `bioprint-run-ids`, `bioprint-results.zip` download event, Desk served at `/`).
+- `regen-workbench/tools/desk/app.js`: reviewed submission referenced an undefined `selected`
+  blueprint binding (could never submit); replaced with an explicit blueprint select populated
+  from `/api/state`.
+- `roundtrip.json` fixture query named provider `local-desk`, which Desk rejects; changed to
+  `pubmed` on both sides with golden canonical digests updated to
+  `2d5f1307a3ed90a2df033608628fa7493fd89155ae1571c411acd6628bf4bc19`.
+- UI continuation fixes: convergence history selection renders the retained study
+  (`renderStudy`), cockpit exposes non-destructive `refreshRuns()` (wired to `captureRun` without
+  a TDZ hazard), draft editor exposes `loadCard()` with truthful review handling (unchanged
+  content preserves owner review; changed content clears it; creator preserved), stable
+  `draft-*` field/alternative ids for accessibility.
+
+**Measured results (fresh):** Workbench `npm test` 329/329 (incl. 15 new regression tests),
+`npm run check` 180 modules. Desk `test_bioprint_exchange*.py` 28/28 (3 new queue/export tests
+running the real executor with only `search_provider` mocked and an outbound guard).
+`tests/browser_exchange_server.py` fixture smoke: import → review → real queue → mocked
+`pubmed:ok` (3 synthetic hits) → explicit export ZIP, PASS.
+
+**Live browser roundtrip (evidence: `docs/browser-roundtrip-2026-11-04.json`):** A Workbench
+visible-control export (all groups nonempty, scenario fingerprint recorded) → B Desk visible
+import/review/submit through the real queue with mocked provider (`deskRunId 6d9dee67…`,
+duplicate-submit token dedupe proven, run complete `pubmed:ok`) and explicit-ID UI export
+(`bioprint-results.zip`, 2078 bytes) → archive bytes verified with the unit-tested extractor
+(manifest artifact sha match; `complete`→`succeeded`; `unsupported-foreign` preserved) →
+C Workbench return import + artifact-file selection, scenario fingerprint unchanged, idempotent
+re-import, run panel shows both runs with truthful statuses.
+
+**Not run / remaining gates:** full `browser-verification-suite.js` UI execution of the new
+`exploration`/`drafts`/`presentation` parts, the 390px viewport matrix, ten-cycle resource
+evidence, WebGL-failure path, primary-source claim audit, `npm run verify:release` closeout,
+owner visual acceptance, independent citation/scientific review, live-provider demo (owner
+credentials) and any tag/merge/push to `main` (which would publish). Release docs
+(`RESEARCH_EXCHANGE.md`, `RESEARCH_COCKPIT.md`, `VERIFICATION.md`) still need their documented
+updates from the plan before an unpublished release candidate is proposed.
+
 Pre-existing `data/iris-*` untracked Desk directories were left untouched.

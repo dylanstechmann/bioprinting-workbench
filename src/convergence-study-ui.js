@@ -22,6 +22,28 @@ export function createConvergenceStudyUI({ elements: $, getSettings, clientFacto
     }));
     if (history.length) select.value = history[history.length - 1].id;
   }
+  /** Single renderer for a just-completed study and for history-selected studies. */
+  function renderStudy(artifact) {
+    output.replaceChildren();
+    for (const sample of artifact.samples) {
+      const row = document.createElement('tr');
+      for (const value of [sample.resolution, sample.center, sample.residualInfinity,
+        sample.balanceError, sample.errorInfinity ?? 'No analytic reference', sample.converged ? 'yes' : 'no']) {
+        const cell = document.createElement('td');
+        cell.textContent = String(value);
+        row.append(cell);
+      }
+      output.append(row);
+    }
+  }
+  const historySelect = $('convergence-history');
+  const onHistoryChange = () => {
+    const selected = history.find(entry => entry.id === historySelect.value);
+    if (!selected) return;
+    renderStudy(selected.artifact);
+    status.textContent = `Showing retained ${selected.id} from ${selected.artifact.createdAt}; ${selected.artifact.status}. History is local and bounded; downloads are explicit files.`;
+  };
+  historySelect.addEventListener('change', onHistoryChange);
   function stop(message) {
     generation++;
     client?.dispose();
@@ -51,16 +73,7 @@ export function createConvergenceStudyUI({ elements: $, getSettings, clientFacto
       history.push({ id: `study ${studyCounter}`, artifact });
       while (history.length > MAX_STUDY_HISTORY) history.shift();
       renderHistory();
-      for (const sample of result.samples) {
-        const row = document.createElement('tr');
-        for (const value of [sample.resolution, sample.center, sample.residualInfinity,
-          sample.balanceError, sample.errorInfinity ?? 'No analytic reference', sample.converged ? 'yes' : 'no']) {
-          const cell = document.createElement('td');
-          cell.textContent = String(value);
-          row.append(cell);
-        }
-        output.append(row);
-      }
+      renderStudy(artifact);
       status.textContent = `${result.status}. ${result.notices.join(' ')} ${result.comparisons.map(c =>
         `${c.coarse}→${c.fine}: center difference ${c.centerDelta}; observed order ${c.observedOrder ?? 'undefined'}`).join(' · ')}`;
       onRun(structuredClone(result));
@@ -101,6 +114,7 @@ export function createConvergenceStudyUI({ elements: $, getSettings, clientFacto
       history.length = 0;
       runButton.removeEventListener('click', run);
       cancelButton.removeEventListener('click', cancel);
+      historySelect.removeEventListener('change', onHistoryChange);
       $('convergence-download').removeEventListener('click', download);
     },
   };

@@ -3,7 +3,7 @@
 export function createBrowserVerificationSuite({ baseURL, part = 'convergence', viewport = { width: 1280, height: 720 } }) {
   const url = new URL(baseURL);
   if (!['http:', 'https:'].includes(url.protocol)) throw new TypeError('Browser baseURL must be HTTP(S)');
-  if (!['convergence', 'exchange', 'provenance'].includes(part)) throw new RangeError('Unknown browser verification part');
+  if (!['convergence', 'exchange', 'provenance', 'exploration', 'drafts', 'presentation'].includes(part)) throw new RangeError('Unknown browser verification part');
   return async page => {
     const startedAt = new Date().toISOString();
     const errors = [], checks = [];
@@ -48,6 +48,12 @@ export function createBrowserVerificationSuite({ baseURL, part = 'convergence', 
         const invalidated = JSON.parse(await page.locator('#fit3d-provenance').textContent());
         if (invalidated.fitRun !== null || !await page.locator('#fit3d-apply').isDisabled()) throw new Error('Stale fit remains applicable');
         checks.push({ id: 'explicit-application-and-invalidation', status: 'pass', application: box.fitRun.application });
+      } else if (part === 'exploration') {
+        await runExplorationPart(page, checks);
+      } else if (part === 'drafts') {
+        await runDraftsPart(page, checks);
+      } else if (part === 'presentation') {
+        await runPresentationPart(page, checks);
       } else {
         await page.getByRole('tab', { name: 'Research library', exact: true }).click();
         const fixtureURL = new URL('tests/fixtures/research-exchange/roundtrip.json', url).href;
@@ -74,4 +80,92 @@ export function createBrowserVerificationSuite({ baseURL, part = 'convergence', 
       return { schema: 'bioprinting-workbench/browser-check/1', part, baseURL: url.href, viewport, startedAt, finishedAt: new Date().toISOString(), checks, errors };
     } finally { page.off('pageerror', captureError); }
   };
+}
+
+async function runExplorationPart(page, checks) {
+  await page.getByRole('tab', { name: 'Models', exact: true }).click();
+  await page.waitForFunction(() => document.getElementById('sweep-model')?.options?.length > 0);
+  const modelId = await page.evaluate(() => document.getElementById('sweep-model').value);
+  await page.locator('#sweep-values').fill('0, 1');
+  await page.locator('#sweep-axis2').selectOption('');
+  await page.locator('#sweep-run').click();
+  await page.waitForFunction(() => /succeeded|failed/.test(document.getElementById('sweep-status').textContent), null, { timeout: 30000, polling: 250 });
+  const status = await page.locator('#sweep-status').innerText();
+  if (!status.includes('succeeded')) throw new Error(`Sweep did not succeed: ${status.slice(0, 200)}`);
+  const points = await page.locator('#sweep-results tr').count();
+  if (points < 2) throw new Error('Sweep must render its enumerated points');
+  checks.push({ id: 'exploration-sweep', status: 'pass', modelId, points, detail: status.slice(0, 300) });
+  await page.locator('#sweep-values').fill('0, 2');
+  await page.locator('#sweep-run').click();
+  await page.waitForFunction(() => /succeeded|failed/.test(document.getElementById('sweep-status').textContent), null, { timeout: 30000, polling: 250 });
+  await page.waitForFunction(() => document.getElementById('sweep-compare-a').options.length >= 2);
+  const [runA, runB] = await page.evaluate(() => [
+    document.getElementById('sweep-compare-a').options[0].value,
+    document.getElementById('sweep-compare-b').options[1]?.value ?? document.getElementById('sweep-compare-b').options[0].value,
+  ]);
+  await page.locator('#sweep-compare-a').selectOption(runA);
+  await page.locator('#sweep-compare-b').selectOption(runB);
+  await page.locator('#sweep-compare-run').click();
+  await page.waitForFunction(() => document.getElementById('sweep-compare').children.length > 0, null, { timeout: 15000, polling: 250 });
+  const rows = await page.locator('#sweep-compare tr').count();
+  checks.push({ id: 'exploration-comparison', status: 'pass', rows, detail: (await page.locator('#sweep-summary').innerText()).slice(0, 300) });
+}
+
+
+async function runDraftsPart(page, checks) {
+  await page.getByRole('tab', { name: 'Research library', exact: true }).click();
+  await page.locator('#draft-id').fill('browser-draft');
+  await page.locator('#draft-revision').fill('1');
+  await page.locator('#draft-title').fill('Browser verification draft');
+  await page.locator('#draft-question').fill('What does the browser check verify?');
+  await page.locator('#draft-scope').fill('Software verification only.');
+  await page.locator('#draft-claimBoundary').fill('No biological claim.');
+  await page.locator('#draft-system').fill('normalized box');
+  await page.locator('#draft-mechanism').fill('diffusion-consumption balance');
+  await page.locator('#draft-alt-1-id').fill('alt-a');
+  await page.locator('#draft-alt-1-prediction').fill('controls render');
+  await page.locator('#draft-alt-1-falsifier').fill('controls missing');
+  await page.locator('#draft-alt-2-id').fill('alt-b');
+  await page.locator('#draft-alt-2-prediction').fill('status lies');
+  await page.locator('#draft-alt-2-falsifier').fill('status truthful');
+  await page.getByRole('button', { name: 'Save draft', exact: true }).click();
+  await page.waitForFunction(() => /saved as/i.test(document.getElementById('draft-status').textContent), null, { timeout: 10000, polling: 250 });
+  const cards = await page.locator('#draft-cards').innerText();
+  if (!cards.includes('browser-draft')) throw new Error('Saved draft is missing from the record list');
+  checks.push({ id: 'draft-save', status: 'pass', detail: (await page.locator('#draft-status').innerText()).slice(0, 300) });
+  await page.getByRole('button', { name: 'Generate local query plans', exact: true }).click();
+  await page.waitForFunction(() => /Generated .*query plans/i.test(document.getElementById('draft-status').textContent), null, { timeout: 10000, polling: 250 });
+  checks.push({ id: 'draft-query-plans', status: 'pass', detail: (await page.locator('#draft-status').innerText()).slice(0, 300) });
+  await page.locator('#draft-title').fill('');
+  await page.getByRole('button', { name: 'Save draft', exact: true }).click();
+  const refused = await page.locator('#draft-status').innerText();
+  if (!/not saved/i.test(refused)) throw new Error(`Invalid save was not refused: ${refused.slice(0, 200)}`);
+  checks.push({ id: 'draft-validation-guard', status: 'pass', detail: refused.slice(0, 300) });
+}
+
+
+async function runPresentationPart(page, checks) {
+  const webglError = await page.evaluate(() => {
+    const element = document.getElementById('webgl-error');
+    return element && !element.hidden ? element.textContent : null;
+  });
+  if (webglError) {
+    checks.push({ id: 'presentation', status: 'blocked', detail: webglError.slice(0, 300) });
+    return;
+  }
+  const initialNotice = await page.locator('#presentation-notice').innerText();
+  await page.locator('#presentation-scale').selectOption('construct');
+  await page.waitForFunction(previous => document.getElementById('presentation-notice').textContent !== previous, initialNotice, { timeout: 10000, polling: 250 });
+  checks.push({ id: 'presentation-scale', status: 'pass', detail: (await page.locator('#presentation-notice').innerText()).slice(0, 300) });
+  await page.locator('#presentation-representation').selectOption('model-field');
+  await page.locator('#presentation-cut-axis').selectOption('x');
+  await page.locator('#presentation-cut-fraction').fill('0.5');
+  await page.locator('#presentation-cut-fraction').dispatchEvent('change');
+  await page.locator('#presentation-motion').selectOption('reduced');
+  const cutNotice = await page.locator('#presentation-notice').innerText();
+  if (!cutNotice) throw new Error('Cut plane and motion changes left no notice describing the representation limits');
+  checks.push({ id: 'presentation-cut-motion', status: 'pass', detail: cutNotice.slice(0, 300) });
+  await page.locator('#presentation-cut-axis').selectOption('off');
+  await page.locator('#presentation-motion').selectOption('system');
+  checks.push({ id: 'presentation-rollback', status: 'pass', detail: (await page.locator('#presentation-notice').innerText()).slice(0, 300) });
 }

@@ -1,0 +1,56 @@
+{
+  "schema": "bioprinting-workbench/browser-roundtrip-evidence/1",
+  "runDate": "2026-11-04",
+  "executedBy": "agent (AI-assisted hobby/learning project; not an owner or independent review)",
+  "environment": {
+    "workbench": "http://127.0.0.1:8091 (python3.12 http.server over the repository tree)",
+    "desk": "http://127.0.0.1:34255 (tests/browser_exchange_server.py, mocked-provider-v1, temporary stores, outbound fetch_json guard)",
+    "browser": "managed Playwright Chromium via MCP runner",
+    "note": "The runner VM blocks dynamic import, so the live run drove the same visible controls and endpoints the adapter scripts use; adapter contracts are additionally covered by node --test unit suites."
+  },
+  "steps": [
+    {
+      "id": "A-workbench-export",
+      "status": "pass",
+      "evidence": "Imported roundtrip.json fixture and synthetic.json artifact through visible controls; export produced 2 download links and a 3893-byte bundle; groups: hypotheses 2, queries 1, modelRuns 1, evidence 1, artifacts 1; scenario fingerprint d9af33dc1034b82edbb9a6639ca3832e9c500e67cd2320b023afa829498d5241; query providerIds [pubmed]; artifact descriptor synthetic.json 25 bytes sha256 91f6a1f8...; 0 console errors."
+    },
+    {
+      "id": "B-desk-review-submit-export",
+      "status": "pass",
+      "evidence": "Visible import (bioprint-file/preview/apply, applied:true), review query hyp-a-q1 against blueprint select, submit through the real single-worker queue: receipt {status: running, deskRunId: 6d9dee6705814339942d96d386920b02}; repeated same-token submit returned the identical stored receipt (no duplicate work); run completed with '3 source records; 1/1 providers succeeded' and provider pubmed:ok (mocked boundary only, synthetic hits); explicit-ID export via checked records + desk run id produced the bioprint-results.zip download (2078 bytes, download failure: none)."
+    },
+    {
+      "id": "B-archive-verification",
+      "status": "pass",
+      "evidence": "scripts/browser-roundtrip-archive.js extracted the ZIP through central-directory local offsets (entries: bioprint-results.json + run-6d9dee6705814339942d96d386920b02.json, 1614 bytes); verifyRoundtripArtifacts matched manifest descriptor bytes/sha256 e0489c59...; returned modelRuns preserved statuses desk-6d9dee67... -> succeeded (native complete) and run-foreign -> unsupported-foreign; dependency closure kept all five groups nonempty."
+    },
+    {
+      "id": "C-workbench-return",
+      "status": "pass",
+      "evidence": "Returned manifest imported through visible controls ('Bundle applied'); extracted run snapshot selected in #cockpit-artifacts ('1 local artifact files selected'); run panel shows 'Run desk-6d9dee67... status succeeded ... Desk native status complete' and 'Run run-foreign ... status unsupported-foreign'; scenario fingerprint unchanged before/after (d9af33dc...); second import of the same manifest left the record set byte-identical (idempotent re-import)."
+    },
+    {
+      "id": "failure-matrix-unknown-run",
+      "status": "pass",
+      "evidence": "Covered by tests/test_bioprint_exchange_http.py::test_export_selection_matrix_and_zip_artifact_hashes (unknown record id, invalid run id and missing run id each return bounded 400 errors) and the desk-controls adapter part (UI path)."
+    },
+    {
+      "id": "browser-controls-suites",
+      "status": "not-run",
+      "evidence": "scripts/browser-verification-suite.js parts exploration/drafts/presentation are implemented with real selectors and unit-checked syntax, but their full UI execution (plus the 390px viewport matrix, resource cycles and WebGL-failure path) was not executed in this session; owner/live runs remain required before release."
+    }
+  ],
+  "defectsFoundAndFixed": [
+    "ZIP extraction walked central-directory offsets as local headers and advanced by payload size (fixed in scripts/browser-roundtrip-archive.js, 7 fixture tests).",
+    "Desk export and return export sent empty {} selections (fixed: explicit checkpoint selection; deskExportBody refuses empty).",
+    "Adapter expected wrong Desk UI ids/statuses and a nonexistent download link (fixed to bioprint-file/preview/apply, bioprint-query select, bioprint-review-query/submit-query, comma-separated bioprint-run-ids, bioprint-results.zip download event, Desk served at '/').",
+    "Desk review handler referenced an undefined 'selected' blueprint binding, so reviewed submission could never work (fixed with an explicit bioprint-blueprint select).",
+    "roundtrip.json fixture query named provider 'local-desk', which Desk cannot submit (fixed to 'pubmed'; both repos' golden canonical digests updated to 2d5f1307a3ed90a2df033608628fa7493fd89155ae1571c411acd6628bf4bc19)."
+  ],
+  "notRunGates": [
+    "owner visual acceptance",
+    "independent citation/scientific review",
+    "live-provider demo with owner credentials",
+    "release tag/push/deploy and Pages publication"
+  ]
+}

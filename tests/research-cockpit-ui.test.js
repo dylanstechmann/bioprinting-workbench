@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createResearchCockpitUI } from '../src/research-cockpit-ui.js';
 import { emptyExchangeState } from '../src/research-exchange.js';
+import { createRunRegistry } from '../src/run-records.js';
 
 function stubEnv() {
   const make = () => ({
@@ -95,5 +96,26 @@ test('newer imports, state replacement and disposal invalidate pending asynchron
     await after;
     assert.equal($('cockpit-status').textContent, status);
     assert.deepEqual(ui.getState(), emptyExchangeState());
+  } finally { globalThis.document = original; }
+});
+
+test('refreshRuns shows newly captured native runs unselected without touching prior state', () => {
+  const original = globalThis.document;
+  const { $ } = stubEnv();
+  globalThis.document = { createElement: () => stubEnv().$('row') };
+  try {
+    const registry = createRunRegistry();
+    registry.add({ id: 'run-a', kind: 'sweep-run', modelId: 'box-oxygen', status: 'succeeded', createdAt: '2026-11-04T00:00:00Z', payload: { spec: {}, summary: {}, points: [] }, artifactFileName: 'run-a.json' });
+    const ui = createResearchCockpitUI({ elements: $, runRegistry: registry });
+    const labelFor = id => $('cockpit-selection').children.find(child =>
+      [child.textContent, ...child.children.map(node => String(node.textContent ?? ''))].join(' ').includes(`modelRuns: ${id}`));
+    assert.ok(labelFor('run-a'), 'captured native runs are selectable');
+    assert.equal(labelFor('run-a').children[0].checked, true, 'first-listed runs start selected');
+    registry.add({ id: 'run-b', kind: 'sweep-run', modelId: 'slab-oxygen', status: 'failed', createdAt: '2026-11-04T00:00:01Z', payload: { spec: {}, summary: {}, points: [] }, artifactFileName: 'run-b.json' });
+    ui.refreshRuns();
+    assert.ok(labelFor('run-b'), 'new runs appear after refreshRuns');
+    assert.equal(labelFor('run-b').children[0].checked, false, 'new runs stay unselected');
+    assert.equal(labelFor('run-a').children[0].checked, true, 'prior selection survives the refresh');
+    ui.dispose();
   } finally { globalThis.document = original; }
 });
