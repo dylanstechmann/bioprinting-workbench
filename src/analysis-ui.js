@@ -123,8 +123,11 @@ export function createAnalysisUI({ elements: $, client = createAnalysisClient(),
   $('fit3d-clear').addEventListener('click',()=>setInput(null));
   $('fit3d-run').addEventListener('click',runFit);
   $('fit3d-apply').addEventListener('click',()=>{
-    if(!fit?.inDomain || !fit.identifiable || !fit.converged)return;
-    if (fitRun) { fitRun = recordFitApplication(fitRun, { appliedAt: new Date().toISOString(), previousDemand: settings.demand, demand: fit.q }); onFitRun(fitRun); }
+    const button = $('fit3d-apply');
+    if (button.disabled || !fit?.inDomain || !fit.identifiable || !fit.converged) return;
+    if (fitRun) fitRun = recordFitApplication(fitRun, { appliedAt: new Date().toISOString(), previousDemand: settings.demand, demand: fit.q });
+    button.disabled = true;
+    if (fitRun) onFitRun(fitRun);
     settings.demand=fit.q; parameterOrigin='explicit-fit-application';$('oxygen3d-demand').value=fit.q;
     renderProvenance();invalidateField();notify();solve();
   });
