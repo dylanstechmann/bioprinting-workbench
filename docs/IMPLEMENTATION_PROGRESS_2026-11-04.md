@@ -2,8 +2,8 @@
 
 Personal hobby/learning project; changes and verification performed by the coding agent.
 This is a measured checkpoint of the continuation plan at `implementation_plan.md`, not a
-release, not scientific validation and not owner approval. Nothing here was committed,
-pushed, tagged or deployed.
+release, not scientific validation and not owner approval. At the November 4 checkpoint, nothing
+here was committed, pushed, tagged or deployed; later sections record their own subsequent state.
 
 ## Implemented (milestones 1-4 of the continuation plan)
 
@@ -153,3 +153,93 @@ credentials) and any tag/merge/push to `main` (which would publish). Release doc
 updates from the plan before an unpublished release candidate is proposed.
 
 Pre-existing `data/iris-*` untracked Desk directories were left untouched.
+
+## Draft editing and fail-closed drafts browser evidence — 2026-11-15
+
+This narrow, uncommitted AI-assisted increment started at clean
+`feda2e34023ac4783c937267c6164d333cfe0862` on `continuation/2026-11-04-versioning`.
+It adds full visible local/imported card editing, defensive cockpit-to-draft handoff, explicit
+Save/review/lineage semantics and fail-closed `pass|fail|blocked` browser aggregation. No schema,
+scenario, evaluator, numerics, fixture, dependency or provider integration changed. Preview-only
+imports remain unsynchronized until Apply, and external edit loading remains inert until Save.
+
+**Fresh baseline:** the two existing focused UI files passed **8/8**; `npm test` passed **329/329**
+with 0 failed/skipped; `npm run check` covered **180 modules**. No pre-existing test failure was
+observed. The newly added focused regressions initially failed for the missing external-edit,
+cockpit-handoff and browser-aggregation capabilities before implementation.
+
+**Final focused/full gates:**
+- `node --test tests/research-draft-ui.test.js tests/research-cockpit-ui.test.js tests/browser-verification-suite.test.js` — **15 passed, 0 failed, 0 skipped**.
+- `npm test` — **336 passed, 0 failed, 0 skipped**.
+- `npm run check` — **181 project modules** syntax checked.
+- `npm run provenance:check` — existing manifest matches the implementation closure; no rebuild ran.
+- `PYTHON=/home/vscode/.local/bin/python3.12 npm run verify:exchange-parity` — **16/16 PASS**.
+- `npm run verify:release` — **24 PASS lines, 6 explicit NOT-RUN gates**, 161 inventoried candidate files. Its generic browser gate remains printed as NOT-RUN; the independent drafts-only browser matrix below is not silently folded into that script's result.
+- `git diff --check` — **clean**.
+
+**Actual browser runs:** the connected Kilo Playwright endpoint could not launch its configured,
+absent Chrome binary; no browser was installed. The existing cached Playwright package and cached
+headless Chromium 155.0.8059.12 ran the same suite directly against `npm start -- --host 127.0.0.1
+--port 8096`. `docs/browser-controls-2026-11-15.json` was written only after three fresh passing
+runs. Desktop 1280×720, mobile 390×844 and WebGL-disabled 1280×720 each report top-level **pass**,
+**9/9 checks**, **0 page errors**, actual downloaded-byte equality (2,600 bytes), unchanged
+canonical scenario bytes (2,955) and no horizontal overflow. WebGL was disabled by a pre-startup
+canvas `getContext` override and diagnostics confirmed `webgl:false`; this does not claim a
+presentation check.
+
+**Remaining not-run gates:** non-drafts browser parts, Firefox/WebKit/physical devices,
+assistive-technology and owner visual review, citation/scientific review, external claims-scanner
+review, live Blender isolation, live providers, owner release approval and deployment. Query plans
+were generated locally but never executed. No scientific, biological, clinical, safety or
+publication-readiness conclusion follows from these software checks.
+
+
+## Independent review corrections — 2026-11-16
+
+Three scoped regressions first reproduced the review findings, then passed after correction:
+
+- **HIGH / optimistic concurrency:** a same-ID current record that differs anywhere from the
+  immutable loaded baseline now refuses Save with an explicit conflict/reload diagnostic. This
+  covers conflicting external cards and intervening `workspace.update` calls; neither can overwrite
+  newer content or inherit its owner review. Review retention is computed against the actual final
+  target and only for an identical editable projection. Legitimate unchanged same-record Saves,
+  including owner-reviewed records, remain covered and pass.
+- **MEDIUM / lossless untouched lists:** each list control's exact populated serialization is
+  tracked. An untouched control clones the baseline array verbatim, preserving padding, embedded
+  newlines and comma-containing entries; only a genuinely changed control is parsed. The real-edit
+  case still clears stale review metadata.
+- **LOW / actual imported editing:** the browser path changes the imported title before Save and
+  parses the real downloaded bytes to assert the edited title, original creator, lineage/reference
+  arrays, unchanged revision and unreviewed/null-reviewer metadata.
+
+Fresh results after these corrections: focused **18/18**, full **339/339**, 0 failed/skipped;
+syntax **181 modules**; parity **16/16**; provenance fresh without rebuild; `git diff --check`
+clean; release **24 PASS / 6 NOT-RUN**, 161 candidate files. The real drafts artifact was regenerated
+on November 16 at desktop 1280×720, mobile 390×844 and WebGL-disabled 1280×720: all three **pass
+9/9 with 0 page errors**, exact **2,626-byte** downloaded bundles containing the imported edit,
+unchanged **2,955-byte** canonical scenario serialization and no horizontal overflow. All previous
+not-run gates and scientific/safety limitations remain unchanged.
+
+
+## Diagnostic-backed presentation browser evidence — 2026-11-16
+
+Starting from the preserved uncommitted draft-editing state at the same branch/HEAD, the focused
+browser-suite baseline passed **4/4**. Ten new presentation regressions failed before implementation;
+after strengthening only `runPresentationPart`, the focused suite passed **14/14**. Passing now
+requires actual graphics scale/state diagnostics after each transition, pointer and keyboard
+activation, explicit cut-plane-off/motion-system states, canonical scenario-byte invariance and no
+horizontal overflow. Absent, stale and contradictory diagnostics fail; WebGL-disabled is blocked from
+actual diagnostics even if no fallback banner is present.
+
+Fresh gates: full **349/349**, 0 failed/skipped; syntax **181 modules**; provenance fresh without
+rebuild; exchange parity **16/16**; release **24 PASS / 6 NOT-RUN**, 162 candidate files; and
+`git diff --check` clean. The real local Playwright/Chromium 155.0.8059.12 matrix generated
+`docs/browser-presentation-2026-11-16.json`: desktop 1280×720 and mobile 390×844 each **passed 9/9**
+with zero page errors, unchanged **2,955-byte** scenario serializations and no overflow;
+WebGL-disabled 1280×720 recorded **blocked** with `webgl:false` and zero page errors, never a pass.
+The prior `docs/browser-controls-2026-11-15.json` remained byte-identical.
+
+This does not close the release script's generic NOT-RUN browser gate or the other browser parts,
+non-Chromium/physical-device/accessibility/owner visual reviews, scientific/citation/external claims
+reviews, live Blender/providers, owner approval or deployment. No production scientific code,
+scenario/schema/evaluator/numerics, dependencies or provider integrations changed.

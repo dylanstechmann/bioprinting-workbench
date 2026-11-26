@@ -119,3 +119,44 @@ test('refreshRuns shows newly captured native runs unselected without touching p
     ui.dispose();
   } finally { globalThis.document = original; }
 });
+
+
+test('optional cockpit edit hands off the latest defensive card clone without other actions', () => {
+  const original = globalThis.document;
+  const { $ } = stubEnv();
+  globalThis.document = { createElement: () => stubEnv().$('row') };
+  try {
+    const withoutCallback = createResearchCockpitUI({ elements: $ });
+    withoutCallback.setState({ ...emptyExchangeState(), hypotheses: JSON.parse(minimalBundleText).hypotheses });
+    assert.equal($('cockpit-cards').children.some(node => node.id === 'cockpit-edit-hyp-x'), false);
+    withoutCallback.dispose();
+
+    const edited = [], changes = [];
+    const ui = createResearchCockpitUI({ elements: $, onEditCard: card => edited.push(card), onChange: state => changes.push(state) });
+    const initial = JSON.parse(minimalBundleText).hypotheses[0];
+    ui.setState({ ...emptyExchangeState(), hypotheses: [initial] });
+    const listener = $('cockpit-cards').listeners.get('click');
+    assert.equal(typeof listener, 'function');
+    const button = $('cockpit-cards').children.find(node => node.id === 'cockpit-edit-hyp-x');
+    assert.ok(button);
+    assert.match(button.textContent, /Edit hyp-x/);
+    ui.setState({ ...emptyExchangeState(), hypotheses: [{ ...initial, revision: 4, title: '<b>latest hostile title</b>' }] });
+    assert.equal($('cockpit-cards').listeners.get('click'), listener);
+    listener({ target: button });
+    assert.equal(edited.length, 1);
+    assert.equal(edited[0].revision, 4);
+    assert.equal(edited[0].title, '<b>latest hostile title</b>');
+    edited[0].title = 'mutated by receiver';
+    edited[0].alternatives[0].prediction = 'mutated';
+    assert.equal(ui.getState().hypotheses[0].title, '<b>latest hostile title</b>');
+    assert.equal(ui.getState().hypotheses[0].alternatives[0].prediction, 'p');
+    assert.equal(changes.length, 0, 'editing does not apply, import or synchronize a bundle');
+    assert.equal($('cockpit-export-output').value, '', 'editing does not export');
+    assert.equal($('cockpit-downloads').children.length, 0, 'editing does not create a download');
+    assert.equal($('cockpit-preview').children[0].textContent.includes('No bundle loaded'), true);
+    ui.dispose();
+    assert.equal($('cockpit-cards').listeners.size, 0);
+    listener({ target: button });
+    assert.equal(edited.length, 1, 'disposed handoff is inert');
+  } finally { globalThis.document = original; }
+});

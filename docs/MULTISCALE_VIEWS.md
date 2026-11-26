@@ -50,6 +50,21 @@ solved box field plus pinned `{settings, parameterOrigin, generation}`; before a
 returns a reason instead of fabricating values. Callers cannot corrupt the stored field
 (pinned by test).
 
+## Observed browser diagnostic checks — 2026-11-16
+
+`scripts/browser-verification-suite.js` now requires actual `graphics.presentationScale` and
+`graphics.presentationState` diagnostics after every scale, representation, cut-plane and motion
+transition; a changed notice or visible control is insufficient. Pointer and keyboard activation are
+both exercised. The final cut-plane-off and motion-system checks describe only those observed state
+transitions, not an invalid-input rollback. Canonical scenario bytes are compared before/after and
+horizontal overflow is rejected.
+
+Fresh headless Chromium evidence is in `docs/browser-presentation-2026-11-16.json`: 1280×720 and
+390×844 each passed 9/9 checks with unchanged 2,955-byte scenario serializations and no horizontal
+overflow. WebGL-disabled 1280×720 was **blocked** from `graphics.webgl:false`, not passed. Focused
+unit regressions also prove absent, stale and contradictory diagnostics fail closed. These are
+software state checks, not owner visual review, a resource-leak certificate or scientific validation.
+
 ## Tests and limitations
 
 `tests/scientific-view-state.test.js`, `tests/scientific-overlays.test.js`,

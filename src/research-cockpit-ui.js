@@ -14,7 +14,7 @@ function line(text) {
   return p;
 }
 
-export function createResearchCockpitUI({ elements: $, workspace = null, onChange = () => {}, runRegistry = null }) {
+export function createResearchCockpitUI({ elements: $, workspace = null, onChange = () => {}, onEditCard = null, runRegistry = null }) {
   let state = emptyExchangeState();
   if (workspace?.list) state = { ...state, hypotheses: workspace.list() };
   // Native captured runs are selectable exchange metadata; their payload artifacts ride along
@@ -41,6 +41,13 @@ export function createResearchCockpitUI({ elements: $, workspace = null, onChang
     }
     for (const card of state.hypotheses) {
       container.append(line(`${card.id} rev ${card.revision} · ${card.status} · ${card.reviewStatus} · ${card.title} · ${card.alternatives.length} competing alternatives · claim boundary: ${card.claimBoundary}`));
+      if (typeof onEditCard === 'function') {
+        const edit = document.createElement('button');
+        edit.type = 'button';
+        edit.id = `cockpit-edit-${card.id}`;
+        edit.textContent = `Edit ${card.id}`;
+        container.append(edit);
+      }
     }
     container.append(line(`Records: ${state.hypotheses.length} hypotheses, ${state.queries.length} query plans, ${state.modelRuns.length} model runs (foreign runs are metadata only), ${state.evidence.length} evidence, ${state.artifacts.length} artifacts. Publication status: not-approved.`));
     for (const run of listed('modelRuns')) container.append(line(`Run ${run.id ?? 'anonymous'} (${run.modelId}) status ${run.status} - ${run.note}${run.queryPlanId ? ` query ${run.queryPlanId}` : ''}${run.deskRunId ? ` desk ${run.deskRunId}` : ''}. Status is preserved as reported; interrupted is not failed and submission-unknown is never auto-retried.`));
@@ -186,6 +193,13 @@ export function createResearchCockpitUI({ elements: $, workspace = null, onChang
       if (disposed || operation !== generation) return;
       $('cockpit-status').textContent = error.message;
     }
+  });
+  on($('cockpit-cards'), 'click', event => {
+    if (disposed || typeof onEditCard !== 'function') return;
+    const id = event.target?.id;
+    if (typeof id !== 'string' || !id.startsWith('cockpit-edit-')) return;
+    const card = state.hypotheses.find(record => record.id === id.slice('cockpit-edit-'.length));
+    if (card) onEditCard(structuredClone(card));
   });
   renderCards();
   renderSelection();
