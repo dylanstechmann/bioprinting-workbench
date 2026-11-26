@@ -6,7 +6,8 @@ function harness() {
   const nodes=new Map();
   const $=id=>{if(!nodes.has(id))nodes.set(id,{value:'0',textContent:'',disabled:false,hidden:false,listeners:{},addEventListener(e,fn){this.listeners[e]=fn;}});return nodes.get(id);};
   const jobs=[];const client={invalidate(){},dispose(){},request(kind,payload){return new Promise((resolve,reject)=>jobs.push({kind,payload,resolve,reject}));}};
-  const ui=createAnalysisUI({elements:$,client});return {$,ui,jobs};
+  const fitRuns = [];
+  const ui=createAnalysisUI({elements:$,client,onFitRun:record=>fitRuns.push(record)});return {$,ui,jobs,fitRuns};
 }
 const fit={identifiable:true,inDomain:true,converged:true,q:1,n:3,residualRMSE:0,sensitivityNormSquared:1,dataKind:'synthetic',assumptionNotice:'reference only'};
 test('new file intent blocks stale fit completion even if client does not cancel',async()=>{
@@ -30,7 +31,7 @@ test('clear wins over delayed file and failed refit clears old success',async()=
 });
 
 test('explicit fit application records the applied value without mutating the fit snapshot', async () => {
-  const {$,ui,jobs}=harness();await $('fit3d-example').listeners.click();jobs[0].resolve(fit);
+  const {$,ui,jobs,fitRuns}=harness();await $('fit3d-example').listeners.click();jobs[0].resolve(fit);
   for(let i=0;i<100&&!ui.diagnostics().fit;i++)await new Promise(resolve=>setTimeout(resolve,1));
   const before=ui.getMeasurementProvenance().fitRun;
   $('fit3d-apply').listeners.click();
@@ -39,5 +40,10 @@ test('explicit fit application records the applied value without mutating the fi
   assert.equal(after.application.demand,fit.q);
   assert.equal(after.application.previousDemand,before.settingsSnapshot.demand);
   assert.equal(ui.getState().oxygen3d.parameterOrigin,'explicit-fit-application');
+  assert.equal($('fit3d-apply').disabled, true);
+  $('fit3d-apply').listeners.click();
+  assert.deepEqual(ui.getMeasurementProvenance().fitRun, after);
+  assert.deepEqual(fitRuns, [before, after]);
+  assert.equal(jobs.length, 2);
   ui.dispose();
 });

@@ -1,0 +1,31 @@
+name: Workbench checks
+
+on:
+  pull_request:
+  push:
+    branches: [main, continuation/2026-11-04-versioning]
+
+permissions:
+  contents: read
+
+jobs:
+  node:
+    runs-on: ubuntu-24.04
+    container: node:24-bookworm
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - run: npm test
+      - run: npm run check
+  browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install the browser driver outside the application
+        run: npm install --prefix "$RUNNER_TEMP/workbench-browser" --no-save --no-package-lock playwright-core@1.65.1
+      - name: Check measurement imports and fit application with and without WebGL
+        run: NODE_PATH="$RUNNER_TEMP/workbench-browser/node_modules" node scripts/browser-smoke-measurement.cjs
