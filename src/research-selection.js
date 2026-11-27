@@ -3,6 +3,8 @@ import { toForeignRun, toArtifactDescriptor, artifactBytesFor } from './run-reco
 
 const groups = { hypothesisIds: 'hypotheses', queryIds: 'queries', modelRunIds: 'modelRuns', evidenceIds: 'evidence', artifactIds: 'artifacts' };
 
+export const RESEARCH_MANIFEST_FILENAME = 'bioprint-results.json';
+
 /** Resolve reference closure without silently dropping missing records. */
 export function resolveResearchSelection(state, selection) {
   if (!selection || typeof selection !== 'object' || Array.isArray(selection)) throw new TypeError('Research selection must be a record');
@@ -80,7 +82,12 @@ export async function prepareSelectedResearchExport(state, selection, context) {
   const files = [...(context.files ?? []).map(file => ({ filename: file.filename, bytes: new Uint8Array(file.bytes) })), ...extraFiles];
   const selectedNames = new Set(bundle.artifacts.map(artifact => artifact.filename));
   const selectedFiles = files.filter(file => selectedNames.has(file.filename));
-  if (new Set(selectedFiles.map(file => file.filename)).size !== selectedFiles.length) throw new RangeError('Duplicate artifact file names');
+  const occupiedNames = new Set([RESEARCH_MANIFEST_FILENAME]);
+  for (const { filename } of selectedFiles) {
+    const key = filename.toLowerCase();
+    if (occupiedNames.has(key)) throw new RangeError(`Export filename collides with the manifest or another selected file: ${filename}`);
+    occupiedNames.add(key);
+  }
   const verified = await verifyArtifactFiles(bundle, selectedFiles);
   if (verified.failed.length) throw new RangeError(`Artifact bytes unavailable or invalid: ${verified.failed.map(item => item.reason).join('; ')}`);
   return { bundle, files: selectedFiles, addedDependencies: resolved.addedDependencies };

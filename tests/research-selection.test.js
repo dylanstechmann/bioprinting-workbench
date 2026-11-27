@@ -57,3 +57,13 @@ test('native registry runs export verbatim with verified payload artifacts', asy
   // Without the registry the same selection is honestly blocked as missing, never silently dropped.
   await assert.rejects(prepareSelectedResearchExport(fixture, { modelRunIds: [record.id] }, context), /Missing/);
 });
+test('selected download names cannot collide with the manifest or another artifact', async () => {
+  const bytes = readFileSync(new URL('./fixtures/research-exchange/synthetic.json', import.meta.url));
+  for (const names of [['bioprint-results.json'], ['BIOPRINT-RESULTS.JSON'], ['Sample.json', 'sample.json']]) {
+    const artifacts = names.map((filename, index) => ({ ...fixture.artifacts[0], id: `art-${index+1}`, filename }));
+    const files = names.map(filename => ({ filename, bytes }));
+    const selection = { artifactIds: artifacts.map(artifact => artifact.id) };
+    await assert.rejects(prepareSelectedResearchExport({ ...fixture, artifacts }, selection, { ...context, files }),
+      /Export filename collides/);
+  }
+});
