@@ -4,7 +4,7 @@
 // performs no writes; apply constructs new state; exported bundles are explicit files the user
 // saves — nothing is uploaded anywhere.
 import { parseResearchBundle, previewResearchImport, applyResearchImport, emptyExchangeState, MAX_BUNDLE_BYTES } from './research-exchange.js';
-import { prepareSelectedResearchExport } from './research-selection.js';
+import { prepareSelectedResearchExport, RESEARCH_MANIFEST_FILENAME } from './research-selection.js';
 import { toForeignRun } from './run-records.js';
 
 function line(text) {
@@ -80,6 +80,7 @@ export function createResearchCockpitUI({ elements: $, workspace = null, onChang
     for (const url of downloadUrls) URL.revokeObjectURL(url);
     downloadUrls = [];
     $('cockpit-downloads').replaceChildren();
+    $('cockpit-export-output').value = '';
   }
   function renderPreview() {
     const container = $('cockpit-preview');
@@ -152,6 +153,7 @@ export function createResearchCockpitUI({ elements: $, workspace = null, onChang
     if (disposed || applying) return;
     const operation = ++generation;
     pending = null;
+    artifactFiles = [];
     clearDownloads();
     renderPreview();
     try {
@@ -178,7 +180,7 @@ export function createResearchCockpitUI({ elements: $, workspace = null, onChang
       if (disposed || operation !== generation) return;
       clearDownloads();
       $('cockpit-export-output').value = JSON.stringify(bundle, null, 2);
-      const downloads = [{ filename: 'bioprint-results.json', bytes: JSON.stringify(bundle, null, 2), type: 'application/json' }, ...files];
+      const downloads = [{ filename: RESEARCH_MANIFEST_FILENAME, bytes: JSON.stringify(bundle, null, 2), type: 'application/json' }, ...files];
       for (const file of downloads) {
         const anchor = document.createElement('a');
         const url = URL.createObjectURL(new Blob([file.bytes], { type: file.type ?? 'application/octet-stream' }));

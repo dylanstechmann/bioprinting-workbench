@@ -3,6 +3,8 @@ import { toForeignRun, toArtifactDescriptor, artifactBytesFor } from './run-reco
 
 const groups = { hypothesisIds: 'hypotheses', queryIds: 'queries', modelRunIds: 'modelRuns', evidenceIds: 'evidence', artifactIds: 'artifacts' };
 
+export const RESEARCH_MANIFEST_FILENAME = 'bioprint-results.json';
+
 /** Resolve reference closure without silently dropping missing records. */
 export function resolveResearchSelection(state, selection) {
   if (!selection || typeof selection !== 'object' || Array.isArray(selection)) throw new TypeError('Research selection must be a record');
@@ -59,17 +61,33 @@ export async function prepareSelectedResearchExport(state, selection, context) {
   const registryById = new Map(registryRuns.map(record => [record.id, record]));
   for (const id of resolved.selection.modelRunIds) {
     const record = registryById.get(id);
-    if (!record || records.artifacts.some(artifact => artifact.id === `${record.id}-artifact`)) continue;
+    if (!record) continue;
     const descriptor = await toArtifactDescriptor(record);
-    records.artifacts.push(descriptor);
-    extraFiles.push({ filename: descriptor.filename, bytes: artifactBytesFor(record) });
-    resolved.addedDependencies.push(`artifacts:${descriptor.id} (native run payload)`);
+    const existing = records.artifacts.find(artifact => artifact.id === descriptor.id);
+    if (existing) {
+      if (existing.filename !== descriptor.filename || existing.sha256 !== descriptor.sha256 ||
+          existing.bytes !== descriptor.bytes || existing.mediaType !== descriptor.mediaType ||
+          !existing.provenance.modelRunIds.includes(record.id)) {
+        throw new RangeError(`Selected artifact conflicts with native run payload for ${record.id}`);
+      }
+    } else {
+      records.artifacts.push(descriptor);
+      resolved.addedDependencies.push(`artifacts:${descriptor.id} (native run payload)`);
+    }
+    if (!(context.files ?? []).some(file => file.filename === descriptor.filename)) {
+      extraFiles.push({ filename: descriptor.filename, bytes: artifactBytesFor(record) });
+    }
   }
   const bundle = exportResearchBundle(records, context);
   const files = [...(context.files ?? []).map(file => ({ filename: file.filename, bytes: new Uint8Array(file.bytes) })), ...extraFiles];
   const selectedNames = new Set(bundle.artifacts.map(artifact => artifact.filename));
   const selectedFiles = files.filter(file => selectedNames.has(file.filename));
-  if (new Set(selectedFiles.map(file => file.filename)).size !== selectedFiles.length) throw new RangeError('Duplicate artifact file names');
+  const occupiedNames = new Set([RESEARCH_MANIFEST_FILENAME]);
+  for (const { filename } of selectedFiles) {
+    const key = filename.toLowerCase();
+    if (occupiedNames.has(key)) throw new RangeError(`Export filename collides with the manifest or another selected file: ${filename}`);
+    occupiedNames.add(key);
+  }
   const verified = await verifyArtifactFiles(bundle, selectedFiles);
   if (verified.failed.length) throw new RangeError(`Artifact bytes unavailable or invalid: ${verified.failed.map(item => item.reason).join('; ')}`);
   return { bundle, files: selectedFiles, addedDependencies: resolved.addedDependencies };

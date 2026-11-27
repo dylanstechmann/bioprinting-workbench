@@ -41,6 +41,29 @@ test('native registry runs export verbatim with verified payload artifacts', asy
   assert.equal(result.bundle.artifacts[0].provenance.modelRunIds[0], record.id);
   assert.equal(result.files.length, 1);
   assert.ok(result.addedDependencies.some(dep => dep.includes('native run payload')));
+  // Selecting an existing descriptor for the native payload can reuse the registry's bytes.
+  const descriptor = result.bundle.artifacts[0];
+  const selectBoth = { modelRunIds: [record.id], artifactIds: [descriptor.id] };
+  const state = { ...fixture, artifacts: [descriptor] };
+  const withRegistry = { ...context, runRegistry: registry };
+  const reused = await prepareSelectedResearchExport(state, selectBoth, withRegistry);
+  assert.deepEqual(reused.files, result.files);
+  const supplied = await prepareSelectedResearchExport(state, selectBoth, { ...withRegistry, files: result.files });
+  assert.deepEqual(supplied.files, result.files);
+  const altered = { ...descriptor, sha256: '0'.repeat(64) };
+  await assert.rejects(prepareSelectedResearchExport({ ...state, artifacts: [altered] }, selectBoth, withRegistry), /conflicts with native/);
+  const wrongFile = { filename: descriptor.filename, bytes: new Uint8Array([0]) };
+  await assert.rejects(prepareSelectedResearchExport(state, selectBoth, { ...withRegistry, files: [wrongFile] }), /Artifact bytes/);
   // Without the registry the same selection is honestly blocked as missing, never silently dropped.
   await assert.rejects(prepareSelectedResearchExport(fixture, { modelRunIds: [record.id] }, context), /Missing/);
+});
+test('selected download names cannot collide with the manifest or another artifact', async () => {
+  const bytes = readFileSync(new URL('./fixtures/research-exchange/synthetic.json', import.meta.url));
+  for (const names of [['bioprint-results.json'], ['BIOPRINT-RESULTS.JSON'], ['Sample.json', 'sample.json']]) {
+    const artifacts = names.map((filename, index) => ({ ...fixture.artifacts[0], id: `art-${index+1}`, filename }));
+    const files = names.map(filename => ({ filename, bytes }));
+    const selection = { artifactIds: artifacts.map(artifact => artifact.id) };
+    await assert.rejects(prepareSelectedResearchExport({ ...fixture, artifacts }, selection, { ...context, files }),
+      /Export filename collides/);
+  }
 });

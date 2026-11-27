@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { createResearchCockpitUI } from '../src/research-cockpit-ui.js';
 import { emptyExchangeState } from '../src/research-exchange.js';
 import { createRunRegistry } from '../src/run-records.js';
@@ -159,4 +160,32 @@ test('optional cockpit edit hands off the latest defensive card clone without ot
     listener({ target: button });
     assert.equal(edited.length, 1, 'disposed handoff is inert');
   } finally { globalThis.document = original; }
+});
+
+test('replacing an unreadable sidecar clears the previous verified export and its bytes', async () => {
+  const original = globalThis.document;
+  const { $ } = stubEnv();
+  globalThis.document = { createElement: () => stubEnv().$('row') };
+  const ui = createResearchCockpitUI({ elements: $ });
+  try {
+    const fixture = name => readFileSync(new URL('./fixtures/research-exchange/' + name, import.meta.url));
+    await $('cockpit-import').listeners.get('change')({
+      target: { files: [{ text: async () => fixture('roundtrip.json').toString('utf8') }] },
+    });
+    await $('cockpit-apply').listeners.get('click')();
+    const select = file => $('cockpit-artifacts').listeners.get('change')({ target: { files: [file] } });
+    const exportFiles = $('cockpit-export').listeners.get('click');
+    const bytes = fixture('synthetic.json');
+    await select({ name: 'synthetic.json', size: bytes.length, arrayBuffer: async () => bytes });
+    await exportFiles();
+    assert.equal($('cockpit-downloads').children.length, 2);
+    await select({ name: 'synthetic.json', size: bytes.length, arrayBuffer: async () => { throw new Error('read failed'); } });
+    assert.equal($('cockpit-export-output').value, '');
+    await exportFiles();
+    assert.match($('cockpit-status').textContent, /Artifact bytes unavailable/);
+    assert.equal($('cockpit-downloads').children.length, 0);
+  } finally {
+    ui.dispose();
+    globalThis.document = original;
+  }
 });

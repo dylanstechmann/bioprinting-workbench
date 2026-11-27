@@ -35,6 +35,8 @@ and ≤ 25 MiB selected total. `verifyArtifactFiles(bundle, files)` byte-counts 
 exact bytes; a descriptor alone is metadata-only until its file hash matches. No ZIP
 extraction, no URL fetching, no filesystem paths from callers.
 
+Exports reserve `bioprint-results.json` for the manifest. Selected artifact filenames must also be distinct when compared without case, so each download can be saved alongside the manifest.
+
 ## Import semantics
 
 `previewResearchImport(bundle, state)` performs **no writes** and returns

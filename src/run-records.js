@@ -30,7 +30,7 @@ export function createRunRecord(raw) {
   if (raw.artifactFileName != null && (typeof raw.artifactFileName !== 'string' || !FILENAME_PATTERN.test(raw.artifactFileName) || raw.artifactFileName.includes('..'))) {
     throw new TypeError('runRecord.artifactFileName must be a flat safe basename');
   }
-  if (raw.artifactSha256 != null && !/^[a-f0-9]{64}$/.test(raw.artifactSha256)) throw new TypeError('runRecord.artifactSha256 must be lowercase hex or null');
+  if (raw.artifactSha256 != null && (typeof raw.artifactSha256 !== 'string' || !/^[a-f0-9]{64}$/.test(raw.artifactSha256))) throw new TypeError('runRecord.artifactSha256 must be lowercase hex or null');
   return {
     id: raw.id, kind: raw.kind, modelId: boundedText(raw.modelId, 64, 'runRecord.modelId'), status: raw.status,
     createdAt: raw.createdAt, payload: structuredClone(raw.payload),
@@ -85,6 +85,9 @@ export async function toArtifactDescriptor(record) {
   const validated = createRunRecord(record);
   const bytes = artifactBytesFor(validated);
   const sha256 = await sha256Bytes(bytes);
+  if (validated.artifactSha256 !== null && validated.artifactSha256 !== sha256) {
+    throw new RangeError(`Stored artifact SHA-256 differs from payload bytes for ${validated.id}`);
+  }
   return {
     id: `${validated.id}-artifact`,
     filename: validated.artifactFileName,
