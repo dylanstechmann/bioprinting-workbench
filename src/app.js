@@ -148,9 +148,13 @@ createModelExplorationUI({
   },
 });
 const hypothesisWorkspace = createHypothesisWorkspace();
-const researchCockpit = createResearchCockpitUI({ elements: $, runRegistry, workspace: hypothesisWorkspace });
+let researchDraftUI = null;
+const researchCockpit = createResearchCockpitUI({
+  elements: $, runRegistry, workspace: hypothesisWorkspace,
+  onEditCard: card => researchDraftUI?.loadExternalCard(card),
+});
 cockpitForRuns = researchCockpit;
-createResearchDraftUI({
+researchDraftUI = createResearchDraftUI({
   elements: $,
   workspace: hypothesisWorkspace,
   onChange: ({ hypotheses, queries }) => {

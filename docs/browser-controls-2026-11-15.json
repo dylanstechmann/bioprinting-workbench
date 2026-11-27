@@ -1,0 +1,263 @@
+{
+  "schema": "bioprinting-workbench/browser-check-matrix/1",
+  "status": "pass",
+  "part": "drafts",
+  "startedAt": "2026-11-16T00:10:24.557Z",
+  "finishedAt": "2026-11-16T00:10:48.795Z",
+  "runner": {
+    "engine": "Playwright Chromium",
+    "browserVersion": "155.0.8059.12",
+    "headless": true
+  },
+  "environments": [
+    {
+      "name": "desktop-1280x720",
+      "webglDisabledByInitScript": false,
+      "graphics": {
+        "webgl": true
+      },
+      "result": {
+        "schema": "bioprinting-workbench/browser-check/1",
+        "status": "pass",
+        "diagnostics": [],
+        "part": "drafts",
+        "baseURL": "http://127.0.0.1:8096/",
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        },
+        "startedAt": "2026-11-16T00:10:24.622Z",
+        "finishedAt": "2026-11-16T00:10:37.870Z",
+        "checks": [
+          {
+            "id": "draft-save",
+            "status": "pass",
+            "detail": "Draft browser-draft saved as draft; review status stays unreviewed. Nothing is uploaded, submitted or validated."
+          },
+          {
+            "id": "draft-visible-local-edit",
+            "status": "pass",
+            "revision": "1"
+          },
+          {
+            "id": "draft-validation-guard",
+            "status": "pass",
+            "detail": "Draft not saved: hypothesisCard.title must be nonempty text (max 300)"
+          },
+          {
+            "id": "draft-import-preview-apply",
+            "status": "pass",
+            "importedId": "hyp-a"
+          },
+          {
+            "id": "draft-imported-full-load-edit-save",
+            "status": "pass",
+            "populatedFields": 20,
+            "alternatives": 2,
+            "editedField": "title",
+            "editedValue": "Minimal synthetic question — visibly edited import"
+          },
+          {
+            "id": "draft-query-plans",
+            "status": "pass",
+            "externalRequests": 0,
+            "detail": "Generated 2 local query plans for hyp-a; they stay unexecuted until explicitly selected for exchange."
+          },
+          {
+            "id": "draft-selected-export-download-bytes",
+            "status": "pass",
+            "bytes": 2626,
+            "hypotheses": [
+              "hyp-a"
+            ],
+            "queries": 2,
+            "editedTitle": "Minimal synthetic question — visibly edited import",
+            "createdBy": "agent",
+            "revision": 1,
+            "reviewStatus": "unreviewed"
+          },
+          {
+            "id": "draft-scenario-byte-invariance",
+            "status": "pass",
+            "bytes": 2955
+          },
+          {
+            "id": "draft-no-horizontal-overflow",
+            "status": "pass",
+            "scrollWidth": 1280,
+            "innerWidth": 1280
+          }
+        ],
+        "errors": []
+      }
+    },
+    {
+      "name": "mobile-390x844",
+      "webglDisabledByInitScript": false,
+      "graphics": {
+        "webgl": true
+      },
+      "result": {
+        "schema": "bioprinting-workbench/browser-check/1",
+        "status": "pass",
+        "diagnostics": [],
+        "part": "drafts",
+        "baseURL": "http://127.0.0.1:8096/",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "startedAt": "2026-11-16T00:10:37.905Z",
+        "finishedAt": "2026-11-16T00:10:46.752Z",
+        "checks": [
+          {
+            "id": "draft-save",
+            "status": "pass",
+            "detail": "Draft browser-draft saved as draft; review status stays unreviewed. Nothing is uploaded, submitted or validated."
+          },
+          {
+            "id": "draft-visible-local-edit",
+            "status": "pass",
+            "revision": "1"
+          },
+          {
+            "id": "draft-validation-guard",
+            "status": "pass",
+            "detail": "Draft not saved: hypothesisCard.title must be nonempty text (max 300)"
+          },
+          {
+            "id": "draft-import-preview-apply",
+            "status": "pass",
+            "importedId": "hyp-a"
+          },
+          {
+            "id": "draft-imported-full-load-edit-save",
+            "status": "pass",
+            "populatedFields": 20,
+            "alternatives": 2,
+            "editedField": "title",
+            "editedValue": "Minimal synthetic question — visibly edited import"
+          },
+          {
+            "id": "draft-query-plans",
+            "status": "pass",
+            "externalRequests": 0,
+            "detail": "Generated 2 local query plans for hyp-a; they stay unexecuted until explicitly selected for exchange."
+          },
+          {
+            "id": "draft-selected-export-download-bytes",
+            "status": "pass",
+            "bytes": 2626,
+            "hypotheses": [
+              "hyp-a"
+            ],
+            "queries": 2,
+            "editedTitle": "Minimal synthetic question — visibly edited import",
+            "createdBy": "agent",
+            "revision": 1,
+            "reviewStatus": "unreviewed"
+          },
+          {
+            "id": "draft-scenario-byte-invariance",
+            "status": "pass",
+            "bytes": 2955
+          },
+          {
+            "id": "draft-no-horizontal-overflow",
+            "status": "pass",
+            "scrollWidth": 390,
+            "innerWidth": 390
+          }
+        ],
+        "errors": []
+      }
+    },
+    {
+      "name": "webgl-disabled-1280x720",
+      "webglDisabledByInitScript": true,
+      "graphics": {
+        "webgl": false
+      },
+      "result": {
+        "schema": "bioprinting-workbench/browser-check/1",
+        "status": "pass",
+        "diagnostics": [],
+        "part": "drafts",
+        "baseURL": "http://127.0.0.1:8096/",
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        },
+        "startedAt": "2026-11-16T00:10:46.792Z",
+        "finishedAt": "2026-11-16T00:10:48.786Z",
+        "checks": [
+          {
+            "id": "draft-save",
+            "status": "pass",
+            "detail": "Draft browser-draft saved as draft; review status stays unreviewed. Nothing is uploaded, submitted or validated."
+          },
+          {
+            "id": "draft-visible-local-edit",
+            "status": "pass",
+            "revision": "1"
+          },
+          {
+            "id": "draft-validation-guard",
+            "status": "pass",
+            "detail": "Draft not saved: hypothesisCard.title must be nonempty text (max 300)"
+          },
+          {
+            "id": "draft-import-preview-apply",
+            "status": "pass",
+            "importedId": "hyp-a"
+          },
+          {
+            "id": "draft-imported-full-load-edit-save",
+            "status": "pass",
+            "populatedFields": 20,
+            "alternatives": 2,
+            "editedField": "title",
+            "editedValue": "Minimal synthetic question — visibly edited import"
+          },
+          {
+            "id": "draft-query-plans",
+            "status": "pass",
+            "externalRequests": 0,
+            "detail": "Generated 2 local query plans for hyp-a; they stay unexecuted until explicitly selected for exchange."
+          },
+          {
+            "id": "draft-selected-export-download-bytes",
+            "status": "pass",
+            "bytes": 2626,
+            "hypotheses": [
+              "hyp-a"
+            ],
+            "queries": 2,
+            "editedTitle": "Minimal synthetic question — visibly edited import",
+            "createdBy": "agent",
+            "revision": 1,
+            "reviewStatus": "unreviewed"
+          },
+          {
+            "id": "draft-scenario-byte-invariance",
+            "status": "pass",
+            "bytes": 2955
+          },
+          {
+            "id": "draft-no-horizontal-overflow",
+            "status": "pass",
+            "scrollWidth": 1280,
+            "innerWidth": 1280
+          }
+        ],
+        "errors": []
+      }
+    }
+  ],
+  "diagnostics": [],
+  "limitations": [
+    "Only the drafts browser part is claimed; other browser parts were not run in this increment.",
+    "WebGL-disabled coverage injects a canvas getContext override before application startup; it does not claim graphical presentation coverage.",
+    "Headless Chromium only; Firefox, WebKit, physical devices, assistive technology, owner visual review and scientific review were not run."
+  ]
+}

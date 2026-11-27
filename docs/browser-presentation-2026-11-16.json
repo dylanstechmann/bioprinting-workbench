@@ -1,0 +1,377 @@
+{
+  "schema": "bioprinting-workbench/browser-check-matrix/1",
+  "status": "pass",
+  "part": "presentation",
+  "startedAt": "2026-11-16T01:43:56.138Z",
+  "finishedAt": "2026-11-16T01:44:23.594Z",
+  "runner": {
+    "engine": "Playwright Chromium",
+    "browserVersion": "155.0.8059.12",
+    "headless": true,
+    "executablePath": "/home/vscode/.cache/ms-playwright/chromium_headless_shell-1247/chrome-headless-shell-linux64/chrome-headless-shell"
+  },
+  "environments": [
+    {
+      "name": "desktop-1280x720",
+      "webglDisabledByInitScript": false,
+      "expectedStatus": "pass",
+      "expectedStatusObserved": true,
+      "graphics": {
+        "webgl": true,
+        "presentationScale": "construct",
+        "presentationState": {
+          "scale": "construct",
+          "representation": "model-field",
+          "cutPlane": null,
+          "motion": "system"
+        }
+      },
+      "result": {
+        "schema": "bioprinting-workbench/browser-check/1",
+        "status": "pass",
+        "diagnostics": [],
+        "part": "presentation",
+        "baseURL": "http://127.0.0.1:8096/",
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        },
+        "startedAt": "2026-11-16T01:43:56.315Z",
+        "finishedAt": "2026-11-16T01:44:11.901Z",
+        "checks": [
+          {
+            "id": "presentation-graphics-diagnostics",
+            "status": "pass",
+            "diagnostics": {
+              "webgl": true,
+              "presentationScale": "laboratory",
+              "presentationState": {
+                "scale": "laboratory",
+                "representation": "illustration",
+                "cutPlane": null,
+                "motion": "system"
+              }
+            }
+          },
+          {
+            "id": "presentation-scale-construct",
+            "status": "pass",
+            "activation": "pointer",
+            "diagnostics": {
+              "webgl": true,
+              "presentationScale": "construct",
+              "presentationState": {
+                "scale": "construct",
+                "representation": "illustration",
+                "cutPlane": null,
+                "motion": "system"
+              }
+            },
+            "detail": "Framed scaffold presentation with stage-independent geometry. Filament layout is illustrative toolpath artwork, not a printer program."
+          },
+          {
+            "id": "presentation-representation-model-field",
+            "status": "pass",
+            "activation": "keyboard:ArrowDown",
+            "diagnostics": {
+              "webgl": true,
+              "presentationScale": "construct",
+              "presentationState": {
+                "scale": "construct",
+                "representation": "model-field",
+                "cutPlane": null,
+                "motion": "system"
+              }
+            },
+            "detail": "Framed scaffold presentation with stage-independent geometry. Filament layout is illustrative toolpath artwork, not a printer program."
+          },
+          {
+            "id": "presentation-cut-plane-x",
+            "status": "pass",
+            "activation": "pointer",
+            "diagnostics": {
+              "webgl": true,
+              "presentationScale": "construct",
+              "presentationState": {
+                "scale": "construct",
+                "representation": "model-field",
+                "cutPlane": {
+                  "axis": "x",
+                  "fraction": 0.5
+                },
+                "motion": "system"
+              }
+            },
+            "detail": "Framed scaffold presentation with stage-independent geometry. Filament layout is illustrative toolpath artwork, not a printer program."
+          },
+          {
+            "id": "presentation-motion-reduced",
+            "status": "pass",
+            "activation": "keyboard:ArrowDown",
+            "diagnostics": {
+              "webgl": true,
+              "presentationScale": "construct",
+              "presentationState": {
+                "scale": "construct",
+                "representation": "model-field",
+                "cutPlane": {
+                  "axis": "x",
+                  "fraction": 0.5
+                },
+                "motion": "reduced"
+              }
+            },
+            "detail": "Framed scaffold presentation with stage-independent geometry. Filament layout is illustrative toolpath artwork, not a printer program."
+          },
+          {
+            "id": "presentation-cut-plane-off",
+            "status": "pass",
+            "activation": "pointer",
+            "diagnostics": {
+              "webgl": true,
+              "presentationScale": "construct",
+              "presentationState": {
+                "scale": "construct",
+                "representation": "model-field",
+                "cutPlane": null,
+                "motion": "reduced"
+              }
+            },
+            "detail": "Framed scaffold presentation with stage-independent geometry. Filament layout is illustrative toolpath artwork, not a printer program."
+          },
+          {
+            "id": "presentation-motion-system",
+            "status": "pass",
+            "activation": "keyboard:ArrowUp",
+            "diagnostics": {
+              "webgl": true,
+              "presentationScale": "construct",
+              "presentationState": {
+                "scale": "construct",
+                "representation": "model-field",
+                "cutPlane": null,
+                "motion": "system"
+              }
+            },
+            "detail": "Framed scaffold presentation with stage-independent geometry. Filament layout is illustrative toolpath artwork, not a printer program."
+          },
+          {
+            "id": "presentation-scenario-byte-invariance",
+            "status": "pass",
+            "beforeBytes": 2955,
+            "afterBytes": 2955
+          },
+          {
+            "id": "presentation-no-horizontal-overflow",
+            "status": "pass",
+            "scrollWidth": 1280,
+            "innerWidth": 1280
+          }
+        ],
+        "errors": []
+      }
+    },
+    {
+      "name": "mobile-390x844",
+      "webglDisabledByInitScript": false,
+      "expectedStatus": "pass",
+      "expectedStatusObserved": true,
+      "graphics": {
+        "webgl": true,
+        "presentationScale": "construct",
+        "presentationState": {
+          "scale": "construct",
+          "representation": "model-field",
+          "cutPlane": null,
+          "motion": "system"
+        }
+      },
+      "result": {
+        "schema": "bioprinting-workbench/browser-check/1",
+        "status": "pass",
+        "diagnostics": [],
+        "part": "presentation",
+        "baseURL": "http://127.0.0.1:8096/",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "startedAt": "2026-11-16T01:44:11.953Z",
+        "finishedAt": "2026-11-16T01:44:22.120Z",
+        "checks": [
+          {
+            "id": "presentation-graphics-diagnostics",
+            "status": "pass",
+            "diagnostics": {
+              "webgl": true,
+              "presentationScale": "laboratory",
+              "presentationState": {
+                "scale": "laboratory",
+                "representation": "illustration",
+                "cutPlane": null,
+                "motion": "system"
+              }
+            }
+          },
+          {
+            "id": "presentation-scale-construct",
+            "status": "pass",
+            "activation": "pointer",
+            "diagnostics": {
+              "webgl": true,
+              "presentationScale": "construct",
+              "presentationState": {
+                "scale": "construct",
+                "representation": "illustration",
+                "cutPlane": null,
+                "motion": "system"
+              }
+            },
+            "detail": "Framed scaffold presentation with stage-independent geometry. Filament layout is illustrative toolpath artwork, not a printer program."
+          },
+          {
+            "id": "presentation-representation-model-field",
+            "status": "pass",
+            "activation": "keyboard:ArrowDown",
+            "diagnostics": {
+              "webgl": true,
+              "presentationScale": "construct",
+              "presentationState": {
+                "scale": "construct",
+                "representation": "model-field",
+                "cutPlane": null,
+                "motion": "system"
+              }
+            },
+            "detail": "Framed scaffold presentation with stage-independent geometry. Filament layout is illustrative toolpath artwork, not a printer program."
+          },
+          {
+            "id": "presentation-cut-plane-x",
+            "status": "pass",
+            "activation": "pointer",
+            "diagnostics": {
+              "webgl": true,
+              "presentationScale": "construct",
+              "presentationState": {
+                "scale": "construct",
+                "representation": "model-field",
+                "cutPlane": {
+                  "axis": "x",
+                  "fraction": 0.5
+                },
+                "motion": "system"
+              }
+            },
+            "detail": "Framed scaffold presentation with stage-independent geometry. Filament layout is illustrative toolpath artwork, not a printer program."
+          },
+          {
+            "id": "presentation-motion-reduced",
+            "status": "pass",
+            "activation": "keyboard:ArrowDown",
+            "diagnostics": {
+              "webgl": true,
+              "presentationScale": "construct",
+              "presentationState": {
+                "scale": "construct",
+                "representation": "model-field",
+                "cutPlane": {
+                  "axis": "x",
+                  "fraction": 0.5
+                },
+                "motion": "reduced"
+              }
+            },
+            "detail": "Framed scaffold presentation with stage-independent geometry. Filament layout is illustrative toolpath artwork, not a printer program."
+          },
+          {
+            "id": "presentation-cut-plane-off",
+            "status": "pass",
+            "activation": "pointer",
+            "diagnostics": {
+              "webgl": true,
+              "presentationScale": "construct",
+              "presentationState": {
+                "scale": "construct",
+                "representation": "model-field",
+                "cutPlane": null,
+                "motion": "reduced"
+              }
+            },
+            "detail": "Framed scaffold presentation with stage-independent geometry. Filament layout is illustrative toolpath artwork, not a printer program."
+          },
+          {
+            "id": "presentation-motion-system",
+            "status": "pass",
+            "activation": "keyboard:ArrowUp",
+            "diagnostics": {
+              "webgl": true,
+              "presentationScale": "construct",
+              "presentationState": {
+                "scale": "construct",
+                "representation": "model-field",
+                "cutPlane": null,
+                "motion": "system"
+              }
+            },
+            "detail": "Framed scaffold presentation with stage-independent geometry. Filament layout is illustrative toolpath artwork, not a printer program."
+          },
+          {
+            "id": "presentation-scenario-byte-invariance",
+            "status": "pass",
+            "beforeBytes": 2955,
+            "afterBytes": 2955
+          },
+          {
+            "id": "presentation-no-horizontal-overflow",
+            "status": "pass",
+            "scrollWidth": 390,
+            "innerWidth": 390
+          }
+        ],
+        "errors": []
+      }
+    },
+    {
+      "name": "webgl-disabled-1280x720",
+      "webglDisabledByInitScript": true,
+      "expectedStatus": "blocked",
+      "expectedStatusObserved": true,
+      "graphics": {
+        "webgl": false
+      },
+      "result": {
+        "schema": "bioprinting-workbench/browser-check/1",
+        "status": "blocked",
+        "diagnostics": [
+          "Blocked browser check: presentation — 3D rendering is unavailable (THREE.WebGLRenderer: Error creating WebGL context.). You can still explore every stage, adjust the synthetic model and export a scenario. Try a WebGL2-capable browser with hardware acceleration."
+        ],
+        "part": "presentation",
+        "baseURL": "http://127.0.0.1:8096/",
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        },
+        "startedAt": "2026-11-16T01:44:22.164Z",
+        "finishedAt": "2026-11-16T01:44:23.497Z",
+        "checks": [
+          {
+            "id": "presentation",
+            "status": "blocked",
+            "diagnostics": {
+              "webgl": false,
+              "presentationState": null
+            },
+            "detail": "3D rendering is unavailable (THREE.WebGLRenderer: Error creating WebGL context.). You can still explore every stage, adjust the synthetic model and export a scenario. Try a WebGL2-capable browser with hardware acceleration."
+          }
+        ],
+        "errors": []
+      }
+    }
+  ],
+  "diagnostics": [],
+  "limitations": [
+    "Desktop and mobile passes require all diagnostic, transition, scenario-byte and overflow checks to complete; WebGL-disabled is required to remain blocked.",
+    "WebGL-disabled coverage injects a canvas getContext override before application startup and does not claim graphical presentation coverage.",
+    "Headless Chromium only; Firefox, WebKit, physical devices, assistive technology, owner visual review and scientific review were not run."
+  ]
+}

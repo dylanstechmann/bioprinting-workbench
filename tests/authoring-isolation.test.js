@@ -1,9 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { fileURLToPath } from 'node:url';
 import { checkAuthoringIsolation } from '../scripts/check-authoring-isolation.mjs';
 
+const projectRoot = fileURLToPath(new URL('..', import.meta.url));
+
 test('the real authoring scripts satisfy every isolation invariant', () => {
-  const result = checkAuthoringIsolation(new URL('..', import.meta.url).pathname);
+  const result = checkAuthoringIsolation(projectRoot);
   assert.equal(result.schema, 'bioprinting-workbench/authoring-isolation/1');
   assert.ok(result.results.length >= 30);
   assert.equal(result.failures.length, 0);
@@ -11,7 +14,7 @@ test('the real authoring scripts satisfy every isolation invariant', () => {
 });
 
 test('the checker rejects deliberately broken authoring samples', () => {
-  const result = checkAuthoringIsolation('/workspace/bioprinting-workbench');
+  const result = checkAuthoringIsolation(projectRoot);
   assert.equal(result.failures.length, 0);
   const broken = [
     { invariant: 'no direct scene removal', ok: false, detail: 'bpy.data.scenes.remove' },

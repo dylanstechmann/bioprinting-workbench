@@ -7,6 +7,17 @@ import { validateHypothesisCard, buildQueryPlans, HYPOTHESIS_STATUSES } from './
 
 function lines(text) { return String(text).split('\n').map(item => item.trim()).filter(Boolean); }
 function csv(text) { return String(text).split(',').map(item => item.trim()).filter(Boolean); }
+function immutableClone(value) {
+  const copy = structuredClone(value);
+  const freeze = record => {
+    if (record && typeof record === 'object' && !Object.isFrozen(record)) {
+      for (const child of Object.values(record)) freeze(child);
+      Object.freeze(record);
+    }
+    return record;
+  };
+  return freeze(copy);
+}
 
 export function createResearchDraftUI({ elements: $, workspace, onChange = () => {} }) {
   const container = $('draft-editor'), status = $('draft-status'), cards = $('draft-cards');
@@ -15,6 +26,8 @@ export function createResearchDraftUI({ elements: $, workspace, onChange = () =>
   const alternativeRows = [];
   const listeners = [];
   let disposed = false;
+  let editBaseline = null;
+  const populatedListSerializations = new Map();
   const on = (target, name, fn) => { target.addEventListener(name, fn); listeners.push([target, name, fn]); };
 
   function addInput(name, label, initial = '') {
@@ -39,7 +52,8 @@ export function createResearchDraftUI({ elements: $, workspace, onChange = () =>
   }
   function addSelect(name, label, options, initial) {
     const select = document.createElement('select');
-    select.id = select.name = `draft-${name}`;
+    select.id = name === 'status' ? 'draft-card-status' : `draft-${name}`;
+    select.name = `draft-${name}`;
     for (const value of options) {
       const option = document.createElement('option');
       option.value = value;
@@ -63,7 +77,7 @@ export function createResearchDraftUI({ elements: $, workspace, onChange = () =>
   addInput('system', 'System');
   addInput('mechanism', 'Mechanism');
   addSelect('status', 'Status', HYPOTHESIS_STATUSES, 'draft');
-  addSelect('authorshipCreatedBy', 'Authorship (created by)', ['owner', 'agent'], 'agent');
+  addSelect('authorshipCreatedBy', 'Authorship (created by)', ['owner', 'agent', 'import'], 'agent');
   addInput('authorshipMethod', 'Authorship method note', 'agent-drafted');
   addArea('predictions', 'Predictions (one per line; required for ready-for-review)');
   addArea('falsifiers', 'Falsifiers (one per line; required for ready-for-review)');
@@ -101,7 +115,11 @@ export function createResearchDraftUI({ elements: $, workspace, onChange = () =>
   addAlternative();
   addAlternative();
 
-  function collectCard() {
+  function listField(name, parse) {
+    if (editBaseline && populatedListSerializations.get(name) === fields[name].value) return structuredClone(editBaseline[name]);
+    return parse(fields[name].value);
+  }
+  function editableFields() {
     return {
       id: fields.id.value.trim(),
       revision: Number(fields.revision.value),
@@ -109,13 +127,24 @@ export function createResearchDraftUI({ elements: $, workspace, onChange = () =>
       claimBoundary: fields.claimBoundary.value,
       status: fields.status.value, system: fields.system.value, mechanism: fields.mechanism.value,
       alternatives: alternativeRows.map(row => ({ id: row.id.value.trim(), prediction: row.prediction.value, falsifier: row.falsifier.value })),
-      predictions: lines(fields.predictions.value), falsifiers: lines(fields.falsifiers.value),
-      confounders: lines(fields.confounders.value), missingMeasurements: lines(fields.missingMeasurements.value),
-      modelIds: csv(fields.modelIds.value), supportingEvidenceIds: csv(fields.supportingEvidenceIds.value),
-      contradictingEvidenceIds: csv(fields.contradictingEvidenceIds.value), queryPlanIds: csv(fields.queryPlanIds.value),
-      parentHypothesisIds: csv(fields.parentHypothesisIds.value),
-      authorship: { createdBy: fields.authorshipCreatedBy.value, method: fields.authorshipMethod.value, reviewedBy: null },
-      reviewStatus: 'unreviewed',
+      predictions: listField('predictions', lines), falsifiers: listField('falsifiers', lines),
+      confounders: listField('confounders', lines), missingMeasurements: listField('missingMeasurements', lines),
+      modelIds: listField('modelIds', csv), supportingEvidenceIds: listField('supportingEvidenceIds', csv),
+      contradictingEvidenceIds: listField('contradictingEvidenceIds', csv), queryPlanIds: listField('queryPlanIds', csv),
+      parentHypothesisIds: listField('parentHypothesisIds', csv),
+    };
+  }
+  function collectCard() {
+    return {
+      ...(editBaseline ? structuredClone(editBaseline) : {}),
+      ...editableFields(),
+      authorship: {
+        ...(editBaseline?.authorship ?? {}),
+        createdBy: editBaseline?.authorship.createdBy ?? fields.authorshipCreatedBy.value,
+        method: fields.authorshipMethod.value,
+        reviewedBy: editBaseline?.authorship.reviewedBy ?? null,
+      },
+      reviewStatus: editBaseline?.reviewStatus ?? 'unreviewed',
     };
   }
   function renderCards() {
@@ -123,12 +152,17 @@ export function createResearchDraftUI({ elements: $, workspace, onChange = () =>
     for (const card of workspace.list()) {
       const line = document.createElement('p');
       line.textContent = `${card.id} rev ${card.revision} · ${card.status} · ${card.reviewStatus} · ${card.title} · ${card.alternatives.length} competing alternatives · claim boundary: ${card.claimBoundary}`;
-      cards.append(line);
+      const edit = document.createElement('button');
+      edit.type = 'button';
+      edit.id = `draft-edit-${card.id}`;
+      edit.textContent = `Edit ${card.id}`;
+      cards.append(line, edit);
     }
   }
-  /** Field-level projection used to detect whether an edit changed reviewed content. */
+  /** Complete editable projection used to detect whether reviewed content changed. */
   function editableProjection(card) {
     return {
+      id: card.id, revision: card.revision,
       title: card.title, question: card.question, scope: card.scope, claimBoundary: card.claimBoundary,
       status: card.status, system: card.system, mechanism: card.mechanism,
       predictions: [...card.predictions], falsifiers: [...card.falsifiers],
@@ -136,6 +170,7 @@ export function createResearchDraftUI({ elements: $, workspace, onChange = () =>
       modelIds: [...card.modelIds], supportingEvidenceIds: [...card.supportingEvidenceIds],
       contradictingEvidenceIds: [...card.contradictingEvidenceIds], queryPlanIds: [...card.queryPlanIds],
       parentHypothesisIds: [...card.parentHypothesisIds], alternatives: card.alternatives.map(alt => ({ ...alt })),
+      authorshipMethod: card.authorship.method,
     };
   }
   function setAlternativeValues(index, values) {
@@ -145,10 +180,9 @@ export function createResearchDraftUI({ elements: $, workspace, onChange = () =>
     row.prediction.value = String(values.prediction ?? '');
     row.falsifier.value = String(values.falsifier ?? '');
   }
-  function loadCard(cardId) {
-    if (disposed) return;
-    const card = workspace.get(cardId);
-    if (!card) throw new RangeError(`Unknown draft ${cardId}`);
+  function populateCard(raw) {
+    const card = validateHypothesisCard(raw, { allowDraft: true });
+    const baseline = immutableClone(card);
     fields.id.value = card.id;
     fields.revision.value = String(card.revision);
     fields.title.value = card.title;
@@ -169,35 +203,55 @@ export function createResearchDraftUI({ elements: $, workspace, onChange = () =>
     fields.contradictingEvidenceIds.value = card.contradictingEvidenceIds.join(', ');
     fields.queryPlanIds.value = card.queryPlanIds.join(', ');
     fields.parentHypothesisIds.value = card.parentHypothesisIds.join(', ');
+    for (const name of ['predictions', 'falsifiers', 'confounders', 'missingMeasurements', 'modelIds', 'supportingEvidenceIds', 'contradictingEvidenceIds', 'queryPlanIds', 'parentHypothesisIds']) {
+      populatedListSerializations.set(name, fields[name].value);
+    }
     while (alternativeRows.length < card.alternatives.length) addAlternative();
     while (alternativeRows.length > card.alternatives.length) removeAlternative();
     card.alternatives.forEach((alternative, index) => setAlternativeValues(index, alternative));
+    editBaseline = baseline;
     status.textContent = `Editing ${card.id} rev ${card.revision} (${card.reviewStatus}). Saving records the edit without ever upgrading review state.`;
+  }
+  function loadCard(cardId) {
+    if (disposed) return;
+    const card = workspace.get(cardId);
+    if (!card) throw new RangeError(`Unknown draft ${cardId}`);
+    populateCard(card);
+  }
+  function loadExternalCard(card) {
+    if (disposed) return;
+    populateCard(card);
   }
   function save() {
     if (disposed) return;
     try {
-      const card = collectCard();
-      const existing = workspace.get(card.id);
-      let reviewNote = 'review status stays unreviewed';
-      if (existing) {
-        const unchanged = JSON.stringify(editableProjection(existing)) === JSON.stringify(editableProjection(card));
-        if (unchanged && existing.reviewStatus === 'owner-reviewed') {
-          card.reviewStatus = existing.reviewStatus;
-          card.authorship = { ...card.authorship, createdBy: existing.authorship.createdBy, reviewedBy: existing.authorship.reviewedBy };
-          reviewNote = 'content unchanged, so the existing owner review is preserved; it is never upgraded';
-        } else if (existing.reviewStatus === 'owner-reviewed') {
-          card.authorship = { ...card.authorship, createdBy: existing.authorship.createdBy, reviewedBy: null };
-          reviewNote = 'content changed, so the prior owner review was cleared instead of being kept misleadingly';
-        } else {
-          card.authorship = { ...card.authorship, createdBy: existing.authorship.createdBy };
-          reviewNote = 'review status stays unreviewed';
-        }
-        workspace.update(card.id, card);
-      } else {
-        workspace.add(card);
+      const candidate = collectCard();
+      const existing = workspace.get(candidate.id);
+      if (editBaseline && existing && JSON.stringify(existing) !== JSON.stringify(editBaseline)) {
+        throw new RangeError(`Save conflict for ${candidate.id}: the current workspace record differs from the loaded baseline. Reload the current record before saving; nothing was overwritten.`);
       }
-      status.textContent = `Draft ${card.id} saved as ${card.status}; ${reviewNote}. Nothing is uploaded, submitted or validated.`;
+      const target = existing ?? editBaseline;
+      const changed = !target || JSON.stringify(editableProjection(target)) !== JSON.stringify(editableProjection(candidate));
+      const card = {
+        ...(target ? structuredClone(target) : {}),
+        ...candidate,
+        authorship: {
+          ...(target?.authorship ?? candidate.authorship),
+          createdBy: target?.authorship.createdBy ?? candidate.authorship.createdBy,
+          method: candidate.authorship.method,
+          reviewedBy: changed ? null : (target?.authorship.reviewedBy ?? null),
+        },
+        reviewStatus: changed ? 'unreviewed' : (target?.reviewStatus ?? 'unreviewed'),
+      };
+      let reviewNote = 'review status stays unreviewed';
+      if (!changed && target?.reviewStatus === 'owner-reviewed') {
+        reviewNote = 'content unchanged, so the existing owner review is preserved; it is never upgraded';
+      } else if (changed && target?.reviewStatus === 'owner-reviewed') {
+        reviewNote = 'content changed, so the prior owner review was cleared instead of being kept misleadingly';
+      }
+      const saved = existing ? workspace.update(card.id, card) : workspace.add(card);
+      populateCard(saved);
+      status.textContent = `Draft ${saved.id} saved as ${saved.status}; ${reviewNote}. Nothing is uploaded, submitted or validated.`;
       renderCards();
       onChange({ hypotheses: workspace.list(), queries: [] });
     } catch (error) {
@@ -229,6 +283,10 @@ export function createResearchDraftUI({ elements: $, workspace, onChange = () =>
   queryButton.textContent = 'Generate local query plans';
   on(queryButton, 'click', generateQueries);
   container.append(addAlternativeButton, removeAlternativeButton, saveButton, queryButton);
+  on(cards, 'click', event => {
+    const id = event.target?.id;
+    if (typeof id === 'string' && id.startsWith('draft-edit-')) loadCard(id.slice('draft-edit-'.length));
+  });
   renderCards();
 
   return {
@@ -245,7 +303,7 @@ export function createResearchDraftUI({ elements: $, workspace, onChange = () =>
       row.falsifier.value = String(values.falsifier ?? '');
     },
     getAlternativeRows: () => alternativeRows.map(row => ({ id: row.id.value, prediction: row.prediction.value, falsifier: row.falsifier.value })),
-    addAlternative, removeAlternative, save, generateQueries, renderCards, loadCard,
+    addAlternative, removeAlternative, save, generateQueries, renderCards, loadCard, loadExternalCard,
     dispose() {
       disposed = true;
       for (const [target, name, fn] of listeners) target.removeEventListener(name, fn);

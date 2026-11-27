@@ -24,6 +24,14 @@ user-declared-measured (unverified), or unspecified. Legacy slab files default t
 unspecified; the built-in examples are synthetic. Both parsers limit input to
 256 KiB, validate real calendar dates/HTTP(S) URLs, and reject arithmetic overflow.
 
+Each local dataset record tracks separate SHA-256 digests for the original file and the
+normalized input. The verifier checks the copied schema, units, declaration, source and
+measurement count against that input. If original bytes are supplied, verification checks
+their exact digest and reparses them to confirm that they produce the same normalized input.
+Without the original bytes, their verification status is unavailable. These checks establish
+record consistency. The person supplying the file remains responsible for its source and
+measurement declaration.
+
 ## Existing slab format (still supported)
 
 **Status: nothing is calibrated by default.** This project bundles no measurement dataset,

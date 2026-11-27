@@ -45,6 +45,166 @@ The managed project reservation could not be acquired because the Docker CLI is 
 physical devices, owner visual review and biological validation were not run. No external service,
 credentials, commit, push or sibling-repository edit was used.
 
+# Agent-run publication reconciliation — November 26, 2026
+
+AI-assisted work on a personal hobby/learning project. The unique cockpit/draft editing and browser
+verification work was replayed onto fetched upstream `31bf72627ab2f6bc2a78fa8876da6c5351e9ece1`
+in an isolated worktree. Upstream's measurement provenance/import corrections were retained rather
+than republished from the equivalent local versions. Eight EOL-only/executable-mode-noise files were
+excluded. The two JSON browser matrices are intentional historical evidence; the original dirty
+working tree remained untouched.
+
+| Reconciled gate | Observed result |
+|---|---|
+| Focused UI/provenance/isolation tests | 37 passed, 0 failed/skipped |
+| `npm test` | 351 passed, 0 failed/skipped |
+| `npm run check` | 182 project modules syntax checked |
+| `npm run provenance:check` | PASS; pinned manifest matches, no rebuild |
+| Exchange parity with explicit `RESEARCH_DESK_ROOT=/workspace/regen-workbench` | 16/16 PASS |
+| `npm run verify:release` | 24 PASS lines, 6 explicit NOT-RUN gates; 162 candidate files |
+| Fresh headless Chromium drafts matrix | Desktop/mobile/WebGL-disabled each pass 9/9, 0 page errors |
+| Fresh headless Chromium presentation matrix | Desktop/mobile pass 9/9; WebGL-disabled blocked as required; 0 page errors |
+| `git diff --check` | PASS, no diagnostics |
+
+The fresh browser checks used only the loopback temporary worktree and cached browser tooling. They
+did not execute queries, contact providers, install packages or produce replacement evidence files.
+The generic release-script browser gate and the other browser parts remain separate; non-Chromium,
+physical-device, assistive-technology and owner visual reviews remain open. No scientific,
+biological, clinical, safety or publication-readiness conclusion follows from these software checks.
+
+# Agent-run verification — presentation diagnostics increment, November 16, 2026
+
+This is a historical software checkpoint. It does not establish scientific, biological,
+clinical or safety validation and does not represent owner review or publication approval.
+
+## Baseline and scoped implementation
+
+The branch remained `continuation/2026-11-04-versioning` at HEAD
+`feda2e34023ac4783c937267c6164d333cfe0862`, with the prior uncommitted draft-editing/browser work
+preserved. The baseline focused command `node --test tests/browser-verification-suite.test.js`
+passed **4/4** with 0 skipped; `git diff --check` was clean. Ten new regressions then failed against
+the notice-only presentation implementation before the scoped correction.
+
+`runPresentationPart` now requires actual `graphics.presentationScale` and
+`graphics.presentationState` values initially and after every scale, representation, cut-plane and
+motion transition. It uses pointer and keyboard control activation, checks explicit cut-plane-off
+and motion-system states rather than claiming an invalid-input rollback, compares canonical scenario
+bytes before/after, and rejects horizontal overflow. Focused fake-page tests cover absent, stale and
+contradictory diagnostics, scenario mutation, overflow and diagnostic-based WebGL-disabled blocking.
+
+## Fresh final gates
+
+| Command | Observed result |
+|---|---|
+| `node --test tests/browser-verification-suite.test.js` | 14 passed, 0 failed, 0 skipped |
+| `npm test` | 349 passed, 0 failed, 0 skipped |
+| `npm run check` | 181 project modules syntax checked |
+| `npm run provenance:check` | PASS; existing manifest matches closure, no rebuild |
+| `PYTHON=/home/vscode/.local/bin/python3.12 npm run verify:exchange-parity` | 16/16 PASS |
+| `npm run verify:release` | 24 PASS lines, 6 explicit NOT-RUN gates; 162 candidate files |
+| `git diff --check` | PASS, no diagnostics |
+
+The release script's generic browser line remains **NOT-RUN**. The independently executed
+presentation matrix below is separate and is not silently folded into that script's result.
+
+## Actual presentation browser matrix
+
+The app was served with `npm start -- --host 127.0.0.1 --port 8096`. The existing local Playwright
+1.64.0-alpha package and headless Chromium 155.0.8059.12 ran
+`node /tmp/kilo/bioprinting-presentation-matrix.mjs`, which invoked the repository suite in three
+fresh browser contexts. `docs/browser-presentation-2026-11-16.json` is the exact runner-produced
+output (SHA-256 `12b10ca4e55640fdc8855ffd55f3788fc95a4365e8035038ea15d6a16a22d286`).
+
+| Environment | Required/observed status | Checks | Page errors | Scenario bytes before/after | Overflow |
+|---|---|---:|---:|---:|---|
+| Chromium, 1280×720 | pass / pass | 9/9 | 0 | 2,955 / 2,955 | none (1280/1280) |
+| Chromium, 390×844 | pass / pass | 9/9 | 0 | 2,955 / 2,955 | none (390/390) |
+| Chromium, 1280×720, WebGL disabled before startup | blocked / blocked | 1 blocked | 0 | not applicable; controls not exercised | not claimed |
+
+The two graphical passes recorded matching diagnostics for construct scale, model-field
+representation, x/0.5 cut plane, reduced motion, cut-plane-off and motion-system. The disabled case
+reported `graphics.webgl:false` and the actual fallback error; it was not allowed to pass. Matrix
+status `pass` means those three expected environment outcomes were observed, not that WebGL-disabled
+presentation passed.
+
+Only the presentation part is claimed for this increment; the earlier drafts artifact remains a
+separate result. Convergence, exchange, provenance and exploration browser parts were not run here.
+Firefox, WebKit, physical devices, assistive-technology review and owner visual review were not run.
+Citation/scientific and external claims review, live Blender/providers, owner release approval and
+deployment remain open. No scientific, biological, clinical, safety or publication-readiness
+conclusion follows from these software checks.
+
+# Agent-run verification — draft editing increment, November 15–16, 2026
+
+This is a historical software checkpoint. It does not establish scientific, biological,
+clinical or safety validation and does not represent owner review or publication approval.
+
+## Baseline and final local gates
+
+Starting state: clean branch `continuation/2026-11-04-versioning`, HEAD
+`feda2e34023ac4783c937267c6164d333cfe0862`. The existing focused UI baseline (`node --test
+tests/research-draft-ui.test.js tests/research-cockpit-ui.test.js`) passed **8/8**. Full baseline
+`npm test` passed **329/329**, and baseline `npm run check` covered **180 modules**; no
+pre-existing failures were observed.
+
+The November 16 independent-review follow-up added three initially failing regressions: conflicting
+external content against an owner-reviewed same-ID record, an intervening workspace update after
+load, and lossless untouched arrays containing padding, embedded newlines and commas. Save now
+refuses any full-record baseline/current conflict with a reload diagnostic and decides review
+preservation against the accepted final target. Untouched list serializations reuse exact baseline
+arrays; genuinely changed controls are still parsed and clear review. All three regressions pass.
+
+| Final command | Observed result |
+|---|---|
+| `node --test tests/research-draft-ui.test.js tests/research-cockpit-ui.test.js tests/browser-verification-suite.test.js` | 18 passed, 0 failed, 0 skipped |
+| `npm test` | 339 passed, 0 failed, 0 skipped |
+| `npm run check` | 181 project modules syntax checked |
+| `npm run provenance:check` | PASS; existing manifest matches closure, no rebuild |
+| `PYTHON=/home/vscode/.local/bin/python3.12 npm run verify:exchange-parity` | 16/16 PASS |
+| `npm run verify:release` | 24 PASS lines, 6 explicit NOT-RUN gates; 161 candidate files |
+| `git diff --check` | PASS, no diagnostics |
+
+The release script's own generic browser line remains **NOT-RUN**. The independently executed,
+drafts-only browser evidence below is separate and does not alter that output.
+
+## Drafts-only browser matrix
+
+Evidence: `docs/browser-controls-2026-11-15.json`, generated from actual output after all three
+environments passed. The app was served with `npm start -- --host 127.0.0.1 --port 8096`; the
+existing cached Playwright/Chromium 155.0.8059.12 toolchain invoked
+`createBrowserVerificationSuite({baseURL:'http://127.0.0.1:8096/', part:'drafts', viewport})`.
+No package or browser installation occurred. The Kilo Playwright endpoint itself was unavailable
+because its configured Chrome binary was absent, so it was not used for the passing artifact.
+
+| Environment | Top-level status | Checks | Page errors | Download bytes | Scenario bytes | Overflow |
+|---|---|---:|---:|---:|---:|---|
+| Chromium, 1280×720 | pass | 9/9 | 0 | exact 2,626-byte match | unchanged 2,955 | none (1280/1280) |
+| Chromium, 390×844 | pass | 9/9 | 0 | exact 2,626-byte match | unchanged 2,955 | none (390/390) |
+| Chromium, 1280×720, WebGL disabled before startup | pass | 9/9 | 0 | exact 2,626-byte match | unchanged 2,955 | none (1280/1280) |
+
+Each run actually created and visibly edited a local draft, refused an invalid Save, previewed and
+applied `tests/fixtures/research-exchange/minimal.json`, loaded all 20 editable imported fields and
+two alternatives through the cockpit callback, verified no imported workspace record before
+explicit Save, edited the imported title before Save, and retained the neighboring local draft. The
+actual 2,626-byte downloaded bundle was parsed and checked for the edited title, original `agent`
+creator, unchanged lineage/reference arrays and revision `1`, plus `unreviewed`/null-reviewer
+metadata. Each run generated two planned-only queries with zero external requests. WebGL-disabled
+diagnostics reported `webgl:false`; disabled graphics were not treated as a blocked non-graphical
+drafts check.
+
+## Scope and remaining gates
+
+Only the `drafts` browser part is claimed. Convergence, exchange, provenance, exploration and
+presentation browser parts were not run in this increment. Firefox, WebKit, physical mobile
+hardware, assistive-technology review and owner visual review were not run. The WebGL-disabled run
+used a canvas `getContext` override, not a graphical presentation test.
+
+The release script explicitly left citation claim-support review, external claims-scanner review,
+live Blender isolation, owner release approval and deployment NOT-RUN. Live provider execution was
+not called; generated queries remained planned. No dependencies, containers, commits, pushes,
+merges, tags, deployments, provenance rebuilds or generated-query executions occurred. Historical
+results below remain historical and are not substitutes for this checkpoint.
+
 # Agent-run verification - November 3, 2026 (verification close-out + magnified viewport)
 
 Agent-run software checks, not scientific validation. Workbench: `npm test` 273 passed /
