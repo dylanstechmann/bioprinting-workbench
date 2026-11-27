@@ -58,6 +58,10 @@ test('artifact descriptors hash exact bytes and verify through the exchange path
   assert.ok(bytes.byteLength > 0);
   const descriptor = await toArtifactDescriptor(record);
   validateArtifactDescriptor(descriptor);
+  const pinned = { ...record, artifactSha256: descriptor.sha256 };
+  assert.deepEqual(await toArtifactDescriptor(pinned), descriptor);
+  await assert.rejects(toArtifactDescriptor({ ...pinned, payload: { changed: true } }), /SHA-256 differs/);
+  assert.throws(() => createRunRecord({ ...record, artifactSha256: [descriptor.sha256] }), TypeError);
   assert.equal(descriptor.filename, 'study-1.json');
   assert.equal(descriptor.bytes, bytes.byteLength);
   assert.deepEqual(descriptor.provenance.modelRunIds, ['study-1']);

@@ -11,6 +11,7 @@
     "provenance:build": "node scripts/build-model-provenance.mjs",
     "provenance:check": "node scripts/build-model-provenance.mjs --check",
     "verify:release": "node scripts/verify-release.mjs",
-    "verify:exchange-parity": "node scripts/verify-exchange-parity.mjs"
+    "verify:exchange-parity": "node scripts/verify-exchange-parity.mjs",
+    "verify:browser-exchange": "node scripts/browser-exchange-regression.mjs"
   }
 }

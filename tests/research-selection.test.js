@@ -41,6 +41,24 @@ test('native registry runs export verbatim with verified payload artifacts', asy
   assert.equal(result.bundle.artifacts[0].provenance.modelRunIds[0], record.id);
   assert.equal(result.files.length, 1);
   assert.ok(result.addedDependencies.some(dep => dep.includes('native run payload')));
+  // Selecting an existing descriptor for the native payload can reuse the registry's bytes.
+  const descriptor = result.bundle.artifacts[0];
+  const selectBoth = { modelRunIds: [record.id], artifactIds: [descriptor.id] };
+  const state = { ...fixture, artifacts: [descriptor] };
+  const withRegistry = { ...context, runRegistry: registry };
+  const reused = await prepareSelectedResearchExport(state, selectBoth, withRegistry);
+  assert.deepEqual(reused.files, result.files);
+  const supplied = await prepareSelectedResearchExport(state, selectBoth, { ...withRegistry, files: result.files });
+  assert.deepEqual(supplied.files, result.files);
+  const altered = { ...descriptor, sha256: '0'.repeat(64) };
+  await assert.rejects(prepareSelectedResearchExport({ ...state, artifacts: [altered] }, selectBoth, withRegistry), /conflicts with native/);
+  const wrongFile = { filename: descriptor.filename, bytes: new Uint8Array([0]) };
+  await assert.rejects(prepareSelectedResearchExport(state, selectBoth, { ...withRegistry, files: [wrongFile] }), /size mismatch/);
+  const wrongHash = new Uint8Array(result.files[0].bytes);
+  wrongHash[wrongHash.length - 1] ^= 1;
+  await assert.rejects(prepareSelectedResearchExport(state, selectBoth, {
+    ...withRegistry, files: [{ filename: descriptor.filename, bytes: wrongHash }],
+  }), /hash mismatch/);
   // Without the registry the same selection is honestly blocked as missing, never silently dropped.
   await assert.rejects(prepareSelectedResearchExport(fixture, { modelRunIds: [record.id] }, context), /Missing/);
 });

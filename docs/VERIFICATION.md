@@ -1,3 +1,50 @@
+# Agent-run verification — synthetic exchange regression, November 27, 2026
+
+This is an uncommitted software checkpoint at HEAD `feda2e34023ac4783c937267c6164d333cfe0862`.
+It preserves the actual archived 3,889-byte synthetic browser download and existing 25-byte sidecar
+as `tests/fixtures/research-exchange/browser-download.json` and `synthetic.json`. Their SHA-256
+pins are `ef4319aa7c213a0293a72ae94ca2ac773d50934522ff647161a961dddf2bf904` and
+`91f6a1f8192c4fcbe810d51149109fbc22256486f55c20376f4638dff2dc4b07`. These are local software
+fixtures only; they do not establish biological, clinical, safety or transplant-readiness claims.
+
+`npm run verify:browser-exchange` now starts a loopback-only static server and runs the existing
+presentation and expanded exchange parts in separate report fields. The exchange checks reject a
+wrong-size sidecar and a same-size/wrong-SHA-256 sidecar before export, compare both actual
+Playwright downloads byte-for-byte with the archived fixtures, and exercise native-run descriptor
+conflict, wrong-size, wrong-hash and stored-pin rejection. No external requests are permitted.
+
+## Observed gates
+
+| Check | Observed result |
+|---|---|
+| Baseline `npm test` before this increment | 351 passed, 0 failed/skipped |
+| Baseline `npm run check` | 181 modules |
+| Focused exchange/browser unit tests | 32 passed, 0 failed/skipped |
+| Final `npm test` | 352 passed, 0 failed/skipped |
+| Final `npm run check` | 182 modules |
+| `PYTHON=python3 npm run verify:exchange-parity` | 16/16 PASS |
+| `git diff --check` | PASS |
+
+The final direct runner invocation used the existing Playwright 1.66.0-alpha package and Chromium
+156.0.8078.4. Its observed outcomes are summarized below. The fixed UI clock is only for deterministic
+synthetic export bytes.
+
+| Graphics mode | Presentation outcome | Exchange outcome | Bundle / sidecar | Page errors / external requests |
+|---|---|---|---|---|
+| ANGLE/SwiftShader, WebGL available | pass, 9 checks | pass, 6 checks | exact 3,889 / 25 bytes | 0 / 0 |
+| `--disable-webgl`, fallback visible | **blocked**, 1 check; controls not exercised | pass, 6 checks | exact same bytes and hashes | 0 / 0 |
+
+The disabled presentation result is deliberately not counted as a graphical pass or an exchange
+failure. Both native identity cases reported `conflicts with native`, `size mismatch`, `hash mismatch`
+and `Stored artifact SHA-256 differs`. The separate archived Desk reproducer was also rerun in both
+modes: its read-only Python adapter verified `art-1`, rejected an altered sidecar with `hash mismatch`,
+and previewed six creates with no conflicts or writes. Publication status stayed `not-approved`.
+
+The managed project reservation could not be acquired because the Docker CLI is unavailable
+(`[Errno 2] No such file or directory: 'docker'`); no container result is claimed. Firefox, WebKit,
+physical devices, owner visual review and biological validation were not run. No external service,
+credentials, commit, push or sibling-repository edit was used.
+
 # Agent-run verification - November 3, 2026 (verification close-out + magnified viewport)
 
 Agent-run software checks, not scientific validation. Workbench: `npm test` 273 passed /

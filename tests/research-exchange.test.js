@@ -126,6 +126,25 @@ test('export is a validated subset with explicit privacy and never-approved publ
   assert.throws(() => exportResearchBundle({ hypotheses: [{ ...card, note: 'secret' }] }, { bundleId: 'bundle-export', createdAt: '2026-11-03T12:00:00Z' }), TypeError);
 });
 
+test('the archived browser download and sidecar preserve exact synthetic exchange bytes', async () => {
+  const downloaded = readFileSync(new URL('./fixtures/research-exchange/browser-download.json', import.meta.url));
+  const sidecar = artifactBytes();
+  const { createHash } = await import('node:crypto');
+  const digest = bytes => createHash('sha256').update(bytes).digest('hex');
+  assert.equal(downloaded.length, 3889);
+  assert.equal(digest(downloaded), 'ef4319aa7c213a0293a72ae94ca2ac773d50934522ff647161a961dddf2bf904');
+  assert.equal(sidecar.length, 25);
+  assert.equal(digest(sidecar), '91f6a1f8192c4fcbe810d51149109fbc22256486f55c20376f4638dff2dc4b07');
+  const bundle = parseResearchBundle(downloaded.toString('utf8'));
+  assert.equal(bundle.evidence[0].sourceClass, 'synthetic-fixture');
+  assert.equal(bundle.publicationReviewStatus, 'not-approved');
+  assert.deepEqual(await verifyArtifactFiles(bundle, [{ filename: 'synthetic.json', bytes: sidecar }]), { verified: ['art-1'], failed: [] });
+  const regenerated = exportResearchBundle(bundle, {
+    bundleId: 'bundle-export-owbzu4', createdAt: '2026-11-27T00:00:00.000Z', privacyClassification: 'selected-for-exchange',
+  });
+  assert.ok(Buffer.from(JSON.stringify(regenerated, null, 2), 'utf8').equals(downloaded));
+});
+
 test('cross-language golden digests match the Python adapter byte-for-byte', async () => {
   const golden = fixture('golden-digests.json');
   assert.equal(golden.canonicalizer, CANONICALIZATION);
