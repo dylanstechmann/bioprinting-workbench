@@ -80,6 +80,7 @@ export function createResearchCockpitUI({ elements: $, workspace = null, onChang
     for (const url of downloadUrls) URL.revokeObjectURL(url);
     downloadUrls = [];
     $('cockpit-downloads').replaceChildren();
+    $('cockpit-export-output').value = '';
   }
   function renderPreview() {
     const container = $('cockpit-preview');
@@ -152,6 +153,7 @@ export function createResearchCockpitUI({ elements: $, workspace = null, onChang
     if (disposed || applying) return;
     const operation = ++generation;
     pending = null;
+    artifactFiles = [];
     clearDownloads();
     renderPreview();
     try {

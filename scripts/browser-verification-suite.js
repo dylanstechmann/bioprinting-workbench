@@ -25,6 +25,18 @@ export function summarizeBrowserChecks(checks, errors) {
   return { status: 'pass', diagnostics };
 }
 
+async function readDownload(page, filename) {
+  const [download] = await Promise.all([
+    page.waitForEvent('download'),
+    page.getByRole('link', { name: `Download ${filename}`, exact: true }).click(),
+  ]);
+  if (download.suggestedFilename() !== filename || await download.failure()) throw new Error(`Download failed: ${filename}`);
+  const stream = await download.createReadStream();
+  const chunks = [];
+  for await (const chunk of stream) chunks.push(chunk);
+  return Buffer.concat(chunks);
+}
+
 export function createBrowserVerificationSuite({ baseURL, part = 'convergence', viewport = { width: 1280, height: 720 } }) {
   const url = new URL(baseURL);
   if (!['http:', 'https:'].includes(url.protocol)) throw new TypeError('Browser baseURL must be HTTP(S)');
@@ -99,12 +111,19 @@ export function createBrowserVerificationSuite({ baseURL, part = 'convergence', 
         await page.waitForFunction(() => document.getElementById('cockpit-status').textContent.includes('files selected'));
         await page.locator('#cockpit-export').click();
         await page.waitForFunction(() => document.querySelectorAll('#cockpit-downloads a').length === 2);
-        const bundle = JSON.parse(await page.locator('#cockpit-export-output').inputValue());
+        const preview = await page.locator('#cockpit-export-output').inputValue();
+        const manifest = await readDownload(page, 'bioprint-results.json');
+        if (!manifest.equals(Buffer.from(preview))) throw new Error('Downloaded manifest differs from export preview');
+        const bundle = JSON.parse(manifest.toString('utf8'));
         for (const group of ['hypotheses', 'queries', 'modelRuns', 'evidence', 'artifacts']) {
           if (!bundle[group].length) throw new Error(`Export lost ${group}`);
         }
-        const [download] = await Promise.all([page.waitForEvent('download'), page.getByRole('link', { name: 'Download bioprint-results.json', exact: true }).click()]);
-        if (download.suggestedFilename() !== 'bioprint-results.json' || await download.failure()) throw new Error('Bundle download failed');
+        const sidecar = await readDownload(page, 'synthetic.json');
+        const descriptor = bundle.artifacts.find(item => item.filename === 'synthetic.json');
+        const sha256 = Buffer.from(await crypto.subtle.digest('SHA-256', sidecar)).toString('hex');
+        if (!sidecar.equals(Buffer.from(data)) || descriptor?.bytes !== sidecar.length || descriptor.sha256 !== sha256) {
+          throw new Error('Downloaded artifact differs from the source file or manifest pin');
+        }
         checks.push({ id: 'complete-selected-export', status: 'pass', groups: Object.fromEntries(['hypotheses', 'queries', 'modelRuns', 'evidence', 'artifacts'].map(key => [key, bundle[key].length])) });
       }
       return report();
@@ -247,12 +266,7 @@ async function runDraftsPart(page, checks) {
   const exported = JSON.parse(expectedBytes.toString('utf8'));
   if (exported.hypotheses.length !== 1 || exported.hypotheses[0].id !== imported.id) throw new Error('Selected export did not contain exactly the imported record');
   if (!exported.queries.length || exported.queries.some(query => query.executionStatus !== 'planned')) throw new Error('Export did not retain planned-only query status');
-  const [download] = await Promise.all([page.waitForEvent('download'), page.getByRole('link', { name: 'Download bioprint-results.json', exact: true }).click()]);
-  if (download.suggestedFilename() !== 'bioprint-results.json' || await download.failure()) throw new Error('Bundle download failed');
-  const stream = await download.createReadStream();
-  const chunks = [];
-  for await (const chunk of stream) chunks.push(chunk);
-  const downloadedBytes = Buffer.concat(chunks);
+  const downloadedBytes = await readDownload(page, 'bioprint-results.json');
   if (!downloadedBytes.equals(expectedBytes)) throw new Error('Downloaded bundle bytes differ from the validated export');
   const downloaded = JSON.parse(downloadedBytes.toString('utf8'));
   const downloadedCard = downloaded.hypotheses[0];

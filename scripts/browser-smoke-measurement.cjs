@@ -42,6 +42,9 @@ async function checkFit(browser, url, disableWebGL) {
     assert.equal(fitRun.applied, true);
     await apply.dispatchEvent('click');
     assert.equal(await receipt.textContent(), saved);
+    const { createBrowserVerificationSuite } = await import('./browser-verification-suite.js');
+    const exchange = await createBrowserVerificationSuite({ baseURL: url, part: 'exchange' })(page);
+    assert.equal(exchange.status, 'pass', exchange.diagnostics.join(' / '));
     assert.deepEqual(errors, []);
     console.log('Synthetic measurement import and application passed, WebGL ' + (disableWebGL ? 'unavailable' : 'active'));
   } finally {
