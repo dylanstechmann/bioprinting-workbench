@@ -8,8 +8,11 @@ approval.
 
 ## Established in the reproduced software checks
 
-- `npm test` completed with **352 passing tests**, zero failures and zero skipped tests.
-- `npm run check` syntax-checked **182 project modules**.
+- The pre-merge exchange checkpoint completed `npm test` with **352 passing tests**, zero failures
+  and zero skipped tests, and `npm run check` syntax-checked **182 project modules**.
+- After the normal merge, final commit `2f25281c57256900bea20f5d343441ea09df6037` again passed
+  `npm test` with **352 passing tests**, zero failures and zero skipped tests; its final tree's
+  `npm run check` syntax-checked **183 project modules**.
 - The archived synthetic browser download remained exactly **3,889 bytes**, with SHA-256
   `ef4319aa7c213a0293a72ae94ca2ac773d50934522ff647161a961dddf2bf904`; its sidecar remained
   exactly **25 bytes**, with SHA-256
